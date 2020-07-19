@@ -1,0 +1,213 @@
+--- List of common properties, filepaths and functions that need to be changed in order for an outdated mod to be usable in Cortex Command: Community Project.
+--- For version: CCCP 0.1.0 pre-release 2
+--- Author: Just Alex ;/
+--- Contributors: Gacyr, Dood, 4zK
+
+
+--- Notepad++ or a similar text editing program capable of replacing text across multiple files at once is highly recommended.
+--- If you encounter an error even after porting, find the cause of the error! You may have replaced something you weren't supposed to, or the change is too uncommon and hasn't been added to this guide (yet).
+--- Note: not nearly all of these changes exist in all mods! Some changes are best found with simple trial-and-error.
+
+
+---------------
+--INI Changes--
+---------------
+
+
+---Sounds---
+---These two lines appear very frequently, in 99% of all mods! Replace them!---
+Sound		to	SoundContainer
+AddSample	to	AddSound
+
+Priority	to	//Priority		--Priority for sounds will work differently in the future, so it's best to disable them for now.
+
+---Sound directories. Some of these are also widely shared across mods.---
+Base.rte/Actors/Flesh3.wav		to	Base.rte/Sounds/Penetration/Flesh1.wav
+Base.rte/Devices/EmptyClick3.wav	to	Base.rte/Sounds/Devices/EmptyClick1.wav
+Base.rte/Devices/ReloadStart.wav	to	Base.rte/Sounds/Devices/ReloadStart.wav
+Base.rte/Devices/ReloadEnd.wav		to	Base.rte/Sounds/Devices/ReloadEnd.wav
+Base.rte/Actors/MetalHole1.wav		to	Base.rte/Sounds/Penetration/MetalHole1.wav
+Base.rte/Sounds/Explode1.wav		to	Base.rte/Sounds/Explosions/Explode1.wav
+Base.rte/Sounds/Explode2.wav		to	Base.rte/Sounds/Explosions/Explode2.wav
+Base.rte/Actors/Brains/BrainPop.wav	to	Base.rte/Actors/Brains/Case/Sounds/BrainPop.wav
+Base.rte/Actors/Brains/EnergyExplosion.wav	 to 	Base.rte/Actors/Brains/Case/Sounds/EnergyExplosion.wav
+Base.rte/Devices/Diggers/DiggerSound.wav	to	Base.rte/Devices/Tools/Digger/Sounds/DiggerActive.wav
+Base.rte/Actors/Rockets/BlastStart.wav	to	Base.rte/Sounds/Craft/BlastStart.wav
+Base.rte/Actors/Rockets/Blast.wav	to	Base.rte/Sounds/Craft/BlastLoop.wav
+Base.rte/Actors/Rockets/BlastEnd.wav	to	Base.rte/Sounds/Craft/BlastEnd.wav
+Base.rte/Actors/Rockets/ThrusterStart.wav	to	Base.rte/Sounds/Craft/ThrusterStart.wav
+Base.rte/Actors/Rockets/Thruster.wav		to	Base.rte/Sounds/Craft/ThrusterLoop.wav
+Base.rte/Actors/Rockets/ThrusterEnd.wav		to	Base.rte/Sounds/Craft/ThrusterEnd.wav
+Base.rte/Actors/Rockets/HatchOpen.wav		to	Base.rte/Sounds/Craft/HatchOpen.wav
+Base.rte/Actors/DropShips/JetLoop.wav		to	Base.rte/Sounds/Craft/JetLoop.wav
+Base.rte/Actors/DropShips/JetStart.wav		to	Base.rte/Sounds/Craft/JetStart.wav
+Base.rte/Actors/DropShips/JetEnd.wav		to	Base.rte/Sounds/Craft/JetEnd.wav
+Base.rte/Effects/Pyro/Jet.wav		to	Base.rte/Sounds/Actors/JetpackLoop.wav
+Base.rte/Effects/Pyro/JetStart.wav		to	Base.rte/Sounds/Actors/JetpackStart.wav
+Base.rte/Effects/Pyro/JetEnd.wav		to	Base.rte/Sounds/Actors/JetpackEnd.wav
+Base.rte/Actors/Dank.wav		to	Base.rte/Sounds/Physics/Dank.wav
+Base.rte/Actors/Duns.wav		to	Base.rte/Sounds/Physics/Duns.wav
+Base.rte/Actors/SmallThud.wav		to	Base.rte/Sounds/Physics/SmallThud.wav
+Base.rte/Devices/DeviceSwitch1.wav	to	Base.rte/Sounds/Devices/DeviceSwitch1.wav
+Base.rte/Devices/DeviceSwitch2.wav	to	Base.rte/Sounds/Devices/DeviceSwitch2.wav
+Base.rte/Devices/DeviceSwitch3.wav	to	Base.rte/Sounds/Devices/DeviceSwitch3.wav
+Base.rte/Effects/GlassImpactA.wav	to	Base.rte/Sounds/Penetration/GlassImpact1.wav
+Base.rte/Effects/GlassImpactB.wav	to	Base.rte/Sounds/Penetration/GlassImpact2.wav
+Base.rte/Effects/GlassImpactC.wav	to	Base.rte/Sounds/Penetration/GlassImpact3.wav
+Base.rte/Scenes/Objects/Bunkers/BunkerSystems/Teleport.wav	to	Base.rte/Scenes/Objects/Bunkers/BunkerSystems/Teleporters/Sounds/Teleport.wav
+Base.rte/Devices/Shotguns/BangRegular.wav	to	Base.rte/Devices/Weapons/Shotgun/Sounds/ShotgunFire.wav
+Base.rte/Devices/Cannons/BlamWhoshClick.wav	to	Base.rte/Sounds/Devices/BlamWhoshClick.wav
+
+
+
+---Image files. These are less commonly used, which is why all of them aren't incdluded in this guide (yet).---
+Base.rte/Actors/Rockets/RocketTinyNozzle.bmp	to	Base.rte/Craft/Shared/ThrusterNozzleA.bmp
+Ronin.rte/Devices/Sprites/Stone.bmp		to		Ronin.rte/Devices/Misc/Stone/Stone.bmp
+Base.rte/Actors/Brains/BrainCaseA.bmp 	to 		Base.rte/Actors/Brains/Case/BrainCaseA.bmp
+Base.rte/Effects/Pyro/JetFlameA.bmp		to		Base.rte/Effects/Pyro/Flashes/JetFlameA.bmp
+Base.rte/Effects/Pyro/TinySmoke01.bmp		to		Base.rte/Effects/Pyro/SmokeBallTinyA.bmp
+Base.rte/Effects/Pyro/Flame/Flame00.bmp		to		Base.rte/Effects/Pyro/Flame/Flame.bmp
+Base.rte/Effects/Pyro/Flame/FireBall01.bmp		to		Base.rte/Effects/Pyro/FireBallA.bmp
+Base.rte/Effects/Pyro/Flame/FireBall02.bmp		to		Base.rte/Effects/Pyro/FireBallB.bmp
+Base.rte/Effects/Pyro/Flame/FireBall03.bmp		to		Base.rte/Effects/Pyro/FireBallC.bmp
+Base.rte/Effects/Pyro/Flame/FireBall04.bmp		to		Base.rte/Effects/Pyro/FireBallD.bmp
+Base.rte/Effects/Pyro/Flame/FireBlast01.bmp		to		Base.rte/Effects/Pyro/FireBlastA.bmp
+Base.rte/Effects/Pyro/Flame/FireBlast02.bmp		to		Base.rte/Effects/Pyro/FireBlastB.bmp
+Base.rte/Effects/Pyro/Flame/FirePuff0.bmp		to		Base.rte/Effects/Pyro/FirePuff.bmp
+Base.rte/Effects/Pyro/Flame/SmallBlast01.bmp		to		Base.rte/Effects/Pyro/FireBlastSmallA.bmp
+Base.rte/Effects/Pyro/Flame/SmallSmoke01.bmp		to		Base.rte/Effects/Pyro/SmokeBallSmallA.bmp
+Base.rte/Effects/Pyro/Flame/TinySmoke01.bmp		to		Base.rte/Effects/Pyro/SmokeBallTinyA.bmp
+Missions.rte/Scenes/Items/RotatingPad.bmp		to		Missions.rte/Objects/RotatingPad/RotatingPad.bmp
+Missions.rte/Scenes/Items/ControlChipCase.bmp		to		Missions.rte/Objects/ControlChip/ControlChipCase.bmp
+Missions.rte/Scenes/Items/RotatingPadGibA.bmp		to		Missions.rte/Objects/RotatingPad/RotatingPadGibA.bmp
+Missions.rte/Scenes/Items/ControlChipCaseGibA.bmp	to		Missions.rte/Objects/ControlChip/Gibs/ControlChipCaseGibA.bmp
+Missions.rte/Scenes/Items/ControlChipCaseGibB.bmp	to		Missions.rte/Objects/ControlChip/Gibs/ControlChipCaseGibB.bmp
+Missions.rte/Scenes/Items/ControlChipCaseGibC.bmp	to		Missions.rte/Objects/ControlChip/Gibs/ControlChipCaseGibC.bmp
+
+
+
+---Weapon classes. These don't show up as errors, but if not properly changed, weapons may not spawn correctly.---
+AddToGroup = Secondary Weapons 	  to 	AddToGroup = Weapons - Secondary
+AddToGroup = Primary Weapons	  to	AddToGroup = Weapons - Primary
+AddToGroup = Light Weapons 	  to	AddToGroup = Weapons - Light
+AddToGroup = Heavy Weapons 	  to	AddToGroup = Weapons - Heavy
+AddToGroup = Sniper Weapons	  to	AddToGroup = Weapons - Sniper
+AddToGroup = Explosive Weapons 	  to	AddToGroup = Weapons - Explosive
+AddToGroup = Melee Weapons	to	AddToGroup = Weapons - Melee
+AddToGroup = Grenades	  to	AddToGroup = Bombs - Grenades
+AddToGroup = Diggers	to 	AddToGroup = Tools - Diggers
+
+AddToGroup = Light Infantry	to	AddToGroup = Actors - Light
+AddToGroup = Heavy Infantry	to	AddToGroup = Actors - Heavy
+AddToGroup = Snipers	to	AddToGroup = Actors - Sniper
+AddToGroup = Turret		to	AddToGroup = Actors - Turret
+AddToGroup = Mecha		to	AddToGroup = Actors - Mecha
+
+
+---Effects---
+Fire Puff Small B	to	Fire Puff Small	
+Particle Napalm Bomb 1	to	Particle Napalm Bomb
+Particle Napalm Bomb 2	to	Particle Napalm Bomb
+Particle Napalm Bomb 3	to	Particle Napalm Bomb
+
+
+---AI. These may not produce any errors, make sure you replace them!---
+Base.rte/Actors/AI/CrabAI.lua		to	Base.rte/AI/CrabAI.lua
+Base.rte/Actors/AI/HumanAI.lua		to	Base.rte/AI/HumanAI.lua
+Base.rte/Actors/AI/RocketAI.lua		to	Base.rte/AI/RocketAI.lua
+Base.rte/Actors/AI/DropShipAI.lua	to	Base.rte/AI/DropShipAI.lua
+Base.rte/Actors/AI/TurretAI.lua		to	Base.rte/AI/TurretAI.lua
+
+
+---Atomgroups. Make sure you include "CopyOf", otherwise the replace tool may affect things you don't want it to affect.---
+CopyOf = Atom Group Null		to	CopyOf = Null AtomGroup
+---The following ones are very common with Actors!
+CopyOf = HandGroup			to	CopyOf = Human Hand
+CopyOf = Foot				to	CopyOf = Human Foot
+CopyOf = CrabFootGroup			to	CopyOf = Crab Foot
+CopyOf = Rocket Landing Gear Foot Right	to	CopyOf = Rocket Landing Gear Foot
+CopyOf = Rocket Landing Gear Foot Left	to	CopyOf = Rocket Landing Gear Foot
+
+
+---Scenes: Background layers. Some files may not include the "Base.rte/" part.---
+Base.rte/Near Layer		to	Base.rte/Default Front
+Base.rte/Sky Layer		to	Base.rte/Default Sky Layer
+Base.rte/Clouds Layer	to	Base.rte/Clouds Layer A
+
+---Bunker parts---
+Concrete barrier	to	Concrete Barrier
+TutShaftEntry L Dark	to	TutShaft Entry L Dark
+TutShaftEntry L Light	to	TutShaft Entry L Light
+
+
+---Miscellaneous name changes---
+Round AK-47	to	Round Ronin AK-47
+Tracer AK-47	to	Tracer Ronin AK-47
+Shell Smoking	to	Smoking Large Casing
+Brain Gib A 	to 	Brain Gib	--Careful with search and replace.
+Small MG Turret to	Small Turret
+Drop Ship	to	Dropship		--Careful with these two, they are for the Base (Dropship MK1) and Dummy (Dropship) variants. ONLY replace parts that clearly refer to either of the two.
+Dirt		to	Topsoil
+10 oz Gold Brick	to	10oz Gold Brick
+15 oz Gold Brick	to	15oz Gold Brick		--These are now of class MOSRotating instead of MOSParticle. Change this manually.
+24 oz Gold Brick	to	24oz Gold Brick
+Dummy Head Gib A	to	Dummy Light Head Gib A
+Dummy Head Gib B	to	Dummy Light Head Gib B
+
+
+---Ronin weapons---
+Glock		to	Luger P08	--The Glock has been replaced with Luger for now. It's still more or less the same weapon.
+Pumpgun		to	Model 590
+Spas 12		to	SPAS 12
+Kar98		to	Kar98k
+M16		to	M16A2
+Thumper		to	M79
+Uzi		to	UZI
+
+
+---------------
+--Lua Changes--
+---------------
+
+
+WithinBox	to	IsWithinBox
+
+
+---In addition to .ini Weapon Groups, you should replace their .lua string text variants, especially in Scenario/Activity related mods.---
+"Secondary Weapons"		to 	"Weapons - Secondary"
+"Primary Weapons"		to	"Weapons - Primary"
+"Light Weapons"		to	"Weapons - Light"
+"Heavy Weapons"		to	"Weapons - Heavy"
+"Sniper Weapons"		to	"Weapons - Sniper"
+"Explosive Weapons"		to		"Weapons - Explosive"
+"Melee Weapons"		to	"Weapons - Melee"
+"Grenades"			to	"Bombs - Grenades"
+"Diggers"			to 	"Tools - Diggers"
+
+"Light Infantry"	to	"Actors - Light"
+"Heavy Infantry"	to	"Actors - Heavy"
+"Snipers"	to	"Actors - Sniper"
+"Turret"	to	"Actors - Turret"
+"Mecha"		to	"Actors - Mecha"
+
+
+---FrameMan---
+FrameMan:Draw	to	PrimitiveMan:Draw
+FrameMan.ResX	to	FrameMan.PlayerScreenWidth
+FrameMan.ResY	to	FrameMan.PlayerScreenHeight
+
+
+---AudioMan changes. These are very uncommon, so don't worry!---
+PlaySound	to	PlaySound(pathToSound)
+		or	PlaySound(pathToSound, positionVectorOfSound)
+		or	PlaySound(pathToSound, positionVectorOfSound, playerToPlaySoundFor)
+		or	PlaySound(pathToSound, positionVectorOfSound, playerToPlaySoundFor, numberOfLoops, priorityOfSound, pitchOrAffectedByGlobalPitch, attenuationStartDistance, isImmobile)
+---This may sound confusing, so here is a common example:
+	AudioMan:PlaySound("ModName.rte/Folder/SoundName.wav", SceneMan:TargetDistanceScalar(self.Pos), false, true, -1)
+		to
+	AudioMan:PlaySound("ModName.rte/Folder/SoundName.wav", self.Pos)	--Basically cut everything and leave the thing inside the brackets after SceneMan:TargetDistanceScalar
+
+
+--SoundContainer---
+IsPlaying()		to	IsBeingPlayed()
+UpdateDistance(number)	to	SetPosition(vector)
