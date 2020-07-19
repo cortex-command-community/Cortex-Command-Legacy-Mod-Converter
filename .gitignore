@@ -1,0 +1,5 @@
+mod-versions/mario-b33-manual-conversion.rte
+input/*
+!input/.empty
+output/*
+!output/.empty

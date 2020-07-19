@@ -16,8 +16,8 @@
 
 ---Sounds---
 ---These two lines appear very frequently, in 99% of all mods! Replace them!---
-Sound		to	SoundContainer
-AddSample	to	AddSound
+✓ Sound		to	SoundContainer
+✓ AddSample	to	AddSound
 
 Priority	to	//Priority		--Priority for sounds will work differently in the future, so it's best to disable them for now.
 

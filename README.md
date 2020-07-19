@@ -1,6 +1,6 @@
 # cc-legacy-mod-converter
 
-`convert.py` attempts to convert the legacy `Cortex Command B33` to the modern `Cortex Command Community Project`,
+`convert.py` attempts to convert the legacy `Cortex Command` mods to the modern `Cortex Command Community Project` mods,
 but you'll likely have to do some final finishing touches to succesfully complete the conversion.
 
 > There are going to be cases that require user intervention. Priority, for example, is one of them. Few things should be setting sound priority,
