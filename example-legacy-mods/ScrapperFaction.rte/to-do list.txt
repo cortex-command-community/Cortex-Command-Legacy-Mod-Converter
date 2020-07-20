@@ -1,0 +1,39 @@
+=shit i need to get around to doing sometime=
+
+-finish working on the goddamn nailgun already
+-make katana's fire upgrade time-limited (1 min?) and make it explode and set user on fire if destroyed while upgrade is active
+-sniper unit (tier 2, stronger than junkie but weaker than bruiser) [partially done, need to get more help on team color mask sprite lua and maybe make body/limb sprites look less similar to the junkie]
+-some sort of homemade SMG (tier 3-4, full-auto, relatively low default ammo count, but still more than pistol or nailgun)
+-tier 1/2 shotgun (single-shot, slow reload, wide spread at long range but slightly more power than looted shotgun at close range)
+-slightly more reliable multi-shot sniper rifle (tier 4?)
+-more melee weapons (clubs mostly done, find or write code for unused homemade bush machete sprite, add 4zK's chainsaw as both a melee weapon and a tool)?
+-custom shield as to not reuse the base riot shield in the loadouts [mostly finished, sprites look kinda odd so probably should ask people's opinions on what to change about it (make it more round rather than rectangular?)]
+-low-grade/weak ACrab drone or turret
+-add CompliSound 2.0 to all (or most) guns
+-try adding 4zK's stock melee attack to rifles?
+-some sort of healing item compatible with 4zK's AI (nanorepair pills/injection?)
+-brain unit rework?
+-polish/readd the unfinished randomized headwear/goggles for the junkie?
+-[*IMPORTANT*] don't forget to inform and credit everybody whose scripts or sprites I "borrowed" before releasing the faction to Steam Workshop, full list of usernames and "borrowed" resources, by chronological order (last name (except mine) = most recent contribution to mod) [ADD TO DESCRIPTION ON WORKSHOP RELEASE]:
+Hoovytaurus/Pawnis - original mod idea and prototype, large amount of help with gun sounds and scripts, melee weapons, shield code, sticky fire code for katana fire upgrade, sounds/wounds/scripts from the WW1 mod (Trenches.rte);
+4zK - improved AI scripts, actor facial expressions/dynamic hair script, scrap grenade, air blast script, cigarette code, new katana sprite, huge amount of inspiration for spriting/shading style, help with nailgun nail script;
+Chiko - Bruiser torso/leg sprites, old version of melee AI;
+Gridbull - old sprites for sound test guns that were eventually remade into tier 4 guns;
+Filipex - original author of the knife script;
+Gacyr - help with Deadeye team-colored mask code;
+Major - base for Deadeye leg sprites (now edited and standardized for both deadeye and junkie);
+MaximDude - some ideas on how to make the nailgun script work;
+Me (KhromosomeKing) - being 'tarded enough to start working on my first large custom faction project without prior spriting/lua scripting skills, coming up with some stupid, but still semi-good ideas.
+
+=shit i need to consider (possibly as updates after Workshop release)=
+
+-make some sort of base objects/decor (banners, armor/weapon workbenches/BG blueprints, statues made out of rebar and wire, BG graffiti?)
+-make new arms w/new sprites/wounds/gibs for bruiser??
+-add custom aircraft for full warzone/metagame/vw/ul2/whatever compatibility???
+
+=shit i'll probably never make because i'm a lazy-ass retard with awful coding and spriting skills=
+
+-whole new counterpart/"arch-nemesis"-style factions for all 4 teams (Scrappers are Team 4 by color scheme) with different color schemes (red, blue, green)
+[POSSIBLE THEME(S): Team 1: cyberpunk-ish gangsters in red/white tracksuits using both ballistic and energy-based guns as well as energy-based melee, winter-themed white/blue cybernetically augmented soldiers, animal-like aliens (mix between the strogg and sergals? who the hell knows) with dark green/orange armor and weapons; UNITS: Team 1: light, heavy (more armor), special (can teleport short distances) Team 2, 3: unknown; POSSIBLE NAME(S): Team 1: The Bloodhounds, The Red Lightning, The Burners (lmao all of those names sound way too fucking edgy and stupid), Team 2, 3: unknown]
+-center all 3 factions around some themes (since the Scrappers have an emphasis on low actor/weapon costs, other teams could have something similar, i.e. Team 1 - speed (fast-firing guns, fast actors), Team 2 - numbers (cheaper actors, not Scrapper-level cheap, but enough to order a large squad for a lower price, maybe their aircrafts could carry more actors/weight than the base ones), Team 3 - strength (weapons are slower but hit harder, actors are heavy but tough)
+-possible wave defense scene(s) for each team/faction?

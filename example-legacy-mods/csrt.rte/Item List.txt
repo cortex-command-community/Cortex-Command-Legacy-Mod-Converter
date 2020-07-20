@@ -1,0 +1,50 @@
+//Outdated. 0.01v
+
+///////
+//Actors
+
+CSRT Troop
+CSRT Signal
+CSRT Officer
+
+///////
+//Weapons
+PPK .380
+//OTs-33
+Glock 18C
+M36
+MP5K
+MP5A2
+//OTs-02 Kiparis
+PP-19
+AKS-74U
+//Mk.18 CQBR
+//AK-74
+//M4A1
+M16A2
+FN FNC Para
+//AK-47
+OTs-14-1A-01
+//G3
+G36A1
+AUG A1
+//KS-23
+SPAS-12
+//USAS-12
+//Dragunov
+//Zastava M36
+//M82A2 Barrett
+WA2000
+M249
+//M134D Minigun
+PKM
+M72 LAW
+Milkor MGL
+//M1A1 Bazooka
+//XM25
+PRC-77
+
+///////
+//Shields
+
+Balistic shield

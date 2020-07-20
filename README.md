@@ -11,4 +11,4 @@ show the user these cases and either tell them to deal with it manually, or give
 There are many edge cases that won't be covered by `convert.py`, but `mod-porting-guide.txt` has a check mark in front of every case that *is* handled automatically.
 
 Feel free to make pull requests for any additional cases that you want `convert.py` to support,
-but please add a check mark in front of every additionally supported case in `mod-porting-guide.txt` afterwards too. :)
+but please make sure to add the case to `mod-porting-guide.txt` with a check mark in front of it afterwards as well. :)
