@@ -57,10 +57,16 @@
 ✓ Base.rte/Scenes/Objects/Bunkers/BunkerSystems/Teleport.wav	to	Base.rte/Scenes/Objects/Bunkers/BunkerSystems/Teleporters/Sounds/Teleport.wav
 ✓ Base.rte/Devices/Shotguns/BangRegular.wav	to	Base.rte/Devices/Weapons/Shotgun/Sounds/ShotgunFire.wav
 ✓ Base.rte/Devices/Cannons/BlamWhoshClick.wav	to	Base.rte/Sounds/Devices/BlamWhoshClick.wav
+✓ Base.rte/Actors/SquishSplat.wav	to	Base.rte/Sounds/Physics/SquishSplat.wav
+✓ Base.rte/Actors/Slish.wav	to	Base.rte/Sounds/Penetration/Slish.wav
+✓ Base.rte/Actors/Squish.wav	to	Base.rte/Sounds/Penetration/Squish.wav
+✓ Base.rte/Devices/Pistols/PistolBang.wav	to	Base.rte/Devices/Weapons/Pistol/Sounds/PistolFire.wav
+✓ Base.rte/Devices/Shotguns/Blam.wav	to	Base.rte/Devices/Weapons/Shotgun/Sounds/ShotgunFireAlt.wav
+✓ Base.rte/Devices/SMGs/Mp5 Single.wav	to	Base.rte/Devices/Weapons/SMG/Sounds/SMGFire005.wav	-- Mp5 Single.wav has been removed from CCCP, so CCCP points to a completely different .wav file for now.
 
 
 
----Image files. These are less commonly used, which is why all of them aren't incdluded in this guide (yet).---
+---Image files. These are less commonly used, which is why all of them aren't included in this guide (yet).---
 ✓ Base.rte/Actors/Rockets/RocketTinyNozzle.bmp	to	Base.rte/Craft/Shared/ThrusterNozzleA.bmp
 ✓ Ronin.rte/Devices/Sprites/Stone.bmp		to		Ronin.rte/Devices/Misc/Stone/Stone.bmp
 ✓ Base.rte/Actors/Brains/BrainCaseA.bmp 	to 		Base.rte/Actors/Brains/Case/BrainCaseA.bmp

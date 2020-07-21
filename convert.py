@@ -49,6 +49,13 @@ replace_variables_list = {
 	"Base.rte/Scenes/Objects/Bunkers/BunkerSystems/Teleport.wav": "Base.rte/Scenes/Objects/Bunkers/BunkerSystems/Teleporters/Sounds/Teleport.wav",
 	"Base.rte/Devices/Shotguns/BangRegular.wav": "Base.rte/Devices/Weapons/Shotgun/Sounds/ShotgunFire.wav",
 	"Base.rte/Devices/Cannons/BlamWhoshClick.wav": "Base.rte/Sounds/Devices/BlamWhoshClick.wav",
+	"Base.rte/Actors/SquishSplat.wav": "Base.rte/Sounds/Physics/SquishSplat.wav",
+	"Base.rte/Actors/Slish.wav": "Base.rte/Sounds/Penetration/Slish.wav",
+	"Base.rte/Actors/Squish.wav": "Base.rte/Sounds/Penetration/Squish.wav",
+	"Base.rte/Devices/Pistols/PistolBang.wav": "Base.rte/Devices/Weapons/Pistol/Sounds/PistolFire.wav",
+	"Base.rte/Devices/Shotguns/Blam.wav": "Base.rte/Devices/Weapons/Shotgun/Sounds/ShotgunFireAlt.wav",
+	"Base.rte/Devices/SMGs/Mp5 Single.wav": "Base.rte/Devices/Weapons/SMG/Sounds/SMGFire005.wav",
+	# "": "",
 
 	# Image files, might be some missing
 	"Base.rte/Actors/Rockets/RocketTinyNozzle.bmp": "Base.rte/Craft/Shared/ThrusterNozzleA.bmp",
