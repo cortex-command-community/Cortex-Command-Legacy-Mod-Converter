@@ -55,6 +55,15 @@ replace_variables_list = {
 	"Base.rte/Devices/Pistols/PistolBang.wav": "Base.rte/Devices/Weapons/Pistol/Sounds/PistolFire.wav",
 	"Base.rte/Devices/Shotguns/Blam.wav": "Base.rte/Devices/Weapons/Shotgun/Sounds/ShotgunFireAlt.wav",
 	"Base.rte/Devices/SMGs/Mp5 Single.wav": "Base.rte/Devices/Weapons/SMG/Sounds/SMGFire005.wav",
+	"Base.rte/Devices/Rifles/AK-47000.wav": "Ronin.rte/Devices/Weapons/AK47/Sounds/Fire1.wav",
+	"Base.rte/Devices/Rifles/AK-47001.wav": "Ronin.rte/Devices/Weapons/AK47/Sounds/Fire2.wav",
+	"Base.rte/Devices/Rifles/AK-47002.wav": "Ronin.rte/Devices/Weapons/AK47/Sounds/Fire3.wav",
+	"Base.rte/Devices/Rifles/AK-47003.wav": "Ronin.rte/Devices/Weapons/AK47/Sounds/Fire4.wav",
+	"Base.rte/Devices/Rifles/AK-47004.wav": "Ronin.rte/Devices/Weapons/AK47/Sounds/Fire4.wav",
+	"Base.rte/Devices/Rifles/AK-47005.wav": "Ronin.rte/Devices/Weapons/AK47/Sounds/Fire4.wav",
+	"Ronin.rte/Effects/Sounds/M16Fire.wav": "Ronin.rte/Devices/Weapons/M16A2/Sounds/Fire1.wav",
+	"Ronin.rte/Effects/Sounds/PumpgunFire.wav": "Ronin.rte/Devices/Weapons/Model590/Sounds/Fire1.wav",
+	"Base.rte/Devices/ShotgunShellIn.wav": "Base.rte/Devices/Weapons/Shotgun/Sounds/ShotgunShellIn.wav",
 	# "": "",
 
 	# Image files, might be some missing
@@ -80,6 +89,8 @@ replace_variables_list = {
 	"Missions.rte/Scenes/Items/ControlChipCaseGibA.bmp": "Missions.rte/Objects/ControlChip/Gibs/ControlChipCaseGibA.bmp",
 	"Missions.rte/Scenes/Items/ControlChipCaseGibB.bmp": "Missions.rte/Objects/ControlChip/Gibs/ControlChipCaseGibB.bmp",
 	"Missions.rte/Scenes/Items/ControlChipCaseGibC.bmp": "Missions.rte/Objects/ControlChip/Gibs/ControlChipCaseGibC.bmp",
+	"Base.rte/Effects/Pyro/MuzzleFlash03000.bmp": "Base.rte/Effects/Pyro/Flashes/MuzzleFlash03000.bmp",
+	# "": "",
 
 	# Weapon groups
 	"AddToGroup = Secondary Weapons": "AddToGroup = Weapons - Secondary",
@@ -104,6 +115,24 @@ replace_variables_list = {
 	"Particle Napalm Bomb 1": "Particle Napalm Bomb",
 	"Particle Napalm Bomb 2": "Particle Napalm Bomb",
 	"Particle Napalm Bomb 3": "Particle Napalm Bomb",
+
+	# Gibs
+	"Ronin Gib A": "Gib Ronin Weapon C",
+	"Ronin Gib B": "Gib Ronin Weapon A",
+	"Ronin Gib C": "Gib Ronin Weapon A",
+	"Ronin Gib D": "Gib Ronin Weapon H",
+	"Ronin Gib E": "Gib Ronin Weapon H",
+	"Ronin Gib F": "Gib Ronin Weapon B",
+	"Ronin Gib G": "Gib Ronin Weapon C",
+	"Ronin Gib H": "Gib Ronin Weapon D",
+	"Ronin Gib I": "Gib Ronin Weapon E",
+	"Ronin Gib J": "Gib Ronin Weapon F",
+	"Ronin Gib K": "Gib Ronin Weapon G",
+	"Ronin Gib L": "Gib Ronin Weapon H",
+	"Ronin Gib M": "Gib Ronin Weapon H",
+	"Ronin Gib N": "Gib Ronin Weapon B",
+	"Ronin Gib O": "Gib Ronin Weapon B",
+	"Ronin Gib P": "Gib Ronin Weapon B",
 
 	# AI
 	"Base.rte/Actors/AI/CrabAI.lua": "Base.rte/AI/CrabAI.lua",
@@ -147,13 +176,13 @@ replace_variables_list = {
 	"Dummy Head Gib B": "Dummy Light Head Gib B",
 
 	# Ronin weapons
-	"Glock": "Luger P08",
-	"Pumpgun": "Model 590",
-	"Spas 12": "SPAS 12",
-	"Kar98": "Kar98k",
-	"M16": "M16A2",
-	"Thumper": "M79",
-	"Uzi": "UZI",
+	"CopyOf = Glock": "CopyOf = Luger P08",
+	"CopyOf = Pumpgun": "CopyOf = Model 590",
+	"CopyOf = Spas 12": "CopyOf = SPAS 12",
+	"CopyOf = Kar98": "CopyOf = Kar98k",
+	"CopyOf = M16": "CopyOf = M16A2",
+	"CopyOf = Thumper": "CopyOf = M79",
+	"CopyOf = Uzi": "CopyOf = UZI",
 
 	# -- LUA --
 

@@ -63,32 +63,42 @@
 ✓ Base.rte/Devices/Pistols/PistolBang.wav	to	Base.rte/Devices/Weapons/Pistol/Sounds/PistolFire.wav
 ✓ Base.rte/Devices/Shotguns/Blam.wav	to	Base.rte/Devices/Weapons/Shotgun/Sounds/ShotgunFireAlt.wav
 ✓ Base.rte/Devices/SMGs/Mp5 Single.wav	to	Base.rte/Devices/Weapons/SMG/Sounds/SMGFire005.wav	-- Mp5 Single.wav has been removed from CCCP, so CCCP points to a completely different .wav file for now.
-
+---The ones with a * have been removed from CCCP, so those been replaced with something that sounds as similar as possible.---
+✓ Base.rte/Devices/Rifles/AK-47000.wav	to	Ronin.rte/Devices/Weapons/AK47/Sounds/Fire1.wav *
+✓ Base.rte/Devices/Rifles/AK-47001.wav	to	Ronin.rte/Devices/Weapons/AK47/Sounds/Fire2.wav *
+✓ Base.rte/Devices/Rifles/AK-47002.wav	to	Ronin.rte/Devices/Weapons/AK47/Sounds/Fire3.wav *
+✓ Base.rte/Devices/Rifles/AK-47003.wav	to	Ronin.rte/Devices/Weapons/AK47/Sounds/Fire4.wav *
+✓ Base.rte/Devices/Rifles/AK-47004.wav	to	Ronin.rte/Devices/Weapons/AK47/Sounds/Fire4.wav *
+✓ Base.rte/Devices/Rifles/AK-47005.wav	to	Ronin.rte/Devices/Weapons/AK47/Sounds/Fire4.wav *
+✓ Ronin.rte/Effects/Sounds/M16Fire.wav	to	Ronin.rte/Devices/Weapons/M16A2/Sounds/Fire1.wav *
+✓ Ronin.rte/Effects/Sounds/PumpgunFire.wav	to	Ronin.rte/Devices/Weapons/Model590/Sounds/Fire1.wav *
+✓ Base.rte/Devices/ShotgunShellIn.wav	to	Base.rte/Devices/Weapons/Shotgun/Sounds/ShotgunShellIn.wav *
 
 
 ---Image files. These are less commonly used, which is why all of them aren't included in this guide (yet).---
 ✓ Base.rte/Actors/Rockets/RocketTinyNozzle.bmp	to	Base.rte/Craft/Shared/ThrusterNozzleA.bmp
-✓ Ronin.rte/Devices/Sprites/Stone.bmp		to		Ronin.rte/Devices/Misc/Stone/Stone.bmp
-✓ Base.rte/Actors/Brains/BrainCaseA.bmp 	to 		Base.rte/Actors/Brains/Case/BrainCaseA.bmp
-✓ Base.rte/Effects/Pyro/JetFlameA.bmp		to		Base.rte/Effects/Pyro/Flashes/JetFlameA.bmp
-✓ Base.rte/Effects/Pyro/TinySmoke01.bmp		to		Base.rte/Effects/Pyro/SmokeBallTinyA.bmp
-✓ Base.rte/Effects/Pyro/Flame/Flame00.bmp		to		Base.rte/Effects/Pyro/Flame/Flame.bmp
-✓ Base.rte/Effects/Pyro/Flame/FireBall01.bmp		to		Base.rte/Effects/Pyro/FireBallA.bmp
-✓ Base.rte/Effects/Pyro/Flame/FireBall02.bmp		to		Base.rte/Effects/Pyro/FireBallB.bmp
-✓ Base.rte/Effects/Pyro/Flame/FireBall03.bmp		to		Base.rte/Effects/Pyro/FireBallC.bmp
-✓ Base.rte/Effects/Pyro/Flame/FireBall04.bmp		to		Base.rte/Effects/Pyro/FireBallD.bmp
-✓ Base.rte/Effects/Pyro/Flame/FireBlast01.bmp		to		Base.rte/Effects/Pyro/FireBlastA.bmp
-✓ Base.rte/Effects/Pyro/Flame/FireBlast02.bmp		to		Base.rte/Effects/Pyro/FireBlastB.bmp
-✓ Base.rte/Effects/Pyro/Flame/FirePuff0.bmp		to		Base.rte/Effects/Pyro/FirePuff.bmp
-✓ Base.rte/Effects/Pyro/Flame/SmallBlast01.bmp		to		Base.rte/Effects/Pyro/FireBlastSmallA.bmp
-✓ Base.rte/Effects/Pyro/Flame/SmallSmoke01.bmp		to		Base.rte/Effects/Pyro/SmokeBallSmallA.bmp
-✓ Base.rte/Effects/Pyro/Flame/TinySmoke01.bmp		to		Base.rte/Effects/Pyro/SmokeBallTinyA.bmp
-✓ Missions.rte/Scenes/Items/RotatingPad.bmp		to		Missions.rte/Objects/RotatingPad/RotatingPad.bmp
-✓ Missions.rte/Scenes/Items/ControlChipCase.bmp		to		Missions.rte/Objects/ControlChip/ControlChipCase.bmp
-✓ Missions.rte/Scenes/Items/RotatingPadGibA.bmp		to		Missions.rte/Objects/RotatingPad/RotatingPadGibA.bmp
-✓ Missions.rte/Scenes/Items/ControlChipCaseGibA.bmp	to		Missions.rte/Objects/ControlChip/Gibs/ControlChipCaseGibA.bmp
-✓ Missions.rte/Scenes/Items/ControlChipCaseGibB.bmp	to		Missions.rte/Objects/ControlChip/Gibs/ControlChipCaseGibB.bmp
-✓ Missions.rte/Scenes/Items/ControlChipCaseGibC.bmp	to		Missions.rte/Objects/ControlChip/Gibs/ControlChipCaseGibC.bmp
+✓ Ronin.rte/Devices/Sprites/Stone.bmp		to	Ronin.rte/Devices/Misc/Stone/Stone.bmp
+✓ Base.rte/Actors/Brains/BrainCaseA.bmp 	to 	Base.rte/Actors/Brains/Case/BrainCaseA.bmp
+✓ Base.rte/Effects/Pyro/JetFlameA.bmp		to	Base.rte/Effects/Pyro/Flashes/JetFlameA.bmp
+✓ Base.rte/Effects/Pyro/TinySmoke01.bmp		to	Base.rte/Effects/Pyro/SmokeBallTinyA.bmp
+✓ Base.rte/Effects/Pyro/Flame/Flame00.bmp		to	Base.rte/Effects/Pyro/Flame/Flame.bmp
+✓ Base.rte/Effects/Pyro/Flame/FireBall01.bmp		to	Base.rte/Effects/Pyro/FireBallA.bmp
+✓ Base.rte/Effects/Pyro/Flame/FireBall02.bmp		to	Base.rte/Effects/Pyro/FireBallB.bmp
+✓ Base.rte/Effects/Pyro/Flame/FireBall03.bmp		to	Base.rte/Effects/Pyro/FireBallC.bmp
+✓ Base.rte/Effects/Pyro/Flame/FireBall04.bmp		to	Base.rte/Effects/Pyro/FireBallD.bmp
+✓ Base.rte/Effects/Pyro/Flame/FireBlast01.bmp		to	Base.rte/Effects/Pyro/FireBlastA.bmp
+✓ Base.rte/Effects/Pyro/Flame/FireBlast02.bmp		to	Base.rte/Effects/Pyro/FireBlastB.bmp
+✓ Base.rte/Effects/Pyro/Flame/FirePuff0.bmp		to	Base.rte/Effects/Pyro/FirePuff.bmp
+✓ Base.rte/Effects/Pyro/Flame/SmallBlast01.bmp		to	Base.rte/Effects/Pyro/FireBlastSmallA.bmp
+✓ Base.rte/Effects/Pyro/Flame/SmallSmoke01.bmp		to	Base.rte/Effects/Pyro/SmokeBallSmallA.bmp
+✓ Base.rte/Effects/Pyro/Flame/TinySmoke01.bmp		to	Base.rte/Effects/Pyro/SmokeBallTinyA.bmp
+✓ Missions.rte/Scenes/Items/RotatingPad.bmp		to	Missions.rte/Objects/RotatingPad/RotatingPad.bmp
+✓ Missions.rte/Scenes/Items/ControlChipCase.bmp		to	Missions.rte/Objects/ControlChip/ControlChipCase.bmp
+✓ Missions.rte/Scenes/Items/RotatingPadGibA.bmp		to	Missions.rte/Objects/RotatingPad/RotatingPadGibA.bmp
+✓ Missions.rte/Scenes/Items/ControlChipCaseGibA.bmp	to	Missions.rte/Objects/ControlChip/Gibs/ControlChipCaseGibA.bmp
+✓ Missions.rte/Scenes/Items/ControlChipCaseGibB.bmp	to	Missions.rte/Objects/ControlChip/Gibs/ControlChipCaseGibB.bmp
+✓ Missions.rte/Scenes/Items/ControlChipCaseGibC.bmp	to	Missions.rte/Objects/ControlChip/Gibs/ControlChipCaseGibC.bmp
+✓ Base.rte/Effects/Pyro/MuzzleFlash03000.bmp	to	Base.rte/Effects/Pyro/Flashes/MuzzleFlash03000.bmp
 
 
 
@@ -115,6 +125,25 @@
 ✓ Particle Napalm Bomb 1	to	Particle Napalm Bomb
 ✓ Particle Napalm Bomb 2	to	Particle Napalm Bomb
 ✓ Particle Napalm Bomb 3	to	Particle Napalm Bomb
+
+
+---Gibs. The ones with a * have been removed from CCCP, so those been replaced with a gib that's as similar as possible by Gotcha.---
+✓ Ronin Gib A	to	Gib Ronin Weapon C *
+✓ Ronin Gib B	to	Gib Ronin Weapon A
+✓ Ronin Gib C	to	Gib Ronin Weapon A *
+✓ Ronin Gib D	to	Gib Ronin Weapon H *
+✓ Ronin Gib E	to	Gib Ronin Weapon H *
+✓ Ronin Gib F	to	Gib Ronin Weapon B
+✓ Ronin Gib G	to	Gib Ronin Weapon C
+✓ Ronin Gib H	to	Gib Ronin Weapon D
+✓ Ronin Gib I	to	Gib Ronin Weapon E
+✓ Ronin Gib J	to	Gib Ronin Weapon F
+✓ Ronin Gib K	to	Gib Ronin Weapon G
+✓ Ronin Gib L	to	Gib Ronin Weapon H
+✓ Ronin Gib M	to	Gib Ronin Weapon H *
+✓ Ronin Gib N	to	Gib Ronin Weapon B *
+✓ Ronin Gib O	to	Gib Ronin Weapon B *
+✓ Ronin Gib P	to	Gib Ronin Weapon B *
 
 
 ---AI. These may not produce any errors, make sure you replace them!---
@@ -162,13 +191,13 @@ Dirt		to	Topsoil
 
 
 ---Ronin weapons---
-✓ Glock		to	Luger P08	--The Glock has been replaced with Luger for now. It's still more or less the same weapon.
-✓ Pumpgun		to	Model 590
-✓ Spas 12		to	SPAS 12
-✓ Kar98		to	Kar98k
-✓ M16		to	M16A2
-✓ Thumper		to	M79
-✓ Uzi		to	UZI
+✓ CopyOf = Glock		to	CopyOf = Luger P08	--The Glock has been replaced with Luger for now. It's still more or less the same weapon.
+✓ CopyOf = Pumpgun		to	CopyOf = Model 590
+✓ CopyOf = Spas 12		to	CopyOf = SPAS 12
+✓ CopyOf = Kar98		to	CopyOf = Kar98k
+✓ CopyOf = M16		to	CopyOf = M16A2
+✓ CopyOf = Thumper		to	CopyOf = M79
+✓ CopyOf = Uzi		to	CopyOf = UZI
 
 
 ---------------
