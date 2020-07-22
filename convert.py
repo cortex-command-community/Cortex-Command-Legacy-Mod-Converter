@@ -94,6 +94,8 @@ replace_variables_list = {
 	'Missions.rte/Scenes/Items/ControlChipCaseGibB.bmp': 'Missions.rte/Objects/ControlChip/Gibs/ControlChipCaseGibB.bmp',
 	'Missions.rte/Scenes/Items/ControlChipCaseGibC.bmp': 'Missions.rte/Objects/ControlChip/Gibs/ControlChipCaseGibC.bmp',
 	'Base.rte/Effects/Pyro/MuzzleFlash03.bmp': 'Base.rte/Effects/Pyro/Flashes/MuzzleFlash03.bmp',
+	'Base.rte/Actors/Clones/Jetpack.bmp': 'Base.rte/Actors/Shared/Jetpack.bmp',
+	'Base.rte/Devices/Pistols/MagPistol.bmp': 'Base.rte/Devices/Weapons/Pistol/PistolMagazine.bmp',
 	# '': '',
 
 	# Weapon groups
@@ -152,6 +154,26 @@ replace_variables_list = {
 	'Coalition Weapons Gib L': 'Gib Weapon I',
 	'Coalition Weapons Gib M': 'Missile Launcher Gib A',
 	'Coalition Weapons Gib N': 'Missile Launcher Gib B',
+
+	'Dummy Arm FG A': 'Dummy Light Arm FG',
+	'Dummy Foot BG A': 'Dummy Light Foot BG',
+	'Dummy Foot FG A': 'Dummy Light Foot FG',
+	'Dummy Arm BG A': 'Dummy Light Arm BG',
+	'Dummy Arm FG A': 'Dummy Light Arm FG',
+	'Dummy Head A': 'Dummy Light Head',
+	'Dummy Head Gib A': 'Dummy Light Head Gib A',
+	'Dummy Head Gib B': 'Dummy Light Head Gib B',
+	'Dummy Leg BG A': 'Dummy Light Leg BG',
+	'Dummy Leg FG A': 'Dummy Light Leg FG',
+	'Dummy Rib Cage Gib A': 'Dummy Light Rib Cage Gib A',
+	'Dummy Rib Cage Gib B': 'Dummy Light Rib Cage Gib B',
+
+	# Gib paths
+	'Dummy.rte/Actors/Dummy/RibCageGibA.bmp': 'Dummy.rte/Actors/Infantry/DummyLight/Gibs/RibCageGibA.bmp',
+
+	'Browncoats.rte/Actors/Soldier/MiscGibE.bmp': 'Browncoats.rte/Actors/Shared/Gibs/SoldierMiscGibE.bmp',
+	'Browncoats.rte/Actors/Soldier/MiscGibF.bmp': 'Browncoats.rte/Actors/Shared/Gibs/SoldierMiscGibF.bmp',
+	'Browncoats.rte/Actors/Soldier/MiscGibG.bmp': 'Browncoats.rte/Actors/Shared/Gibs/SoldierMiscGibG.bmp',
 
 	# AI
 	'Base.rte/Actors/AI/CrabAI.lua': 'Base.rte/AI/CrabAI.lua',

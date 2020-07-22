@@ -102,6 +102,8 @@
 ✓ Missions.rte/Scenes/Items/ControlChipCaseGibB.bmp	to	Missions.rte/Objects/ControlChip/Gibs/ControlChipCaseGibB.bmp
 ✓ Missions.rte/Scenes/Items/ControlChipCaseGibC.bmp	to	Missions.rte/Objects/ControlChip/Gibs/ControlChipCaseGibC.bmp
 ✓ Base.rte/Effects/Pyro/MuzzleFlash03.bmp	to	Base.rte/Effects/Pyro/Flashes/MuzzleFlash03.bmp
+✓ Base.rte/Actors/Clones/Jetpack.bmp	to	Base.rte/Actors/Shared/Jetpack.bmp
+✓ Base.rte/Devices/Pistols/MagPistol.bmp	to	Base.rte/Devices/Weapons/Pistol/PistolMagazine.bmp
 
 
 ---Weapon groups. These don't show up as errors, but if not properly changed, weapons may not spawn correctly.---
@@ -147,21 +149,41 @@
 ✓ Ronin Gib O	to	Gib Ronin Weapon B	*
 ✓ Ronin Gib P	to	Gib Ronin Weapon B	*
 
+✓ Coalition Weapons Gib A	to	Gib Weapon A
+✓ Coalition Weapons Gib B	to	Gib Weapon B
+✓ Coalition Weapons Gib C	to	Gib Weapon C
+✓ Coalition Weapons Gib D	to	Gib Weapon D
+✓ Coalition Weapons Gib E	to	Gib Weapon E
+✓ Coalition Weapons Gib F	to	Uber Cannon Gib A
+✓ Coalition Weapons Gib G	to	Gatling Gun Gib A
+✓ Coalition Weapons Gib H	to	Assault Rifle Gib A
+✓ Coalition Weapons Gib I	to	Gib Weapon F
+✓ Coalition Weapons Gib J	to	Gib Weapon G
+✓ Coalition Weapons Gib K	to	Gib Weapon H
+✓ Coalition Weapons Gib L	to	Gib Weapon I
+✓ Coalition Weapons Gib M	to	Missile Launcher Gib A
+✓ Coalition Weapons Gib N	to	Missile Launcher Gib B
 
-Coalition Weapons Gib A	to	Gib Weapon A
-Coalition Weapons Gib B	to	Gib Weapon B
-Coalition Weapons Gib C	to	Gib Weapon C
-Coalition Weapons Gib D	to	Gib Weapon D
-Coalition Weapons Gib E	to	Gib Weapon E
-Coalition Weapons Gib F	to	Uber Cannon Gib A
-Coalition Weapons Gib G	to	Gatling Gun Gib A
-Coalition Weapons Gib H	to	Assault Rifle Gib A
-Coalition Weapons Gib I	to	Gib Weapon F
-Coalition Weapons Gib J	to	Gib Weapon G
-Coalition Weapons Gib K	to	Gib Weapon H
-Coalition Weapons Gib L	to	Gib Weapon I
-Coalition Weapons Gib M	to	Missile Launcher Gib A
-Coalition Weapons Gib N	to	Missile Launcher Gib B
+✓ Dummy Arm FG A	to	Dummy Light Arm FG
+✓ Dummy Foot BG A	to	Dummy Light Foot BG
+✓ Dummy Foot FG A	to	Dummy Light Foot FG
+✓ Dummy Arm BG A	to	Dummy Light Arm BG
+✓ Dummy Arm FG A	to	Dummy Light Arm FG
+✓ Dummy Head A	to	Dummy Light Head
+✓ Dummy Head Gib A	to	Dummy Light Head Gib A
+✓ Dummy Head Gib B	to	Dummy Light Head Gib B
+✓ Dummy Leg BG A	to	Dummy Light Leg BG
+✓ Dummy Leg FG A	to	Dummy Light Leg FG
+✓ Dummy Rib Cage Gib A	to	Dummy Light Rib Cage Gib A
+✓ Dummy Rib Cage Gib B	to	Dummy Light Rib Cage Gib B
+
+
+---Gib paths---
+✓ Dummy.rte/Actors/Dummy/RibCageGibA.bmp	to	Dummy.rte/Actors/Infantry/DummyLight/Gibs/RibCageGibA.bmp
+
+✓ Browncoats.rte/Actors/Soldier/MiscGibE.bmp	to	Browncoats.rte/Actors/Shared/Gibs/SoldierMiscGibE.bmp
+✓ Browncoats.rte/Actors/Soldier/MiscGibF.bmp	to	Browncoats.rte/Actors/Shared/Gibs/SoldierMiscGibF.bmp
+✓ Browncoats.rte/Actors/Soldier/MiscGibG.bmp	to	Browncoats.rte/Actors/Shared/Gibs/SoldierMiscGibG.bmp
 
 
 ---AI. These may not produce any errors, make sure you replace them!---
