@@ -64,16 +64,19 @@
 ✓ Base.rte/Devices/Shotguns/Blam.wav	to	Base.rte/Devices/Weapons/Shotgun/Sounds/ShotgunFireAlt.wav
 ✓ Base.rte/Devices/SMGs/Mp5 Single.wav	to	Base.rte/Devices/Weapons/SMG/Sounds/SMGFire005.wav	-- Mp5 Single.wav has been removed from CCCP, so CCCP points to a completely different .wav file for now.
 ---The ones with a * have been removed from CCCP, so those been replaced with something that sounds as similar as possible.---
-✓ Base.rte/Devices/Rifles/AK-47000.wav	to	Ronin.rte/Devices/Weapons/AK47/Sounds/Fire1.wav *
-✓ Base.rte/Devices/Rifles/AK-47001.wav	to	Ronin.rte/Devices/Weapons/AK47/Sounds/Fire2.wav *
-✓ Base.rte/Devices/Rifles/AK-47002.wav	to	Ronin.rte/Devices/Weapons/AK47/Sounds/Fire3.wav *
-✓ Base.rte/Devices/Rifles/AK-47003.wav	to	Ronin.rte/Devices/Weapons/AK47/Sounds/Fire4.wav *
-✓ Base.rte/Devices/Rifles/AK-47004.wav	to	Ronin.rte/Devices/Weapons/AK47/Sounds/Fire4.wav *
-✓ Base.rte/Devices/Rifles/AK-47005.wav	to	Ronin.rte/Devices/Weapons/AK47/Sounds/Fire4.wav *
-✓ Ronin.rte/Effects/Sounds/M16Fire.wav	to	Ronin.rte/Devices/Weapons/M16A2/Sounds/Fire1.wav *
-✓ Ronin.rte/Effects/Sounds/PumpgunFire.wav	to	Ronin.rte/Devices/Weapons/Model590/Sounds/Fire1.wav *
-✓ Base.rte/Devices/ShotgunShellIn.wav	to	Base.rte/Devices/Weapons/Shotgun/Sounds/ShotgunShellIn.wav *
-
+✓ Base.rte/Devices/Rifles/AK-47000.wav	to	Ronin.rte/Devices/Weapons/AK47/Sounds/Fire1.wav	*
+✓ Base.rte/Devices/Rifles/AK-47001.wav	to	Ronin.rte/Devices/Weapons/AK47/Sounds/Fire2.wav	*
+✓ Base.rte/Devices/Rifles/AK-47002.wav	to	Ronin.rte/Devices/Weapons/AK47/Sounds/Fire3.wav	*
+✓ Base.rte/Devices/Rifles/AK-47003.wav	to	Ronin.rte/Devices/Weapons/AK47/Sounds/Fire4.wav	*
+✓ Base.rte/Devices/Rifles/AK-47004.wav	to	Ronin.rte/Devices/Weapons/AK47/Sounds/Fire4.wav	*
+✓ Base.rte/Devices/Rifles/AK-47005.wav	to	Ronin.rte/Devices/Weapons/AK47/Sounds/Fire4.wav	*
+✓ Ronin.rte/Effects/Sounds/M16Fire.wav	to	Ronin.rte/Devices/Weapons/M16A2/Sounds/Fire1.wav	*
+✓ Ronin.rte/Effects/Sounds/PumpgunFire.wav	to	Ronin.rte/Devices/Weapons/Model590/Sounds/Fire1.wav	*
+✓ Base.rte/Devices/ShotgunShellIn.wav	to	Base.rte/Devices/Weapons/Shotgun/Sounds/ShotgunShellIn.wav	*
+✓ Ronin.rte/Effects/Sounds/SniperFire.wav	to	Ronin.rte/Devices/Weapons/K98K/Sounds/Fire1.wav
+✓ Ronin.rte/Effects/Sounds/RPGThrusterStart.wav	to	Ronin.rte/Devices/Weapons/RPG7/Sounds/RocketStart.wav
+✓ Ronin.rte/Effects/Sounds/BazookaFire2.wav	to	Ronin.rte/Devices/Weapons/RPG7/Sounds/Fire1.wav
+✓ Base.rte/Sounds/Taka.wav	to	Coalition.rte/Devices/Weapons/GatlingGun/Sounds/Fire1.wav
 
 ---Image files. These are less commonly used, which is why all of them aren't included in this guide (yet).---
 ✓ Base.rte/Actors/Rockets/RocketTinyNozzle.bmp	to	Base.rte/Craft/Shared/ThrusterNozzleA.bmp
@@ -98,8 +101,7 @@
 ✓ Missions.rte/Scenes/Items/ControlChipCaseGibA.bmp	to	Missions.rte/Objects/ControlChip/Gibs/ControlChipCaseGibA.bmp
 ✓ Missions.rte/Scenes/Items/ControlChipCaseGibB.bmp	to	Missions.rte/Objects/ControlChip/Gibs/ControlChipCaseGibB.bmp
 ✓ Missions.rte/Scenes/Items/ControlChipCaseGibC.bmp	to	Missions.rte/Objects/ControlChip/Gibs/ControlChipCaseGibC.bmp
-✓ Base.rte/Effects/Pyro/MuzzleFlash03000.bmp	to	Base.rte/Effects/Pyro/Flashes/MuzzleFlash03000.bmp
-
+✓ Base.rte/Effects/Pyro/MuzzleFlash03.bmp	to	Base.rte/Effects/Pyro/Flashes/MuzzleFlash03.bmp
 
 
 ---Weapon groups. These don't show up as errors, but if not properly changed, weapons may not spawn correctly.---
@@ -128,11 +130,11 @@
 
 
 ---Gibs. The ones with a * have been removed from CCCP, so those been replaced with a gib that's as similar as possible by Gotcha.---
-✓ Ronin Gib A	to	Gib Ronin Weapon C *
+✓ Ronin Gib A	to	Gib Ronin Weapon C	*
 ✓ Ronin Gib B	to	Gib Ronin Weapon A
-✓ Ronin Gib C	to	Gib Ronin Weapon A *
-✓ Ronin Gib D	to	Gib Ronin Weapon H *
-✓ Ronin Gib E	to	Gib Ronin Weapon H *
+✓ Ronin Gib C	to	Gib Ronin Weapon A	*
+✓ Ronin Gib D	to	Gib Ronin Weapon H	*
+✓ Ronin Gib E	to	Gib Ronin Weapon H	*
 ✓ Ronin Gib F	to	Gib Ronin Weapon B
 ✓ Ronin Gib G	to	Gib Ronin Weapon C
 ✓ Ronin Gib H	to	Gib Ronin Weapon D
@@ -140,10 +142,26 @@
 ✓ Ronin Gib J	to	Gib Ronin Weapon F
 ✓ Ronin Gib K	to	Gib Ronin Weapon G
 ✓ Ronin Gib L	to	Gib Ronin Weapon H
-✓ Ronin Gib M	to	Gib Ronin Weapon H *
-✓ Ronin Gib N	to	Gib Ronin Weapon B *
-✓ Ronin Gib O	to	Gib Ronin Weapon B *
-✓ Ronin Gib P	to	Gib Ronin Weapon B *
+✓ Ronin Gib M	to	Gib Ronin Weapon H	*
+✓ Ronin Gib N	to	Gib Ronin Weapon B	*
+✓ Ronin Gib O	to	Gib Ronin Weapon B	*
+✓ Ronin Gib P	to	Gib Ronin Weapon B	*
+
+
+Coalition Weapons Gib A	to	Gib Weapon A
+Coalition Weapons Gib B	to	Gib Weapon B
+Coalition Weapons Gib C	to	Gib Weapon C
+Coalition Weapons Gib D	to	Gib Weapon D
+Coalition Weapons Gib E	to	Gib Weapon E
+Coalition Weapons Gib F	to	Uber Cannon Gib A
+Coalition Weapons Gib G	to	Gatling Gun Gib A
+Coalition Weapons Gib H	to	Assault Rifle Gib A
+Coalition Weapons Gib I	to	Gib Weapon F
+Coalition Weapons Gib J	to	Gib Weapon G
+Coalition Weapons Gib K	to	Gib Weapon H
+Coalition Weapons Gib L	to	Gib Weapon I
+Coalition Weapons Gib M	to	Missile Launcher Gib A
+Coalition Weapons Gib N	to	Missile Launcher Gib B
 
 
 ---AI. These may not produce any errors, make sure you replace them!---
