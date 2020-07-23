@@ -239,6 +239,8 @@ Dirt		to	Topsoil
 ✓ CopyOf = Thumper		to	CopyOf = M79
 ✓ CopyOf = Uzi		to	CopyOf = UZI
 
+---Uzira weapons---
+CopyOf = Magazine Blunderbuss	to	CopyOf = Magazine Uzira Blunderbuss
 
 ---------------
 --Lua Changes--

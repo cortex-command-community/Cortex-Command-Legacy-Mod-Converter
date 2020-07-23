@@ -224,6 +224,9 @@ replace_variables_list = {
 	'CopyOf = M16': 'CopyOf = M16A2',
 	'CopyOf = Thumper': 'CopyOf = M79',
 	'CopyOf = Uzi': 'CopyOf = UZI',
+	
+	# Uzira weapons
+	'CopyOf = Magazine Blunderbuss': 'CopyOf = Magazine Uzira Blunderbuss',
 
 	# -- LUA --
 
