@@ -68,6 +68,24 @@ replace_variables_list = {
 	'Ronin.rte/Effects/Sounds/RPGThrusterStart.wav': 'Ronin.rte/Devices/Weapons/RPG7/Sounds/RocketStart.wav',
 	'Ronin.rte/Effects/Sounds/BazookaFire2.wav': 'Ronin.rte/Devices/Weapons/RPG7/Sounds/Fire1.wav',
 	'Base.rte/Sounds/Taka.wav': 'Coalition.rte/Devices/Weapons/GatlingGun/Sounds/Fire1.wav',
+	'Base.rte/Sounds/Riccochet1.wav': 'Base.rte/Sounds/Penetration/Riccochet1.wav',
+	'Base.rte/Sounds/Riccochet2.wav': 'Base.rte/Sounds/Penetration/Riccochet2.wav',
+	'Base.rte/Sounds/Riccochet3.wav': 'Base.rte/Sounds/Penetration/Riccochet3.wav',
+	'Base.rte/Sounds/Riccochet4.wav': 'Base.rte/Sounds/Penetration/Riccochet4.wav',
+	'Base.rte/Sounds/Riccochet5.wav': 'Base.rte/Sounds/Penetration/Riccochet5.wav',
+	'Techion.rte/Effects/Sounds/NucleoDetonate.wav': 'Techion.rte/Devices/Weapons/Nucleo/Sounds/NucleoDetonate.wav',
+	'Base.rte/GUIs/Sounds/SlicePicked2.wav': 'Base.rte/Sounds/GUIs/SlicePicked.wav',
+	'Coalition.rte/Effects/Sounds/Missile.wav': 'Coalition.rte/Devices/Weapons/MissileLauncher/Sounds/MissileLoop.wav',
+	'Coalition.rte/Effects/Sounds/MissileStart.wav': 'Coalition.rte/Devices/Weapons/MissileLauncher/Sounds/MissileStart.wav',
+	'Base.rte/Actors/Rockets/CrashRubble.wav': 'Base.rte/Sounds/Explosions/CrashRubble.wav',
+	'Base.rte/Devices/Cannons/Cannon2.wav': 'Base.rte/Sounds/Devices/CannonFire2.wav',
+	'Base.rte/Devices/Cannons/Cannon.wav': 'Base.rte/Sounds/Devices/CannonFire1.wav',
+	'Base.rte/Devices/SMGs/M1601.wav': 'Base.rte/Devices/Weapons/SMG/Sounds/SMGFire000.wav',
+	'Base.rte/Devices/SMGs/M1602.wav': 'Base.rte/Devices/Weapons/SMG/Sounds/SMGFire001.wav',
+	'Base.rte/Devices/SMGs/M1603.wav': 'Base.rte/Devices/Weapons/SMG/Sounds/SMGFire002.wav',
+	'Base.rte/Devices/SMGs/M1604.wav': 'Base.rte/Devices/Weapons/SMG/Sounds/SMGFire003.wav',
+	'Base.rte/Devices/SMGs/M1605.wav': 'Base.rte/Devices/Weapons/SMG/Sounds/SMGFire004.wav',
+	'Base.rte/Devices/SMGs/M1606.wav': 'Base.rte/Devices/Weapons/SMG/Sounds/SMGFire005.wav',
 	# '': '',
 
 	# Image files, might be some missing
@@ -96,6 +114,31 @@ replace_variables_list = {
 	'Base.rte/Effects/Pyro/MuzzleFlash03.bmp': 'Base.rte/Effects/Pyro/Flashes/MuzzleFlash03.bmp',
 	'Base.rte/Actors/Clones/Jetpack.bmp': 'Base.rte/Actors/Shared/Jetpack.bmp',
 	'Base.rte/Devices/Pistols/MagPistol.bmp': 'Base.rte/Devices/Weapons/Pistol/PistolMagazine.bmp',
+	'Base.rte/Actors/Clones/JetpackNozzle.bmp': 'Base.rte/Actors/Shared/JetpackNozzle.bmp',
+	'Base.rte/Scenes/Objects/Bunkers/BunkerSystems/TeleporterA.bmp': 'Base.rte/Scenes/Objects/Bunkers/BunkerSystems/Teleporters/TeleporterA.bmp',
+	'Base.rte/Scenes/Objects/Bunkers/BunkerSystems/TeleporterB.bmp': 'Base.rte/Scenes/Objects/Bunkers/BunkerSystems/Teleporters/TeleporterB.bmp',
+	'Base.rte/Effects/Pyro/SmallSmoke01.bmp': 'Base.rte/Effects/Pyro/SmokeBallSmallA.bmp',
+	'Base.rte/Devices/Cannons/CannonMag.bmp': 'Imperatus.rte/Devices/Weapons/Devastator/DevastatorMagazine.bmp',
+	'Base.rte/Devices/Cannons/CannonRound.bmp': 'Imperatus.rte/Devices/Weapons/Devastator/DevastatorRound.bmp',
+	'Base.rte/Effects/Pyro/MuzzleFlash02.bmp': 'Base.rte/Effects/Pyro/Flashes/MuzzleFlash02.bmp',
+	'Base.rte/Devices/Brass/Casing.bmp': 'Base.rte/Effects/Casings/Casing.bmp',
+	'Base.rte/Effects/Pyro/MuzzleFlash01.bmp': 'Base.rte/Effects/Pyro/Flashes/MuzzleFlash01.bmp',
+	'Base.rte/Devices/Explosives/FragGrenade.bmp': 'Base.rte/Devices/Explosives/FragGrenade/FragGrenade000.bmp',
+	'Coalition.rte/Devices/Sprites/MagazineFlamerA.bmp': 'Browncoats.rte/Devices/Weapons/Heatlance/HeatlanceMagazine.bmp',
+	'Coalition.rte/Devices/Sprites/FlamerHeavyA.bmp': 'Browncoats.rte/Devices/Weapons/Heatlance/Heatlance.bmp',
+	'Coalition.rte/Devices/Sprites/CannonRound.bmp': 'Imperatus.rte/Devices/Weapons/Devastator/DevastatorRound.bmp',
+	'Coalition.rte/Devices/Sprites/RocketB.bmp': 'Coalition.rte/Devices/Weapons/MissileLauncher/MissileB.bmp',
+	'Coalition.rte/Devices/Sprites/RocketA.bmp': 'Coalition.rte/Devices/Weapons/MissileLauncher/MissileA.bmp',
+	'Base.rte/Actors/Rockets/RocketAHullB.bmp': 'Base.rte/Craft/Rockets/MK2/Gibs/RocketAHullGibA.bmp',
+	'Base.rte/Actors/Doors/MotorA000.bmp': 'Base.rte/Scenes/Objects/Bunkers/BunkerSystems/Doors/MotorA000.bmp',
+	'Base.rte/Actors/Doors/MotorA001.bmp': 'Base.rte/Scenes/Objects/Bunkers/BunkerSystems/Doors/MotorA001.bmp',
+	'Base.rte/Actors/Doors/MotorA002.bmp': 'Base.rte/Scenes/Objects/Bunkers/BunkerSystems/Doors/MotorA002.bmp',
+	'Base.rte/Actors/Doors/MotorA003.bmp': 'Base.rte/Scenes/Objects/Bunkers/BunkerSystems/Doors/MotorA003.bmp',
+	'Base.rte/Actors/Doors/RotateLongA.bmp': 'Base.rte/Scenes/Objects/Bunkers/BunkerSystems/Doors/RotateLongA.bmp',
+	'Base.rte/Actors/Doors/RotateShortA.bmp': 'Base.rte/Scenes/Objects/Bunkers/BunkerSystems/Doors/RotateShortA.bmp',
+	'Base.rte/Actors/Doors/SlideLongA.bmp': 'Base.rte/Scenes/Objects/Bunkers/BunkerSystems/Doors/SlideLongA.bmp',
+	'Base.rte/Actors/Doors/SlideShortA.bmp': 'Base.rte/Scenes/Objects/Bunkers/BunkerSystems/Doors/SlideShortA.bmp',
+	'Base.rte/Scenes/Objects/Bunkers/BunkerSystems/DoorAFG.bmp': 'Base.rte/Scenes/Objects/Bunkers/BunkerSystems/Doors/DoorAFG.bmp',
 	# '': '',
 
 	# Weapon groups
@@ -215,6 +258,7 @@ replace_variables_list = {
 	# '': '',
 	'Dummy Head Gib A': 'Dummy Light Head Gib A',
 	'Dummy Head Gib B': 'Dummy Light Head Gib B',
+	'Flak Cannon': 'Uber Cannon',
 
 	# Ronin weapons
 	'CopyOf = Glock': 'CopyOf = Luger P08',
@@ -268,12 +312,30 @@ replace_variables_list = {
 	# '': '',
 }
 
+"""
+TODO:
+
+ParticleNumberToAdd = #
+AddParticles = MOPixel
+	CopyOf = Name
+
+to
+
+AddGib = Gib
+	GibParticle = MOPixel
+		CopyOf = Name
+	Count = #
+
+instead of
+'ParticleNumberToAdd': '// ParticleNumberToAdd',
+"""
+
 # When viewing this file with VS Code, you can collapse this dictionary by clicking on the arrow pointing downwards next to the variable name.
 manually_edit_replace_variables_list = {
 	# -- INI --
 
-	# Priority for sounds will work differently in the future, so it's best to disable them for now.
 	'Priority =': '// Priority =',
+	'ParticleNumberToAdd': '// ParticleNumberToAdd',
 
 	# -- LUA --
 

@@ -3,3 +3,4 @@ input/*
 !input/.empty
 output/*
 !output/.empty
+example-legacy-mods
