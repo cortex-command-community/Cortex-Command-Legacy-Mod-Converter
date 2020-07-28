@@ -120,16 +120,15 @@ AddGib = Gib
 ✓ Base.rte/Effects/Pyro/JetFlameA.bmp		to	Base.rte/Effects/Pyro/Flashes/JetFlameA.bmp
 ✓ Base.rte/Effects/Pyro/TinySmoke01.bmp		to	Base.rte/Effects/Pyro/SmokeBallTinyA.bmp
 ✓ Base.rte/Effects/Pyro/Flame/Flame00.bmp		to	Base.rte/Effects/Pyro/Flame/Flame.bmp
-✓ Base.rte/Effects/Pyro/Flame/FireBall01.bmp		to	Base.rte/Effects/Pyro/FireBallA.bmp
-✓ Base.rte/Effects/Pyro/Flame/FireBall02.bmp		to	Base.rte/Effects/Pyro/FireBallB.bmp
-✓ Base.rte/Effects/Pyro/Flame/FireBall03.bmp		to	Base.rte/Effects/Pyro/FireBallC.bmp
-✓ Base.rte/Effects/Pyro/Flame/FireBall04.bmp		to	Base.rte/Effects/Pyro/FireBallD.bmp
-✓ Base.rte/Effects/Pyro/Flame/FireBlast01.bmp		to	Base.rte/Effects/Pyro/FireBlastA.bmp
-✓ Base.rte/Effects/Pyro/Flame/FireBlast02.bmp		to	Base.rte/Effects/Pyro/FireBlastB.bmp
-✓ Base.rte/Effects/Pyro/Flame/FirePuff0.bmp		to	Base.rte/Effects/Pyro/FirePuff.bmp
-✓ Base.rte/Effects/Pyro/Flame/SmallBlast01.bmp		to	Base.rte/Effects/Pyro/FireBlastSmallA.bmp
-✓ Base.rte/Effects/Pyro/Flame/SmallSmoke01.bmp		to	Base.rte/Effects/Pyro/SmokeBallSmallA.bmp
-✓ Base.rte/Effects/Pyro/Flame/TinySmoke01.bmp		to	Base.rte/Effects/Pyro/SmokeBallTinyA.bmp
+✓ Base.rte/Effects/Pyro/FireBall01.bmp		to	Base.rte/Effects/Pyro/FireBallA.bmp
+✓ Base.rte/Effects/Pyro/FireBall02.bmp		to	Base.rte/Effects/Pyro/FireBallB.bmp
+✓ Base.rte/Effects/Pyro/FireBall03.bmp		to	Base.rte/Effects/Pyro/FireBallC.bmp
+✓ Base.rte/Effects/Pyro/FireBall04.bmp		to	Base.rte/Effects/Pyro/FireBallD.bmp
+✓ Base.rte/Effects/Pyro/FireBlast01.bmp		to	Base.rte/Effects/Pyro/FireBlastA.bmp
+✓ Base.rte/Effects/Pyro/FireBlast02.bmp		to	Base.rte/Effects/Pyro/FireBlastB.bmp
+✓ Base.rte/Effects/Pyro/FirePuff0.bmp		to	Base.rte/Effects/Pyro/FirePuff.bmp
+✓ Base.rte/Effects/Pyro/SmallBlast01.bmp		to	Base.rte/Effects/Pyro/FireBlastSmallA.bmp
+✓ Base.rte/Effects/Pyro/SmallSmoke01.bmp		to	Base.rte/Effects/Pyro/SmokeBallSmallA.bmp
 ✓ Missions.rte/Scenes/Items/RotatingPad.bmp		to	Missions.rte/Objects/RotatingPad/RotatingPad.bmp
 ✓ Missions.rte/Scenes/Items/ControlChipCase.bmp		to	Missions.rte/Objects/ControlChip/ControlChipCase.bmp
 ✓ Missions.rte/Scenes/Items/RotatingPadGibA.bmp		to	Missions.rte/Objects/RotatingPad/RotatingPadGibA.bmp
@@ -155,15 +154,29 @@ AddGib = Gib
 ✓ Coalition.rte/Devices/Sprites/RocketB.bmp	to	Coalition.rte/Devices/Weapons/MissileLauncher/MissileB.bmp
 ✓ Coalition.rte/Devices/Sprites/RocketA.bmp	to	Coalition.rte/Devices/Weapons/MissileLauncher/MissileA.bmp
 ✓ Base.rte/Actors/Rockets/RocketAHullB.bmp	to	Base.rte/Craft/Rockets/MK2/Gibs/RocketAHullGibA.bmp -- This is a *really* bad replacement, but pretty sure there's no better one.
-✓ Base.rte/Actors/Doors/MotorA000.bmp	to	Base.rte/Scenes/Objects/Bunkers/BunkerSystems/Doors/MotorA000.bmp
-✓ Base.rte/Actors/Doors/MotorA001.bmp	to	Base.rte/Scenes/Objects/Bunkers/BunkerSystems/Doors/MotorA001.bmp
-✓ Base.rte/Actors/Doors/MotorA002.bmp	to	Base.rte/Scenes/Objects/Bunkers/BunkerSystems/Doors/MotorA002.bmp
-✓ Base.rte/Actors/Doors/MotorA003.bmp	to	Base.rte/Scenes/Objects/Bunkers/BunkerSystems/Doors/MotorA003.bmp
+✓ Base.rte/Actors/Doors/MotorA.bmp	to	Base.rte/Scenes/Objects/Bunkers/BunkerSystems/Doors/MotorA.bmp
 ✓ Base.rte/Actors/Doors/RotateLongA.bmp	to	Base.rte/Scenes/Objects/Bunkers/BunkerSystems/Doors/RotateLongA.bmp
 ✓ Base.rte/Actors/Doors/RotateShortA.bmp	to	Base.rte/Scenes/Objects/Bunkers/BunkerSystems/Doors/RotateShortA.bmp
 ✓ Base.rte/Actors/Doors/SlideLongA.bmp	to	Base.rte/Scenes/Objects/Bunkers/BunkerSystems/Doors/SlideLongA.bmp
 ✓ Base.rte/Actors/Doors/SlideShortA.bmp	to	Base.rte/Scenes/Objects/Bunkers/BunkerSystems/Doors/SlideShortA.bmp
 ✓ Base.rte/Scenes/Objects/Bunkers/BunkerSystems/DoorAFG.bmp	to	Base.rte/Scenes/Objects/Bunkers/BunkerSystems/Doors/DoorAFG.bmp
+✓ Base.rte/Scenes/Objects/Bunkers/BunkerSystems/DoorAMat.bmp	to	Base.rte/Scenes/Objects/Bunkers/BunkerSystems/Doors/DoorAMat.bmp
+✓ Base.rte/Scenes/Objects/Bunkers/BunkerSystems/DoorABG.bmp	to	Base.rte/Scenes/Objects/Bunkers/BunkerSystems/Doors/DoorABG.bmp
+✓ Ronin.rte/Actors/RoninSoldier/HelmetA.bmp	to	Coalition.rte/Actors/Infantry/CoalitionLight/HelmetA.bmp -- The Ronin helmet is just a transparent .bmp, which will hopefully be fixed in a future release.
+✓ Base.rte/Actors/Medic Drone/HealEffect.bmp	to	Base.rte/Actors/Mecha/Medic/HealEffect.bmp
+✓ Base.rte/Effects/Pyro/SmallBlast01.bmp	to	Base.rte/Effects/Pyro/FireBlastSmallA.bmp
+✓ Ronin.rte/Actors/RoninSoldier/HandBGA.bmp	to	Ronin.rte/Actors/Infantry/HandBGA.bmp
+✓ Ronin.rte/Actors/RoninSoldier/HandFGA.bmp	to	Ronin.rte/Actors/Infantry/HandFGA.bmp
+✓ Ronin.rte/Actors/RoninSoldier/ArmBGA.bmp	to	Ronin.rte/Actors/Infantry/ArmBGA.bmp
+✓ Ronin.rte/Actors/RoninSoldier/ArmFGA.bmp	to	Ronin.rte/Actors/Infantry/ArmFGA.bmp
+✓ Ronin.rte/Actors/RoninSoldier/FootBGA.bmp	to	Ronin.rte/Actors/Infantry/FootBGA.bmp
+✓ Ronin.rte/Actors/RoninSoldier/FootFGA.bmp	to	Ronin.rte/Actors/Infantry/FootFGA.bmp
+✓ Ronin.rte/Actors/RoninSoldier/LegBGA.bmp	to	Ronin.rte/Actors/Infantry/LegBGA.bmp
+✓ Ronin.rte/Actors/RoninSoldier/LegFGA.bmp	to	Ronin.rte/Actors/Infantry/LegFGA.bmp
+✓ Ronin.rte/Actors/RoninSoldier/RoninHead.bmp	to	Ronin.rte/Actors/Infantry/RoninHead.bmp
+✓ Ronin.rte/Actors/RoninSoldier/TorsoA.bmp	to	Ronin.rte/Actors/Infantry/Torso000.bmp
+✓ Ronin.rte/Actors/RoninSoldier/TorsoB.bmp	to	Ronin.rte/Actors/Infantry/Torso001.bmp
+✓ Base.rte/Devices/Shields/Riot.bmp	to	Base.rte/Devices/Shields/RiotShield/Riot.bmp
 
 ---Weapon groups. These don't show up as errors, but if not properly changed, weapons may not spawn correctly.---
 ✓ AddToGroup = Secondary Weapons 	  to 	AddToGroup = Weapons - Secondary
@@ -289,7 +302,26 @@ Dirt		to	Topsoil
 ✓ Dummy Head Gib A	to	Dummy Light Head Gib A
 ✓ Dummy Head Gib B	to	Dummy Light Head Gib B
 ✓ Flak Cannon	to	Uber Cannon
-
+✓ Ronin Soldier Helmet A	to	Coalition Light Helmet -- The Ronin helmet is just a transparent .bmp, which will hopefully be fixed in a future release.
+✓ Near Raukar	to	Mountains Back
+✓ Base.rte/Block B	to	Base.rte/Concrete Block
+✓ Actors/AI	to	AI
+✓ Ronin Heavy	to	Ronin Soldier
+✓ Drop Ship MK1	to	Dropship MK1
+✓ Robot Head A Gib A	to	Imperatus All Purpose Robot Head Gib A
+✓ Robot Head A Gib B	to	Imperatus All Purpose Robot Head Gib B
+✓ CopyOf = Soldier Misc Gib A	to	CopyOf = Coalition Soldier Misc Gib A
+✓ CopyOf = Soldier Misc Gib B	to	CopyOf = Coalition Soldier Misc Gib B
+✓ CopyOf = Soldier Misc Gib C	to	CopyOf = Coalition Soldier Misc Gib C
+✓ CopyOf = Soldier Misc Gib D	to	CopyOf = Coalition Soldier Misc Gib D
+✓ CopyOf = Soldier Rib Cage Gib A	to	CopyOf = Coalition Soldier Rib Cage Gib A
+✓ CopyOf = Ronin Soldier Rib Cage Gib A	to	CopyOf = Coalition Soldier Rib Cage Gib A
+✓ Ronin Soldier Misc Gib A	to	Coalition Soldier Misc Gib A
+✓ Ronin Soldier Misc Gib B	to	Coalition Soldier Misc Gib B
+✓ Ronin Soldier Misc Gib C	to	Coalition Soldier Misc Gib C
+✓ Ronin Soldier Misc Gib D	to	Coalition Soldier Misc Gib D
+✓ Ronin.rte/Actors/RoninSoldier/Head.lua	to	Base.rte/Scripts/Shared/RandomFrame.lua
+✓ Horiz Terrain	to	Zekarra Lowlands Terrain
 
 ---Ronin weapons---
 ✓ CopyOf = Glock		to	CopyOf = Luger P08	--The Glock has been replaced with Luger for now. It's still more or less the same weapon.
