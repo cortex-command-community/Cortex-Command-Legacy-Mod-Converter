@@ -1,4 +1,4 @@
-# cc-legacy-mod-converter
+# Cortex Command Legacy Mod Converter
 
 ## Introduction
 Running `convert.py` converts the legacy `Cortex Command` mods to the modern `Cortex Command Community Project` mods, but as some steps are too hard to automate you'll likely have to do some adjustments in your input folder to complete the conversion process.
