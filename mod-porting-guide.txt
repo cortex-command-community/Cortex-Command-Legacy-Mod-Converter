@@ -26,7 +26,7 @@ GibParticle = AEmitter\n<tabs-n-times>CopyOf = Fuel Fire Trace Black
 ---to---
 GibParticle = PEmitter\n<tabs-n-times>CopyOf = Fuel Fire Trace Black
 
----TODO:---
+✓ ---ParticleNumberToAdd is deprecated.---
 ParticleNumberToAdd = #
 AddParticles = MOPixel
 	CopyOf = Name
@@ -35,8 +35,6 @@ AddGib = Gib
 	GibParticle = MOPixel
 		CopyOf = Name
 	Count = #
----instead of---
-✓ ParticleNumberToAdd	to	// ParticleNumberToAdd
 
 ---Sound directories. Some of these are also widely shared across mods.---
 ✓ Base.rte/Actors/Flesh3.wav		to	Base.rte/Sounds/Penetration/Flesh1.wav
@@ -112,6 +110,9 @@ AddGib = Gib
 ✓ Base.rte/Devices/SMGs/M1604.wav	to	Base.rte/Devices/Weapons/SMG/Sounds/SMGFire003.wav
 ✓ Base.rte/Devices/SMGs/M1605.wav	to	Base.rte/Devices/Weapons/SMG/Sounds/SMGFire004.wav
 ✓ Base.rte/Devices/SMGs/M1606.wav	to	Base.rte/Devices/Weapons/SMG/Sounds/SMGFire005.wav
+✓ Base.rte/Sounds/RevolverCannonFire.wav	to	Imperatus.rte/Devices/Weapons/Marauder/Sounds/Fire1.wav
+✓ Base.rte/Actors/MetalRicochet1.wav	to	Base.rte/Sounds/Penetration/MetalRicochet1.wav
+✓ Base.rte/Actors/MetalRicochet2.wav	to	Base.rte/Sounds/Penetration/MetalRicochet2.wav
 
 ---Image files. These are less commonly used, which is why all of them aren't included in this guide (yet).---
 ✓ Base.rte/Actors/Rockets/RocketTinyNozzle.bmp	to	Base.rte/Craft/Shared/ThrusterNozzleA.bmp
@@ -177,6 +178,13 @@ AddGib = Gib
 ✓ Ronin.rte/Actors/RoninSoldier/TorsoA.bmp	to	Ronin.rte/Actors/Infantry/Torso000.bmp
 ✓ Ronin.rte/Actors/RoninSoldier/TorsoB.bmp	to	Ronin.rte/Actors/Infantry/Torso001.bmp
 ✓ Base.rte/Devices/Shields/Riot.bmp	to	Base.rte/Devices/Shields/RiotShield/Riot.bmp
+✓ Base.rte/Devices/Explosives/BlueBomb.bmp	to	Base.rte/Devices/Explosives/BlueBomb/BlueBomb.bmp
+✓ Base.rte/Devices/Brass/Shell.bmp	to	Base.rte/Effects/Casings/Shell.bmp
+✓ Base.rte/Devices/Cannons/CannonGibA.bmp	to	Base.rte/Devices/Shared/Gibs/WeaponGibA.bmp
+✓ Imperatus.rte/Devices/Sprites/MagazineMauler.bmp	to	Imperatus.rte/Devices/Weapons/Mauler/MaulerMagazine.bmp
+✓ Base.rte/Devices/Shields/RiotGibA.bmp	to	Base.rte/Devices/Shields/RiotShield/Gibs/RiotGibA.bmp
+✓ Base.rte/Devices/Shields/RiotGibB.bmp	to	Base.rte/Devices/Shields/RiotShield/Gibs/RiotGibB.bmp
+✓ Coalition.rte/Devices/Sprites/SniperCasing.bmp	to	Base.rte/Effects/Casings/CasingLarge.bmp
 
 ---Weapon groups. These don't show up as errors, but if not properly changed, weapons may not spawn correctly.---
 ✓ AddToGroup = Secondary Weapons 	  to 	AddToGroup = Weapons - Secondary
@@ -268,9 +276,10 @@ AddGib = Gib
 
 ---Atomgroups. Make sure you include "CopyOf", otherwise the replace tool may affect things you don't want it to affect.---
 ✓ CopyOf = Atom Group Null		to	CopyOf = Null AtomGroup
+
 ---The following ones are very common with Actors!
 ✓ CopyOf = HandGroup			to	CopyOf = Human Hand
-✓ CopyOf = Foot				to	CopyOf = Human Foot
+✓ CopyOf = Foot\n				to	CopyOf = Human Foot\n
 ✓ CopyOf = CrabFootGroup			to	CopyOf = Crab Foot
 ✓ CopyOf = Rocket Landing Gear Foot Right	to	CopyOf = Rocket Landing Gear Foot
 ✓ CopyOf = Rocket Landing Gear Foot Left	to	CopyOf = Rocket Landing Gear Foot
@@ -322,6 +331,8 @@ Dirt		to	Topsoil
 ✓ Ronin Soldier Misc Gib D	to	Coalition Soldier Misc Gib D
 ✓ Ronin.rte/Actors/RoninSoldier/Head.lua	to	Base.rte/Scripts/Shared/RandomFrame.lua
 ✓ Horiz Terrain	to	Zekarra Lowlands Terrain
+✓ AffectedByPitch	to	AffectedByGlobalPitch
+✓ Base.rte/Scripts/defaultHuman.lua	to	Base.rte/AI/HumanAI.lua
 
 ---Ronin weapons---
 ✓ CopyOf = Glock		to	CopyOf = Luger P08	--The Glock has been replaced with Luger for now. It's still more or less the same weapon.

@@ -1,6 +1,6 @@
-import os, time, pathlib, shutil, math
+import os, time, pathlib, shutil, math, re
 
-# 'replace_variables_list' and 'manually_edit_replace_variables_list' has uncommented cases that are empty.
+# 'replace_variables_list' and 'manual_replace_variables_list' has uncommented cases that are empty.
 # Those cases haven't been supported yet, but their descriptions can be found in 'mod-porting-guide.txt'.
 # Please add those cases yourself if you know how to write Python code to support them fully.
 # Don't forget to make a pull request on GitHub afterwards! :)
@@ -86,9 +86,12 @@ replace_variables_list = {
 	'Base.rte/Devices/SMGs/M1604.wav': 'Base.rte/Devices/Weapons/SMG/Sounds/SMGFire003.wav',
 	'Base.rte/Devices/SMGs/M1605.wav': 'Base.rte/Devices/Weapons/SMG/Sounds/SMGFire004.wav',
 	'Base.rte/Devices/SMGs/M1606.wav': 'Base.rte/Devices/Weapons/SMG/Sounds/SMGFire005.wav',
+	'Base.rte/Sounds/RevolverCannonFire.wav': 'Imperatus.rte/Devices/Weapons/Marauder/Sounds/Fire1.wav',
+	'Base.rte/Actors/MetalRicochet1.wav': 'Base.rte/Sounds/Penetration/MetalRicochet1.wav',
+	'Base.rte/Actors/MetalRicochet2.wav': 'Base.rte/Sounds/Penetration/MetalRicochet2.wav',
 	# '': '',
 
-	# Image files, might be some missing
+	# Image files
 	'Base.rte/Actors/Rockets/RocketTinyNozzle.bmp': 'Base.rte/Craft/Shared/ThrusterNozzleA.bmp',
 	'Ronin.rte/Devices/Sprites/Stone.bmp': 'Ronin.rte/Devices/Misc/Stone/Stone.bmp',
 	'Base.rte/Actors/Brains/BrainCaseA.bmp': 'Base.rte/Actors/Brains/Case/BrainCaseA.bmp',
@@ -152,6 +155,13 @@ replace_variables_list = {
 	'Ronin.rte/Actors/RoninSoldier/TorsoA.bmp': 'Ronin.rte/Actors/Infantry/Torso000.bmp',
 	'Ronin.rte/Actors/RoninSoldier/TorsoB.bmp': 'Ronin.rte/Actors/Infantry/Torso001.bmp',
 	'Base.rte/Devices/Shields/Riot.bmp': 'Base.rte/Devices/Shields/RiotShield/Riot.bmp',
+	'Base.rte/Devices/Explosives/BlueBomb.bmp': 'Base.rte/Devices/Explosives/BlueBomb/BlueBomb.bmp',
+	'Base.rte/Devices/Brass/Shell.bmp': 'Base.rte/Effects/Casings/Shell.bmp',
+	'Base.rte/Devices/Cannons/CannonGibA.bmp': 'Base.rte/Devices/Shared/Gibs/WeaponGibA.bmp',
+	'Imperatus.rte/Devices/Sprites/MagazineMauler.bmp': 'Imperatus.rte/Devices/Weapons/Mauler/MaulerMagazine.bmp',
+	'Base.rte/Devices/Shields/RiotGibA.bmp': 'Base.rte/Devices/Shields/RiotShield/Gibs/RiotGibA.bmp',
+	'Base.rte/Devices/Shields/RiotGibB.bmp': 'Base.rte/Devices/Shields/RiotShield/Gibs/RiotGibB.bmp',
+	'Coalition.rte/Devices/Sprites/SniperCasing.bmp': 'Base.rte/Effects/Casings/CasingLarge.bmp',
 	# '': '',
 
 	# Weapon groups
@@ -243,7 +253,7 @@ replace_variables_list = {
 
 	# Atomgroups common with Actors
 	'CopyOf = HandGroup': 'CopyOf = Human Hand',
-	'CopyOf = Foot': 'CopyOf = Human Foot',
+	'CopyOf = Foot\n': 'CopyOf = Human Foot\n',
 	'CopyOf = CrabFootGroup': 'CopyOf = Crab Foot',
 	'CopyOf = Rocket Landing Gear Foot Right': 'CopyOf = Rocket Landing Gear Foot',
 	'CopyOf = Rocket Landing Gear Foot Left': 'CopyOf = Rocket Landing Gear Foot',
@@ -292,6 +302,9 @@ replace_variables_list = {
 	'Ronin Soldier Misc Gib D': 'Coalition Soldier Misc Gib D',
 	'Ronin.rte/Actors/RoninSoldier/Head.lua': 'Base.rte/Scripts/Shared/RandomFrame.lua',
 	'Horiz Terrain': 'Zekarra Lowlands Terrain',
+	'AffectedByPitch': 'AffectedByGlobalPitch',
+	'Base.rte/Scripts/defaultHuman.lua': 'Base.rte/AI/HumanAI.lua',
+	# '': '',
 
 	# Ronin weapons
 	'CopyOf = Glock': 'CopyOf = Luger P08',
@@ -334,46 +347,19 @@ replace_variables_list = {
 	'FrameMan.ResY': 'FrameMan.PlayerScreenHeight',
 
 	# AudioMan
-	# Regex is probably needed to support this case
+	# Regex is probably needed to support this case.
 	# '': '',
 	
 	# SoundContainer
 	'IsPlaying(': 'IsBeingPlayed(',
 	# '': '',
 
-	# Copy this line and uncomment it, if you need to add extra cases
+	# Copy this line and uncomment it, if you need to add extra cases.
 	# '': '',
 }
 
-"""
-TODO:
-
-ParticleNumberToAdd = #
-AddParticles = MOPixel
-	CopyOf = Name
-
-to
-
-AddGib = Gib
-	GibParticle = MOPixel
-		CopyOf = Name
-	Count = #
-
-instead of
-'ParticleNumberToAdd': '// ParticleNumberToAdd',
-"""
-
-# When viewing this file with VS Code, you can collapse this dictionary by clicking on the arrow pointing downwards next to the variable name.
-manually_edit_replace_variables_list = {
-	# -- INI --
-
+manual_replace_variables_list = {
 	'Priority =': '// Priority =',
-	'ParticleNumberToAdd': '// ParticleNumberToAdd',
-
-	# -- LUA --
-
-	# Copy this line and uncomment it, if you need to add extra cases
-	# '': '',
 }
 
 replace_file_extensions = {
@@ -413,25 +399,49 @@ with open(file_manual_path, "w") as file_manual:
 				with open(input_file_path, "r") as file_in:
 					line_number = 0
 					lines = []
+
+					# The reason this loops through every line is so the manual file can include the changed line numbers.
 					for line in file_in.readlines():
 						line_number += 1
 
-						# Replace variables
-						for old_str, new_str in replace_variables_list.items():
+						# Replace things that may need to be manually edited afterwards.
+						for old_str, new_str in manual_replace_variables_list.items():
+							old_line = line
 							line = line.replace(old_str, new_str)
-						
-						# Replace variables that may need to be manually edited afterwards
-						for old_str, new_str in manually_edit_replace_variables_list.items():
-							if line.find(old_str) != -1:
-								line = line.replace(old_str, new_str)
+
+							# TODO: This is a weird way of checking if replace() changed anything.
+							if old_line != line:
 								file_manual.write("path: {} | line: {} | edit this: {}\n".format(output_file_path, line_number, new_str))
+						
 						lines.append(line)
+					
 					with open(output_file_path, "w") as file_out:
-						file_out.write("".join(lines))
+						all_lines = "".join(lines)
+
+						searched = "ParticleNumberToAdd = (.*?)\n\tAddParticles = MOPixel\n\t\tCopyOf = (.*?)\n"
+						replaced = "AddGib = Gib\n\t\tGibParticle = MOPixel\n\t\t\tCopyOf = {}\n\t\tCount = {}\n"
+						moved_values = re.findall(searched, all_lines) # Returns list of tuples, with each tuple containing two values.
+
+						if len(moved_values) > 0:
+							# Combines list of tuples into a single tuple.
+							moved_values_tuple = ()
+							for value_pair in moved_values:
+								# Switch values in tuple around.
+								moved_values_tuple += (value_pair[1], value_pair[0])
+
+							# print(moved_values_tuple)
+
+							all_lines = re.sub(searched, replaced, all_lines).format(*moved_values_tuple)
+							# print(all_lines)
+
+						for old_str, new_str in replace_variables_list.items():
+							all_lines = all_lines.replace(old_str, new_str)
+
+						file_out.write(all_lines)
 			else:
 				shutil.copyfile(input_file_path, output_file_path)
 
-# Remove legacy mods from the input folder once they've been processed
+# Removes legacy mods from the input folder once they've been processed.
 # for filename in os.listdir("input"):
 # 	if filename != ".empty":
 # 		filepath = os.path.join("input", filename)
