@@ -1,9 +1,9 @@
 # cc-legacy-mod-converter
 
-![project-icon](cclmc-icon.png)
-
 ## Introduction
 Running `convert.py` converts the legacy `Cortex Command` mods to the modern `Cortex Command Community Project` mods, but as some steps are too hard to automate you'll likely have to do some adjustments in your input folder to complete the conversion process.
+
+![project-icon](cclmc-icon.png)
 
 ## How it works
 `convert.py` has the `replace_variables_list` variable at the top which lists common properties, filepaths and functions that will automatically be changed in order for an outdated mod to be usable in `Cortex Command Community Project`.
