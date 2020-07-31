@@ -1,9 +1,23 @@
 import os, time, pathlib, shutil, math, re
 
-# 'replace_variables_list' and 'manual_replace_variables_list' has uncommented cases that are empty.
-# Those cases haven't been supported yet, but their descriptions can be found in 'mod-porting-guide.txt'.
-# Please add those cases yourself if you know how to write Python code to support them fully.
-# Don't forget to make a pull request on GitHub afterwards! :)
+"""
+TODO:
+
+---'Fuel Fire Trace Black' went from a AEmitter -> PEmitter, so mods assume it's a AEmitter and crash.---
+GibParticle = AEmitter\n<tabs-n-times>CopyOf = Fuel Fire Trace Black
+---to---
+GibParticle = PEmitter\n<tabs-n-times>CopyOf = Fuel Fire Trace Black
+
+---AudioMan changes. These are very uncommon, so don't worry!---
+PlaySound	to	PlaySound(pathToSound)
+		or	PlaySound(pathToSound, positionVectorOfSound)
+		or	PlaySound(pathToSound, positionVectorOfSound, playerToPlaySoundFor)
+		or	PlaySound(pathToSound, positionVectorOfSound, playerToPlaySoundFor, numberOfLoops, priorityOfSound, pitchOrAffectedByGlobalPitch, attenuationStartDistance, isImmobile)
+---This may sound confusing, so here is a common example:
+	AudioMan:PlaySound("ModName.rte/Folder/SoundName.wav", SceneMan:TargetDistanceScalar(self.Pos), false, true, -1)
+		to
+	AudioMan:PlaySound("ModName.rte/Folder/SoundName.wav", self.Pos)	--Basically cut everything and leave the thing inside the brackets after SceneMan:TargetDistanceScalar
+"""
 
 # When viewing this file with VS Code, you can collapse this dictionary by clicking on the arrow pointing downwards next to the variable name.
 replace_variables_list = {
@@ -89,6 +103,7 @@ replace_variables_list = {
 	'Base.rte/Sounds/RevolverCannonFire.wav': 'Imperatus.rte/Devices/Weapons/Marauder/Sounds/Fire1.wav',
 	'Base.rte/Actors/MetalRicochet1.wav': 'Base.rte/Sounds/Penetration/MetalRicochet1.wav',
 	'Base.rte/Actors/MetalRicochet2.wav': 'Base.rte/Sounds/Penetration/MetalRicochet2.wav',
+	'Ronin.rte/Effects/Sounds/Spas12Fire.wav': 'Ronin.rte/Devices/Weapons/SPAS12/Sounds/Fire1.wav',
 	# '': '',
 
 	# Image files
@@ -164,7 +179,7 @@ replace_variables_list = {
 	'Coalition.rte/Devices/Sprites/SniperCasing.bmp': 'Base.rte/Effects/Casings/CasingLarge.bmp',
 	# '': '',
 
-	# Weapon groups
+	# Weapon groups. These don't show up as errors, but if not properly changed, weapons may not spawn correctly.
 	'AddToGroup = Secondary Weapons': 'AddToGroup = Weapons - Secondary',
 	'AddToGroup = Primary Weapons': 'AddToGroup = Weapons - Primary',
 	'AddToGroup = Light Weapons': 'AddToGroup = Weapons - Light',
@@ -241,7 +256,7 @@ replace_variables_list = {
 	'Browncoats.rte/Actors/Soldier/MiscGibF.bmp': 'Browncoats.rte/Actors/Shared/Gibs/SoldierMiscGibF.bmp',
 	'Browncoats.rte/Actors/Soldier/MiscGibG.bmp': 'Browncoats.rte/Actors/Shared/Gibs/SoldierMiscGibG.bmp',
 
-	# AI
+	# AI. These may not produce any errors, so some extra cases may need to be added here!
 	'Base.rte/Actors/AI/CrabAI.lua': 'Base.rte/AI/CrabAI.lua',
 	'Base.rte/Actors/AI/HumanAI.lua': 'Base.rte/AI/HumanAI.lua',
 	'Base.rte/Actors/AI/RocketAI.lua': 'Base.rte/AI/RocketAI.lua',
@@ -258,7 +273,7 @@ replace_variables_list = {
 	'CopyOf = Rocket Landing Gear Foot Right': 'CopyOf = Rocket Landing Gear Foot',
 	'CopyOf = Rocket Landing Gear Foot Left': 'CopyOf = Rocket Landing Gear Foot',
 
-	# Scenes/Background layers
+	# Scenes/Background layers. Some files may not include the "Base.rte/" part.
 	'Near Layer': 'Default Front',
 	'Sky Layer': 'Default Sky Layer',
 	'Clouds Layer': 'Clouds Layer A',
@@ -272,17 +287,17 @@ replace_variables_list = {
 	'Round AK-47': 'Round Ronin AK-47',
 	'Tracer AK-47': 'Tracer Ronin AK-47',
 	'Shell Smoking': 'Smoking Large Casing',
-	# '': '',
+	# '': '', # Brain Gib A 	to 	Brain Gib	--Careful with search and replace.
 	'Small MG Turret': 'Small Turret',
-	# '': '',
-	# '': '',
-	# '': '',
-	# '': '',
-	# '': '',
+	# '': '', # Drop Ship	to	Dropship		--Careful with these two, they are for the Base (Dropship MK1) and Dummy (Dropship) variants. ONLY replace parts that clearly refer to either of the two.
+	# '': '', # Dirt		to	Topsoil
+	# '': '', # 10 oz Gold Brick	to	10oz Gold Brick
+	# '': '', # 15 oz Gold Brick	to	15oz Gold Brick		--These are now of class MOSRotating instead of MOSParticle. Change this manually.
+	# '': '', # 24 oz Gold Brick	to	24oz Gold Brick
 	'Dummy Head Gib A': 'Dummy Light Head Gib A',
 	'Dummy Head Gib B': 'Dummy Light Head Gib B',
 	'Flak Cannon': 'Uber Cannon',
-	'Ronin Soldier Helmet A': 'Coalition Light Helmet',
+	'Ronin Soldier Helmet A': 'Coalition Light Helmet', # The Ronin helmet is just a transparent .bmp with nothing else on it, which will hopefully be fixed in a future release.
 	'Near Raukar': 'Mountains Back',
 	'Base.rte/Block B': 'Base.rte/Concrete Block',
 	'Actors/AI': 'AI',
@@ -323,7 +338,7 @@ replace_variables_list = {
 	# Miscellaneous
 	'WithinBox': 'IsWithinBox',
 
-	# Weapon groups
+	# Weapon groups. In addition to .ini Weapon Groups, you should replace their .lua string text variants, especially in Scenario/Activity related mods.
 	'"Secondary Weapons"': '"Weapons - Secondary"',
 	'"Primary Weapons"': '"Weapons - Primary"',
 	'"Light Weapons"': '"Weapons - Light"',
@@ -352,14 +367,14 @@ replace_variables_list = {
 	
 	# SoundContainer
 	'IsPlaying(': 'IsBeingPlayed(',
-	# '': '',
+	# '': '', # UpdateDistance(number)	to	SetPosition(vector)
 
 	# Copy this line and uncomment it, if you need to add extra cases.
 	# '': '',
 }
 
 manual_replace_variables_list = {
-	'Priority =': '// Priority =',
+	'Priority =': '// Priority =', # Priority for sounds will work differently in the future, so it's best to disable them for now.
 }
 
 replace_file_extensions = {
@@ -418,10 +433,20 @@ with open(file_manual_path, "w") as file_manual:
 					with open(output_file_path, "w") as file_out:
 						all_lines = "".join(lines)
 
+						"""
+						---ParticleNumberToAdd is deprecated, so this changes---
+						ParticleNumberToAdd = #
+						AddParticles = MOPixel
+							CopyOf = Name
+						---to---
+						AddGib = Gib
+							GibParticle = MOPixel
+								CopyOf = Name
+							Count = #
+						"""
 						searched = "ParticleNumberToAdd = (.*?)\n\tAddParticles = MOPixel\n\t\tCopyOf = (.*?)\n"
 						replaced = "AddGib = Gib\n\t\tGibParticle = MOPixel\n\t\t\tCopyOf = {}\n\t\tCount = {}\n"
 						moved_values = re.findall(searched, all_lines) # Returns list of tuples, with each tuple containing two values.
-
 						if len(moved_values) > 0:
 							# Combines list of tuples into a single tuple.
 							moved_values_tuple = ()
