@@ -2,7 +2,6 @@ import os, time, pathlib, shutil, math, re
 
 """
 TODO:
-
 ---'Fuel Fire Trace Black' went from a AEmitter -> PEmitter, so mods assume it's a AEmitter and crash.---
 GibParticle = AEmitter\n<tabs-n-times>CopyOf = Fuel Fire Trace Black
 ---to---
@@ -20,7 +19,7 @@ PlaySound	to	PlaySound(pathToSound)
 """
 
 # When viewing this file with VS Code, you can collapse this dictionary by clicking on the arrow pointing downwards next to the variable name.
-replace_variables_list = {
+safe_replace_dict = {
 	# -- INI --
 
 	# Sounds
@@ -373,7 +372,7 @@ replace_variables_list = {
 	# '': '',
 }
 
-manual_replace_variables_list = {
+unsafe_replace_dict = {
 	'Priority =': '// Priority =', # Priority for sounds will work differently in the future, so it's best to disable them for now.
 }
 
@@ -382,95 +381,72 @@ replace_file_extensions = {
 	'.lua'
 }
 
-file_manual_path = "output/manually-edit-these-lines.txt"
-
 time_start = time.time()
 
-if os.path.exists(file_manual_path):
-	os.remove(file_manual_path)
+def print_converted_mod_name(input_folder_path):
+	# Makes sure only "input/<mod_name>.rte" will get printed.
+	input_folder_path_tuple = pathlib.Path(input_folder_path).parts
+	if len(input_folder_path_tuple) == 2:
+		print("Converting '{}'...".format(input_folder_path_tuple[1]))
+		file_manual.write("\n")
 
-with open(file_manual_path, "w") as file_manual:
+def add_folder(input_folder_path, output_folder):
+	# Prevents putting the "input" folder itself into the "output" folder,
+	# while copying the rest of the folder structure inside of "inputs" to "outputs".
+	if input_folder_path != "input":
+		os.makedirs(output_folder)
+
+def fix_deprecated(all_lines):
+	# Fixes deprecated ParticleNumberToAdd.
+	searched = "ParticleNumberToAdd = (.*?)\n\tAddParticles = MOPixel\n\t\tCopyOf = (.*?)\n"
+	replaced = "AddGib = Gib\n\t\tGibParticle = MOPixel\n\t\t\tCopyOf = {}\n\t\tCount = {}\n"
+	moved_values = re.findall(searched, all_lines) # Returns list of tuples, with each tuple containing two values.
+	if len(moved_values) > 0:
+		# Combines list of tuples into a single tuple.
+		moved_values_tuple = ()
+		for value_pair in moved_values:
+			# Switches values in tuple around.
+			moved_values_tuple += (value_pair[1], value_pair[0])
+		all_lines = re.sub(searched, replaced, all_lines).format(*moved_values_tuple)
+
+with open("output/manually-edit.txt", "w") as file_manual:
 	for input_folder_path, input_subfolders, full_filenames in os.walk("input"):
-		
-		input_folder_path_tuple = pathlib.Path(input_folder_path).parts
-		if len(input_folder_path_tuple) == 2:
-			print("Converting '{}'...".format(input_folder_path_tuple[1]))
-			file_manual.write("\n")
-
 		output_folder = os.path.join("output", pathlib.Path(*pathlib.Path(input_folder_path).parts[1:]))
-		if input_folder_path != "input":
-			os.makedirs(output_folder)
+
+		print_converted_mod_name(input_folder_path)
+		add_folder(input_folder_path, output_folder)
 
 		for full_filename in full_filenames:
 			filename, file_extension = os.path.splitext(full_filename)
 
+			# The ".empty" file exists so what would otherwise be empty folders can be added to Git.
 			if filename == ".empty":
 				continue
 
-			input_file_path  = os.path.join(input_folder_path , full_filename)
+			input_file_path  = os.path.join(input_folder_path, full_filename)
 			output_file_path = os.path.join(output_folder, full_filename)
 
 			if file_extension in replace_file_extensions:
 				with open(input_file_path, "r") as file_in:
-					line_number = 0
+					# The reason this loops through every line instead of using read(), is so the manual file can include the changed line numbers.
 					lines = []
-
-					# The reason this loops through every line is so the manual file can include the changed line numbers.
 					for line in file_in.readlines():
-						line_number += 1
-
-						# Replace things that may need to be manually edited afterwards.
-						for old_str, new_str in manual_replace_variables_list.items():
+						for old_str, new_str in unsafe_replace_dict.items():
 							old_line = line
 							line = line.replace(old_str, new_str)
-
-							# TODO: This is a weird way of checking if replace() changed anything.
+							# TODO: This is a weird way of checking if replace() changed anything, refactor it.
 							if old_line != line:
-								file_manual.write("path: {} | line: {} | edit this: {}\n".format(output_file_path, line_number, new_str))
-						
+								file_manual.write("path: {} | line: {} | edit this: {}\n".format(output_file_path, len(lines), new_str))
 						lines.append(line)
 					
 					with open(output_file_path, "w") as file_out:
 						all_lines = "".join(lines)
-
-						"""
-						---ParticleNumberToAdd is deprecated, so this changes---
-						ParticleNumberToAdd = #
-						AddParticles = MOPixel
-							CopyOf = Name
-						---to---
-						AddGib = Gib
-							GibParticle = MOPixel
-								CopyOf = Name
-							Count = #
-						"""
-						searched = "ParticleNumberToAdd = (.*?)\n\tAddParticles = MOPixel\n\t\tCopyOf = (.*?)\n"
-						replaced = "AddGib = Gib\n\t\tGibParticle = MOPixel\n\t\t\tCopyOf = {}\n\t\tCount = {}\n"
-						moved_values = re.findall(searched, all_lines) # Returns list of tuples, with each tuple containing two values.
-						if len(moved_values) > 0:
-							# Combines list of tuples into a single tuple.
-							moved_values_tuple = ()
-							for value_pair in moved_values:
-								# Switch values in tuple around.
-								moved_values_tuple += (value_pair[1], value_pair[0])
-
-							# print(moved_values_tuple)
-
-							all_lines = re.sub(searched, replaced, all_lines).format(*moved_values_tuple)
-							# print(all_lines)
-
-						for old_str, new_str in replace_variables_list.items():
+						fix_deprecated(all_lines)
+						for old_str, new_str in safe_replace_dict.items():
 							all_lines = all_lines.replace(old_str, new_str)
-
 						file_out.write(all_lines)
 			else:
 				shutil.copyfile(input_file_path, output_file_path)
 
-# Removes legacy mods from the input folder once they've been processed.
-# for filename in os.listdir("input"):
-# 	if filename != ".empty":
-# 		filepath = os.path.join("input", filename)
-# 		shutil.rmtree(filepath)
-
 elapsed = math.floor(time.time() - time_start)
-print("Conversion finished in {} second{}!".format(elapsed, "" if elapsed == 1 else "s"))
+print("Conversion finished in {} second{}!".format(elapsed, "s" if elapsed != 1 else ""))

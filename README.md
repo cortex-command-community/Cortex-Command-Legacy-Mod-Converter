@@ -1,16 +1,21 @@
 # Cortex Command Legacy Mod Converter
 
 ## Introduction
-Running `convert.py` converts the legacy `Cortex Command` mods to the modern `Cortex Command Community Project` mods, but as some steps are too hard to automate you'll likely have to do some adjustments in your input folder to complete the conversion process.
+This project automates ***most*** of the conversion work required to convert the legacy `Cortex Command` mods into `Cortex Command Community Project` compatible mods.
 
 ![project-icon](cclmc-icon.png)
 
 ## How it works
-`convert.py` has the `replace_variables_list` variable at the top which lists common properties, filepaths and functions that will automatically be changed in order for an outdated mod to be usable in `Cortex Command Community Project`.
+### `safe_replace_dict`
+`convert.py` has the `safe_replace_dict` variable declared at the top, which lists common properties, filepaths and functions that will automatically be replaced.
 
-It also contains the `manual_replace_variables_list`, which has the same function as the `replace_variables_list` variable, but additionally will write any lines it changed into the automatically created `manually-edit-these-lines.txt` file found in the `output` folder after running `convert.py`. 
+### `unsafe_replace_dict`
+`convert.py` also contains the `unsafe_replace_dict` variable, which has the same function as `safe_replace_dict`, but will additionally write information about the lines it replaced into `manually-edit.txt`, which is found in the `output` folder after running `convert.py`.
+
+## After running `convert.py`
+This program will do most of the conversion work for you, but some conversion steps are too hard to automate, so it's likely that `CCCP` will still crash and/or output errors into the console. If this happens, you'll have to do some minor adjustments to your converted mods from the `output` folder after running `convert.py`.
 
 > "There are going to be cases that require user intervention. Priority, for example, is one of them. Few things should be setting sound priority, and the scale has completely changed such that 0 is highest and 128 (I think) is lowest. The correct way to deal with this is, either at the time of or at the end, show the user these cases and either tell them to deal with it manually, or give them a few options." -Gacyr
 
 ## Contributing
-Feel free to make pull requests for any additional cases that you want `convert.py` to support, but please make sure to add the case to `mod-porting-guide.txt` with a check mark in front of it afterwards as well. :)
+Feel free to submit `Pull Requests` or `Issues` on this GitHub project for any additional cases that you'd like `convert.py` to support that haven't been listed at the top of `convert.py` as a `TODO` yet.
