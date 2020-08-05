@@ -2,11 +2,6 @@ import os, time, pathlib, shutil, math, re
 
 """
 TODO:
----'Fuel Fire Trace Black' went from a AEmitter -> PEmitter, so mods assume it's a AEmitter and crash.---
-GibParticle = AEmitter\n<tabs-n-times>CopyOf = Fuel Fire Trace Black
----to---
-GibParticle = PEmitter\n<tabs-n-times>CopyOf = Fuel Fire Trace Black
-
 ---AudioMan changes. These are very uncommon, so don't worry!---
 PlaySound	to	PlaySound(pathToSound)
 		or	PlaySound(pathToSound, positionVectorOfSound)
@@ -103,6 +98,37 @@ safe_replace_dict = {
 	'Base.rte/Actors/MetalRicochet1.wav': 'Base.rte/Sounds/Penetration/MetalRicochet1.wav',
 	'Base.rte/Actors/MetalRicochet2.wav': 'Base.rte/Sounds/Penetration/MetalRicochet2.wav',
 	'Ronin.rte/Effects/Sounds/Spas12Fire.wav': 'Ronin.rte/Devices/Weapons/SPAS12/Sounds/Fire1.wav',
+	'Techion.rte/Effects/Sounds/GigaPulsarSpin.wav': 'Techion.rte/Devices/Weapons/GigaPulsar/Sounds/SpinSound.wav',
+	'Base.rte/Devices/RemoteExplosiveDetonate.wav': 'Base.rte/Devices/Explosives/RemoteExplosive/Sounds/RemoteExplosiveDetonate.wav',
+	'Imperatus.rte/Effects/Sounds/BullpupFire1.wav': 'Imperatus.rte/Devices/Weapons/Bullpup/Sounds/Fire1.wav',
+	'Imperatus.rte/Effects/Sounds/BullpupFire2.wav': 'Imperatus.rte/Devices/Weapons/Bullpup/Sounds/Fire2.wav',
+	'Imperatus.rte/Effects/Sounds/BullpupFire3.wav': 'Imperatus.rte/Devices/Weapons/Bullpup/Sounds/Fire3.wav',
+	'Imperatus.rte/Effects/Sounds/BullpupFire4.wav': 'Imperatus.rte/Devices/Weapons/Bullpup/Sounds/Fire3.wav',
+	'Imperatus.rte/Effects/Sounds/BullpupFire5.wav': 'Imperatus.rte/Devices/Weapons/Bullpup/Sounds/Fire3.wav',
+	'Ronin.rte/Effects/Sounds/M60Fire.wav': 'Ronin.rte/Devices/Weapons/M60/Sounds/Fire1.wav',
+	'Base.rte/Sounds/RifleFire.wav': 'Base.rte/Devices/Weapons/BattleRifle/Sounds/BattleRifleFire000.wav',
+	'Techion.rte/Effects/Sounds/DihelicalCannonSpin.wav': 'Techion.rte/Devices/Weapons/DihelicalCannon/Sounds/SpinSound.wav',
+	'Coalition.rte/Effects/Sounds/SpinSound.wav': 'Coalition.rte/Devices/Weapons/GatlingGun/Sounds/SpinSound.wav',
+	'Base.rte/Actors/ThudOuch.wav': 'Base.rte/Sounds/Actors/ThudOuch.wav',
+	'Base.rte/Actors/Death1.wav': 'Base.rte/Sounds/Actors/HumanPain1.wav',
+	'Base.rte/Actors/Death2.wav': 'Base.rte/Sounds/Actors/HumanPain2.wav',
+	'Base.rte/Actors/Death3.wav': 'Base.rte/Sounds/Actors/HumanPain3.wav',
+	'Base.rte/Actors/Death4.wav': 'Base.rte/Sounds/Actors/HumanPain4.wav',
+	'Techion.rte/Effects/Sounds/Nanoswarm.wav': 'Techion.rte/Devices/Explosives/NanoSwarmGrenade/Sounds/NanoSwarm.wav',
+	'Base.rte/Actors/Foomph.wav': 'Base.rte/Sounds/Physics/Foomph.wav',
+	'Base.rte/Actors/Flumph.wav': 'Base.rte/Sounds/Physics/Flumph.wav',
+	'Base.rte/Actors/BoneCrackA.wav': 'Base.rte/Sounds/Physics/BoneCrack1.wav',
+	'Base.rte/Actors/BoneCrackB.wav': 'Base.rte/Sounds/Physics/BoneCrack2.wav',
+	'Base.rte/Actors/BoneCrackC.wav': 'Base.rte/Sounds/Physics/BoneCrack3.wav',
+	'Base.rte/Actors/BoneCrackD.wav': 'Base.rte/Sounds/Physics/BoneCrack4.wav',
+	'Base.rte/Actors/BoneCrackE.wav': 'Base.rte/Sounds/Physics/BoneCrack5.wav',
+	'Base.rte/Actors/BoneCrackF.wav': 'Base.rte/Sounds/Physics/BoneCrack6.wav',
+	'Base.rte/Actors/BoneCrackG.wav': 'Base.rte/Sounds/Physics/BoneCrack7.wav',
+	'Base.rte/Actors/BoneCrackH.wav': 'Base.rte/Sounds/Physics/BoneCrack8.wav',
+	'Base.rte/Actors/BoneCrackI.wav': 'Base.rte/Sounds/Physics/BoneCrack9.wav',
+	'Base.rte/Actors/BoneCrackJ.wav': 'Base.rte/Sounds/Physics/BoneCrack10.wav',
+	'Base.rte/Actors/BoneCrackK.wav': 'Base.rte/Sounds/Physics/BoneCrack11.wav',
+	'Base.rte/Actors/BoneCrackL.wav': 'Base.rte/Sounds/Physics/BoneCrack12.wav',
 	# '': '',
 
 	# Image files
@@ -176,6 +202,30 @@ safe_replace_dict = {
 	'Base.rte/Devices/Shields/RiotGibA.bmp': 'Base.rte/Devices/Shields/RiotShield/Gibs/RiotGibA.bmp',
 	'Base.rte/Devices/Shields/RiotGibB.bmp': 'Base.rte/Devices/Shields/RiotShield/Gibs/RiotGibB.bmp',
 	'Coalition.rte/Devices/Sprites/SniperCasing.bmp': 'Base.rte/Effects/Casings/CasingLarge.bmp',
+	'Coalition.rte/Devices/Sprites/PieIcons/IconRocket.bmp': 'Coalition.rte/Devices/Weapons/MissileLauncher/PieIcons/Missile.bmp',
+	'Coalition.rte/Devices/Sprites/PieIcons/IconTarget.bmp': 'Coalition.rte/Devices/Weapons/MissileLauncher/PieIcons/Target.bmp',
+	'Ronin.rte/Devices/Sprites/ShovelFlash.bmp': 'Ronin.rte/Effects/Pyro/Flashes/ShovelFlash.bmp',
+	'Base.rte/Effects/Pyro/Smokeball01.bmp': 'Base.rte/Effects/Pyro/SmokeBallA.bmp',
+	'Base.rte/Devices/SMGs/SMGB.bmp': 'Base.rte/Devices/Weapons/SMG/SMG.bmp',
+	'Dummy.rte/Devices/Sprites/DestroyerShot.bmp': 'Dummy.rte/Devices/Weapons/Destroyer/DestroyerShot.bmp',
+	'Dummy.rte/Devices/Sprites/EnEffect.bmp': 'Dummy.rte/Effects/Particle/EnEffect.bmp',
+	'Ronin.rte/Devices/Sprites/MagazineM60A.bmp': 'Ronin.rte/Devices/Weapons/M60/M60Magazine.bmp',
+	'Ronin.rte/Devices/Sprites/M60A.bmp': 'Ronin.rte/Devices/Weapons/M60/M60.bmp',
+	'Base.rte/Devices/Grapple Gun/Claw.bmp': 'Base.rte/Devices/Tools/GrappleGun/Claw.bmp',
+	'Base.rte/Devices/Explosives/Detonator.bmp': 'Base.rte/Devices/Explosives/RemoteExplosive/Detonator.bmp',
+	'Base.rte/Actors/Brainbot/HeadBrainA.bmp': 'Base.rte/Actors/Brains/Case/BrainCaseA000.bmp',
+	'Dummy.rte/Actors/Dreadnought/TurretLargeGibA.bmp': 'Dummy.rte/Actors/Mecha/Dreadnought/Gibs/TurretLargeGibA.bmp',
+	'Dummy.rte/Actors/Dreadnought/TurretLargeGibB.bmp': 'Dummy.rte/Actors/Mecha/Dreadnought/Gibs/TurretLargeGibB.bmp',
+	'Dummy.rte/Actors/Dreadnought/TurretLargeGibC.bmp': 'Dummy.rte/Actors/Mecha/Dreadnought/Gibs/TurretLargeGibC.bmp',
+	'Dummy.rte/Actors/Dreadnought/TurretLargeGibD.bmp': 'Dummy.rte/Actors/Mecha/Dreadnought/Gibs/TurretLargeGibD.bmp',
+	'Dummy.rte/Actors/Dreadnought/TurretLargeGibE.bmp': 'Dummy.rte/Actors/Mecha/Dreadnought/Gibs/TurretLargeGibE.bmp',
+	'Dummy.rte/Actors/Dreadnought/TurretLargeGibF.bmp': 'Dummy.rte/Actors/Mecha/Dreadnought/Gibs/TurretLargeGibF.bmp',
+	'Dummy.rte/Actors/Dreadnought/TurretLargeGibG.bmp': 'Dummy.rte/Actors/Mecha/Dreadnought/Gibs/TurretLargeGibG.bmp',
+	'Dummy.rte/Actors/Dreadnought/TurretLargeGibH.bmp': 'Dummy.rte/Actors/Mecha/Dreadnought/Gibs/TurretLargeGibH.bmp',
+	'Base.rte/Actors/Zombies/TorsoA.bmp': 'Uzira.rte/Actors/Undead/Zombies/TorsoA.bmp',
+	'Base.rte/Actors/Zombies/TorsoB.bmp': 'Uzira.rte/Actors/Undead/Zombies/TorsoB.bmp',
+	'Base.rte/Actors/Zombies/TorsoC.bmp': 'Uzira.rte/Actors/Undead/Zombies/TorsoC.bmp',
+	'Base.rte/Actors/Skeletons/Torso.bmp': 'Uzira.rte/Actors/Undead/Skeletons/Torso.bmp',
 	# '': '',
 
 	# Weapon groups. These don't show up as errors, but if not properly changed, weapons may not spawn correctly.
@@ -304,6 +354,7 @@ safe_replace_dict = {
 	'Drop Ship MK1': 'Dropship MK1',
 	'Robot Head A Gib A': 'Imperatus All Purpose Robot Head Gib A',
 	'Robot Head A Gib B': 'Imperatus All Purpose Robot Head Gib B',
+	'Robot Head B Gib A': 'Imperatus Combat Robot Head Gib A',
 	'CopyOf = Soldier Misc Gib A': 'CopyOf = Coalition Soldier Misc Gib A',
 	'CopyOf = Soldier Misc Gib B': 'CopyOf = Coalition Soldier Misc Gib B',
 	'CopyOf = Soldier Misc Gib C': 'CopyOf = Coalition Soldier Misc Gib C',
@@ -317,7 +368,52 @@ safe_replace_dict = {
 	'Ronin.rte/Actors/RoninSoldier/Head.lua': 'Base.rte/Scripts/Shared/RandomFrame.lua',
 	'Horiz Terrain': 'Zekarra Lowlands Terrain',
 	'AffectedByPitch': 'AffectedByGlobalPitch',
-	'Base.rte/Scripts/defaultHuman.lua': 'Base.rte/AI/HumanAI.lua',
+	'Base.rte/Scripts/defaultHuman.lua': 'Base.rte/AI/HumanAI.lua', # HumanAI.lua might be the wrong file.
+	'CopyOf = Muzzle Flash Shovel': 'CopyOf = Muzzle Flash Ronin Shovel',
+	'Brain Gib A': 'Brain Gib',
+	'Base.rte/Scripts/ShotgunReload.lua': 'Base.rte/Devices/Shared/Scripts/ShotgunReload.lua',
+	'Muzzle Flash Laser': 'Muzzle Flash Techion Laser',
+	'CopyOf = Bullet M60': 'CopyOf = Bullet Ronin M60',
+	'Particle Coalition Flamer Light 1': 'Particle FT-200 Flamer Light 1',
+	'Particle Coalition Flamer Light 2': 'Particle FT-200 Flamer Light 2',
+	'GibParticle = AEmitter\n\t\t\tCopyOf = Fuel Fire Trace Black': 'GibParticle = PEmitter\n\t\t\tCopyOf = Fuel Fire Trace Black',
+	'Shell = AEmitter\n\t\tCopyOf = Cannon Casing': 'Shell = AEmitter\n\t\tCopyOf = Smoking Cannon Casing',
+	'Browncoats.rte/Devices/Weapons/FlamerFlame.lua': 'Base.rte/Devices/Shared/Scripts/FlamerFlame.lua',
+	'Coalition.rte/Devices/Weapons/FlamerFlame.lua': 'Base.rte/Devices/Shared/Scripts/FlamerFlame.lua',
+	'Drop Ship Hull Panel Gib A': 'Dropship Hull Panel Gib A',
+	'Drop Ship Hull Panel Gib B': 'Dropship Hull Panel Gib B',
+	'Drop Ship Hull Panel Gib C': 'Dropship Hull Panel Gib C',
+	'Drop Ship Hull Panel Gib D': 'Dropship Hull Panel Gib D',
+	'Drop Ship Hull Panel Gib E': 'Dropship Hull Panel Gib E',
+	'Drop Ship Hull Panel Gib F': 'Dropship Hull Panel Gib F',
+	'Drop Ship Hull Panel Gib G': 'Dropship Hull Panel Gib G',
+	'Drop Ship Hull Panel Gib H': 'Dropship Hull Panel Gib H',
+	'Drop Ship Hull Gib A': 'Dropship Hull Gib A',
+	'Drop Ship Hull Gib B': 'Dropship Hull Gib B',
+	'Drop Ship Hull Gib C': 'Dropship Hull Gib C',
+	'Drop Ship Hull Gib D': 'Dropship Hull Gib D',
+	'Drop Ship Hull Gib E': 'Dropship Hull Gib E',
+	'Drop Ship Hull Gib F': 'Dropship Hull Gib F',
+	'Drop Ship Hull Gib G': 'Dropship Hull Gib G',
+	'Drop Ship Hull Large Gib A': 'Dropship Hull Large Gib A',
+	'Drop Ship Engine Gib A': 'Dropship Engine Gib A',
+	'Drop Ship Engine Gib B': 'Dropship Engine Gib B',
+	'Drop Ship Engine Gib C': 'Dropship Engine Gib C',
+	'Drop Ship Engine Gib D': 'Dropship Engine Gib D',
+	'Drop Ship Engine Gib E': 'Dropship Engine Gib E',
+	'Drop Ship Engine Gib F': 'Dropship Engine Gib F',
+	'Drop Ship Engine Gib G': 'Dropship Engine Gib G',
+	'Drop Ship Engine Gib H': 'Dropship Engine Gib H',
+	'CopyOf = Coalition Gatling Drone Turret Stationary\n': 'CopyOf = Coalition Gatling Drone Turret\n',
+	'Coalition Shell Smoke Trail': 'Smoke Trail Medium',
+	'Coalition Uber Shell Smoke Trail': 'Smoke Trail Heavy',
+	'Coalition.rte/Devices/Weapons/SmokeTrail.lua': 'Base.rte/Scripts/Shared/SmokeTrail.lua',
+	'Magazine Blunderpop': 'Magazine Uzira Blunderpop',
+	'Magazine AK-47': 'Magazine Ronin AK-47',
+	'Base.rte/Effects/Pyro/GroundFlame.lua': 'Base.rte/Effects/Pyro/Flame/Flame.lua',
+	'EmittedParticle = MOPixel\n\t\t\tCopyOf = Null': 'EmittedParticle = MOPixel\n\t\t\tCopyOf = Null Bullet',
+	'Small Turret Leg': 'Null Leg',
+	'InstanceName': 'PresetName',
 	# '': '',
 
 	# Ronin weapons
@@ -373,7 +469,10 @@ safe_replace_dict = {
 }
 
 unsafe_replace_dict = {
-	'Priority =': '// Priority =', # Priority for sounds will work differently in the future, so it's best to disable them for now.
+	'Priority =': '// Priority =',  # Priority for sounds will work differently in the future, so it's best to disable them for now.
+	'Dummy.rte/Devices/Sprites/ShieldWall.bmp': 'Base.rte/Null.bmp', # This conversion makes it into an invisible .bmp, which is not ideal. Find a better replacement.
+	'Dummy.rte/Devices/Sprites/ShieldWallDent.bmp': 'Base.rte/Null.bmp', # This conversion makes it into an invisible .bmp, which is not ideal. Find a better replacement.
+	# '': '',
 }
 
 replace_file_extensions = {
@@ -396,18 +495,23 @@ def add_folder(input_folder_path, output_folder):
 	if input_folder_path != "input":
 		os.makedirs(output_folder)
 
-def fix_deprecated(all_lines):
-	# Fixes deprecated ParticleNumberToAdd.
-	searched = "ParticleNumberToAdd = (.*?)\n\tAddParticles = MOPixel\n\t\tCopyOf = (.*?)\n"
-	replaced = "AddGib = Gib\n\t\tGibParticle = MOPixel\n\t\t\tCopyOf = {}\n\t\tCount = {}\n"
-	moved_values = re.findall(searched, all_lines) # Returns list of tuples, with each tuple containing two values.
-	if len(moved_values) > 0:
-		# Combines list of tuples into a single tuple.
-		moved_values_tuple = ()
-		for value_pair in moved_values:
-			# Switches values in tuple around.
-			moved_values_tuple += (value_pair[1], value_pair[0])
-		all_lines = re.sub(searched, replaced, all_lines).format(*moved_values_tuple)
+def fix_deprecations(all_lines):
+	# Not placed next to where safe_replace_dict and unsafe_replace_dict are defined,
+	# because it's only used for fixing the deprecated ParticleNumberToAdd.
+	deprecations_replace_dict = {
+		'ParticleNumberToAdd = (.*?)\n\tAddParticles = MOPixel\n\t\tCopyOf = (.*?)\n': 'AddGib = Gib\n\t\tGibParticle = MOPixel\n\t\t\tCopyOf = {}\n\t\tCount = {}\n',
+		'ParticleNumberToAdd = (.*?)\n\tAddParticles = MOSParticle\n\t\tCopyOf = (.*?)\n': 'AddGib = Gib\n\t\tGibParticle = MOSParticle\n\t\t\tCopyOf = {}\n\t\tCount = {}\n',
+	}
+	for searched, replaced in deprecations_replace_dict.items():
+		moved_values = re.findall(searched, all_lines) # Returns list of tuples, with each tuple containing two values.
+		if len(moved_values) > 0:
+			# Combines list of tuples into a single tuple.
+			moved_values_tuple = ()
+			for value_pair in moved_values:
+				# Switches values in tuple around.
+				moved_values_tuple += (value_pair[1], value_pair[0])
+			all_lines = re.sub(searched, replaced, all_lines).format(*moved_values_tuple)
+	return all_lines
 
 with open("output/manually-edit.txt", "w") as file_manual:
 	for input_folder_path, input_subfolders, full_filenames in os.walk("input"):
@@ -441,7 +545,7 @@ with open("output/manually-edit.txt", "w") as file_manual:
 					
 					with open(output_file_path, "w") as file_out:
 						all_lines = "".join(lines)
-						fix_deprecated(all_lines)
+						all_lines = fix_deprecations(all_lines)
 						for old_str, new_str in safe_replace_dict.items():
 							all_lines = all_lines.replace(old_str, new_str)
 						file_out.write(all_lines)
