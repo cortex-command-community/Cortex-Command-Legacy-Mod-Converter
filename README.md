@@ -23,7 +23,7 @@ This program will do most of the conversion work for you, but some conversion st
 ## Contributing
 Feel free to submit `Pull Requests` or `Issues` on this GitHub project for any additional cases that you'd like `convert.py` to support that haven't been listed at the top of `convert.py` as a `TODO` yet.
 
-**You don’t need all of these programs to get started, feel free to use whatever method you prefer for creating additional cases:**
+**You don’t need all of these programs to get started, feel free to use whatever alternative programs you prefer:**
 * [Download “Everything”](https://voidtools.com/) - It’s like File Explorer on Windows, but way faster + more advanced.
 * [Download “SourceTree”](https://www.sourcetreeapp.com/) - It’s like GitHub Desktop, but way more advanced.
 * [Download “NotePad++”](https://notepad-plus-plus.org/downloads/) - It’s like Notepad, but way more advanced (hence ++). You can also use an IDE instead.
