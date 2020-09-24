@@ -56,7 +56,7 @@ Feel free to submit `Pull Requests` or `Issues` on this GitHub project for any a
 
 You should now be able to run `convert.py` again, and it should automatically fix the error for you by replacing any mention of `Ronin.rte/Effects/Gibs/GibA.bmp` with `Ronin.rte/Devices/Shared/Gibs/WeaponGibA.bmp`. The main advantages of creating a case in the dictionary, instead of manually replacing any mention of `Ronin.rte/Effects/Gibs/GibA.bmp` are:
 1. You can create a Pull Request on GitHub of that new case you added, which can then be used by the rest of community. If everyone were to make a Pull Request for every single case they found, the number of errors encountered before the conversion process is complete should go down drastically.
-2. If there are multiple locations where `Ronin.rte/Effects/Gibs/GibA.bmp` was mentioned, you don't have to search for every single mention of it in every single file. Mass-replace can be messed up.
+2. If there are multiple locations where `Ronin.rte/Effects/Gibs/GibA.bmp` was mentioned, you don't have to search for every single mention of it in every single file. Manual mass replacement can be messed up.
 
 ### Getting help
 If you need with anything, you can contact me - the creator of this repository - directly (`#MyNameIsTrez1585` on Discord), or you can ask the kind people in the Cortex Command Center Discord server in `#modding-discussion` for help. Make sure to mention that you've gotten stuck while reading this README file, and at which step/error you got stuck.
