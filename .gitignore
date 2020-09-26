@@ -2,3 +2,5 @@ input/*
 !input/.empty
 output/*
 !output/.empty
+example_legacy_mods
+__pycache__

@@ -52,11 +52,11 @@ Feel free to submit `Pull Requests` or `Issues` on this GitHub project for any a
 
 | ![Alt Text](https://i.imgur.com/dpuTSvO.png) |
 | :---: |
-| Open `convert.py` with any text editor of your choice, and add `'': '', somewhere in the `safe_replace_dict` dictionary. In the left set of `''` you want to add the old path which couldn't be found, which was mentioned in the error. In the right set of `''` you want to add the new path you've obtained with *Everything*. |
+| Open `conversion_rules.py` with any text editor of your choice, and add `'': ''`, somewhere in the `conversion_rules` dictionary. In the left set of `''` you want to add the old path which couldn't be found, which should have been mentioned in your error. In the right set of `''` you want to add the new path you've obtained with *Everything*. |
 
-You should now be able to run `convert.py` again, and it should automatically fix the error for you by replacing any mention of `Ronin.rte/Effects/Gibs/GibA.bmp` with `Ronin.rte/Devices/Shared/Gibs/WeaponGibA.bmp`. The main advantages of creating a case in the dictionary, instead of manually replacing any mention of `Ronin.rte/Effects/Gibs/GibA.bmp` are:
-1. You can create a Pull Request on GitHub of that new case you added, which can then be used by the rest of community. If everyone were to make a Pull Request for every single case they found, the number of errors encountered before the conversion process is complete should go down drastically.
-2. If there are multiple locations where `Ronin.rte/Effects/Gibs/GibA.bmp` was mentioned, you don't have to search for every single mention of it in every single file. Manual mass replacement can be messed up.
+Now run `convert.py` again, and it should automatically fix the error for you by replacing any mention of `Ronin.rte/Effects/Gibs/GibA.bmp` with `Ronin.rte/Devices/Shared/Gibs/WeaponGibA.bmp`. The main advantages of creating a case in the dictionary - instead of manually replacing any mention of `Ronin.rte/Effects/Gibs/GibA.bmp` - are:
+1. Being able to create a Pull Request on GitHub of that new case you added, which can then be used by the rest of the converters. If everyone were to make a Pull Request for every single case they found, the converter would become way more effective.
+2. If there are multiple locations where `Ronin.rte/Effects/Gibs/GibA.bmp` is mentioned, you don't have to search for every single mention of it in every single file. Manually mass replacing stuff can be messed up.
 
 ### Getting help
-If you need with anything, you can contact me - the creator of this repository - directly (`#MyNameIsTrez1585` on Discord), or you can ask the kind people in the Cortex Command Center Discord server in `#modding-discussion` for help. Make sure to mention that you've gotten stuck while reading this README file, and at which step/error you got stuck.
+If you need help with anything, you can contact the creator of this repository directly (`#MyNameIsTrez1585` on Discord), or you can ask the kind people in the CCCP Discord server in `#modding-discussion` for help. It helps us if you mention where you've gotten stuck while reading this README file.
