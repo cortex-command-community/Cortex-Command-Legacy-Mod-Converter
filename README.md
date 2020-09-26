@@ -5,7 +5,7 @@ This project automates ***most*** of the conversion work required to convert the
 
 ![project-icon](cclmc-icon.png)
 
-## Converting
+## How does it work
 Put the mods you want to convert in the `input` folder and run `convert.py`. After `convert.py` is done, the converted mods are found in the `output` folder and can then be tested in `CCCP`.
 
 ## Disclaimer
@@ -13,22 +13,20 @@ This program will do most of the conversion work for you, but some conversion st
 
 > "There are going to be cases that require user intervention. Priority, for example, is one of them. Few things should be setting sound priority, and the scale has completely changed such that 0 is highest and 128 (I think) is lowest. The correct way to deal with this is, either at the time of or at the end, show the user these cases and either tell them to deal with it manually, or give them a few options." -Gacyr
 
-## How it works
-### `safe_replace_dict`
-`convert.py` has the `safe_replace_dict` variable declared at the top, which lists common properties, filepaths and functions that will automatically be replaced.
-
-### `unsafe_replace_dict`
-`convert.py` also contains the `unsafe_replace_dict` variable, which has the same function as `safe_replace_dict`, but will additionally write information about the lines it replaced into `manually-edit.txt`, which is found in the `output` folder after running `convert.py`.
+## How to use it
+* Download Python3, and change directory to the `cc-legacy-mod-converter` folder
+* Run `python convert.py` if you want to convert old mods
+* `conversion_rules.py` has the `conversion_rules` dictionary inside of it. The dictionary contains entries that look like `'foo': 'bar',` which means means that any time `foo` will be encountered by `convert.py`, it will replace it with `bar`. You can add extra cases to it, see the next sections on how to do this.
 
 ## Contributing
-Feel free to submit `Pull Requests` or `Issues` on this GitHub project for any additional cases that you'd like `convert.py` to support that haven't been listed at the top of `convert.py` as a `TODO` yet.
+Feel free to submit `Pull Requests` or `Issues` on this GitHub project for any additional cases that you'd like to have supported.
 
 **You don’t need all of these programs to get started, feel free to use whatever alternative programs you prefer:**
 * [Download “Everything”](https://voidtools.com/) - It’s like File Explorer on Windows, but way faster + more advanced.
 * [Download “SourceTree”](https://www.sourcetreeapp.com/) - It’s like GitHub Desktop, but way more advanced.
 * [Download “NotePad++”](https://notepad-plus-plus.org/downloads/) - It’s like Notepad, but way more advanced (hence ++). You can also use an IDE like [VS Code](https://code.visualstudio.com/) instead.
 
-### How to fix an error with the program Everything
+## How to fix an error with the program Everything
 
 | ![Alt Text](https://i.imgur.com/WXZ09s2.png) |
 | :---: |
