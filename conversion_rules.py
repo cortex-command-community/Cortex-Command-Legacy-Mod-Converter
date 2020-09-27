@@ -398,6 +398,7 @@ conversion_rules = {
 	'EmittedParticle = MOPixel\n\t\t\tCopyOf = Null': 'EmittedParticle = MOPixel\n\t\t\tCopyOf = Null Bullet',
 	'Small Turret Leg': 'Null Leg',
 	'InstanceName': 'PresetName',
+	'Coalition Remote Grenade Shot Explosion': 'Grenade Launcher Grenade Explosion',
 	# '': '',
 
 	# Ronin weapons
@@ -448,8 +449,7 @@ conversion_rules = {
 	'IsPlaying(': 'IsBeingPlayed(',
 	# '': '', # UpdateDistance(number)	to	SetPosition(vector)
 
-	# These should be done differently
-	'Priority =': '// Priority =', # Priority for sounds will work differently in the future, so it's best to disable them for now.
+	# Temporary fixes
 	'Dummy.rte/Devices/Sprites/ShieldWall.bmp': 'Base.rte/Null.bmp', # This conversion makes it into an invisible .bmp, which is not ideal. Find a better replacement.
 	'Dummy.rte/Devices/Sprites/ShieldWallDent.bmp': 'Base.rte/Null.bmp', # This conversion makes it into an invisible .bmp, which is not ideal. Find a better replacement.
 
