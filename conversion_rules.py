@@ -113,6 +113,10 @@ conversion_rules = {
 	'Base.rte/Actors/BoneCrackJ.wav': 'Base.rte/Sounds/Physics/BoneCrack10.wav',
 	'Base.rte/Actors/BoneCrackK.wav': 'Base.rte/Sounds/Physics/BoneCrack11.wav',
 	'Base.rte/Actors/BoneCrackL.wav': 'Base.rte/Sounds/Physics/BoneCrack12.wav',
+    'Base.rte/Actors/Chomp.wav': 'Base.rte/Sounds/Physics/Chomp.wav',
+    'Techion.rte/Effects/Sounds/LaserFire.wav': 'Techion.rte/Devices/Weapons/PulseRifle/Sounds/Fire1.wav',
+    'Techion.rte/Effects/Sounds/LaserReloadStart.wav': 'Techion.rte/Devices/Weapons/PulseRifle/Sounds/ReloadStart.wav',
+    'Techion.rte/Effects/Sounds/LaserReloadEnd.wav': 'Techion.rte/Devices/Weapons/PulseRifle/Sounds/ReloadEnd.wav',
 	# '': '',
 
 	# Image files
@@ -146,6 +150,7 @@ conversion_rules = {
 	'Base.rte/Effects/Pyro/SmallSmoke01.bmp': 'Base.rte/Effects/Pyro/SmokeBallSmallA.bmp',
 	'Base.rte/Devices/Cannons/CannonMag.bmp': 'Imperatus.rte/Devices/Weapons/Devastator/DevastatorMagazine.bmp',
 	'Base.rte/Devices/Cannons/CannonRound.bmp': 'Imperatus.rte/Devices/Weapons/Devastator/DevastatorRound.bmp',
+    'Base.rte/Devices/Cannons/CannonCasing.bmp': 'Base.rte/Effects/Casings/CannonCasing.bmp',
 	'Base.rte/Effects/Pyro/MuzzleFlash02.bmp': 'Base.rte/Effects/Pyro/Flashes/MuzzleFlash02.bmp',
 	'Base.rte/Devices/Brass/Casing.bmp': 'Base.rte/Effects/Casings/Casing.bmp',
 	'Base.rte/Effects/Pyro/MuzzleFlash01.bmp': 'Base.rte/Effects/Pyro/Flashes/MuzzleFlash01.bmp',
@@ -155,6 +160,7 @@ conversion_rules = {
 	'Coalition.rte/Devices/Sprites/CannonRound.bmp': 'Imperatus.rte/Devices/Weapons/Devastator/DevastatorRound.bmp',
 	'Coalition.rte/Devices/Sprites/RocketB.bmp': 'Coalition.rte/Devices/Weapons/MissileLauncher/MissileB.bmp',
 	'Coalition.rte/Devices/Sprites/RocketA.bmp': 'Coalition.rte/Devices/Weapons/MissileLauncher/MissileA.bmp',
+    'Coalition.rte/Devices/Sprites/UberShotCluster.bmp' : 'Coalition.rte/Devices/Weapons/UberCannon/UberShotCluster.bmp',
 	'Base.rte/Actors/Rockets/RocketAHullB.bmp': 'Base.rte/Craft/Rockets/MK2/Gibs/RocketAHullGibA.bmp',
 	'Base.rte/Actors/Doors/MotorA.bmp': 'Base.rte/Scenes/Objects/Bunkers/BunkerSystems/Doors/MotorA.bmp',
 	'Base.rte/Actors/Doors/RotateLongA.bmp': 'Base.rte/Scenes/Objects/Bunkers/BunkerSystems/Doors/RotateLongA.bmp',
@@ -176,6 +182,7 @@ conversion_rules = {
 	'Ronin.rte/Actors/RoninSoldier/LegBGA.bmp': 'Ronin.rte/Actors/Infantry/LegBGA.bmp',
 	'Ronin.rte/Actors/RoninSoldier/LegFGA.bmp': 'Ronin.rte/Actors/Infantry/LegFGA.bmp',
 	'Ronin.rte/Actors/RoninSoldier/RoninHead.bmp': 'Ronin.rte/Actors/Infantry/RoninHead.bmp',
+    'Ronin.rte/Actors/RoninSoldier/RoninHead000.bmp': 'Ronin.rte/Actors/Infantry/RoninHead.bmp',
 	'Ronin.rte/Actors/RoninSoldier/TorsoA.bmp': 'Ronin.rte/Actors/Infantry/Torso000.bmp',
 	'Ronin.rte/Actors/RoninSoldier/TorsoB.bmp': 'Ronin.rte/Actors/Infantry/Torso001.bmp',
 	'Base.rte/Devices/Shields/Riot.bmp': 'Base.rte/Devices/Shields/RiotShield/Riot.bmp',
@@ -198,6 +205,9 @@ conversion_rules = {
 	'Base.rte/Devices/Grapple Gun/Claw.bmp': 'Base.rte/Devices/Tools/GrappleGun/Claw.bmp',
 	'Base.rte/Devices/Explosives/Detonator.bmp': 'Base.rte/Devices/Explosives/RemoteExplosive/Detonator.bmp',
 	'Base.rte/Actors/Brainbot/HeadBrainA.bmp': 'Base.rte/Actors/Brains/Case/BrainCaseA000.bmp',
+    'Base.rte/Actors/DropShips/EngineA.bmp': 'Base.rte/Craft/DropShips/EngineALeft.bmp',
+    'Base.rte/Actors/DropShips/EngineB.bmp': 'Base.rte/Craft/DropShips/EngineARight.bmp',
+    'Base.rte/Actors/DropShips/HullA.bmp': 'Base.rte/Craft/DropShips/HullA.bmp',
 	'Dummy.rte/Actors/Dreadnought/TurretLargeGibA.bmp': 'Dummy.rte/Actors/Mecha/Dreadnought/Gibs/TurretLargeGibA.bmp',
 	'Dummy.rte/Actors/Dreadnought/TurretLargeGibB.bmp': 'Dummy.rte/Actors/Mecha/Dreadnought/Gibs/TurretLargeGibB.bmp',
 	'Dummy.rte/Actors/Dreadnought/TurretLargeGibC.bmp': 'Dummy.rte/Actors/Mecha/Dreadnought/Gibs/TurretLargeGibC.bmp',
@@ -210,7 +220,14 @@ conversion_rules = {
 	'Base.rte/Actors/Zombies/TorsoB.bmp': 'Uzira.rte/Actors/Undead/Zombies/TorsoB.bmp',
 	'Base.rte/Actors/Zombies/TorsoC.bmp': 'Uzira.rte/Actors/Undead/Zombies/TorsoC.bmp',
 	'Base.rte/Actors/Skeletons/Torso.bmp': 'Uzira.rte/Actors/Undead/Skeletons/Torso.bmp',
-	# '': '',
+    'Coalition.rte/Actors/Blast Runner/LegFGSmallA.bmp': 'Coalition.rte/Actors/Mecha/BlastRunner/LegFGSmallA.bmp',
+    'Coalition.rte/Actors/Blast Runner/LegBGSmallA.bmp': 'Coalition.rte/Actors/Mecha/BlastRunner/LegBGSmallA.bmp',
+    'Coalition.rte/Actors/Blast Runner/BlastRunnerBody.bmp': 'Coalition.rte/Actors/Mecha/BlastRunner/BlastRunnerBody.bmp',
+    'Coalition.rte/Actors/Soldier/HandFGA.bmp': 'Coalition.rte/Actors/Infantry/CoalitionLight/HandFGA.bmp',
+    'Coalition.rte/Actors/Soldier/HandBGA.bmp': 'Coalition.rte/Actors/Infantry/CoalitionLight/HandBGA.bmp',
+    
+    
+    # '': '',
 
 	# Weapon groups. These don't show up as errors, but if not properly changed, weapons may not spawn correctly.
 	'AddToGroup = Secondary Weapons': 'AddToGroup = Weapons - Secondary',
@@ -288,7 +305,20 @@ conversion_rules = {
 	'Browncoats.rte/Actors/Soldier/MiscGibE.bmp': 'Browncoats.rte/Actors/Shared/Gibs/SoldierMiscGibE.bmp',
 	'Browncoats.rte/Actors/Soldier/MiscGibF.bmp': 'Browncoats.rte/Actors/Shared/Gibs/SoldierMiscGibF.bmp',
 	'Browncoats.rte/Actors/Soldier/MiscGibG.bmp': 'Browncoats.rte/Actors/Shared/Gibs/SoldierMiscGibG.bmp',
-
+    
+    'Base.rte/Actors/Doors/BaseGibA.bmp': 'Base.rte/Scenes/Objects/Bunkers/BunkerSystems/Doors/Gibs/BaseGibA.bmp',
+    'Base.rte/Actors/Doors/BaseGibB.bmp': 'Base.rte/Scenes/Objects/Bunkers/BunkerSystems/Doors/Gibs/BaseGibB.bmp',
+    'Base.rte/Actors/Doors/MidGibA.bmp': 'Base.rte/Scenes/Objects/Bunkers/BunkerSystems/Doors/Gibs/MidGibA.bmp',
+    'Base.rte/Actors/Doors/MidGibB.bmp': 'Base.rte/Scenes/Objects/Bunkers/BunkerSystems/Doors/Gibs/MidGibB.bmp',
+    'Base.rte/Actors/Doors/MidGibC.bmp': 'Base.rte/Scenes/Objects/Bunkers/BunkerSystems/Doors/Gibs/MidGibC.bmp',
+    'Base.rte/Actors/Doors/MidGibD.bmp': 'Base.rte/Scenes/Objects/Bunkers/BunkerSystems/Doors/Gibs/MidGibD.bmp',
+    'Base.rte/Actors/Doors/MidGibE.bmp': 'Base.rte/Scenes/Objects/Bunkers/BunkerSystems/Doors/Gibs/MidGibE.bmp',
+    'Base.rte/Actors/Doors/MidGibF.bmp': 'Base.rte/Scenes/Objects/Bunkers/BunkerSystems/Doors/Gibs/MidGibF.bmp',
+    'Base.rte/Actors/Doors/MidGibG.bmp': 'Base.rte/Scenes/Objects/Bunkers/BunkerSystems/Doors/Gibs/MidGibG.bmp',
+    'Base.rte/Actors/Doors/MotorGibA.bmp': 'Base.rte/Scenes/Objects/Bunkers/BunkerSystems/Doors/Gibs/MotorGibA.bmp',
+    'Base.rte/Actors/Doors/MotorGibB.bmp': 'Base.rte/Scenes/Objects/Bunkers/BunkerSystems/Doors/Gibs/MotorGibB.bmp',
+    'Base.rte/Actors/Doors/MotorGibC.bmp': 'Base.rte/Scenes/Objects/Bunkers/BunkerSystems/Doors/Gibs/MotorGibC.bmp',
+    
 	# AI. These may not produce any errors, so some extra cases may need to be added here!
 	'Base.rte/Actors/AI/CrabAI.lua': 'Base.rte/AI/CrabAI.lua',
 	'Base.rte/Actors/AI/HumanAI.lua': 'Base.rte/AI/HumanAI.lua',
