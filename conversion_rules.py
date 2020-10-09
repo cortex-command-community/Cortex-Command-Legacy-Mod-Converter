@@ -2,7 +2,7 @@ conversion_rules = {
 	# -- INI --
 
 	# Sounds
-	'= Sound': '= SoundContainer',
+	'= Sound\n': '= SoundContainer\n',
 	'AddSample =': 'AddSound =',
 
 	# Sound directories

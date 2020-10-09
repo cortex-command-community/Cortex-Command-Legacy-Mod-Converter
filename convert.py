@@ -34,7 +34,7 @@ def create_folder(input_folder_path, output_folder):
 		try:
 			os.makedirs(output_folder)
 		except:
-			raise SystemExit("^ Stopped, because the above mod was already present in the 'output' folder,\
+			raise SystemExit("^ Stopped, because the above mod was already present in the 'output' folder;\
 								\n  remove it from the 'output' folder before running convert.py.")
 
 
