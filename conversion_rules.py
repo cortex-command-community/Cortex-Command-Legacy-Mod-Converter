@@ -384,7 +384,7 @@ conversion_rules = {
 	'AffectedByPitch': 'AffectedByGlobalPitch',
 	'Base.rte/Scripts/defaultHuman.lua': 'Base.rte/AI/HumanAI.lua', # HumanAI.lua might be the wrong file.
 	'CopyOf = Muzzle Flash Shovel': 'CopyOf = Muzzle Flash Ronin Shovel',
-	'Brain Gib A': 'Brain Gib',
+	'= Brain Gib A': '= Brain Gib',
 	'Base.rte/Scripts/ShotgunReload.lua': 'Base.rte/Devices/Shared/Scripts/ShotgunReload.lua',
 	'Muzzle Flash Laser': 'Muzzle Flash Techion Laser',
 	'CopyOf = Bullet M60': 'CopyOf = Bullet Ronin M60',
@@ -425,7 +425,7 @@ conversion_rules = {
 	'Magazine Blunderpop': 'Magazine Uzira Blunderpop',
 	'Magazine AK-47': 'Magazine Ronin AK-47',
 	'Base.rte/Effects/Pyro/GroundFlame.lua': 'Base.rte/Effects/Pyro/Flame/Flame.lua',
-	'EmittedParticle = MOPixel\n\t\t\tCopyOf = Null': 'EmittedParticle = MOPixel\n\t\t\tCopyOf = Null Bullet',
+	'EmittedParticle = MOPixel\n\t\t\tCopyOf = Null\n': 'EmittedParticle = MOPixel\n\t\t\tCopyOf = Null Bullet\n',
 	'Small Turret Leg': 'Null Leg',
 	'InstanceName': 'PresetName',
 	'Coalition Remote Grenade Shot Explosion': 'Grenade Launcher Grenade Explosion',
