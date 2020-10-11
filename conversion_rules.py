@@ -1,6 +1,4 @@
 conversion_rules = {
-	# -- INI --
-
 	# Sounds
 	'= Sound\n': '= SoundContainer\n',
 	'AddSample =': 'AddSound =',
@@ -117,6 +115,14 @@ conversion_rules = {
     'Techion.rte/Effects/Sounds/LaserFire.wav': 'Techion.rte/Devices/Weapons/PulseRifle/Sounds/Fire1.wav',
     'Techion.rte/Effects/Sounds/LaserReloadStart.wav': 'Techion.rte/Devices/Weapons/PulseRifle/Sounds/ReloadStart.wav',
     'Techion.rte/Effects/Sounds/LaserReloadEnd.wav': 'Techion.rte/Devices/Weapons/PulseRifle/Sounds/ReloadEnd.wav',
+	'Base.rte/Actors/ServoStep00.wav': 'Base.rte/Sounds/Actors/ServoStep1.wav',
+	'Base.rte/Actors/ServoStep01.wav': 'Base.rte/Sounds/Actors/ServoStep2.wav',
+	'Base.rte/Actors/ServoStep02.wav': 'Base.rte/Sounds/Actors/ServoStep3.wav',
+	'Base.rte/Actors/ServoStep03.wav': 'Base.rte/Sounds/Actors/ServoStep4.wav',
+	'Base.rte/Actors/ServoStep04.wav': 'Base.rte/Sounds/Actors/ServoStep5.wav',
+	'Base.rte/Actors/ServoStep05.wav': 'Base.rte/Sounds/Actors/ServoStep6.wav',
+	'Base.rte/Devices/Rifles/LaserRifle.wav': 'Techion.rte/Devices/Weapons/DihelicalCannon/Sounds/SpinSound.wav',
+	'Coalition.rte/Effects/Sounds/CannonFire.wav': 'Coalition.rte/Devices/Weapons/UberCannon/Sounds/Fire1.wav',
 	# '': '',
 
 	# Image files
@@ -225,8 +231,21 @@ conversion_rules = {
     'Coalition.rte/Actors/Blast Runner/BlastRunnerBody.bmp': 'Coalition.rte/Actors/Mecha/BlastRunner/BlastRunnerBody.bmp',
     'Coalition.rte/Actors/Soldier/HandFGA.bmp': 'Coalition.rte/Actors/Infantry/CoalitionLight/HandFGA.bmp',
     'Coalition.rte/Actors/Soldier/HandBGA.bmp': 'Coalition.rte/Actors/Infantry/CoalitionLight/HandBGA.bmp',
-    
-    
+    'Coalition.rte/Devices/Sprites/SpikeBall.bmp': 'Imperatus.rte/Devices/Weapons/Marauder/MarauderRound.bmp',
+    'Coalition.rte/Actors/Drone/LegFGMediumA.bmp': 'Coalition.rte/Actors/Mecha/GatlingDrone/LegFGA.bmp',
+    'Coalition.rte/Actors/Drone/MountMobile.bmp': 'Coalition.rte/Actors/Mecha/GatlingDrone/MountMobile.bmp',
+    'Ronin.rte/Devices/Sprites/BulletGrenadeA.bmp': 'Base.rte/Craft/Shared/ThrusterNozzleA.bmp',
+    'Base.rte/Devices/Diggers/DiggerLightMag.bmp': 'Base.rte/Devices/Tools/Digger/LightDiggerMagazine.bmp',
+    'Base.rte/Devices/Diggers/DiggerMediumMag.bmp': 'Base.rte/Devices/Tools/Digger/MediumDiggerMagazine.bmp',
+    'Base.rte/Devices/Diggers/DiggerHeavyMag.bmp': 'Base.rte/Devices/Tools/Digger/HeavyDiggerMagazine.bmp',
+    'Browncoats.rte/Actors/Soldier/HatGibA.bmp': 'Browncoats.rte/Actors/Infantry/BrowncoatLight/Gibs/HatAGibA.bmp',
+    'Browncoats.rte/Actors/Soldier/HatGibB.bmp': 'Browncoats.rte/Actors/Infantry/BrowncoatLight/Gibs/HatAGibB.bmp',
+    'Browncoats.rte/Actors/Soldier/HatGibC.bmp': 'Browncoats.rte/Actors/Infantry/BrowncoatLight/Gibs/HatAGibC.bmp',
+    'Browncoats.rte/Actors/Soldier/HatGibD.bmp': 'Browncoats.rte/Actors/Infantry/BrowncoatLight/Gibs/HatAGibD.bmp',
+    'Browncoats.rte/Actors/Soldier/HatGibE.bmp': 'Browncoats.rte/Actors/Infantry/BrowncoatLight/Gibs/HatAGibE.bmp',
+    'Browncoats.rte/Actors/Soldier/HatGibF.bmp': 'Browncoats.rte/Actors/Infantry/BrowncoatHeavy/Gibs/HatBGibA.bmp',
+    'Browncoats.rte/Actors/Soldier/HatGibG.bmp': 'Browncoats.rte/Actors/Infantry/BrowncoatHeavy/Gibs/HatBGibB.bmp',
+    'Browncoats.rte/Actors/Soldier/HatGibH.bmp': 'Browncoats.rte/Actors/Infantry/BrowncoatHeavy/Gibs/HatBGibC.bmp',
     # '': '',
 
 	# Weapon groups. These don't show up as errors, but if not properly changed, weapons may not spawn correctly.
@@ -338,8 +357,8 @@ conversion_rules = {
 
 	# Scenes/Background layers. Some files may not include the "Base.rte/" part.
 	'Near Layer': 'Default Front',
-	'Sky Layer': 'Default Sky Layer',
-	'Clouds Layer': 'Clouds Layer A',
+	'Base.rte/Sky Layer': 'Base.rte/Default Sky Layer',
+	'Base.rte/Clouds Layer\n': 'Base.rte/Clouds Layer A\n',
 
 	# Bunker parts
 	'Concrete barrier': 'Concrete Barrier',
@@ -429,6 +448,23 @@ conversion_rules = {
 	'Small Turret Leg': 'Null Leg',
 	'InstanceName': 'PresetName',
 	'Coalition Remote Grenade Shot Explosion': 'Grenade Launcher Grenade Explosion',
+	'10 oz Gold Brick': '10oz Gold Brick',
+	'24 oz Gold Brick': '24oz Gold Brick',
+	'Nailer Cannon': 'Nailer Machinegun',
+	'Silver Man': 'Techion Silver Man',
+	'Nanorifle': 'Nano Rifle',
+	'Ronin Sniper': 'Ronin Soldier',
+	'Scouting Robot': 'All Purpose Robot',
+	'Pumpgun': 'Model 590',
+	'Kar98': 'Kar98k',
+	'Spas 12': 'SPAS 12',
+	'M16': 'M16A2',
+	'Anti-Air Drone': 'Gatling Drone',
+	'Sawed-off shotgun': 'Model 590',
+	'Coalition Breaker Grenade Smoke': 'Smoke Trail Medium',  # Check if this is an accurate replacement.
+	'Soldier Heavy Chest Plate A': 'Coalition Heavy Soldier Chest Plate A',
+	'Coalition.rte/Drone Turret': 'Coalition.rte/Coalition Gatling Drone Turret',
+	'Rocket Leg\n': 'Rocket Leg A\n',
 	# '': '',
 
 	# Ronin weapons
@@ -437,13 +473,11 @@ conversion_rules = {
 	'CopyOf = Spas 12': 'CopyOf = SPAS 12',
 	'CopyOf = Kar98': 'CopyOf = Kar98k',
 	'CopyOf = M16': 'CopyOf = M16A2',
-	'CopyOf = Thumper': 'CopyOf = M79',
+	'CopyOf = Thumper\n': 'CopyOf = M79\n',
 	'CopyOf = Uzi': 'CopyOf = UZI',
 	
 	# Uzira weapons
 	'CopyOf = Magazine Blunderbuss': 'CopyOf = Magazine Uzira Blunderbuss',
-
-	# -- LUA --
 
 	# Miscellaneous
 	'WithinBox': 'IsWithinBox',
@@ -482,7 +516,4 @@ conversion_rules = {
 	# Temporary fixes
 	'Dummy.rte/Devices/Sprites/ShieldWall.bmp': 'Base.rte/Null.bmp', # This conversion makes it into an invisible .bmp, which is not ideal. Find a better replacement.
 	'Dummy.rte/Devices/Sprites/ShieldWallDent.bmp': 'Base.rte/Null.bmp', # This conversion makes it into an invisible .bmp, which is not ideal. Find a better replacement.
-
-	# Copy this line and uncomment it, if you need to add extra cases.
-	# '': '',
 }
