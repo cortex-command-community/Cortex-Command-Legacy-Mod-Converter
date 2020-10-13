@@ -123,6 +123,8 @@ conversion_rules = {
 	'Base.rte/Actors/ServoStep05.wav': 'Base.rte/Sounds/Actors/ServoStep6.wav',
 	'Base.rte/Devices/Rifles/LaserRifle.wav': 'Techion.rte/Devices/Weapons/DihelicalCannon/Sounds/SpinSound.wav',
 	'Coalition.rte/Effects/Sounds/CannonFire.wav': 'Coalition.rte/Devices/Weapons/UberCannon/Sounds/Fire1.wav',
+	'Base.rte/Sounds/Servo1.wav': 'Base.rte/Sounds/Actors/RobotPain3.wav',
+	'Base.rte/Sounds/Servo2.wav': 'Base.rte/Sounds/Actors/RobotPain4.wav',
 	# '': '',
 
 	# Image files
@@ -385,6 +387,7 @@ conversion_rules = {
 	'Actors/AI': 'AI',
 	'Ronin Heavy': 'Ronin Soldier',
 	'Drop Ship MK1': 'Dropship MK1',
+	# 'Drop Ship': 'Dummy Dropship',
 	'Robot Head A Gib A': 'Imperatus All Purpose Robot Head Gib A',
 	'Robot Head A Gib B': 'Imperatus All Purpose Robot Head Gib B',
 	'Robot Head B Gib A': 'Imperatus Combat Robot Head Gib A',
