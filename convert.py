@@ -105,7 +105,7 @@ def regex_replace_sound_priority(all_lines):
 	if len(matches) > 0:
 		# matches == [(4, "foo"), (2, "bar")]
 		new = [item for tup in matches for item in tup][::2]
-		# matches == [4, 2]
+		# new == [4, 2]
 		all_lines = re.sub(pattern, formatted_str, all_lines, flags=re.DOTALL).format(*new)
 	
 	return all_lines
