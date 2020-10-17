@@ -467,7 +467,9 @@ conversion_rules = {
 	'Coalition Breaker Grenade Smoke': 'Smoke Trail Medium',  # Check if this is an accurate replacement.
 	'Soldier Heavy Chest Plate A': 'Coalition Heavy Soldier Chest Plate A',
 	'Coalition.rte/Drone Turret': 'Coalition.rte/Coalition Gatling Drone Turret',
-	'Rocket Leg\n': 'Rocket Leg A\n',
+	'= Rocket Leg\n': '= Rocket Leg A\n',
+	'Cannon Gib A': 'Gib Weapon E',
+	'Actors/AI/NativeHumanAI': 'AI/NativeHumanAI',
 	# '': '',
 
 	# Ronin weapons
