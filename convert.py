@@ -1,4 +1,4 @@
-import os, time, pathlib, shutil, math, re, sys
+import os, time, pathlib, shutil, math, re, sys, shutil
 
 from conversion_rules import conversion_rules
 
@@ -56,12 +56,15 @@ def process_file(full_filename_list, input_folder_path, output_folder):
 
 
 def create_converted_file(input_file_path, output_file_path):
-	with open(input_file_path, "r") as file_in:
-		with open(output_file_path, "w") as file_out:
-			all_lines = regex_replace(file_in.read())
-			for old_str, new_str in conversion_rules.items():
-				all_lines = all_lines.replace(old_str, new_str)
-			file_out.write(all_lines)
+	try:
+		with open(input_file_path, "r") as file_in:
+			with open(output_file_path, "w") as file_out:
+				all_lines = regex_replace(file_in.read())
+				for old_str, new_str in conversion_rules.items():
+					all_lines = all_lines.replace(old_str, new_str)
+				file_out.write(all_lines)
+	except:
+		shutil.copyfile(input_file_path, output_file_path)
 
 
 def regex_replace(all_lines):
