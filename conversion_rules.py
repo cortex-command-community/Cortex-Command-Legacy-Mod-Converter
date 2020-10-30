@@ -360,7 +360,9 @@ conversion_rules = {
 	# Scenes/Background layers. Some files may not include the "Base.rte/" part.
 	'Near Layer': 'Default Front',
 	'Base.rte/Sky Layer': 'Base.rte/Default Sky Layer',
+	'CopyOf = Sky Layer': 'CopyOf = Default Sky Layer',
 	'Base.rte/Clouds Layer\n': 'Base.rte/Clouds Layer A\n',
+	'CopyOf = Clouds Layer': 'CopyOf = Clouds Layer A',
 
 	# Bunker parts
 	'Concrete barrier': 'Concrete Barrier',
@@ -459,16 +461,16 @@ conversion_rules = {
 	'Ronin Sniper': 'Ronin Soldier',
 	'Scouting Robot': 'All Purpose Robot',
 	'Pumpgun': 'Model 590',
-	'Kar98': 'Kar98k',
+	# 'Kar98': 'Kar98k',
 	'Spas 12': 'SPAS 12',
-	'M16': 'M16A2',
+	# 'M16': 'M16A2',
 	'Anti-Air Drone': 'Gatling Drone',
 	'Sawed-off shotgun': 'Model 590',
 	'Coalition Breaker Grenade Smoke': 'Smoke Trail Medium',  # Check if this is an accurate replacement.
 	'Soldier Heavy Chest Plate A': 'Coalition Heavy Soldier Chest Plate A',
 	'Coalition.rte/Drone Turret': 'Coalition.rte/Coalition Gatling Drone Turret',
 	'= Rocket Leg\n': '= Rocket Leg A\n',
-	'Cannon Gib A': 'Gib Weapon E',
+	'CopyOf = Cannon Gib A': 'CopyOf = Gib Weapon E',
 	'Actors/AI/NativeHumanAI': 'AI/NativeHumanAI',
 	# '': '',
 
