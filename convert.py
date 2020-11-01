@@ -72,7 +72,7 @@ def regex_replace(all_lines):
 	all_lines = simple_replace(all_lines, "\tPlayerCount = (.*)\n", "")
 	all_lines = simple_replace(all_lines, "\tTeamCount = (.*)\n", "")
 
-	all_lines = specific_replace(all_lines, regex_replace_particle, False, "ParticleNumberToAdd = (.*)\n\tAddParticles = MO(.*)\n\t\tCopyOf = (.*)\n", "AddGib = Gib\n\t\tGibParticle = MO{}\n\t\t\tCopyOf = {}\n\t\tCount = {}\n")
+	all_lines = specific_replace(all_lines, regex_replace_particle, False, "ParticleNumberToAdd = (.*)\n\tAddParticles = (.*)\n\t\tCopyOf = (.*)\n", "AddGib = Gib\n\t\tGibParticle = {}\n\t\t\tCopyOf = {}\n\t\tCount = {}\n")
 	all_lines = specific_replace(all_lines, regex_replace_sound_priority, True, " Sound(((?! Sound).)*)Priority", " Sound{}// Priority")
 	all_lines = specific_replace(all_lines, regex_replace_fundsofteam, False, "FundsOfTeam(.*) =", "Team{}Funds =")
 	# all_lines = specific_replace(all_lines, regex_replace_playsound, False, "", "")
