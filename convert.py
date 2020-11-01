@@ -80,13 +80,13 @@ def regex_replace(all_lines):
 	return all_lines
 
 
-def specific_replace(all_lines, func, dotall, pattern, replacement):
+def specific_replace(all_lines, fn, dotall, pattern, replacement):
 	if dotall:
 		matches = re.findall(pattern, all_lines, re.DOTALL)
 	else:
 		matches = re.findall(pattern, all_lines)
 	if len(matches) > 0:
-		return func(all_lines, pattern, replacement, matches)
+		return fn(all_lines, pattern, replacement, matches)
 	return all_lines
 
 
