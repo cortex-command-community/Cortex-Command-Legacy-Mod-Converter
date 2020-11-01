@@ -248,6 +248,8 @@ conversion_rules = {
     'Browncoats.rte/Actors/Soldier/HatGibF.bmp': 'Browncoats.rte/Actors/Infantry/BrowncoatHeavy/Gibs/HatBGibA.bmp',
     'Browncoats.rte/Actors/Soldier/HatGibG.bmp': 'Browncoats.rte/Actors/Infantry/BrowncoatHeavy/Gibs/HatBGibB.bmp',
     'Browncoats.rte/Actors/Soldier/HatGibH.bmp': 'Browncoats.rte/Actors/Infantry/BrowncoatHeavy/Gibs/HatBGibC.bmp',
+	'FlameBall00.bmp': 'FlameBall.bmp',
+    'Base.rte/Scenes/Backdrops/Static/StillParallaxBack.bmp': 'Base.rte/Scenes/Backdrops/Static/DefaultBackdrop.bmp',
     # '': '',
 
 	# Weapon groups. These don't show up as errors, but if not properly changed, weapons may not spawn correctly.
@@ -472,7 +474,11 @@ conversion_rules = {
 	'= Rocket Leg\n': '= Rocket Leg A\n',
 	'CopyOf = Cannon Gib A': 'CopyOf = Gib Weapon E',
 	'Actors/AI/NativeHumanAI': 'AI/NativeHumanAI',
+	'FrameMan.PPM': 'GetPPM()',
 	# '': '',
+
+	# .bmps renamed to .pngs, this should be done with regex later on as the capitalization should be ignored.
+	'Base.rte/Scenes/Textures/Snow.bmp': 'Base.rte/Scenes/Textures/Snow.png',
 
 	# Ronin weapons
 	'CopyOf = Glock': 'CopyOf = Luger P08',
