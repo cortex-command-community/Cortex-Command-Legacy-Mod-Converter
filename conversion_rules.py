@@ -533,6 +533,7 @@ conversion_rules = {
 	'Skeleton Head B': 'Skeleton Head',
 	'Skeleton Head C': 'Skeleton Head',
 	'CreateMOSRotating("Ronin.rte/Impact Grenade Payload")': 'CreateTDExplosive("Ronin.rte/M24 Potato Masher")',
+	'CopyOf = Heavy Sniper Rifle': 'CopyOf = Banshee HSR-02',
 	# '': '',
 
 	# .bmps renamed to .pngs, this should be done with regex later on as the capitalization should be ignored.
