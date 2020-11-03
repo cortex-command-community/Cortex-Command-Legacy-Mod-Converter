@@ -1,6 +1,6 @@
 conversion_rules = {
 	# Sounds
-	'AddSound = Sound': 'AddSoundContainer = SoundContainer',
+	'AddSound = Sound\n': 'AddSoundContainer = SoundContainer\n',
 	'= Sound\n': '= SoundContainer\n',
 	'AddSample =': 'AddSound =',
 
@@ -529,6 +529,7 @@ conversion_rules = {
 	'Skeleton Head A': 'Skeleton Head',
 	'Skeleton Head B': 'Skeleton Head',
 	'Skeleton Head C': 'Skeleton Head',
+	'CreateMOSRotating("Ronin.rte/Impact Grenade Payload")': 'CreateTDExplosive("Ronin.rte/M24 Potato Masher")',
 	# '': '',
 
 	# .bmps renamed to .pngs, this should be done with regex later on as the capitalization should be ignored.
@@ -547,7 +548,7 @@ conversion_rules = {
 	'CopyOf = Magazine Blunderbuss': 'CopyOf = Magazine Uzira Blunderbuss',
 
 	# Miscellaneous
-	'WithinBox': 'IsWithinBox',
+	':WithinBox': ':IsWithinBox',
 
 	# Weapon groups. In addition to .ini Weapon Groups, you should replace their .lua string text variants, especially in Scenario/Activity related mods.
 	'"Secondary Weapons"': '"Weapons - Secondary"',
@@ -564,7 +565,7 @@ conversion_rules = {
 	'"Light Infantry"': '"Actors - Light"',
 	'"Heavy Infantry"': '"Actors - Heavy"',
 	'"Snipers"': '"Actors - Sniper"',
-	'"Turret"': '"Actors - Turret"',
+	'"Turret")': '"Actors - Turret")',
 	'"Mecha"': '"Actors - Mecha"',
 
 	# FrameMan
