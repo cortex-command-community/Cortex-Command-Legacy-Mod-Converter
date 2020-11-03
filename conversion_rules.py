@@ -434,7 +434,6 @@ conversion_rules = {
 	'Near Raukar': 'Mountains Back',
 	'Base.rte/Block B': 'Base.rte/Concrete Block',
 	'Actors/AI': 'AI',
-	'Ronin Heavy': 'Ronin Soldier',
 	'Ronin Light': 'Ronin Soldier',
 	'Drop Ship MK1': 'Dropship MK1',
 	# 'Drop Ship': 'Dummy Dropship',
