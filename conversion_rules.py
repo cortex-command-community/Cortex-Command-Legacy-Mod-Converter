@@ -435,6 +435,7 @@ conversion_rules = {
 	'Base.rte/Block B': 'Base.rte/Concrete Block',
 	'Actors/AI': 'AI',
 	'Ronin Heavy': 'Ronin Soldier',
+	'Ronin Light': 'Ronin Soldier',
 	'Drop Ship MK1': 'Dropship MK1',
 	# 'Drop Ship': 'Dummy Dropship',
 	'Robot Head A Gib A': 'Imperatus All Purpose Robot Head Gib A',
