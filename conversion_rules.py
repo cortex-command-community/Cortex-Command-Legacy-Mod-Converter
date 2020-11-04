@@ -175,6 +175,7 @@ conversion_rules = {
 	'Coalition.rte/Devices/Sprites/UberShotCluster.bmp' : 'Coalition.rte/Devices/Weapons/UberCannon/UberShotCluster.bmp',
 	'Coalition.rte/Devices/Sprites/UberShot.bmp' : 'Coalition.rte/Devices/Weapons/UberCannon/UberShot.bmp',
 	'Coalition.rte/Devices/Sprites/MagazineCannonUberA.bmp' : 'Coalition.rte/Devices/Weapons/UberCannon/UberCannonMagazine.bmp',
+  'Coalition.rte/Devices/Sprites/MuzzleAutoCannonA.bmp' : 'Coalition.rte/Effects/Pyro/Flashes/MuzzleAutoCannonA.bmp',
 	'Base.rte/Actors/Rockets/RocketAHullB.bmp': 'Base.rte/Craft/Rockets/MK2/Gibs/RocketAHullGibA.bmp',
 	'Base.rte/Actors/Doors/MotorA.bmp': 'Base.rte/Scenes/Objects/Bunkers/BunkerSystems/Doors/MotorA.bmp',
 	'Base.rte/Actors/Doors/RotateLongA.bmp': 'Base.rte/Scenes/Objects/Bunkers/BunkerSystems/Doors/RotateLongA.bmp',
