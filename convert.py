@@ -1,6 +1,10 @@
-import os, time, pathlib, shutil, math, re, sys, shutil
+import os, time, pathlib, shutil, math, re, sys, shutil, winsound
 
 from conversion_rules import conversion_rules
+
+
+playFinishSound = True
+outputPath = "output"
 
 
 def main():
@@ -14,11 +18,13 @@ def main():
 		process_file(full_filename_list, input_folder_path, output_folder)
 
 	elapsed = math.floor(time.time() - time_start)
+	if playFinishSound:
+		winsound.MessageBeep()
 	print("Finished in {} {}".format(elapsed, pluralize("second", elapsed)))
 
 
 def get_output_folder_path(input_folder_path):
-	return os.path.join("output", pathlib.Path(*pathlib.Path(input_folder_path).parts[1:]))
+	return os.path.join(outputPath, pathlib.Path(*pathlib.Path(input_folder_path).parts[1:]))
 
 
 def try_print_mod_name(input_folder_path):
@@ -29,13 +35,12 @@ def try_print_mod_name(input_folder_path):
 
 
 def create_folder(input_folder_path, output_folder):
-	# Prevents putting the "input" folder itself into the "output" folder.
+	# Prevents putting the "input" folder itself into the outputPath folder.
 	if input_folder_path != "input":
 		try:
 			os.makedirs(output_folder)
-		except:
-			raise SystemExit("^ Stopped, because the above mod was already present in the 'output' folder;\
-								\n  remove it from the 'output' folder before running convert.py.")
+		except FileExistsError:
+			pass
 
 
 def process_file(full_filename_list, input_folder_path, output_folder):
