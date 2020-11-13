@@ -67,6 +67,7 @@ def create_converted_file(input_file_path, output_file_path):
 				all_lines = regex_replace(file_in.read())
 				for old_str, new_str in conversion_rules.items():
 					all_lines = all_lines.replace(old_str, new_str)
+				all_lines = regex_replace_bmps_and_wavs(all_lines)
 				file_out.write(all_lines)
 	except:
 		shutil.copyfile(input_file_path, output_file_path)
@@ -79,13 +80,21 @@ def regex_replace(all_lines):
 
 	all_lines = specific_replace(all_lines, regex_replace_particle, False, "ParticleNumberToAdd = (.*)\n\tAddParticles = (.*)\n\t\tCopyOf = (.*)\n", "AddGib = Gib\n\t\tGibParticle = {}\n\t\t\tCopyOf = {}\n\t\tCount = {}\n")
 	all_lines = specific_replace(all_lines, regex_replace_sound_priority, True, " Sound(((?! Sound).)*)Priority", " Sound{}// Priority")
-	all_lines = specific_replace(all_lines, regex_replace_fundsofteam, False, "FundsOfTeam(.*) =", "Team{}Funds =")
+	all_lines = specific_replace(all_lines, regex_use_capture, False, "FundsOfTeam(.*) =", "Team{}Funds =")
 	# all_lines = specific_replace(all_lines, regex_replace_playsound, False, "", "")
-	
+
+	return all_lines
+
+
+def simple_replace(all_lines, pattern, replacement):
+	matches = re.findall(pattern, all_lines)
+	if len(matches) > 0:
+		return re.sub(pattern, replacement, all_lines)
 	return all_lines
 
 
 def specific_replace(all_lines, fn, dotall, pattern, replacement):
+	# TODO: Refactor so .findall can take dotall as an argument directly.
 	if dotall:
 		matches = re.findall(pattern, all_lines, re.DOTALL)
 	else:
@@ -119,11 +128,11 @@ def regex_replace_sound_priority(all_lines, pattern, replacement, matches):
 	return re.sub(pattern, replacement, all_lines, flags=re.DOTALL).format(*new)
 
 
-def regex_replace_fundsofteam(all_lines, pattern, replacement, matches):
+def regex_use_capture(all_lines, pattern, replacement, matches):
 	return re.sub(pattern, replacement, all_lines).format(*matches)
 
 
-# def regex_replace_playsound(all_lines):
+# def regex_replace_playsound(all_lines, pattern, replacement, matches):
 # 	return all_lines
 # 	# TODO:
 # 	# AudioMan:PlaySound("ModName.rte/Folder/SoundName.wav", SceneMan:TargetDistanceScalar(self.Pos), false, true, -1)
@@ -131,12 +140,11 @@ def regex_replace_fundsofteam(all_lines, pattern, replacement, matches):
 #	# AudioMan:PlaySound("ModName.rte/Folder/SoundName.wav", self.Pos)	-- Cut everything and leave the thing inside the brackets after SceneMan:TargetDistanceScalar
 
 
-def simple_replace(all_lines, pattern, replacement):
-	matches = re.findall(pattern, all_lines)
-
-	if len(matches) > 0:
-		return re.sub(pattern, replacement, all_lines)
-
+def regex_replace_bmps_and_wavs(all_lines):
+	all_lines = specific_replace(all_lines, regex_use_capture, False, "Base\.rte(.*?)\.bmp", "Base.rte{}.png")
+	all_lines = specific_replace(all_lines, regex_use_capture, False, "base\.rte(.*?)\.bmp", "Base.rte{}.png")
+	all_lines = specific_replace(all_lines, regex_use_capture, False, "Base\.rte(.*?)\.wav", "Base.rte{}.flac")
+	all_lines = specific_replace(all_lines, regex_use_capture, False, "base\.rte(.*?)\.wav", "Base.rte{}.flac")
 	return all_lines
 
 
