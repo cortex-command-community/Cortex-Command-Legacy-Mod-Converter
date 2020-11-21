@@ -1,14 +1,13 @@
-import os, time, pathlib, shutil, math, re, sys, shutil, winsound
+import os, time, pathlib, shutil, math, re, sys, shutil, winsound, zipfile
+import config
 
 from conversion_rules import conversion_rules
 
 
-playFinishSound = True
-outputPath = "output"
-
-
 def main():
 	time_start = time.time()
+
+	unzip()
 
 	for input_folder_path, input_subfolders, full_filename_list in os.walk("input"):
 		output_folder = get_output_folder_path(input_folder_path)
@@ -17,14 +16,26 @@ def main():
 		create_folder(input_folder_path, output_folder)
 		process_file(full_filename_list, input_folder_path, output_folder)
 
+	if config.output_zips:
+		create_zips()
+
 	elapsed = math.floor(time.time() - time_start)
-	if playFinishSound:
+	if config.play_finish_sound:
 		winsound.MessageBeep()
 	print("Finished in {} {}".format(elapsed, pluralize("second", elapsed)))
 
 
+def unzip():
+	for f in os.listdir("input"):
+		zip_path = os.path.join("input/", f)
+		if zipfile.is_zipfile(zip_path):
+			with zipfile.ZipFile(zip_path) as item:
+				item.extractall("input")
+			os.remove(zip_path)
+
+
 def get_output_folder_path(input_folder_path):
-	return os.path.join(outputPath, pathlib.Path(*pathlib.Path(input_folder_path).parts[1:]))
+	return os.path.join(config.output_path, pathlib.Path(*pathlib.Path(input_folder_path).parts[1:]))
 
 
 def try_print_mod_name(input_folder_path):
@@ -35,7 +46,7 @@ def try_print_mod_name(input_folder_path):
 
 
 def create_folder(input_folder_path, output_folder):
-	# Prevents putting the "input" folder itself into the outputPath folder.
+	# Prevents putting the "input" folder itself into the config.output_path folder.
 	if input_folder_path != "input":
 		try:
 			os.makedirs(output_folder)
@@ -146,6 +157,21 @@ def regex_replace_bmps_and_wavs(all_lines):
 	all_lines = specific_replace(all_lines, regex_use_capture, False, "Base\.rte(.*?)\.wav", "Base.rte{}.flac")
 	all_lines = specific_replace(all_lines, regex_use_capture, False, "base\.rte(.*?)\.wav", "Base.rte{}.flac")
 	return all_lines
+
+
+def create_zips():
+	# Creates zips.
+	for f in os.listdir(config.output_path):
+		folder_path = os.path.join(config.output_path, f)
+		print(folder_path)
+		if os.path.isdir(folder_path):
+			shutil.make_archive(folder_path, "zip", folder_path)
+	
+	# Removes folders.
+	for f in os.listdir(config.output_path):
+		folder_path = os.path.join(config.output_path, f)
+		if os.path.isdir(folder_path):
+			shutil.rmtree(folder_path)
 
 
 def pluralize(word, count):
