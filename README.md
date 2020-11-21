@@ -17,6 +17,7 @@ This program will do most of the conversion work for you, but some conversion st
 * Download Python3, and change directory to the `cc-legacy-mod-converter` folder
 * Run `python convert.py` if you want to convert old mods
 * `conversion_rules.py` has the `conversion_rules` dictionary inside of it. The dictionary contains entries that look like `'foo': 'bar',` which means means that any time `foo` will be encountered by `convert.py`, it will replace it with `bar`. You can add extra cases to it, see the next sections on how to do this.
+* `config.py` contains the options.
 
 ## Contributing
 Feel free to submit `Pull Requests` or `Issues` on this GitHub project for any additional cases that you'd like to have supported.
