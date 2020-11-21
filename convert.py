@@ -160,18 +160,13 @@ def regex_replace_bmps_and_wavs(all_lines):
 
 
 def create_zips():
-	# Creates zips.
-	for f in os.listdir(config.output_path):
+	# Get mod folder names from the input folder.
+	folder_names = [f for f in os.listdir("input") if os.path.isdir(os.path.join(config.output_path, f))]
+
+	for f in folder_names:
 		folder_path = os.path.join(config.output_path, f)
-		print(folder_path)
-		if os.path.isdir(folder_path):
-			shutil.make_archive(folder_path, "zip", folder_path)
-	
-	# Removes folders.
-	for f in os.listdir(config.output_path):
-		folder_path = os.path.join(config.output_path, f)
-		if os.path.isdir(folder_path):
-			shutil.rmtree(folder_path)
+		shutil.make_archive(folder_path, "zip", folder_path)
+		shutil.rmtree(folder_path)
 
 
 def pluralize(word, count):
