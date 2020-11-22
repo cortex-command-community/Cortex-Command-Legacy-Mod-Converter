@@ -165,7 +165,7 @@ def create_zips():
 
 	for f in folder_names:
 		folder_path = os.path.join(config.output_path, f)
-		shutil.make_archive(folder_path, "zip", folder_path)
+		shutil.make_archive(folder_path, "zip", root_dir=config.output_path, base_dir=f)
 		shutil.rmtree(folder_path)
 
 
