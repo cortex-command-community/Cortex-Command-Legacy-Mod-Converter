@@ -514,7 +514,7 @@ conversion_rules = {
 	'Nanorifle': 'Nano Rifle',
 	'Ronin Sniper': 'Ronin Soldier',
 	'Scouting Robot': 'All Purpose Robot',
-	'Pumpgun': 'Model 590',
+	# 'Pumpgun': 'Model 590',
 	# 'Kar98': 'Kar98k',
 	'Spas 12': 'SPAS 12',
 	# 'M16': 'M16A2',
