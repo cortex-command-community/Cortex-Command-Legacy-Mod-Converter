@@ -27,7 +27,7 @@ Feel free to submit `Pull Requests` or `Issues` on this GitHub project for any a
 * [Download “SourceTree”](https://www.sourcetreeapp.com/) - It’s like GitHub Desktop, but way more advanced.
 * [Download “NotePad++”](https://notepad-plus-plus.org/downloads/) - It’s like Notepad, but way more advanced (hence ++). You can also use an IDE like [VS Code](https://code.visualstudio.com/) instead.
 
-## How to fix an error with the program Everything
+## How to fix CCCP errors with the program Everything
 
 | ![Alt Text](https://i.imgur.com/WXZ09s2.png) |
 | :---: |
