@@ -11,11 +11,14 @@ Download the [Legacy Mod Converter](http://www.mediafire.com/file/yx021ce1yt6idz
 ## Disclaimer
 This program will do most of the conversion work for you, but some conversion steps are too hard to automate, so it's likely that `CCCP` will still crash or print errors in the console. If this happens you'll have to manually fix these issues in the legacy mod folder. If you want to properly fix these errors then you should download this repository and follow the instructions below so you can add your own conversion cases to `conversion_rules.py`.
 
-## How to use the repository
+## How to add your own conversion rules
 * Download Python 3 and this GitHub repository.
 * Change your directory to the `cc-legacy-mod-converter` repository in your terminal.
 * Run `python gui.py` when you want to convert old mods.
 * `conversion_rules.py` has the `conversion_rules` dictionary inside of it. The dictionary contains entries that look like `'foo': 'bar',` which means means that any time `foo` will be encountered by `convert.py`, it will replace it with `bar`. You can add extra cases to it, see the next sections on how to do this.
+
+## Detailed tutorials on creating conversion rules
+* [Fixing CCCP crashes/errors with the program Everything](https://github.com/cortex-command-community/Cortex-Command-Legacy-Mod-Converter/wiki/Fixing-CCCP-crashes-errors-with-the-program-Everything)
 
 ## Contributing
 Feel free to submit `Pull Requests` or `Issues` on this GitHub project for any additional cases that you'd like to have supported.
@@ -24,9 +27,6 @@ Feel free to submit `Pull Requests` or `Issues` on this GitHub project for any a
 * [Download “Everything”](https://voidtools.com/) - Like File Explorer on Windows. Very fast.
 * [Download “SourceTree”](https://www.sourcetreeapp.com/) - Like GitHub Desktop. Allows searching for specific words across all commits.
 * [Download “NotePad++”](https://notepad-plus-plus.org/downloads/) - Like Notepad. Allows mass replacing across many files. You can also use an IDE like [VS Code](https://code.visualstudio.com/) instead for this.
-
-## Tips for fixing crashes/errors
-* [Fixing CCCP crashes/errors with the program Everything](https://github.com/cortex-command-community/Cortex-Command-Legacy-Mod-Converter/wiki/Fixing-CCCP-crashes-errors-with-the-program-Everything)
 
 ## Getting help
 If you need help with anything, you can contact the creator of this repository directly (`#MyNameIsTrez1585` on Discord), or you can ask the friendly regulars in the CCCP Discord server in `#modding-discussion` for help. It helps us if you mention where you've gotten stuck while reading this tutorial, so please do that! :)
