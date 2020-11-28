@@ -26,7 +26,7 @@ Feel free to submit `Pull Requests` or `Issues` on this GitHub project for any a
 * [Download “NotePad++”](https://notepad-plus-plus.org/downloads/) - Like Notepad. Allows mass replacing across many files. You can also use an IDE like [VS Code](https://code.visualstudio.com/) instead for this.
 
 ## Tips for fixing crashes/errors
-* [Fixing CCCP crashes/errors with the program Everything](wiki/Fixing-CCCP-crashes-errors-with-the-program-Everything)
+* [Fixing CCCP crashes/errors with the program Everything](https://github.com/cortex-command-community/Cortex-Command-Legacy-Mod-Converter/wiki/Fixing-CCCP-crashes-errors-with-the-program-Everything)
 
 ## Getting help
 If you need help with anything, you can contact the creator of this repository directly (`#MyNameIsTrez1585` on Discord), or you can ask the friendly regulars in the CCCP Discord server in `#modding-discussion` for help. It helps us if you mention where you've gotten stuck while reading this tutorial, so please do that! :)
