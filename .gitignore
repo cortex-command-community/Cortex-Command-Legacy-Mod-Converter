@@ -4,3 +4,6 @@ output/*
 !output/.empty
 example_legacy_mods
 __pycache__
+build
+dist
+gui.spec

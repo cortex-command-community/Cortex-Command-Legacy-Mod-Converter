@@ -4,15 +4,21 @@ import config
 from conversion_rules import conversion_rules
 
 
+mod_count = 0
+
+
 def main():
 	time_start = time.time()
 
 	unzip()
 
-	for input_folder_path, input_subfolders, full_filename_list in os.walk("input"):
-		output_folder = get_output_folder_path(input_folder_path)
+	total_mod_count = get_total_mod_count(config.mods_folder)
+	
+	for input_folder_path, input_subfolders, full_filename_list in os.walk(config.mods_folder):
+		mod_subfolder = get_mod_subfolder(input_folder_path)
+		output_folder = get_output_folder_path(mod_subfolder)
 
-		try_print_mod_name(input_folder_path)
+		try_print_mod_name(mod_subfolder, total_mod_count)
 		create_folder(input_folder_path, output_folder)
 		process_file(full_filename_list, input_folder_path, output_folder)
 
@@ -26,28 +32,39 @@ def main():
 
 
 def unzip():
-	for f in os.listdir("input"):
-		zip_path = os.path.join("input/", f)
+	for f in os.listdir(config.mods_folder):
+		zip_path = os.path.join(config.mods_folder, f)
 		if zipfile.is_zipfile(zip_path):
 			with zipfile.ZipFile(zip_path) as item:
-				item.extractall("input")
+				item.extractall(config.mods_folder)
 			os.remove(zip_path)
 
 
-def get_output_folder_path(input_folder_path):
-	return os.path.join(config.output_path, pathlib.Path(*pathlib.Path(input_folder_path).parts[1:]))
+def get_total_mod_count(mods_folder):
+	return len([name for name in os.listdir(mods_folder) if os.path.isdir(os.path.join(mods_folder, name))])
 
 
-def try_print_mod_name(input_folder_path):
-	input_folder_path_tuple = pathlib.Path(input_folder_path).parts
-	
-	if len(input_folder_path_tuple) == 2:
-		print("Converting '{}'".format(input_folder_path_tuple[1]))
+def get_mod_subfolder(input_folder_path):
+	return input_folder_path.replace(config.mods_folder + "\\", "") # TODO: Find proper replacement for removing the \\ part that will also work for Unix.
+
+
+def get_output_folder_path(mod_subfolder):
+	return os.path.join(config.output_folder, mod_subfolder)
+
+
+def try_print_mod_name(mod_subfolder, total_mod_count):
+	global mod_count
+	input_folder_path_tuple = pathlib.Path(mod_subfolder).parts
+
+	if len(input_folder_path_tuple) == 1:
+		print("Converting '{}'".format(input_folder_path_tuple[0]))
+		mod_count += 1
+		config.progress_bar.UpdateBar(mod_count % total_mod_count, total_mod_count)
 
 
 def create_folder(input_folder_path, output_folder):
-	# Prevents putting the "input" folder itself into the config.output_path folder.
-	if input_folder_path != "input":
+	# Prevents putting the config.mods_folder itself into the config.output_folder.
+	if input_folder_path != config.mods_folder:
 		try:
 			os.makedirs(output_folder)
 		except FileExistsError:
@@ -160,13 +177,13 @@ def regex_replace_bmps_and_wavs(all_lines):
 
 
 def create_zips():
-	# Get mod folder names from the input folder.
-	folder_names = [f for f in os.listdir("input") if os.path.isdir(os.path.join(config.output_path, f))]
+	# Get mod folder names from the config.mods_folder.
+	folder_names = [f for f in os.listdir(config.mods_folder) if os.path.isdir(os.path.join(config.output_folder, f))]
 
 	for f in folder_names:
 		print("Zipping '{}'".format(f))
-		folder_path = os.path.join(config.output_path, f)
-		shutil.make_archive(folder_path, "zip", root_dir=config.output_path, base_dir=f)
+		folder_path = os.path.join(config.output_folder, f)
+		shutil.make_archive(folder_path, "zip", root_dir=config.output_folder, base_dir=f)
 		shutil.rmtree(folder_path)
 
 
