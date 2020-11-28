@@ -9,7 +9,7 @@ total_progress = 0
 
 
 def main():
-	global total_progress
+	global progress, total_progress
 
 	time_start = time.time()
 
@@ -27,6 +27,9 @@ def main():
 
 	if config.sg.user_settings_get_entry("output_zips"):
 		create_zips()
+
+	progress = 0
+	total_progress = 0
 
 	elapsed = math.floor(time.time() - time_start)
 	if config.sg.user_settings_get_entry("play_finish_sound"):
