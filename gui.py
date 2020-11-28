@@ -1,5 +1,5 @@
-# Use "python gui.py", "py gui.py" doesn't work.
-# Run "pyinstaller --noconsole --onefile gui.py"
+# Run: python gui.py
+# Build: pyinstaller --noconsole --onefile --icon=cclmc-icon.ico --name="Legacy Mod Converter" gui.py
 
 import os.path, pathlib
 import PySimpleGUI as sg
@@ -9,7 +9,7 @@ import config, convert
 def get_folder_containing_mods(mods_folder):
 	parts = pathlib.Path(mods_folder).parts
 	if parts[-1].endswith(".rte"):
-		return pathlib.Path(*parts[:-1]).as_posix() # .as_posix() prevents .replace() problems.
+		return pathlib.Path(*parts[:-1]).as_posix() # .as_posix() prevents .replace() issues.
 	return mods_folder
 
 
@@ -17,29 +17,41 @@ paths_column = [
 	[sg.Frame(layout=[
 	[
 		sg.Text("Folder with legacy mod(s)"),
-		sg.In(size=(25, 1), enable_events=True, key="-MODS FOLDER-"),
+		sg.In(
+			sg.user_settings_get_entry("mods_folder"),
+			size=(25, 1),
+			enable_events=True,
+			key="-MODS FOLDER-",
+			background_color="light green" if sg.user_settings_get_entry("mods_folder") else "pink"
+		),
 		sg.FolderBrowse()
 	],
 	[
 		sg.Text("Output CCCP folder"),
-		sg.In(size=(25, 1), enable_events=True, key="-OUTPUT FOLDER-"),
+		sg.In(
+			sg.user_settings_get_entry("output_folder"),
+			size=(25, 1),
+			enable_events=True,
+			key="-OUTPUT FOLDER-",
+			background_color="light green" if sg.user_settings_get_entry("output_folder") else "pink"
+		),
 		sg.FolderBrowse()
 	]
-	], title='Paths', element_justification='right')],
+	], title="Paths", element_justification="right")],
 ]
 
 options_column = [
 	[sg.Frame(layout=[
-		[sg.Checkbox('Output zips', size=(10, 1), tooltip=' Zipping is slow ', key="-OUTPUT ZIPS-")],
-		[sg.Checkbox('Play finish sound', size=(12, 1), tooltip=' For when converting takes long ', key="-PLAY FINISH SOUND-", default=True)]
-	], title='Options')],
+		[sg.Checkbox("Output zips", size=(10, 1), tooltip=" Zipping is slow ", key="-OUTPUT ZIPS-", default=sg.user_settings_get_entry("output_zips"))],
+		[sg.Checkbox("Play finish sound", size=(12, 1), tooltip=" For when converting takes long ", key="-PLAY FINISH SOUND-", default=sg.user_settings_get_entry("play_finish_sound"))]
+	], title="Options")],
 ]
 
 run_column = [
 	[sg.Frame(layout=[
-		[sg.Button('Convert', key="-CONVERT-")],
-		[sg.ProgressBar(100, size=(22.5, 20), key='-PROGRESS BAR-')]
-	], title='Run', element_justification='center')],
+		[sg.Button("Convert", key="-CONVERT-")],
+		[sg.ProgressBar(100, size=(22.5, 20), key="-PROGRESS BAR-")]
+	], title="Run", element_justification="center")],
 ]
 
 layout = [
@@ -52,8 +64,9 @@ layout = [
 	]
 ]
 
-window = sg.Window("Legacy Mod Converter - Alpha", layout)
-config.progress_bar = window['-PROGRESS BAR-']
+config.sg = sg
+window = sg.Window("Legacy Mod Converter - v1.0", layout, icon="I:/Users/welfj/Documents/Programming/Python/cc-legacy-mod-converter/cclmc-icon.ico")
+config.progress_bar = window["-PROGRESS BAR-"]
 
 
 while True:
@@ -63,18 +76,18 @@ while True:
 		window.close()
 		break
 
-	# print("EVENT:", event)
-	# print("VALUES:", values)
-
 	if event == "-MODS FOLDER-":
 		mods_folder = values[event]
 		if mods_folder != "":
-			config.mods_folder = get_folder_containing_mods(mods_folder)
+			sg.user_settings_set_entry("mods_folder", get_folder_containing_mods(mods_folder))
+			window[event](background_color="light green")
 	elif event == "-OUTPUT FOLDER-":
-		config.output_folder = values[event]
+		output_folder = values[event]
+		if output_folder != "":
+			sg.user_settings_set_entry("output_folder", output_folder)
+			window[event](background_color="light green")
 	elif event == "-CONVERT-":
-		# TODO: Prevent the user from pressing the "Convert" button if the mods & output folder haven't been set yet.
-		# TODO: Retain paths from last time .exe was started somehow. 
-		config.output_zips = values["-OUTPUT ZIPS-"]
-		config.play_finish_sound = values["-PLAY FINISH SOUND-"]
-		convert.main()
+		if sg.user_settings_get_entry("mods_folder") not in (None, "") and sg.user_settings_get_entry("output_folder") not in (None, ""):
+			sg.user_settings_set_entry("output_zips", values["-OUTPUT ZIPS-"])
+			sg.user_settings_set_entry("play_finish_sound", values["-PLAY FINISH SOUND-"])
+			convert.main()

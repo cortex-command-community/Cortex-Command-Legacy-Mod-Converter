@@ -6,4 +6,4 @@ example_legacy_mods
 __pycache__
 build
 dist
-gui.spec
+Legacy Mod Converter.spec
