@@ -130,6 +130,8 @@ conversion_rules = {
 	'Base.rte/Actors/BigCrash2.wav': 'Base.rte/Sounds/Physics/BigCrash2.flac',
 	'Base.rte/Actors/BigCrash3.wav': 'Base.rte/Sounds/Physics/BigCrash3.flac',
 	'Ronin.rte/Effects/Sounds/TommyFire.wav': 'Ronin.rte/Devices/Weapons/AK47/Sounds/Fire1.flac',
+	'Ronin.rte/Effects/Sounds/ThumperFire.wav': 'Ronin.rte/Devices/Weapons/M79/Sounds/Fire1.flac',
+	'Coalition.rte/Effects/Sounds/AutoCannonFire.wav': 'Coalition.rte/Devices/Weapons/AutoCannon/Sounds/Fire1.flac',
 	# '': '',
 
 	# Image files
@@ -300,6 +302,15 @@ conversion_rules = {
 	# 'Ronin.rte/Actors/Infantry/HandBGA.bmp': 'Ronin.rte/Actors/Infantry/RoninLight/HandFGA.png',
 	# 'Base.rte/Devices/Brass/Casing.bmp': 'Base.rte/Effects/Brass/Casing.png',
 	'Dummy.rte/ModuleIcon.bmp': 'Dummy.rte/ModuleIcon.png',
+	'Imperatus.rte/Devices/Sprites/SluggerShot.bmp': 'Imperatus.rte/Devices/Weapons/Devastator/DevastatorRound.png',
+	'Imperatus.rte/Devices/Sprites/SniperCasing.bmp': 'Imperatus.rte/Devices/Weapons/Devastator/DevastatorRound.png',
+	'Base.rte/Devices/Constructor/Dot.bmp': 'Base.rte/Devices/Tools/Constructor/Dot.png',
+	'Base.rte/Devices/Pistols/MagazineEnergyA.bmp': 'Base.rte/Devices/Tools/Constructor/MagazineConstructorB.png',
+	'Coalition.rte/Devices/Sprites/MagazineGatlingunA.bmp': 'Coalition.rte/Devices/Weapons/GatlingGun/GatlingGunMagazine.png',
+	'Coalition.rte/Devices/Sprites/GatlingunA.bmp': 'Coalition.rte/Devices/Weapons/GatlingGun/GatlingGun.png',
+	'Coalition.rte/Devices/Sprites/BulletGrenadeA.bmp': 'Coalition.rte/Devices/Weapons/AutoCannon/AutoCannonShot.png',
+	'Coalition.rte/Devices/Sprites/MagazineAutoCannonA.bmp': 'Coalition.rte/Devices/Weapons/AutoCannon/AutoCannonMagazine.png',
+	'Coalition.rte/Devices/Sprites/AutoCannonA.bmp': 'Coalition.rte/Devices/Weapons/AutoCannon/AutoCannon.png',
 	# '': '',
 
 	# Weapon groups. These don't show up as errors, but if not properly changed, weapons may not spawn correctly.
@@ -425,7 +436,6 @@ conversion_rules = {
 	'Round AK-47': 'Round Ronin AK-47',
 	'Tracer AK-47': 'Tracer Ronin AK-47',
 	'Shell Smoking': 'Smoking Large Casing',
-	# '': '', # Brain Gib A 	to 	Brain Gib	--Careful with search and replace.
 	'Small MG Turret': 'Small Turret',
 	# '': '', # Drop Ship	to	Dropship		--Careful with these two, they are for the Base (Dropship MK1) and Dummy (Dropship) variants. ONLY replace parts that clearly refer to either of the two.
 	# '': '', # Dirt		to	Topsoil
@@ -550,6 +560,16 @@ conversion_rules = {
 	'Soldier Dislodge Path': 'Human Dislodge Path',
 	'Particle Coalition Fake Missile': 'Null Bullet',
 	'IsPlayerTeam': 'IsHumanTeam',
+	'Brainbot Head A': 'Mobile Brain Case',
+	'Dummy Dropship Door Gib A': 'Dummy Dropship Hatch Gib A',
+	'Dummy Dropship Door Gib B': 'Dummy Dropship Hatch Gib B',
+	'Round M16': 'Round Ronin M16',
+	'Tracer M16': 'Tracer Ronin M16',
+	'Base.rte/Devices/Constructor/ConstructorCollect.lua': 'Base.rte/Devices/Tools/Constructor/ConstructorCollect.lua',
+	'Base.rte/Devices/Constructor/ConstructorCollectGold.lua': 'Base.rte/Devices/Tools/Constructor/ConstructorCollectGold.lua',
+	'Ronin.rte/Devices/Weapons/Shotgun.lua': 'Base.rte/Devices/Weapons/Shotgun/Shotgun.lua',
+	'Imperatus.rte/Devices/Weapons/HeavySniperRound.lua': 'Base.rte/Scripts/Shared/SmokeTrail.lua',
+	'Base.rte/Actors/Medic Drone/Medic.lua': 'Base.rte/Actors/Mecha/Medic/Medic.lua',
 	# '': '',
 
 	# .bmps renamed to .pngs, this should be done with regex later on as the capitalization should be ignored.
