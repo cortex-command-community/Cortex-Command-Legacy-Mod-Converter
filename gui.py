@@ -1,5 +1,5 @@
 # Run: python gui.py
-# Build: pyinstaller --noconsole --onefile --icon=cclmc-icon.ico --name="Legacy Mod Converter" gui.py
+# Build: pyinstaller --noconsole --onefile --icon=media/cclmc-icon.ico --name="Legacy Mod Converter" gui.py
 
 import os.path, pathlib
 import PySimpleGUI as sg
@@ -65,7 +65,7 @@ layout = [
 ]
 
 config.sg = sg
-window = sg.Window("Legacy Mod Converter - v1.0", layout, icon="I:/Users/welfj/Documents/Programming/Python/cc-legacy-mod-converter/cclmc-icon.ico")
+window = sg.Window("Legacy Mod Converter - v1.0", layout, icon="media/cclmc-icon.ico")
 config.progress_bar = window["-PROGRESS BAR-"]
 
 

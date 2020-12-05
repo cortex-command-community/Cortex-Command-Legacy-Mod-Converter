@@ -1,8 +1,11 @@
-import os, time, pathlib, shutil, math, re, sys, shutil, winsound, zipfile
+import os, time, pathlib, shutil, math, re, sys, shutil, zipfile
+from playsound import playsound
 import config
 
 from conversion_rules import conversion_rules
 
+
+finishSoundPath = "media/finish.wav"
 
 progress = 0
 total_progress = 0
@@ -33,7 +36,7 @@ def main():
 
 	elapsed = math.floor(time.time() - time_start)
 	if config.sg.user_settings_get_entry("play_finish_sound"):
-		winsound.MessageBeep()
+		playsound(finishSoundPath)
 	print("Finished in {} {}".format(elapsed, pluralize("second", elapsed)))
 
 
