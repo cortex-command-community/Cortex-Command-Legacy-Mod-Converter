@@ -1,0 +1,4 @@
+PySimpleGUI
+playsound
+pyinstaller
+# python3 needs sudo apt-get install python3-tk
