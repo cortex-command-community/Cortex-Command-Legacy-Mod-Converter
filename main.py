@@ -1,5 +1,4 @@
-# from python import gui
-import gui
+from python import gui
 
 gui.init_window_theme()
 gui.run_window(gui.init_window())

@@ -1,7 +1,6 @@
 import os, time, pathlib, shutil, math, re, sys, shutil, zipfile
 from playsound import playsound
-# from python import shared_globals as cfg
-import shared_globals as cfg
+from python import shared_globals as cfg
 
 from conversion_rules import conversion_rules
 

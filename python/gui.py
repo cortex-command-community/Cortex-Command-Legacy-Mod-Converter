@@ -1,12 +1,10 @@
 # Run: python gui.py
-# Build: pyinstaller --noconsole --onefile --icon=media/cclmc-icon.ico --name="Legacy Mod Converter" gui.py
+# Build: pyinstaller --noconsole --onefile --icon=media/cclmc-icon.ico --name="Legacy Mod Converter" main.py
 
 import os.path, pathlib, webbrowser
 import PySimpleGUI as sg
-# from python import shared_globals as cfg
-import shared_globals as cfg
-# from python import convert
-import convert
+from python import shared_globals as cfg
+from python import convert
 
 
 def init_window_theme():
@@ -27,7 +25,6 @@ def get_folder_containing_mods(mods_folder):
 
 def init_window():
 	no_path_set_color = "#b35858"
-	print(sg.user_settings_filename())
 
 	paths_column = [
 		[sg.Frame(layout=[
@@ -126,7 +123,3 @@ def run_window(window):
 			webbrowser.open("https://github.com/cortex-command-community/Cortex-Command-Legacy-Mod-Converter")
 		elif event == "-DISCORD-":
 			webbrowser.open("https://discord.gg/SdNnKJN")
-
-
-# init_window_theme()
-# run_window(init_window())
