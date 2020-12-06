@@ -2,7 +2,7 @@
 <h1 align="center">Cortex Command Legacy Mod Converter</h1>
 
 ## Introduction
-This project automates ***most*** of the conversion work required to convert the legacy `Cortex Command` mods into `Cortex Command Community Project` compatible mods.
+This project automates ***most*** of the conversion work required to convert the legacy (old) `Cortex Command` mods into `Cortex Command Community Project` compatible mods.
 
 ## Getting started
 Download the [***Legacy Mod Converter***](http://www.mediafire.com/file/b2qdhe55b1ggy73/Legacy_Mod_Converter.exe/file) program. Create a new folder and put your legacy mods that you want to convert in it. Run the Legacy Mod Converter program.
