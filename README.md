@@ -7,6 +7,8 @@ This project automates ***most*** of the conversion work required to convert the
 ## Getting started
 Download the [***Legacy Mod Converter***](http://www.mediafire.com/file/b2qdhe55b1ggy73/Legacy_Mod_Converter.exe/file) program. Create a new folder and put your legacy mods that you want to convert in it. Run the Legacy Mod Converter program.
 
+If you get a "`Microsoft Defender SmartScreen prevented an unrecognized app from starting. Running this app might put your PC at risk.`" popup message when trying to run the program you should press `More info` and then `Run anyway`.
+
 <p align="center"><img src="media/cclmc-screenshot.png" alt="Legacy Mod Converter screenshot"></p>
 
 ## Disclaimer
