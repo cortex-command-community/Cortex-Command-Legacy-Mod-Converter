@@ -17,8 +17,8 @@ This program will do most of the conversion work for you, but some conversion st
 ## How to add your own conversion rules
 * Download Python 3 and this GitHub repository.
 * Change your directory to the `cc-legacy-mod-converter` repository in your terminal.
-* Run `python gui.py` when you want to convert old mods.
-* `conversion_rules.py` has the `conversion_rules` dictionary inside of it. The dictionary contains entries that look like `'foo': 'bar',` which means means that any time `foo` will be encountered by `convert.py`, it will replace it with `bar`. You can add extra cases to it, see the next sections on how to do this.
+* Run `python main.py` when you want to convert old mods.
+* `conversion_rules.py` has the `conversion_rules` dictionary inside of it. The dictionary contains entries that look like `'foo': 'bar',` which means means that any time `foo` is encountered in a legacy mod it will be replaced with `bar`. You can also add extra conversion cases to it; see the next sections on how to do this in detail.
 
 ## Tutorials on constructing conversion rules efficiently
 * [Fixing CCCP crashes/errors with the program Everything](https://github.com/cortex-command-community/Cortex-Command-Legacy-Mod-Converter/wiki/Fixing-CCCP-crashes-errors-with-the-program-Everything)
