@@ -7,6 +7,9 @@ from python import shared_globals as cfg
 from python import convert
 
 
+sg.user_settings_filename(filename="settings.json", path=".")
+
+
 def init_window_theme():
 	path_set_color = "#528b30"
 	progress_bar_color = "#17569c"
