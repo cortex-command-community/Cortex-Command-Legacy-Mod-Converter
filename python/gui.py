@@ -3,8 +3,8 @@
 
 import os.path, pathlib, webbrowser
 import PySimpleGUI as sg
-from python import shared_globals as cfg
-from python import convert
+from Python import shared_globals as cfg
+from Python import convert
 
 
 sg.user_settings_filename(filename="settings.json", path=".")

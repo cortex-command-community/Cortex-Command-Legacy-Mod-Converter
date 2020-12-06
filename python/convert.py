@@ -1,7 +1,7 @@
 import os, time, pathlib, shutil, math, re, sys, shutil, zipfile, json
 from jsoncomment import JsonComment
 from playsound import playsound
-from python import shared_globals as cfg
+from Python import shared_globals as cfg
 
 
 finishSoundPath = "media/finish.wav"

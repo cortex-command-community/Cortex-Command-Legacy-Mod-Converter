@@ -1,8 +1,8 @@
-input/*
-!input/.empty
-output/*
-!output/.empty
-example_legacy_mods
+Input/*
+!Input/.empty
+Output/*
+!Output/.empty
+ExampleLegacyMods
 __pycache__
 build
 dist
