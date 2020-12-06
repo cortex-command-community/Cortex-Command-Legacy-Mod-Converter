@@ -1,15 +1,26 @@
-import os, time, pathlib, shutil, math, re, sys, shutil, zipfile
+import os, time, pathlib, shutil, math, re, sys, shutil, zipfile, json
+from jsoncomment import JsonComment
 from playsound import playsound
 from python import shared_globals as cfg
-
-from conversion_rules import conversion_rules
 
 
 finishSoundPath = "media/finish.wav"
 
-
 progress = 0
 total_progress = 0
+conversion_rules = {}
+
+
+def	load_conversion_rules():
+	json_parser = JsonComment(json)
+
+	for name in os.listdir("ConversionRules"):
+		if name.endswith(".json"):
+			path = os.path.join("ConversionRules", name)
+			with open(path) as f:
+				conversion_rules.update(json_parser.load(f))
+
+load_conversion_rules()
 
 
 def main():
