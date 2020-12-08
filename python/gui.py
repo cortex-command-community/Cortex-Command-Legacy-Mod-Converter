@@ -1,6 +1,3 @@
-# Run: python gui.py
-# Build: pyinstaller --noconsole --onefile --icon=media/cclmc-icon.ico --name="Legacy Mod Converter" main.py
-
 import os.path, pathlib, webbrowser
 import PySimpleGUI as sg
 
@@ -33,24 +30,13 @@ def init_window():
 	paths_column = [
 		[sg.Frame(layout=[
 		[
-			sg.Text("Folder with legacy mod(s)"),
+			sg.Text("Mod to convert"),
 			sg.In(
 				sg.user_settings_get_entry("input_folder"),
-				size=(25, 1),
+				size=(34, 1),
 				enable_events=True,
 				key="-INPUT FOLDER-",
 				background_color=sg.theme_input_background_color() if sg.user_settings_get_entry("input_folder") else no_path_set_color
-			),
-			sg.FolderBrowse()
-		],
-		[
-			sg.Text("Output CCCP folder"),
-			sg.In(
-				sg.user_settings_get_entry("output_folder"),
-				size=(25, 1),
-				enable_events=True,
-				key="-OUTPUT FOLDER-",
-				background_color=sg.theme_input_background_color() if sg.user_settings_get_entry("output_folder") else no_path_set_color
 			),
 			sg.FolderBrowse()
 		]
@@ -67,14 +53,14 @@ def init_window():
 	run_column = [
 		[sg.Frame(layout=[
 			[sg.Button("Convert", key="-CONVERT-")],
-			[sg.ProgressBar(100, size=(17.45, 20), key="-PROGRESS BAR-")]
+			[sg.ProgressBar(100, size=(17.4, 20), key="-PROGRESS BAR-")]
 		], title="Run", element_justification="center")]
 	]
 
 	info_column = [
 		[sg.Frame(layout=[
-			[sg.Image("media/github-icon.png", enable_events=True, key="-GITHUB-")],
-			[sg.Image("media/discord-icon.png", enable_events=True, key="-DISCORD-")]
+			[sg.Image("media/github-icon.png", enable_events=True, key="-GITHUB-", tooltip=" Visit this program's GitHub page ")],
+			[sg.Image("media/discord-icon.png", enable_events=True, key="-DISCORD-", tooltip=" Visit the CCCP Discord server ")]
 		], title="", pad=(0, (8, 0)))]
 	]
 
@@ -110,19 +96,17 @@ def run_window(window):
 			input_folder_or_file = values[event]
 			if input_folder_or_file != "":
 				sg.user_settings_set_entry("input_folder", get_input_folder(input_folder_or_file))
-				window[event](background_color=sg.theme_input_background_color())
-		elif event == "-OUTPUT FOLDER-":
-			output_folder = values[event]
-			if output_folder != "":
-				sg.user_settings_set_entry("output_folder", output_folder)
-				window[event](background_color=sg.theme_input_background_color())
+				window[event](background_color = sg.theme_input_background_color())
+		
 		elif event == "-OUTPUT ZIPS-":
 			sg.user_settings_set_entry("output_zips", values["-OUTPUT ZIPS-"])
 		elif event == "-PLAY FINISH SOUND-":
 			sg.user_settings_set_entry("play_finish_sound", values["-PLAY FINISH SOUND-"])
+		
 		elif event == "-CONVERT-":
-			if sg.user_settings_get_entry("input_folder") not in (None, "") and sg.user_settings_get_entry("output_folder") not in (None, ""):
-				convert.main()
+			if sg.user_settings_get_entry("input_folder") not in (None, ""):
+				convert.convert()
+		
 		elif event == "-GITHUB-":
 			webbrowser.open("https://github.com/cortex-command-community/Cortex-Command-Legacy-Mod-Converter")
 		elif event == "-DISCORD-":

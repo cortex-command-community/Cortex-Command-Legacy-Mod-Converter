@@ -10,6 +10,9 @@ progress = 0
 total_progress = 0
 conversion_rules = {}
 
+# If an exe executes this program then sys is frozen.
+output_folder = ".." if getattr(sys, 'frozen', False) else "Output"
+
 
 def	load_conversion_rules():
 	json_parser = JsonComment(json)
@@ -23,8 +26,8 @@ def	load_conversion_rules():
 load_conversion_rules()
 
 
-def main():
-	global progress, total_progress
+def convert():
+	global progress, total_progress, output_folder
 
 	time_start = time.time()
 
@@ -34,14 +37,14 @@ def main():
 	
 	for input_folder_path, input_subfolders, full_filename_list in os.walk(cfg.sg.user_settings_get_entry("input_folder")):
 		mod_subfolder = get_mod_subfolder(input_folder_path)
-		output_folder = get_output_folder_path(mod_subfolder)
+		output_subfolder = os.path.join(output_folder, mod_subfolder)
 
 		try_print_mod_name(mod_subfolder)
-		create_folder(input_folder_path, output_folder)
-		process_file(full_filename_list, input_folder_path, output_folder)
+		create_folder(input_folder_path, output_subfolder)
+		process_file(full_filename_list, input_folder_path, output_subfolder)
 
 	if cfg.sg.user_settings_get_entry("output_zips"):
-		create_zips()
+		create_zips(output_folder)
 
 	progress = 0
 	total_progress = 0
@@ -70,10 +73,6 @@ def get_total_progress():
 
 def get_mod_subfolder(input_folder_path):
 	return input_folder_path.replace(cfg.sg.user_settings_get_entry("input_folder") + "\\", "") # TODO: Find proper replacement for removing the \\ part that will also work for Unix.
-
-
-def get_output_folder_path(mod_subfolder):
-	return os.path.join(cfg.sg.user_settings_get_entry("output_folder"), mod_subfolder)
 
 
 def try_print_mod_name(mod_subfolder):
@@ -204,9 +203,8 @@ def regex_replace_bmps_and_wavs(all_lines):
 	return all_lines
 
 
-def create_zips():
+def create_zips(output_folder):
 	# Get mod folder names from the input_folder.
-	output_folder = cfg.sg.user_settings_get_entry("output_folder")
 	folder_names = [f for f in os.listdir(cfg.sg.user_settings_get_entry("input_folder")) if os.path.isdir(os.path.join(output_folder, f))]
 
 	for f in folder_names:
@@ -219,7 +217,3 @@ def create_zips():
 
 def pluralize(word, count):
 	return word + "s" if count != 1 else word
-
-
-if __name__ == "__main__":
-    main()
