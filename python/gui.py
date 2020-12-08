@@ -3,6 +3,7 @@
 
 import os.path, pathlib, webbrowser
 import PySimpleGUI as sg
+
 from Python import shared_globals as cfg
 from Python import convert
 
@@ -19,11 +20,11 @@ def init_window_theme():
 	sg.theme_progress_bar_color((progress_bar_color, sg.theme_progress_bar_color()[1]))
 
 
-def get_folder_containing_mods(mods_folder):
-	parts = pathlib.Path(mods_folder).parts
+def get_input_folder(input_folder):
+	parts = pathlib.Path(input_folder).parts
 	if parts[-1].endswith(".rte"):
 		return pathlib.Path(*parts[:-1]).as_posix() # .as_posix() prevents .replace() issues.
-	return mods_folder
+	return input_folder
 
 
 def init_window():
@@ -34,11 +35,11 @@ def init_window():
 		[
 			sg.Text("Folder with legacy mod(s)"),
 			sg.In(
-				sg.user_settings_get_entry("mods_folder"),
+				sg.user_settings_get_entry("input_folder"),
 				size=(25, 1),
 				enable_events=True,
-				key="-MODS FOLDER-",
-				background_color=sg.theme_input_background_color() if sg.user_settings_get_entry("mods_folder") else no_path_set_color
+				key="-INPUT FOLDER-",
+				background_color=sg.theme_input_background_color() if sg.user_settings_get_entry("input_folder") else no_path_set_color
 			),
 			sg.FolderBrowse()
 		],
@@ -105,10 +106,10 @@ def run_window(window):
 
 		# print(event, values)
 
-		if event == "-MODS FOLDER-":
-			mods_folder = values[event]
-			if mods_folder != "":
-				sg.user_settings_set_entry("mods_folder", get_folder_containing_mods(mods_folder))
+		if event == "-INPUT FOLDER-":
+			input_folder_or_file = values[event]
+			if input_folder_or_file != "":
+				sg.user_settings_set_entry("input_folder", get_input_folder(input_folder_or_file))
 				window[event](background_color=sg.theme_input_background_color())
 		elif event == "-OUTPUT FOLDER-":
 			output_folder = values[event]
@@ -120,7 +121,7 @@ def run_window(window):
 		elif event == "-PLAY FINISH SOUND-":
 			sg.user_settings_set_entry("play_finish_sound", values["-PLAY FINISH SOUND-"])
 		elif event == "-CONVERT-":
-			if sg.user_settings_get_entry("mods_folder") not in (None, "") and sg.user_settings_get_entry("output_folder") not in (None, ""):
+			if sg.user_settings_get_entry("input_folder") not in (None, "") and sg.user_settings_get_entry("output_folder") not in (None, ""):
 				convert.main()
 		elif event == "-GITHUB-":
 			webbrowser.open("https://github.com/cortex-command-community/Cortex-Command-Legacy-Mod-Converter")

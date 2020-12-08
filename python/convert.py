@@ -32,7 +32,7 @@ def main():
 
 	total_progress = get_total_progress()
 	
-	for input_folder_path, input_subfolders, full_filename_list in os.walk(cfg.sg.user_settings_get_entry("mods_folder")):
+	for input_folder_path, input_subfolders, full_filename_list in os.walk(cfg.sg.user_settings_get_entry("input_folder")):
 		mod_subfolder = get_mod_subfolder(input_folder_path)
 		output_folder = get_output_folder_path(mod_subfolder)
 
@@ -53,23 +53,23 @@ def main():
 
 
 def unzip():
-	mods_folder = cfg.sg.user_settings_get_entry("mods_folder")
-	for f in os.listdir(mods_folder):
-		zip_path = os.path.join(mods_folder, f)
+	input_folder = cfg.sg.user_settings_get_entry("input_folder")
+	for f in os.listdir(input_folder):
+		zip_path = os.path.join(input_folder, f)
 		if zipfile.is_zipfile(zip_path):
 			with zipfile.ZipFile(zip_path) as item:
-				item.extractall(mods_folder)
+				item.extractall(input_folder)
 			os.remove(zip_path)
 
 
 def get_total_progress():
-	mods_folder = cfg.sg.user_settings_get_entry("mods_folder")
-	mod_count = len([name for name in os.listdir(mods_folder) if os.path.isdir(os.path.join(mods_folder, name))])
+	input_folder = cfg.sg.user_settings_get_entry("input_folder")
+	mod_count = len([name for name in os.listdir(input_folder) if os.path.isdir(os.path.join(input_folder, name))])
 	return mod_count * 2 if cfg.sg.user_settings_get_entry("output_zips") else mod_count
 
 
 def get_mod_subfolder(input_folder_path):
-	return input_folder_path.replace(cfg.sg.user_settings_get_entry("mods_folder") + "\\", "") # TODO: Find proper replacement for removing the \\ part that will also work for Unix.
+	return input_folder_path.replace(cfg.sg.user_settings_get_entry("input_folder") + "\\", "") # TODO: Find proper replacement for removing the \\ part that will also work for Unix.
 
 
 def get_output_folder_path(mod_subfolder):
@@ -91,8 +91,8 @@ def update_progress():
 
 
 def create_folder(input_folder_path, output_folder):
-	# Prevents putting the mods_folder itself into the output_folder.
-	if input_folder_path != cfg.sg.user_settings_get_entry("mods_folder"):
+	# Prevents putting the input_folder itself into the output_folder.
+	if input_folder_path != cfg.sg.user_settings_get_entry("input_folder"):
 		try:
 			os.makedirs(output_folder)
 		except FileExistsError:
@@ -205,9 +205,9 @@ def regex_replace_bmps_and_wavs(all_lines):
 
 
 def create_zips():
-	# Get mod folder names from the mods_folder.
+	# Get mod folder names from the input_folder.
 	output_folder = cfg.sg.user_settings_get_entry("output_folder")
-	folder_names = [f for f in os.listdir(cfg.sg.user_settings_get_entry("mods_folder")) if os.path.isdir(os.path.join(output_folder, f))]
+	folder_names = [f for f in os.listdir(cfg.sg.user_settings_get_entry("input_folder")) if os.path.isdir(os.path.join(output_folder, f))]
 
 	for f in folder_names:
 		print("Zipping '{}'".format(f))
