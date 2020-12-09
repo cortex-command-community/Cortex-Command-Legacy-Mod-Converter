@@ -1,3 +1,4 @@
+import os, sys
 import os.path, pathlib, webbrowser
 import PySimpleGUI as sg
 
@@ -6,6 +7,13 @@ from Python import convert
 
 
 sg.user_settings_filename(filename="settings.json", path=".")
+
+
+# TODO: Move to shared_globals.py
+def resource_path(relative_path):
+	if hasattr(sys, '_MEIPASS'):
+		return os.path.join(sys._MEIPASS, relative_path)
+	return os.path.join(os.path.abspath("."), relative_path)
 
 
 def init_window_theme():
@@ -51,8 +59,8 @@ def init_window():
 	info_column = [
 		[sg.Frame(layout=[
 		[
-			sg.Image("media/github-icon.png", enable_events=True, key="-GITHUB-", tooltip=" Visit this program's GitHub page ", size=(0, 30)),
-			sg.Image("media/discord-icon.png", enable_events=True, key="-DISCORD-", tooltip=" Visit the CCCP Discord server for help ", size=(0, 30))
+			sg.Image(resource_path("media/github-icon.png"), enable_events=True, key="-GITHUB-", tooltip=" Visit this program's GitHub page ", size=(0, 30)),
+			sg.Image(resource_path("media/discord-icon.png"), enable_events=True, key="-DISCORD-", tooltip=" Visit the CCCP Discord server for help ", size=(0, 30))
 		]
 		], title="", pad=((9, 0), (8, 0)))]
 	]
@@ -68,7 +76,7 @@ def init_window():
 	]
 
 	cfg.sg = sg
-	window = sg.Window("Legacy Mod Converter - v1.0", layout, icon="media/cclmc-icon.ico", button_color=(sg.theme_text_color(), "#2a3948"))
+	window = sg.Window("Legacy Mod Converter - v1.0", layout, icon=resource_path("media/cclmc-icon.ico"), button_color=(sg.theme_text_color(), "#2a3948"))
 	cfg.progress_bar = window["-PROGRESS BAR-"]
 
 	return window

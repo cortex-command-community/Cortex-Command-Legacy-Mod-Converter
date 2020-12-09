@@ -5,7 +5,7 @@
 This project automates ***most*** of the conversion work required to convert the legacy (old) `Cortex Command` mods into `Cortex Command Community Project` compatible mods.
 
 ## Getting started
-Download the [***Legacy Mod Converter***](http://www.mediafire.com/file/ckln61cmqbv2geq/Legacy_Mod_Converter.exe/file) program. Create a new folder and put your legacy mods that you want to convert in it. Run the Legacy Mod Converter program.
+Download the [***Legacy Mod Converter***](http://www.mediafire.com/file/1ncoydmaehf4nyn/Legacy_Mod_Converter.exe/file) program. Create a new folder and put your legacy mods that you want to convert in it. Run the Legacy Mod Converter program.
 
 If you get a "`Microsoft Defender SmartScreen prevented an unrecognized app from starting. Running this app might put your PC at risk.`" popup message when trying to run the program you should press `More info` and then `Run anyway`.
 

@@ -2,14 +2,24 @@ import os, time, shutil, math, re, sys, shutil, zipfile, json, pathlib
 from pathlib import Path
 from jsoncomment import JsonComment
 from playsound import playsound
+
 from Python import shared_globals as cfg
 
-
-finishSoundPath = "media/finish.wav"
 
 progress = 0
 total_progress = 0
 conversion_rules = {}
+
+
+# TODO: Move to shared_globals.py
+def resource_path(relative_path):
+	if hasattr(sys, '_MEIPASS'):
+		return os.path.join(sys._MEIPASS, relative_path)
+	return os.path.join(os.path.abspath("."), relative_path)
+
+
+finishSoundPath = resource_path("Media/finish.wav")
+
 
 # If an exe executes this program then sys is frozen.
 output_folder = ".." if getattr(sys, 'frozen', False) else "Output"
@@ -18,9 +28,9 @@ output_folder = ".." if getattr(sys, 'frozen', False) else "Output"
 def	load_conversion_rules():
 	json_parser = JsonComment(json)
 
-	for name in os.listdir("ConversionRules"):
+	for name in os.listdir(resource_path("ConversionRules")):
 		if name.endswith(".json"):
-			path = os.path.join("ConversionRules", name)
+			path = os.path.join(resource_path("ConversionRules"), name)
 			with open(path) as f:
 				conversion_rules.update(json_parser.load(f))
 
@@ -213,7 +223,6 @@ def regex_replace_bmps_and_wavs(all_lines):
 
 
 def create_zips(input_folder, output_folder):
-	print(input_folder)
 	if input_folder.endswith(".rte"):
 		create_single_zip(Path(input_folder).name, output_folder)
 	else:
