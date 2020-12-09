@@ -46,6 +46,9 @@ def init_window():
 		]
 		], title="Convert Mods")]
 	]
+	
+	play_finish_sound_setting = sg.user_settings_get_entry("play_finish_sound")
+	sg.user_settings_set_entry("play_finish_sound", True if play_finish_sound_setting == None else play_finish_sound_setting)
 
 	options_column = [
 		[sg.Frame(layout=[
@@ -59,8 +62,8 @@ def init_window():
 	info_column = [
 		[sg.Frame(layout=[
 		[
-			sg.Image(resource_path("media/github-icon.png"), enable_events=True, key="-GITHUB-", tooltip=" Visit this program's GitHub page ", size=(0, 30)),
-			sg.Image(resource_path("media/discord-icon.png"), enable_events=True, key="-DISCORD-", tooltip=" Visit the CCCP Discord server for help ", size=(0, 30))
+			sg.Image(resource_path("Media/github-icon.png"), enable_events=True, key="-GITHUB-", tooltip=" Visit this program's GitHub page ", size=(0, 30)),
+			sg.Image(resource_path("Media/discord-icon.png"), enable_events=True, key="-DISCORD-", tooltip=" Visit the CCCP Discord server for help ", size=(0, 30))
 		]
 		], title="", pad=((9, 0), (8, 0)))]
 	]
@@ -76,7 +79,9 @@ def init_window():
 	]
 
 	cfg.sg = sg
-	window = sg.Window("Legacy Mod Converter - v1.0", layout, icon=resource_path("media/cclmc-icon.ico"), button_color=(sg.theme_text_color(), "#2a3948"))
+	convert.load_conversion_rules()
+
+	window = sg.Window("Legacy Mod Converter - v1.0", layout, icon=resource_path("Media/cclmc-icon.ico"), button_color=(sg.theme_text_color(), "#2a3948"))
 	cfg.progress_bar = window["-PROGRESS BAR-"]
 
 	return window

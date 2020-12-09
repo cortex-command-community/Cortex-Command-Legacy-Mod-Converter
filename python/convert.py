@@ -1,8 +1,7 @@
-import os, time, shutil, math, re, sys, shutil, zipfile, json, pathlib
+import os, time, shutil, math, re, sys, shutil, zipfile, json, pathlib, webbrowser
 from pathlib import Path
 from jsoncomment import JsonComment
 from playsound import playsound
-import PySimpleGUI as sg
 
 from Python import shared_globals as cfg
 
@@ -29,8 +28,6 @@ output_folder = ".." if getattr(sys, 'frozen', False) else "Output"
 def	load_conversion_rules():
 	json_parser = JsonComment(json)
 
-	github_url = "https://github.com/cortex-command-community/Cortex-Command-Legacy-Mod-Converter"
-
 	json_files_found = 0
 	try:
 		for name in os.listdir("ConversionRules"):
@@ -40,14 +37,17 @@ def	load_conversion_rules():
 					json_files_found += 1
 					conversion_rules.update(json_parser.load(f))
 	except:
-		sg.Popup("The folder 'ConversionRules' wasn't found next to this executable. You can get the missing folder from the Legacy Mod Converter GitHub repo:", github_url)
-		sys.exit()
+		check_github_button_clicked_and_exit(cfg.sg.Popup("The 'ConversionRules' folder wasn't found next to this executable. You can get the missing folder from the Legacy Mod Converter GitHub repo.", title="Missing ConversionRules folder", custom_text="Go to GitHub"))
 	
 	if json_files_found == 0:
-		sg.Popup("The folder 'ConversionRules' didn't contain any JSON files. You can get the JSON files from the Legacy Mod Converter GitHub repo:", github_url)
-		sys.exit()
+		check_github_button_clicked_and_exit(cfg.sg.Popup("The 'ConversionRules' folder didn't contain any JSON files. You can get the JSON files from the Legacy Mod Converter GitHub repo.", title="Missing JSON files", custom_text="Go to GitHub"))
 
-load_conversion_rules()
+
+
+def check_github_button_clicked_and_exit(clicked_github_button):
+	if clicked_github_button:
+		webbrowser.open("https://github.com/cortex-command-community/Cortex-Command-Legacy-Mod-Converter")
+	sys.exit()
 
 
 def convert():
