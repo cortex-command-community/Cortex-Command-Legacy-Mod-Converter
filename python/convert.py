@@ -2,6 +2,7 @@ import os, time, shutil, math, re, sys, shutil, zipfile, json, pathlib
 from pathlib import Path
 from jsoncomment import JsonComment
 from playsound import playsound
+import PySimpleGUI as sg
 
 from Python import shared_globals as cfg
 
@@ -28,11 +29,23 @@ output_folder = ".." if getattr(sys, 'frozen', False) else "Output"
 def	load_conversion_rules():
 	json_parser = JsonComment(json)
 
-	for name in os.listdir(resource_path("ConversionRules")):
-		if name.endswith(".json"):
-			path = os.path.join(resource_path("ConversionRules"), name)
-			with open(path) as f:
-				conversion_rules.update(json_parser.load(f))
+	github_url = "https://github.com/cortex-command-community/Cortex-Command-Legacy-Mod-Converter"
+
+	json_files_found = 0
+	try:
+		for name in os.listdir("ConversionRules"):
+			if name.endswith(".json"):
+				path = os.path.join("ConversionRules", name)
+				with open(path) as f:
+					json_files_found += 1
+					conversion_rules.update(json_parser.load(f))
+	except:
+		sg.Popup("The folder 'ConversionRules' wasn't found next to this executable. You can get the missing folder from the Legacy Mod Converter GitHub repo:", github_url)
+		sys.exit()
+	
+	if json_files_found == 0:
+		sg.Popup("The folder 'ConversionRules' didn't contain any JSON files. You can get the JSON files from the Legacy Mod Converter GitHub repo:", github_url)
+		sys.exit()
 
 load_conversion_rules()
 
