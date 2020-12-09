@@ -17,20 +17,13 @@ def init_window_theme():
 	sg.theme_progress_bar_color((progress_bar_color, sg.theme_progress_bar_color()[1]))
 
 
-def get_input_folder(input_folder):
-	parts = pathlib.Path(input_folder).parts
-	if parts[-1].endswith(".rte"):
-		return pathlib.Path(*parts[:-1]).as_posix() # .as_posix() prevents .replace() issues.
-	return input_folder
-
-
 def init_window():
 	no_path_set_color = "#b35858"
 
 	paths_column = [
 		[sg.Frame(layout=[
 		[
-			sg.Text("Mod to convert"),
+			sg.Text("Mod(s) to convert", tooltip=" You can convert multiple legacy mods at once by selecting their parent directory "),
 			sg.In(
 				sg.user_settings_get_entry("input_folder"),
 				size=(34, 1),
@@ -95,7 +88,7 @@ def run_window(window):
 		if event == "-INPUT FOLDER-":
 			input_folder_or_file = values[event]
 			if input_folder_or_file != "":
-				sg.user_settings_set_entry("input_folder", get_input_folder(input_folder_or_file))
+				sg.user_settings_set_entry("input_folder", input_folder_or_file)
 				window[event](background_color = sg.theme_input_background_color())
 		
 		elif event == "-OUTPUT ZIPS-":

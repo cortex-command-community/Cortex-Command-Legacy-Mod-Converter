@@ -1,4 +1,5 @@
-import os, time, pathlib, shutil, math, re, sys, shutil, zipfile, json
+import os, time, shutil, math, re, sys, shutil, zipfile, json, pathlib
+from pathlib import Path
 from jsoncomment import JsonComment
 from playsound import playsound
 from Python import shared_globals as cfg
@@ -31,12 +32,14 @@ def convert():
 
 	time_start = time.time()
 
-	unzip()
+	input_folder = cfg.sg.user_settings_get_entry("input_folder")
 
-	total_progress = get_total_progress()
+	unzip(input_folder)
+
+	total_progress = get_total_progress(input_folder)
 	
-	for input_folder_path, input_subfolders, full_filename_list in os.walk(cfg.sg.user_settings_get_entry("input_folder")):
-		mod_subfolder = get_mod_subfolder(input_folder_path)
+	for input_folder_path, input_subfolders, full_filename_list in os.walk(input_folder):
+		mod_subfolder = get_mod_subfolder(input_folder, input_folder_path)
 		output_subfolder = os.path.join(output_folder, mod_subfolder)
 
 		try_print_mod_name(mod_subfolder)
@@ -44,7 +47,7 @@ def convert():
 		process_file(full_filename_list, input_folder_path, output_subfolder)
 
 	if cfg.sg.user_settings_get_entry("output_zips"):
-		create_zips(output_folder)
+		create_zips(input_folder, output_folder)
 
 	progress = 0
 	total_progress = 0
@@ -55,8 +58,7 @@ def convert():
 	print("Finished in {} {}".format(elapsed, pluralize("second", elapsed)))
 
 
-def unzip():
-	input_folder = cfg.sg.user_settings_get_entry("input_folder")
+def unzip(input_folder):
 	for f in os.listdir(input_folder):
 		zip_path = os.path.join(input_folder, f)
 		if zipfile.is_zipfile(zip_path):
@@ -65,14 +67,20 @@ def unzip():
 			os.remove(zip_path)
 
 
-def get_total_progress():
-	input_folder = cfg.sg.user_settings_get_entry("input_folder")
-	mod_count = len([name for name in os.listdir(input_folder) if os.path.isdir(os.path.join(input_folder, name))])
+def get_total_progress(input_folder):
+	if input_folder.endswith(".rte"):
+		mod_count = 1
+	else:
+		mod_count = len([name for name in os.listdir(input_folder) if os.path.isdir(os.path.join(input_folder, name))])
+	
 	return mod_count * 2 if cfg.sg.user_settings_get_entry("output_zips") else mod_count
 
 
-def get_mod_subfolder(input_folder_path):
-	return input_folder_path.replace(cfg.sg.user_settings_get_entry("input_folder") + "\\", "") # TODO: Find proper replacement for removing the \\ part that will also work for Unix.
+def get_mod_subfolder(input_folder, input_folder_path):
+	if input_folder.endswith(".rte"):
+		return os.path.relpath(input_folder_path, os.path.join(input_folder, os.pardir))
+	else:
+		return os.path.relpath(input_folder_path, input_folder)
 
 
 def try_print_mod_name(mod_subfolder):
@@ -89,16 +97,17 @@ def update_progress():
 	cfg.progress_bar.UpdateBar(progress % total_progress, total_progress)
 
 
-def create_folder(input_folder_path, output_folder):
-	# Prevents putting the input_folder itself into the output_folder.
-	if input_folder_path != cfg.sg.user_settings_get_entry("input_folder"):
-		try:
-			os.makedirs(output_folder)
-		except FileExistsError:
-			pass
+def create_folder(input_folder_path, output_subfolder):
+	# Prevents putting the input_folder itself into the output_subfolder.
+	# if input_folder_path != cfg.sg.user_settings_get_entry("input_folder"):
+
+	try:
+		os.makedirs(output_subfolder)
+	except FileExistsError:
+		pass
 
 
-def process_file(full_filename_list, input_folder_path, output_folder):
+def process_file(full_filename_list, input_folder_path, output_subfolder):
 	for full_filename in full_filename_list:
 		filename, file_extension = os.path.splitext(full_filename)
 
@@ -107,7 +116,7 @@ def process_file(full_filename_list, input_folder_path, output_folder):
 			continue
 
 		input_file_path  = os.path.join(input_folder_path, full_filename)
-		output_file_path = os.path.join(output_folder, full_filename)
+		output_file_path = os.path.join(output_subfolder, full_filename)
 
 		if file_extension in (".ini", ".lua"):
 			create_converted_file(input_file_path, output_file_path)
@@ -203,16 +212,23 @@ def regex_replace_bmps_and_wavs(all_lines):
 	return all_lines
 
 
-def create_zips(output_folder):
-	# Get mod folder names from the input_folder.
-	folder_names = [f for f in os.listdir(cfg.sg.user_settings_get_entry("input_folder")) if os.path.isdir(os.path.join(output_folder, f))]
+def create_zips(input_folder, output_folder):
+	print(input_folder)
+	if input_folder.endswith(".rte"):
+		create_single_zip(Path(input_folder).name, output_folder)
+	else:
+		# TODO: Move check if it's a directory out of this loop. 
+		folder_names = [f for f in os.listdir(cfg.sg.user_settings_get_entry("input_folder")) if os.path.isdir(os.path.join(output_folder, f))]
+		for mod_name in folder_names:
+			create_single_zip(mod_name, output_folder)
 
-	for f in folder_names:
-		print("Zipping '{}'".format(f))
-		folder_path = os.path.join(output_folder, f)
-		shutil.make_archive(folder_path, "zip", root_dir=output_folder, base_dir=f)
-		shutil.rmtree(folder_path)
-		update_progress()
+
+def create_single_zip(mod_name, output_folder):
+	print("Zipping '{}'".format(mod_name))
+	folder_path = os.path.join(output_folder, mod_name)
+	shutil.make_archive(folder_path, "zip", root_dir=output_folder, base_dir=mod_name)
+	shutil.rmtree(folder_path)
+	update_progress()
 
 
 def pluralize(word, count):
