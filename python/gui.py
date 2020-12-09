@@ -26,6 +26,11 @@ def init_window_theme():
 
 
 def init_window():
+	if not os.path.isfile(sg.user_settings_filename()):
+		clicked_github_button = sg.Popup("This is a tool that allows you to convert legacy (old) mods to the latest version of CCCP. You can get more information from the Legacy Mod Converter GitHub repo.", title="Welcome screen", custom_text="Go to GitHub")
+		if clicked_github_button:
+			webbrowser.open("https://github.com/cortex-command-community/Cortex-Command-Legacy-Mod-Converter")
+	
 	no_path_set_color = "#b35858"
 
 	paths_column = [
@@ -46,7 +51,7 @@ def init_window():
 		]
 		], title="Convert Mods")]
 	]
-	
+
 	play_finish_sound_setting = sg.user_settings_get_entry("play_finish_sound")
 	sg.user_settings_set_entry("play_finish_sound", True if play_finish_sound_setting == None else play_finish_sound_setting)
 
