@@ -23,38 +23,38 @@ def init_window():
 	paths_column = [
 		[sg.Frame(layout=[
 		[
-			sg.Text("Mod(s) to convert", tooltip=" You can convert multiple legacy mods at once by selecting their parent directory "),
 			sg.In(
 				sg.user_settings_get_entry("input_folder"),
-				size=(34, 1),
+				size=(37, 1),
 				enable_events=True,
 				key="-INPUT FOLDER-",
 				background_color=sg.theme_input_background_color() if sg.user_settings_get_entry("input_folder") else no_path_set_color
 			),
 			sg.FolderBrowse()
+		],
+		[
+			sg.ProgressBar(100, size=(23.9, 20), key="-PROGRESS BAR-"),
+			sg.Button("Convert", key="-CONVERT-")
 		]
-		], title="Paths", element_justification="right")]
+		], title="Convert Mods")]
 	]
 
 	options_column = [
 		[sg.Frame(layout=[
-			[sg.Checkbox("Output zips", size=(10, 1), tooltip=" Zipping is slow ", key="-OUTPUT ZIPS-", default=sg.user_settings_get_entry("output_zips"), enable_events=True)],
-			[sg.Checkbox("Play finish sound", size=(12, 1), tooltip=" For when converting takes long ", key="-PLAY FINISH SOUND-", default=sg.user_settings_get_entry("play_finish_sound"), enable_events=True)]
+		[
+			sg.Checkbox("Output zips", size=(8, 1), tooltip=" Zipping is slow ", key="-OUTPUT ZIPS-", default=sg.user_settings_get_entry("output_zips"), enable_events=True),
+			sg.Checkbox("Play finish sound", size=(12, 1), tooltip=" For when converting takes long ", key="-PLAY FINISH SOUND-", default=sg.user_settings_get_entry("play_finish_sound"), enable_events=True)
+		]
 		], title="Options")],
-	]
-
-	run_column = [
-		[sg.Frame(layout=[
-			[sg.Button("Convert", key="-CONVERT-")],
-			[sg.ProgressBar(100, size=(17.4, 20), key="-PROGRESS BAR-")]
-		], title="Run", element_justification="center")]
 	]
 
 	info_column = [
 		[sg.Frame(layout=[
-			[sg.Image("media/github-icon.png", enable_events=True, key="-GITHUB-", tooltip=" Visit this program's GitHub page ")],
-			[sg.Image("media/discord-icon.png", enable_events=True, key="-DISCORD-", tooltip=" Visit the CCCP Discord server ")]
-		], title="", pad=(0, (8, 0)))]
+		[
+			sg.Image("media/github-icon.png", enable_events=True, key="-GITHUB-", tooltip=" Visit this program's GitHub page ", size=(0, 30)),
+			sg.Image("media/discord-icon.png", enable_events=True, key="-DISCORD-", tooltip=" Visit the CCCP Discord server for help ", size=(0, 30))
+		]
+		], title="", pad=((9, 0), (8, 0)))]
 	]
 
 	layout = [
@@ -63,7 +63,6 @@ def init_window():
 		],
 		[
 			sg.Column(options_column),
-			sg.Column(run_column),
 			sg.Column(info_column)
 		]
 	]
