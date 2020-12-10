@@ -1,0 +1,3 @@
+{
+	"PlaySound": "No longer supported. Create a SoundContainer with CreateSoundContainer in the appropriate Create function.",
+}

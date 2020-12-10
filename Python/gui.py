@@ -23,6 +23,7 @@ def init_window_theme():
 	sg.theme("DarkGrey14")
 	sg.theme_input_background_color(path_set_color)
 	sg.theme_progress_bar_color((progress_bar_color, sg.theme_progress_bar_color()[1]))
+	sg.theme_button_color((sg.theme_text_color(), "#2a3948"))
 
 
 def init_window():
@@ -54,6 +55,7 @@ def init_window():
 
 	play_finish_sound_setting = sg.user_settings_get_entry("play_finish_sound")
 	sg.user_settings_set_entry("play_finish_sound", True if play_finish_sound_setting == None else play_finish_sound_setting)
+	# print(sg.DEFAULT_FONT)
 
 	options_column = [
 		[sg.Frame(layout=[
@@ -84,9 +86,9 @@ def init_window():
 	]
 
 	cfg.sg = sg
-	convert.load_conversion_rules()
+	convert.load_conversion_and_warning_rules()
 
-	window = sg.Window("Legacy Mod Converter - v1.0", layout, icon=resource_path("Media/cclmc-icon.ico"), button_color=(sg.theme_text_color(), "#2a3948"))
+	window = sg.Window("Legacy Mod Converter - v1.0", layout, icon=resource_path("Media/cclmc-icon.ico"))
 	cfg.progress_bar = window["-PROGRESS BAR-"]
 
 	return window
@@ -109,9 +111,9 @@ def run_window(window):
 				window[event](background_color = sg.theme_input_background_color())
 		
 		elif event == "-OUTPUT ZIPS-":
-			sg.user_settings_set_entry("output_zips", values["-OUTPUT ZIPS-"])
+			sg.user_settings_set_entry("output_zips", values[event])
 		elif event == "-PLAY FINISH SOUND-":
-			sg.user_settings_set_entry("play_finish_sound", values["-PLAY FINISH SOUND-"])
+			sg.user_settings_set_entry("play_finish_sound", values[event])
 		
 		elif event == "-CONVERT-":
 			if sg.user_settings_get_entry("input_folder") not in (None, ""):
