@@ -86,7 +86,7 @@ def init_window():
 	cfg.sg = sg
 	convert.load_conversion_and_warning_rules()
 
-	window = sg.Window("Legacy Mod Converter - v1.0", layout, icon=resource_path("Media/cclmc-icon.ico"))
+	window = sg.Window("Legacy Mod Converter", layout, icon=resource_path("Media/cclmc-icon.ico"))
 	cfg.progress_bar = window["-PROGRESS BAR-"]
 
 	return window

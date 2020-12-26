@@ -171,4 +171,6 @@
 	"Coalition.rte/Devices/Sprites/BulletGrenadeA.bmp": "Coalition.rte/Devices/Weapons/AutoCannon/AutoCannonShot.png",
 	"Coalition.rte/Devices/Sprites/MagazineAutoCannonA.bmp": "Coalition.rte/Devices/Weapons/AutoCannon/AutoCannonMagazine.png",
 	"Coalition.rte/Devices/Sprites/AutoCannonA.bmp": "Coalition.rte/Devices/Weapons/AutoCannon/AutoCannon.png",
+	"Missions.rte/Scenes/Items/BombMaker.bmp": "Missions.rte/Objects/BombMaker/BombMaker.png",
+	"Missions.rte/Scenes/Items/ZombieGenerator.bmp": "Missions.rte/Objects/ZombieGenerator/ZombieGenerator.png",
 }
