@@ -1,4 +1,4 @@
-<p align="center"><img src="Media/cclmc-icon.png" alt="Legacy Mod Converter icon"></p>
+<p align="center"><img src="Media/legacy-mod-converter-icon.png" alt="Legacy Mod Converter icon"></p>
 <h1 align="center">Cortex Command Legacy Mod Converter</h1>
 
 ## Introduction
@@ -7,7 +7,7 @@ This project automates ***most*** of the conversion work required to convert the
 ## Getting started
 Download the [***Legacy Mod Converter***](https://www.mediafire.com/file/cl3vfatqkoqmop1/Legacy+Mod+Converter.exe/file) program. Create a new folder and put your legacy mods that you want to convert in it. Run the Legacy Mod Converter program.
 
-<p align="center"><img src="Media/cclmc-screenshot.png" alt="Legacy Mod Converter screenshot"></p>
+<p align="center"><img src="Media/legacy-mod-converter-screenshot.png" alt="Legacy Mod Converter screenshot"></p>
 
 If you get a "`Microsoft Defender SmartScreen prevented an unrecognized app from starting. Running this app might put your PC at risk.`" popup message when trying to run the program you should press `More info` and then `Run anyway`.
 

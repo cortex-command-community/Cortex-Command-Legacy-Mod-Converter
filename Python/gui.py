@@ -37,16 +37,16 @@ def init_window():
 		[
 			sg.In(
 				sg.user_settings_get_entry("input_folder"),
-				size=(37, 1),
+				size=(31, 1),
 				enable_events=True,
 				key="-INPUT FOLDER-",
 				background_color=sg.theme_input_background_color() if sg.user_settings_get_entry("input_folder") else no_path_set_color
 			),
-			sg.FolderBrowse()
+			sg.FolderBrowse(size=(7, 1))
 		],
 		[
-			sg.ProgressBar(999, size=(23.9, 20), key="-PROGRESS BAR-"),
-			sg.Button("Convert", key="-CONVERT-")
+			sg.ProgressBar(999, size=(34.2, 32), key="-PROGRESS BAR-"),
+			sg.Button("Convert", key="-CONVERT-", size=(7, 1), pad=((5, 0), (0, 15)))
 		]
 		], title="Convert Mods")]
 	]
@@ -55,21 +55,17 @@ def init_window():
 	sg.user_settings_set_entry("play_finish_sound", True if play_finish_sound_setting == None else play_finish_sound_setting)
 
 	options_column = [
-		[sg.Frame(layout=[
-		[
-			sg.Checkbox("Output zips", size=(8, 1), tooltip=" Zipping is slow ", key="-OUTPUT ZIPS-", default=sg.user_settings_get_entry("output_zips"), enable_events=True),
-			sg.Checkbox("Play finish sound", size=(12, 1), tooltip=" For when converting takes long ", key="-PLAY FINISH SOUND-", default=sg.user_settings_get_entry("play_finish_sound"), enable_events=True)
-		]
-		], title="Options")],
+		[sg.Frame(layout=[[
+			sg.Checkbox("Output zips", tooltip=" Zipping is slow ", key="-OUTPUT ZIPS-", default=sg.user_settings_get_entry("output_zips"), enable_events=True),
+			sg.Checkbox("Play finish sound", tooltip=" For when converting takes long ", key="-PLAY FINISH SOUND-", default=sg.user_settings_get_entry("play_finish_sound"), enable_events=True)
+		]], title="Options")],
 	]
 
 	info_column = [
-		[sg.Frame(layout=[
-		[
-			sg.Image(resource_path("Media/github-icon.png"), enable_events=True, key="-GITHUB-", tooltip=" Visit this program's GitHub page ", size=(0, 30)),
-			sg.Image(resource_path("Media/discord-icon.png"), enable_events=True, key="-DISCORD-", tooltip=" Visit the CCCP Discord server for help ", size=(0, 30))
-		]
-		], title="", pad=((9, 0), (8, 0)))]
+		[sg.Frame(layout=[[
+			sg.Image(resource_path("Media/github-icon.png"), enable_events=True, key="-GITHUB-", tooltip=" Visit this program's GitHub page ", size=(47, 0)),
+			sg.Image(resource_path("Media/discord-icon.png"), enable_events=True, key="-DISCORD-", tooltip=" Visit the CCCP Discord server for help ", size=(48, 0))
+		]], title="", pad=((9, 0), (12, 0)))]
 	]
 
 	layout = [
@@ -85,7 +81,7 @@ def init_window():
 	cfg.sg = sg
 	convert.load_conversion_and_warning_rules()
 
-	window = sg.Window("Legacy Mod Converter", layout, icon=resource_path("Media/cclmc.ico"))
+	window = sg.Window("Legacy Mod Converter", layout, icon=resource_path("Media/legacy-mod-converter.ico"), font=("Helvetica", 16))
 	cfg.progress_bar = window["-PROGRESS BAR-"]
 
 	return window
