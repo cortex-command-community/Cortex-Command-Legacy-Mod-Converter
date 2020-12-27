@@ -1,4 +1,4 @@
-import os, time, shutil, math, sys, zipfile, json, pathlib, webbrowser
+import os, sys, time, shutil, math, zipfile, json, pathlib, webbrowser
 from pathlib import Path
 from jsoncomment import JsonComment
 from playsound import playsound
@@ -25,14 +25,11 @@ def resource_path(relative_path):
 	return os.path.join(os.path.abspath("."), relative_path)
 
 
-finishSoundPath = resource_path("Media/finish.wav")
-
-
 # If an exe executes this program then sys is frozen.
 output_folder = ".." if getattr(sys, 'frozen', False) else "Output"
 
 
-def	load_conversion_and_warning_rules():
+def load_conversion_and_warning_rules():
 	json_parser = JsonComment(json)
 
 	json_files_found = 0
@@ -93,7 +90,7 @@ def convert():
 
 	elapsed = math.floor(time.time() - time_start)
 	if cfg.sg.user_settings_get_entry("play_finish_sound"):
-		playsound(finishSoundPath)
+		playsound(resource_path("Media/finish.wav"))
 	print("Finished in {} {}".format(elapsed, pluralize("second", elapsed)))
 
 
@@ -143,32 +140,35 @@ def process_files(input_subfiles, input_subfolder_path, output_subfolder, input_
 
 
 def create_converted_file(input_file_path, output_file_path, input_folder_path):
-	try: # TODO: Figure out why this try/except is necessary and why it doesn't check for an error type.
-		with open(input_file_path, "r") as file_in:
-			with open(output_file_path, "w") as file_out:
-				all_lines_list = []
-				file_path = os.path.relpath(input_file_path, input_folder_path)
+	# try: # TODO: Figure out why this try/except is necessary and why it doesn't check for an error type.
+	with open(input_file_path, "r") as file_in:
+		with open(output_file_path, "w") as file_out:
+			all_lines_list = []
+			file_path = os.path.relpath(input_file_path, input_folder_path)
 
-				line_number = 0
-				for line in file_in:
-					line_number += 1
+			line_number = 0
+			for line in file_in:
+				line_number += 1
 
-					if warnings_available:
-						for old_str, new_str in warning_rules.items():
-							if old_str in line:
-								warnings.append("'{}' line {}: {} -> {}".format(file_path, line_number, old_str, new_str))
+				if warnings_available:
+					regex_rules.playsound_warning(line, file_path, line_number, warnings)
 
-					all_lines_list.append(line)
+					for old_str, new_str in warning_rules.items():
+						if old_str in line:
+							print(old_str, new_str)
+							warnings.append("'{}' line {}: {} -> {}".format(file_path, line_number, old_str, new_str))
 
-				all_lines = "".join(all_lines_list)
+				all_lines_list.append(line)
 
-				for old_str, new_str in conversion_rules.items():
-					all_lines = all_lines.replace(old_str, new_str)
+			all_lines = "".join(all_lines_list)
 
-				all_lines = regex_rules.regex_replace(all_lines)
-				file_out.write(regex_rules.regex_replace_bmps_and_wavs(all_lines))
-	except:
-		shutil.copyfile(input_file_path, output_file_path)
+			for old_str, new_str in conversion_rules.items():
+				all_lines = all_lines.replace(old_str, new_str)
+
+			all_lines = regex_rules.regex_replace(all_lines)
+			file_out.write(regex_rules.regex_replace_bmps_and_wavs(all_lines))
+	# except:
+	# 	shutil.copyfile(input_file_path, output_file_path)
 
 
 def warnings_popup():

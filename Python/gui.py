@@ -45,7 +45,7 @@ def init_window():
 			sg.FolderBrowse()
 		],
 		[
-			sg.ProgressBar(100, size=(23.9, 20), key="-PROGRESS BAR-"),
+			sg.ProgressBar(999, size=(23.9, 20), key="-PROGRESS BAR-"),
 			sg.Button("Convert", key="-CONVERT-")
 		]
 		], title="Convert Mods")]
@@ -53,7 +53,6 @@ def init_window():
 
 	play_finish_sound_setting = sg.user_settings_get_entry("play_finish_sound")
 	sg.user_settings_set_entry("play_finish_sound", True if play_finish_sound_setting == None else play_finish_sound_setting)
-	# print(sg.DEFAULT_FONT)
 
 	options_column = [
 		[sg.Frame(layout=[
@@ -86,7 +85,7 @@ def init_window():
 	cfg.sg = sg
 	convert.load_conversion_and_warning_rules()
 
-	window = sg.Window("Legacy Mod Converter", layout, icon=resource_path("Media/cclmc-icon.ico"))
+	window = sg.Window("Legacy Mod Converter", layout, icon=resource_path("Media/cclmc.ico"))
 	cfg.progress_bar = window["-PROGRESS BAR-"]
 
 	return window

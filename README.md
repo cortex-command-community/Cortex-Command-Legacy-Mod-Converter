@@ -7,9 +7,9 @@ This project automates ***most*** of the conversion work required to convert the
 ## Getting started
 Download the [***Legacy Mod Converter***](https://www.mediafire.com/file/cl3vfatqkoqmop1/Legacy+Mod+Converter.exe/file) program. Create a new folder and put your legacy mods that you want to convert in it. Run the Legacy Mod Converter program.
 
-If you get a "`Microsoft Defender SmartScreen prevented an unrecognized app from starting. Running this app might put your PC at risk.`" popup message when trying to run the program you should press `More info` and then `Run anyway`.
-
 <p align="center"><img src="Media/cclmc-screenshot.png" alt="Legacy Mod Converter screenshot"></p>
+
+If you get a "`Microsoft Defender SmartScreen prevented an unrecognized app from starting. Running this app might put your PC at risk.`" popup message when trying to run the program you should press `More info` and then `Run anyway`.
 
 ## Disclaimer
 This program will do most of the conversion work for you, but some conversion steps are too hard to automate, so it's likely that `CCCP` will still crash or print errors in the console. If this happens you'll have to manually fix these issues in the legacy mod folder. If you want to properly fix these errors then you should download this repository and follow the instructions below so you can add your own conversion cases to `conversion_rules.py`.

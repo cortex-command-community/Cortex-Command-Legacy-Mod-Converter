@@ -79,3 +79,11 @@ def regex_replace_bmps_and_wavs(all_lines):
 	all_lines = specific_replace(all_lines, regex_use_capture, False, "Base\.rte(.*?)\.wav", "Base.rte{}.flac")
 	all_lines = specific_replace(all_lines, regex_use_capture, False, "base\.rte(.*?)\.wav", "Base.rte{}.flac")
 	return all_lines
+
+
+def playsound_warning(line, file_path, line_number, warnings):
+	pattern = "PlaySound(.*)"
+	message = "No longer supported. Create a SoundContainer with CreateSoundContainer in the appropriate Create function."
+	matches = re.findall(pattern, line)
+	if len(matches) > 0 and matches[0].count(",") > 2:
+		warnings.append("'{}' line {}: {} -> {}".format(file_path, line_number, pattern, message))
