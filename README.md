@@ -42,7 +42,7 @@ If you put the right things between the quotes that CCCP was complaining about t
 * [Download “Notepad++”](https://notepad-plus-plus.org/downloads/) - Like Notepad. Allows mass replacing across thousands of files at once. You can also use an IDE like [VS Code](https://code.visualstudio.com/) for this purpose.
 
 ### Tutorials on how to use the programs effectively.
-* [Fixing CCCP crashes and errors with the program Everything](https://github.com/cortex-command-community/Cortex-Command-Legacy-Mod-Converter/wiki/Fixing-CCCP-crashes-errors-with-the-program-Everything)
+* [Fixing CCCP crashes and errors with the program Everything](https://github.com/cortex-command-community/Cortex-Command-Legacy-Mod-Converter/wiki/Fixing-CCCP-crashes-and-errors-with-the-program-Everything)
 
 ## Contributing
 Feel free to submit `Pull Requests` or `Issues` on this GitHub project for any additional cases that you'd like to have supported.
