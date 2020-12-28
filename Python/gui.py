@@ -1,5 +1,5 @@
 import os, sys
-import os.path, pathlib, webbrowser
+import pathlib, webbrowser
 import PySimpleGUI as sg
 
 from Python import shared_globals as cfg
@@ -7,6 +7,7 @@ from Python import convert
 
 
 sg.user_settings_filename(filename="settings.json", path=".")
+no_path_set_color = "#b35858"
 
 
 # TODO: Move to shared_globals.py
@@ -29,8 +30,6 @@ def init_window_theme():
 def init_window():
 	if not os.path.isfile(sg.user_settings_filename()):
 		sg.Popup("This is a tool that allows you to convert legacy (old) mods to the latest version of CCCP. You can get more information from the GitHub repo or the Discord server by clicking the corresponding icons.", title="Welcome screen", custom_text=" OK ")
-
-	no_path_set_color = "#b35858"
 
 	paths_column = [
 		[sg.Frame(layout=[
@@ -88,6 +87,8 @@ def init_window():
 
 
 def run_window(window):
+	valid_input_path = True if sg.user_settings_get_entry("input_folder") else False
+
 	while True:
 		event, values = window.read()
 
@@ -98,10 +99,14 @@ def run_window(window):
 		# print(event, values)
 
 		if event == "-INPUT FOLDER-":
-			input_folder_or_file = values[event]
-			if input_folder_or_file != "":
-				sg.user_settings_set_entry("input_folder", input_folder_or_file)
+			input_folder = values[event]
+			if os.path.exists(input_folder):
+				valid_input_path = True
 				window[event](background_color = sg.theme_input_background_color())
+				sg.user_settings_set_entry("input_folder", input_folder)
+			else:
+				valid_input_path = False
+				window[event](background_color = no_path_set_color)
 		
 		elif event == "-OUTPUT ZIPS-":
 			sg.user_settings_set_entry("output_zips", values[event])
@@ -109,8 +114,9 @@ def run_window(window):
 			sg.user_settings_set_entry("play_finish_sound", values[event])
 		
 		elif event == "-CONVERT-":
-			if sg.user_settings_get_entry("input_folder") not in (None, ""):
+			if valid_input_path:
 				convert.convert()
+
 		
 		elif event == "-GITHUB-":
 			webbrowser.open("https://github.com/cortex-command-community/Cortex-Command-Legacy-Mod-Converter")
