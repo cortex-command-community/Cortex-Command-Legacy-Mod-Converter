@@ -90,7 +90,7 @@ def convert():
 
 	elapsed = math.floor(time.time() - time_start)
 	if cfg.sg.user_settings_get_entry("play_finish_sound"):
-		playsound(resource_path("Media/finish.wav"))
+		playsound(resource_path("Media/finish.wav"), block=False)
 	print("Finished in {} {}".format(elapsed, pluralize("second", elapsed)))
 
 
