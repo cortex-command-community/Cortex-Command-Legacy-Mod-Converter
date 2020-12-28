@@ -45,8 +45,8 @@ def init_window():
 			sg.FolderBrowse(size=(7, 1))
 		],
 		[
-			sg.ProgressBar(999, size=(34.2, 32), key="-PROGRESS BAR-"),
-			sg.Button("Convert", key="-CONVERT-", size=(7, 1), pad=((5, 0), (0, 15)))
+			sg.ProgressBar(999, size=(34.2, 40), key="-PROGRESS BAR-"),
+			sg.Button("Convert", key="-CONVERT-", size=(7, 1), pad=((5, 0), (14, 15)))
 		]
 		], title="Convert Mods")]
 	]
