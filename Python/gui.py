@@ -6,7 +6,6 @@ from Python import shared_globals as cfg
 from Python import convert
 
 
-sg.user_settings_filename(filename="settings.json", path=".")
 no_path_set_color = "#b35858"
 
 
@@ -28,6 +27,11 @@ def init_window_theme():
 
 
 def init_window():
+	sg.user_settings_filename(filename="settings.json", path=".")
+
+	if not sg.user_settings_get_entry("input_folder"):
+		sg.user_settings_set_entry("input_folder", resource_path("Input"))
+
 	if not os.path.isfile(sg.user_settings_filename()):
 		sg.Popup("This is a tool that allows you to convert legacy (old) mods to the latest version of CCCP. You can get more information from the GitHub repo or the Discord server by clicking the corresponding icons.", title="Welcome screen", custom_text=" OK ")
 
