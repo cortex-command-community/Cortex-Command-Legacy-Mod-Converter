@@ -7,6 +7,7 @@ from Python import shared_globals as cfg
 from Python import regex_rules
 from Python import zips as zips_py
 from Python import update_progress
+from Python import palette
 
 
 warnings_file_name = "Warnings.json"
@@ -26,7 +27,7 @@ def resource_path(relative_path):
 
 
 # If an exe executes this program then sys is frozen.
-output_folder = ".." if getattr(sys, 'frozen', False) else "Output"
+output_folder_path = ".." if getattr(sys, 'frozen', False) else "Output"
 
 
 def load_conversion_and_warning_rules():
@@ -57,7 +58,7 @@ def check_github_button_clicked_and_exit(clicked_github_button):
 
 
 def convert():
-	global output_folder, warnings
+	global output_folder_path, warnings
 
 	print("") # Only prints a newline.
 
@@ -76,12 +77,12 @@ def convert():
 
 		if len(mod_subfolder_parts) > 0 and mod_subfolder_parts[0].endswith(".rte"):
 			try_print_mod_name(mod_subfolder_parts, mod_subfolder)
-			output_subfolder = os.path.join(output_folder, mod_subfolder)
+			output_subfolder = os.path.join(output_folder_path, mod_subfolder)
 			create_folder(input_subfolder_path, output_subfolder)
-			process_files(input_subfiles, input_subfolder_path, output_subfolder, input_folder_path)
+			process_files(input_subfiles, input_subfolder_path, output_subfolder, input_folder_path, output_folder_path)
 
 	if cfg.sg.user_settings_get_entry("output_zips"):
-		zips_py.create_zips(input_folder_path, output_folder)
+		zips_py.create_zips(input_folder_path, output_folder_path)
 
 	if len(warnings) > 0:
 		warnings_popup()
@@ -115,12 +116,16 @@ def create_folder(input_subfolder_path, output_subfolder):
 		pass
 
 
-def process_files(input_subfiles, input_subfolder_path, output_subfolder, input_folder_path):
+def process_files(input_subfiles, input_subfolder_path, output_subfolder, input_folder_path, output_folder_path):
 	for full_filename in input_subfiles:
 		filename, file_extension = os.path.splitext(full_filename)
 
-		input_file_path  = os.path.join(input_subfolder_path, full_filename)
+		input_file_path = os.path.join(input_subfolder_path, full_filename)
+
 		output_file_path = os.path.join(output_subfolder, full_filename)
+
+		if palette.is_input_image(full_filename):
+			palette.process_image(full_filename, input_file_path, output_file_path)
 
 		if full_filename == "desktop.ini":
 			continue
@@ -128,7 +133,8 @@ def process_files(input_subfiles, input_subfolder_path, output_subfolder, input_
 		if file_extension in (".ini", ".lua"):
 			create_converted_file(input_file_path, output_file_path, input_folder_path)
 		else:
-			shutil.copyfile(input_file_path, output_file_path)
+			if not palette.is_input_image(full_filename):
+				shutil.copyfile(input_file_path, output_file_path)
 
 		update_progress.increment_progress()
 
