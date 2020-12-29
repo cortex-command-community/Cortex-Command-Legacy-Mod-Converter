@@ -4,4 +4,6 @@ pyinstaller
 jsoncomment
 Pillow
 opencv-python
+numpy
+pyvips # You also need to unzip the latest vips-dev-w64-all.zip from https://github.com/libvips/libvips/releases and use the path in palette.py's load_vips_env().
 # python3 needs sudo apt-get install python3-tk
