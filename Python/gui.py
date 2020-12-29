@@ -4,6 +4,7 @@ import PySimpleGUI as sg
 
 from Python import shared_globals as cfg
 from Python import convert
+from Python import warnings
 
 
 no_path_set_color = "#b35858"
@@ -82,7 +83,7 @@ def init_window():
 	]
 
 	cfg.sg = sg
-	convert.load_conversion_and_warning_rules()
+	warnings.load_conversion_and_warning_rules()
 
 	window = sg.Window("Legacy Mod Converter", layout, icon=resource_path("Media/legacy-mod-converter.ico"), font=("Helvetica", 16))
 	cfg.progress_bar = window["-PROGRESS BAR-"]

@@ -1,6 +1,5 @@
-import os, sys, time, shutil, math, json, pathlib, webbrowser
+import os, sys, time, shutil, math, pathlib, webbrowser
 from pathlib import Path
-from jsoncomment import JsonComment
 from playsound import playsound
 
 from Python import shared_globals as cfg
@@ -8,15 +7,12 @@ from Python import regex_rules
 from Python import zips as zips_py
 from Python import update_progress
 from Python import palette
+from Python import warnings
 
 
-warnings_file_name = "Warnings.json"
-warnings_path = os.path.join("ConversionRules", warnings_file_name)
-warnings_available = os.path.isfile(warnings_path)
+foo = "bar"
 
 conversion_rules = {}
-warning_rules = {}
-warnings = []
 
 
 # TODO: Move to shared_globals.py
@@ -30,35 +26,8 @@ def resource_path(relative_path):
 output_folder_path = ".." if getattr(sys, 'frozen', False) else "Output"
 
 
-def load_conversion_and_warning_rules():
-	json_parser = JsonComment(json)
-
-	json_files_found = 0
-	try:
-		for name in os.listdir("ConversionRules"):
-			if name.endswith(".json") and name != warnings_file_name:
-				json_files_found += 1
-				with open(os.path.join("ConversionRules", name)) as f:
-					conversion_rules.update(json_parser.load(f)) 
-		if warnings_available:
-			with open(warnings_path) as f:
-				warning_rules.update(json_parser.load(f))
-	except:
-		check_github_button_clicked_and_exit(cfg.sg.Popup("The 'ConversionRules' folder wasn't found next to this executable. You can get the missing folder from the Legacy Mod Converter GitHub repo.", title="Missing ConversionRules folder", custom_text="Go to GitHub"))
-
-	if json_files_found == 0:
-		check_github_button_clicked_and_exit(cfg.sg.Popup("The 'ConversionRules' folder didn't contain any JSON files. You can get the JSON files from the Legacy Mod Converter GitHub repo.", title="Missing JSON files", custom_text="Go to GitHub"))
-
-
-
-def check_github_button_clicked_and_exit(clicked_github_button):
-	if clicked_github_button:
-		webbrowser.open("https://github.com/cortex-command-community/Cortex-Command-Legacy-Mod-Converter")
-	sys.exit()
-
-
 def convert():
-	global output_folder_path, warnings
+	global output_folder_path
 
 	print("") # Only prints a newline.
 
@@ -84,17 +53,18 @@ def convert():
 	if cfg.sg.user_settings_get_entry("output_zips"):
 		zips_py.create_zips(input_folder_path, output_folder_path)
 
-	if len(warnings) > 0:
-		warnings_popup()
-
-	warnings = []
+	elapsed = math.floor(time.time() - time_start)
 
 	update_progress.increment_progress() # TODO: This is a temporary solution for zipping not being accounted in the progress.
 
-	elapsed = math.floor(time.time() - time_start)
 	if cfg.sg.user_settings_get_entry("play_finish_sound"):
 		playsound(resource_path("Media/finish.wav"), block=False)
 	print("Finished in {} {}".format(elapsed, pluralize("second", elapsed)))
+
+	if len(warnings.warning_results) > 0:
+		warnings.warnings_popup()
+
+	warnings.warning_results = []
 
 
 def get_mod_subfolder(input_folder_path, input_subfolder_path):
@@ -149,12 +119,12 @@ def create_converted_file(input_file_path, output_file_path, input_folder_path):
 			for line in file_in:
 				line_number += 1
 
-				if warnings_available:
-					regex_rules.playsound_warning(line, file_path, line_number, warnings)
+				if warnings.warnings_available:
+					regex_rules.playsound_warning(line, file_path, line_number)
 
-					for old_str, new_str in warning_rules.items():
+					for old_str, new_str in warnings.warning_rules.items():
 						if old_str in line:
-							warnings.append("'{}' line {}: {} -> {}".format(file_path, line_number, old_str, new_str))
+							warnings.warning_results.append("'{}' line {}: {} -> {}".format(file_path, line_number, old_str, new_str))
 
 				all_lines_list.append(line)
 
@@ -167,13 +137,6 @@ def create_converted_file(input_file_path, output_file_path, input_folder_path):
 			file_out.write(regex_rules.regex_replace_bmps_and_wavs(all_lines))
 	# except:
 	# 	shutil.copyfile(input_file_path, output_file_path)
-
-
-def warnings_popup():
-	if warnings_available:
-		w = max(30, len(max(warnings, key=len)))
-		h = min(50, len(warnings)) + 1 # + 1 necessary because popup_scrolled adds an extra line.
-		cfg.sg.popup_scrolled("\n".join(warnings), title="Lines needing manual replacing", size=(w, h), button_color=cfg.sg.theme_button_color(), background_color=cfg.sg.theme_background_color())
 
 
 def pluralize(word, count):

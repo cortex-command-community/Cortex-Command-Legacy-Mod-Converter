@@ -1,5 +1,7 @@
 import re
 
+from Python import warnings
+
 
 def regex_replace(all_lines):
 	all_lines = simple_replace(all_lines, "Framerate = (.*)", "SpriteAnimMode = 7")
@@ -81,9 +83,9 @@ def regex_replace_bmps_and_wavs(all_lines):
 	return all_lines
 
 
-def playsound_warning(line, file_path, line_number, warnings):
+def playsound_warning(line, file_path, line_number):
 	pattern = "PlaySound(.*)"
 	message = "No longer supported. Create a SoundContainer with CreateSoundContainer in the appropriate Create function."
 	matches = re.findall(pattern, line)
 	if len(matches) > 0 and matches[0].count(",") > 2:
-		warnings.append("'{}' line {}: {} -> {}".format(file_path, line_number, pattern, message))
+		warnings.warning_results.append("'{}' line {}: {} -> {}".format(file_path, line_number, pattern, message))
