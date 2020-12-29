@@ -14,12 +14,15 @@ def increment_progress():
 
 
 def set_max_progress(input_folder_path):
-	global total_progress # TODO: See what happens when this line is removed.
-	if input_folder_path.endswith(".rte"):
-		mod_count = 1
-	else:
-		mod_count = 0
-		for mod_name in os.listdir(input_folder_path):
-			if os.path.isdir(os.path.join(input_folder_path, mod_name)) and mod_name.endswith(".rte"):
-				mod_count += 1
-	total_progress = mod_count * 2 if cfg.sg.user_settings_get_entry("output_zips") else mod_count
+	global progress, total_progress  # TODO: See what happens when this line is removed.
+
+	progress = 0
+	total_progress = 0
+
+	for input_subfolder_path, input_subfolders, input_subfiles in os.walk(input_folder_path):
+		for filename in input_subfiles:
+			total_progress += 1
+
+	# TODO: Find a way to see track how much progress the zipping is making.
+	# if cfg.sg.user_settings_get_entry("output_zips"):
+	# 	total_progress = total_progress * 2

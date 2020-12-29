@@ -1,11 +1,11 @@
-import os, sys, time, shutil, math, zipfile, json, pathlib, webbrowser
+import os, sys, time, shutil, math, json, pathlib, webbrowser
 from pathlib import Path
 from jsoncomment import JsonComment
 from playsound import playsound
 
 from Python import shared_globals as cfg
 from Python import regex_rules
-from Python.zips import create_zips
+from Python import zips as zips_py
 from Python import update_progress
 
 
@@ -59,34 +59,36 @@ def check_github_button_clicked_and_exit(clicked_github_button):
 def convert():
 	global output_folder, warnings
 
+	print("") # Only prints a newline.
+
 	time_start = time.time()
 
 	input_folder_path = cfg.sg.user_settings_get_entry("input_folder")
-	true_input_folder_path = os.path.join(input_folder_path, os.pardir) # TODO: Better variable name.
 
-	unzip(input_folder_path)
+	zips_py.unzip(input_folder_path)
 
 	update_progress.set_max_progress(input_folder_path)
 	
 	for input_subfolder_path, input_subfolders, input_subfiles in os.walk(input_folder_path):
-		mod_subfolder = get_mod_subfolder(input_folder_path, input_subfolder_path, true_input_folder_path)
+		mod_subfolder = get_mod_subfolder(input_folder_path, input_subfolder_path)
 
 		mod_subfolder_parts = pathlib.Path(mod_subfolder).parts
+
 		if len(mod_subfolder_parts) > 0 and mod_subfolder_parts[0].endswith(".rte"):
-			output_subfolder = os.path.join(output_folder, mod_subfolder)
 			try_print_mod_name(mod_subfolder_parts, mod_subfolder)
+			output_subfolder = os.path.join(output_folder, mod_subfolder)
 			create_folder(input_subfolder_path, output_subfolder)
 			process_files(input_subfiles, input_subfolder_path, output_subfolder, input_folder_path)
 
 	if cfg.sg.user_settings_get_entry("output_zips"):
-		create_zips(input_folder_path, output_folder)
+		zips_py.create_zips(input_folder_path, output_folder)
 
 	if len(warnings) > 0:
 		warnings_popup()
 
-	update_progress.progress = 0
-	update_progress.total_progress = 0
 	warnings = []
+
+	update_progress.increment_progress() # TODO: This is a temporary solution for zipping not being accounted in the progress.
 
 	elapsed = math.floor(time.time() - time_start)
 	if cfg.sg.user_settings_get_entry("play_finish_sound"):
@@ -94,18 +96,9 @@ def convert():
 	print("Finished in {} {}".format(elapsed, pluralize("second", elapsed)))
 
 
-def unzip(input_folder_path):
-	for f in os.listdir(input_folder_path):
-		zip_path = os.path.join(input_folder_path, f)
-		if zipfile.is_zipfile(zip_path):
-			with zipfile.ZipFile(zip_path) as item:
-				item.extractall(input_folder_path)
-			os.remove(zip_path)
-
-
-def get_mod_subfolder(input_folder_path, input_subfolder_path, true_input_folder_path):
+def get_mod_subfolder(input_folder_path, input_subfolder_path):
 	if input_folder_path.endswith(".rte"):
-		return os.path.relpath(input_subfolder_path, true_input_folder_path)
+		return os.path.relpath(input_subfolder_path, os.path.join(input_folder_path, os.pardir))
 	else:
 		return os.path.relpath(input_subfolder_path, input_folder_path)
 
@@ -113,7 +106,6 @@ def get_mod_subfolder(input_folder_path, input_subfolder_path, true_input_folder
 def try_print_mod_name(mod_subfolder_parts, mod_subfolder):
 	if len(mod_subfolder_parts) == 1:
 		print("Converting '{}'".format(mod_subfolder))
-		update_progress.increment_progress()
 
 
 def create_folder(input_subfolder_path, output_subfolder):
@@ -138,6 +130,7 @@ def process_files(input_subfiles, input_subfolder_path, output_subfolder, input_
 		else:
 			shutil.copyfile(input_file_path, output_file_path)
 
+		update_progress.increment_progress()
 
 def create_converted_file(input_file_path, output_file_path, input_folder_path):
 	# try: # TODO: Figure out why this try/except is necessary and why it doesn't check for an error type.
@@ -155,7 +148,6 @@ def create_converted_file(input_file_path, output_file_path, input_folder_path):
 
 					for old_str, new_str in warning_rules.items():
 						if old_str in line:
-							print(old_str, new_str)
 							warnings.append("'{}' line {}: {} -> {}".format(file_path, line_number, old_str, new_str))
 
 				all_lines_list.append(line)

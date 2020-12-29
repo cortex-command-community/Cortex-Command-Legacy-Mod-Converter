@@ -1,7 +1,16 @@
-import os, shutil
+import os, shutil, zipfile
 from pathlib import Path
 
 from Python.update_progress import increment_progress
+
+
+def unzip(input_folder_path):
+	for f in os.listdir(input_folder_path):
+		zip_path = os.path.join(input_folder_path, f)
+		if zipfile.is_zipfile(zip_path):
+			with zipfile.ZipFile(zip_path) as item:
+				item.extractall(input_folder_path)
+			os.remove(zip_path)
 
 
 def create_zips(input_folder_path, output_folder):
@@ -20,4 +29,3 @@ def create_single_zip(mod_name, output_folder):
 	mod_path = os.path.join(output_folder, mod_name)
 	shutil.make_archive(mod_path.replace(".rte", "-v1.0.rte"), "zip", root_dir=output_folder, base_dir=mod_name)
 	shutil.rmtree(mod_path)
-	increment_progress()
