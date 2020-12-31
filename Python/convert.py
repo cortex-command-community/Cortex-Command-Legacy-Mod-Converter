@@ -119,6 +119,13 @@ def create_converted_file(input_file_path, output_file_path, input_folder_path):
 			for line in file_in:
 				line_number += 1
 
+				for old_str, new_str in conversion_rules.items():
+					line = line.replace(old_str, new_str)
+
+				if ".bmp" in line:
+					if not any(keep_bmp in line for keep_bmp in ["palette.bmp", "palettemat.bmp"]):
+						line = line.replace(".bmp", ".png")
+
 				if warnings.warnings_available:
 					regex_rules.playsound_warning(line, file_path, line_number)
 
@@ -130,11 +137,8 @@ def create_converted_file(input_file_path, output_file_path, input_folder_path):
 
 			all_lines = "".join(all_lines_list)
 
-			for old_str, new_str in conversion_rules.items():
-				all_lines = all_lines.replace(old_str, new_str)
-
 			all_lines = regex_rules.regex_replace(all_lines)
-			file_out.write(regex_rules.regex_replace_bmps_and_wavs(all_lines))
+			file_out.write(regex_rules.regex_replace_wavs(all_lines))
 	# except:
 	# 	shutil.copyfile(input_file_path, output_file_path)
 

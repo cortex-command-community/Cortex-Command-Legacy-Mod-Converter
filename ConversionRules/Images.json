@@ -186,4 +186,5 @@
 	"Base.rte/Actors/Doors/MotorGibC.bmp": "Base.rte/Scenes/Objects/Bunkers/BunkerSystems/Doors/Gibs/MotorGibC.png",
 	"Dummy.rte/Devices/Sprites/ShieldWall.bmp": "Base.rte/Null.png",
 	"Dummy.rte/Devices/Sprites/ShieldWallDent.bmp": "Base.rte/Null.png",
+	"Base.rte/Effects/Pyro/FirePuff0.bmp": "Base.rte/Effects/Pyro/FirePuff.png",
 }

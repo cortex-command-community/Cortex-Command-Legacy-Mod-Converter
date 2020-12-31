@@ -74,10 +74,8 @@ def regex_use_capture(all_lines, pattern, replacement, matches):
 #	# AudioMan:PlaySound("ModName.rte/Folder/SoundName.wav", self.Pos)	-- Cut everything and leave the thing inside the brackets after SceneMan:TargetDistanceScalar
 
 
-def regex_replace_bmps_and_wavs(all_lines):
-	# TODO: Combine these four patterns into two.
-	all_lines = specific_replace(all_lines, regex_use_capture, False, "Base\.rte(.*?)\.bmp", "Base.rte{}.png")
-	all_lines = specific_replace(all_lines, regex_use_capture, False, "base\.rte(.*?)\.bmp", "Base.rte{}.png")
+def regex_replace_wavs(all_lines):
+	# TODO: Combine patterns into one.
 	all_lines = specific_replace(all_lines, regex_use_capture, False, "Base\.rte(.*?)\.wav", "Base.rte{}.flac")
 	all_lines = specific_replace(all_lines, regex_use_capture, False, "base\.rte(.*?)\.wav", "Base.rte{}.flac")
 	return all_lines
