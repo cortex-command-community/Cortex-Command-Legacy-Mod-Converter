@@ -141,4 +141,5 @@
 	"Ronin.rte/Effects/Sounds/ThumperFire.wav": "Ronin.rte/Devices/Weapons/M79/Sounds/Fire1.flac",
 	"Coalition.rte/Effects/Sounds/AutoCannonFire.wav": "Coalition.rte/Devices/Weapons/AutoCannon/Sounds/Fire1.flac",
 	"Base.rte/Sounds/LightFlamerFire.wav": "Browncoats.rte/Devices/Weapons/Heatlance/Sounds/Loop.flac",
+	"Base.rte/Sounds/EmptyClick3.wav": "Base.rte/Sounds/Devices/EmptyClick1.flac"
 }
