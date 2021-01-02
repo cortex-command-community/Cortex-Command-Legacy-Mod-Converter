@@ -134,12 +134,14 @@ def create_converted_file(input_file_path, output_file_path, input_folder_path):
 
 			all_lines = "".join(all_lines_list)
 
-			# Conversion rules can contain newlines, so they can't be applied per-line.
-			# Splitting the extension means it's fine that bmp -> png already happened.
+			# Conversion rules can contain newlines, so they can't be applied on a per-line basis.
 			for old_str, new_str in conversion_rules.items():
-				old_str_base = os.path.splitext(old_str)[0]
-				new_str_base = os.path.splitext(new_str)[0]
-				all_lines = all_lines.replace(old_str_base, new_str_base)
+				old_str_parts = os.path.splitext(old_str)
+				# Because bmp -> png already happened on all_lines we'll make all old_str conversion rules png.
+				if old_str_parts[1] == ".bmp":
+					all_lines = all_lines.replace(old_str_parts[0] + ".png", new_str)
+				else:
+					all_lines = all_lines.replace(old_str, new_str)
 
 			all_lines = regex_rules.regex_replace(all_lines)
 			file_out.write(regex_rules.regex_replace_wavs(all_lines))
