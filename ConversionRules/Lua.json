@@ -17,4 +17,5 @@
 	"Imperatus.rte/Devices/Weapons/HeavySniperRound.lua": "Base.rte/Scripts/Shared/SmokeTrail.lua",
 	"Base.rte/Actors/Medic Drone/Medic.lua": "Base.rte/Actors/Mecha/Medic/Medic.lua",
 	"Base.rte/Scripts/TrajectoryGuide.lua": "Base.rte/Devices/Shared/Scripts/TrajectoryGuide.lua",
+	"Coalition.rte/Devices/Weapons/Burst.lua": "Base.rte/Devices/Shared/Scripts/BurstFire.lua",
 }

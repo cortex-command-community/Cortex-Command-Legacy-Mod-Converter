@@ -187,4 +187,6 @@
 	"Dummy.rte/Devices/Sprites/ShieldWall.bmp": "Base.rte/Null.png",
 	"Dummy.rte/Devices/Sprites/ShieldWallDent.bmp": "Base.rte/Null.png",
 	"Base.rte/Effects/Pyro/FirePuff0.bmp": "Base.rte/Effects/Pyro/FirePuff.png",
+	"Ronin.rte/Devices/Sprites/MagazineRifleA.bmp": "Base.rte/Null.png",
+	"Base.rte/Actors/Rockets/RocketLeg.bmp": "Base.rte/Craft/Shared/RocketLegA.png",
 }

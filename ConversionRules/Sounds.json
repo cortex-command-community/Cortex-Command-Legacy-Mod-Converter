@@ -144,4 +144,5 @@
 	"Base.rte/Sounds/EmptyClick3.wav": "Base.rte/Sounds/Devices/EmptyClick1.flac",
 	"Ronin.rte/Effects/Sounds/BazookaFire.wav": "Base.rte/Sounds/Devices/MissileFire.flac",
 	"Base.rte/Sounds/MissileFire.wav": "Base.rte/Sounds/Devices/MissileFire.flac",
+	"Base.rte/Devices/NapalmBombExplode.wav": "Base.rte/Devices/Explosives/NapalmBomb/Sounds/NapalmBombExplode.flac",
 }
