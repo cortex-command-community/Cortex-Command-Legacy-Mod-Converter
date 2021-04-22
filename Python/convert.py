@@ -1,4 +1,4 @@
-import os, sys, time, shutil, math, pathlib, webbrowser
+import os, sys, time, shutil, math, pathlib, webbrowser, platform
 from pathlib import Path
 from playsound import playsound
 
@@ -58,7 +58,7 @@ def convert():
 	update_progress.increment_progress() # TODO: This is a temporary solution for zipping not being accounted in the progress.
 
 	if cfg.sg.user_settings_get_entry("play_finish_sound"):
-		playsound(resource_path("Media/finish.wav"), block=False)
+		playsound(resource_path("Media/finish.wav"), block=(platform.system()=='Linux'))
 	print("Finished in {} {}".format(elapsed, pluralize("second", elapsed)))
 
 	if len(warnings.warning_results) > 0:
