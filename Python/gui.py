@@ -75,9 +75,7 @@ def init_window():
 	options_column = [
 		[sg.Frame(layout=[
 		[
-			sg.Checkbox("Skip conversion", tooltip="For previously converted mods, does not skip case matching", key="-SKIP CONV-", default=sg.user_settings_get_entry("skip_conversion"), enable_events=True)
-		],
-		[
+			sg.Checkbox("Skip conversion", tooltip="For previously converted mods, does not skip case matching", key="-SKIP CONV-", default=sg.user_settings_get_entry("skip_conversion"), enable_events=True),
 			sg.Checkbox("Output zips", tooltip="Zipping is slow ", key="-OUTPUT ZIPS-", default=sg.user_settings_get_entry("output_zips"), enable_events=True),
 			sg.Checkbox("Play finish sound", tooltip=" For when converting takes long ", key="-PLAY FINISH SOUND-", default=sg.user_settings_get_entry("play_finish_sound"), enable_events=True)
 		]], title="Options")],
