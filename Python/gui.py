@@ -42,8 +42,20 @@ def init_window():
 			sg.In(
 				sg.user_settings_get_entry("input_folder"),
 				size=(31, 1),
+				tooltip="Mod input folder",
 				enable_events=True,
 				key="-INPUT FOLDER-",
+				background_color=sg.theme_input_background_color() if sg.user_settings_get_entry("input_folder") else no_path_set_color
+			),
+			sg.FolderBrowse(size=(7, 1))
+		],
+		[
+			sg.In(
+				sg.user_settings_get_entry("cortex_folder"),
+				size=(31, 1),
+				tooltip="Folder of your Cortex Command installation",
+				enable_events = True,
+				key="-CORTEX FOLDER-",
 				background_color=sg.theme_input_background_color() if sg.user_settings_get_entry("input_folder") else no_path_set_color
 			),
 			sg.FolderBrowse(size=(7, 1))
@@ -93,6 +105,7 @@ def init_window():
 
 def run_window(window):
 	valid_input_path = True if sg.user_settings_get_entry("input_folder") else False
+	valid_cortex_path = True if sg.user_settings_get_entry("cortex_folder") else False
 
 	while True:
 		event, values = window.read()
@@ -113,13 +126,23 @@ def run_window(window):
 				valid_input_path = False
 				window[event](background_color = no_path_set_color)
 		
+		if event == "-CORTEX FOLDER-":
+			cortex_folder = values[event]
+			if cortex_folder.exists():
+				valid_cortex_path = True
+				window[event](background_color = sg.theme_input_background_color())
+				sg.user_settings_set_entry("cortex_folder", cortex_folder)
+			else:
+				valid_cortex_path = False
+				window[event](background_color = no_path_set_color)
+
 		elif event == "-OUTPUT ZIPS-":
 			sg.user_settings_set_entry("output_zips", values[event])
 		elif event == "-PLAY FINISH SOUND-":
 			sg.user_settings_set_entry("play_finish_sound", values[event])
 		
 		elif event == "-CONVERT-":
-			if valid_input_path:
+			if valid_input_path and valid_cortex_path:
 				convert.convert()
 
 		
