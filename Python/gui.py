@@ -151,7 +151,8 @@ def run_window(window):
 
 		elif event == "-CONVERT-":
 			if valid_input_path and valid_cortex_path:
-				convert.convert()
+				if sg.popup_yes_no("Are the Module names spelled with correct capitalization?\n(if you're unsure check the modules Index.ini for reference)") == "Yes":
+					convert.convert()
 
 
 		elif event == "-GITHUB-":
