@@ -83,28 +83,33 @@ def lua_include_exists(included_file):
 	Check if a lua file exists case sensitive. This looks up the lua file
 	in the glob and in relative direcctories.
 	"""
-	if any(included_file in file for file in _path_glob):
+	if included_file in _path_glob or any(included_file + '.lua' in file for file in _path_glob):
 		return ""
 
-	for file in _path_glob_lowercase:
+	for i, file in enumerate(_path_glob_lowercase):
 		if included_file.lower() in file:
-			return file
+			if '.rte' in included_file.lower().partition('/')[0]:
+				return _path_glob[i]
+			else:
+				if included_file.lower() == file.partition('/')[2][:-4]:
+					return _path_glob[i]
 
 	return "ERROR"
 
 def case_check_lua_line(line, lua_file, line_number):
 	if any(include_op in line.split('--')[0] for include_op in _lua_file_includes):
 		operation = line.split('--')[0].partition('"')[0].partition(
-		 "'")[0].rpartition('=')[-1].strip()
+		 "'")[0].rpartition('=')[-1].strip('(').strip()
 		contents = re.search(f"['\"]([^'\"]*)['\"]", line)
 		out = ""
 		if contents:
-			out = lua_include_exists(contents.group(1))
+			contents = contents.group(1)
+			out = lua_include_exists(contents)
 		if out == "":
 			return {}
 		elif out == "ERROR":
 			logging.error(
-			 f"ERROR: could not locate: {contents.group(1)}"
+			 f"ERROR: could not locate: {contents}"
 			 f"\n\t included by {lua_file} at line {line_number}"
 			)
 			warnings.warning_results.append(f"'{lua_file}' line: {line_number} Could not locate: {contents}")
