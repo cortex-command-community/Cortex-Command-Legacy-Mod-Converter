@@ -39,11 +39,25 @@ def init_window():
 	paths_column = [
 		[sg.Frame(layout=[
 		[
+			sg.Text("Input:\t\t"),
 			sg.In(
 				sg.user_settings_get_entry("input_folder"),
 				size=(31, 1),
+				tooltip="Mod input folder",
 				enable_events=True,
 				key="-INPUT FOLDER-",
+				background_color=sg.theme_input_background_color() if sg.user_settings_get_entry("input_folder") else no_path_set_color
+			),
+			sg.FolderBrowse(size=(7, 1))
+		],
+		[
+			sg.Text("Cortex Command:\t"),
+			sg.In(
+				sg.user_settings_get_entry("cortex_folder"),
+				size=(31, 1),
+				tooltip="Folder of your Cortex Command installation",
+				enable_events = True,
+				key="-CORTEX FOLDER-",
 				background_color=sg.theme_input_background_color() if sg.user_settings_get_entry("input_folder") else no_path_set_color
 			),
 			sg.FolderBrowse(size=(7, 1))
@@ -59,8 +73,10 @@ def init_window():
 	sg.user_settings_set_entry("play_finish_sound", True if play_finish_sound_setting == None else play_finish_sound_setting)
 
 	options_column = [
-		[sg.Frame(layout=[[
-			sg.Checkbox("Output zips", tooltip=" Zipping is slow ", key="-OUTPUT ZIPS-", default=sg.user_settings_get_entry("output_zips"), enable_events=True),
+		[sg.Frame(layout=[
+		[
+			sg.Checkbox("Skip conversion", tooltip="For previously converted mods, does not skip case matching", key="-SKIP CONV-", default=sg.user_settings_get_entry("skip_conversion"), enable_events=True),
+			sg.Checkbox("Output zips", tooltip="Zipping is slow ", key="-OUTPUT ZIPS-", default=sg.user_settings_get_entry("output_zips"), enable_events=True),
 			sg.Checkbox("Play finish sound", tooltip=" For when converting takes long ", key="-PLAY FINISH SOUND-", default=sg.user_settings_get_entry("play_finish_sound"), enable_events=True)
 		]], title="Options")],
 	]
@@ -87,12 +103,14 @@ def init_window():
 
 	window = sg.Window("Legacy Mod Converter", layout, icon=resource_path("Media/legacy-mod-converter.ico"), font=("Helvetica", 16))
 	cfg.progress_bar = window["-PROGRESS BAR-"]
+	window.finalize()
 
 	return window
 
 
 def run_window(window):
 	valid_input_path = True if sg.user_settings_get_entry("input_folder") else False
+	valid_cortex_path = True if sg.user_settings_get_entry("cortex_folder") else False
 
 	while True:
 		event, values = window.read()
@@ -112,17 +130,30 @@ def run_window(window):
 			else:
 				valid_input_path = False
 				window[event](background_color = no_path_set_color)
-		
+
+		if event == "-CORTEX FOLDER-":
+			cortex_folder = values[event]
+			if cortex_folder.exists():
+				valid_cortex_path = True
+				window[event](background_color = sg.theme_input_background_color())
+				sg.user_settings_set_entry("cortex_folder", cortex_folder)
+			else:
+				valid_cortex_path = False
+				window[event](background_color = no_path_set_color)
+
 		elif event == "-OUTPUT ZIPS-":
 			sg.user_settings_set_entry("output_zips", values[event])
 		elif event == "-PLAY FINISH SOUND-":
 			sg.user_settings_set_entry("play_finish_sound", values[event])
-		
+		elif event == "-SKIP CONV-":
+			sg.user_settings_set_entry("skip_conversion", values[event])
+
+
 		elif event == "-CONVERT-":
-			if valid_input_path:
+			if valid_input_path and valid_cortex_path:
 				convert.convert()
 
-		
+
 		elif event == "-GITHUB-":
 			webbrowser.open("https://github.com/cortex-command-community/Cortex-Command-Legacy-Mod-Converter")
 		elif event == "-DISCORD-":
