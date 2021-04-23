@@ -39,6 +39,7 @@ def init_window():
 	paths_column = [
 		[sg.Frame(layout=[
 		[
+			sg.Text("Input:\t\t"),
 			sg.In(
 				sg.user_settings_get_entry("input_folder"),
 				size=(31, 1),
@@ -50,6 +51,7 @@ def init_window():
 			sg.FolderBrowse(size=(7, 1))
 		],
 		[
+			sg.Text("Cortex Command:\t"),
 			sg.In(
 				sg.user_settings_get_entry("cortex_folder"),
 				size=(31, 1),
@@ -103,6 +105,7 @@ def init_window():
 
 	window = sg.Window("Legacy Mod Converter", layout, icon=resource_path("Media/legacy-mod-converter.ico"), font=("Helvetica", 16))
 	cfg.progress_bar = window["-PROGRESS BAR-"]
+	window.finalize()
 
 	return window
 
@@ -129,7 +132,7 @@ def run_window(window):
 			else:
 				valid_input_path = False
 				window[event](background_color = no_path_set_color)
-		
+
 		if event == "-CORTEX FOLDER-":
 			cortex_folder = values[event]
 			if cortex_folder.exists():
@@ -147,12 +150,12 @@ def run_window(window):
 		elif event == "-SKIP CONV-":
 			sg.user_settings_set_entry("skip_conversion", values[event])
 
-		
+
 		elif event == "-CONVERT-":
 			if valid_input_path and valid_cortex_path:
 				convert.convert()
 
-		
+
 		elif event == "-GITHUB-":
 			webbrowser.open("https://github.com/cortex-command-community/Cortex-Command-Legacy-Mod-Converter")
 		elif event == "-DISCORD-":
