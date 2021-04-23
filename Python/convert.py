@@ -8,6 +8,7 @@ from Python import zips as zips_py
 from Python import update_progress
 from Python import palette
 from Python import warnings
+from Python import case_check
 
 
 foo = "bar"
@@ -34,6 +35,8 @@ def convert():
 	time_start = time.time()
 
 	input_folder_path = cfg.sg.user_settings_get_entry("input_folder")
+	cortex_folder_path = cfg.sg.user_settings_get_entry("cortex_folder")
+	case_check.init_glob(cortex_folder_path, input_folder_path)
 
 	zips_py.unzip(input_folder_path)
 
@@ -142,6 +145,20 @@ def create_converted_file(input_file_path, output_file_path, input_folder_path):
 					all_lines = all_lines.replace(old_str_parts[0] + ".png", new_str)
 				else:
 					all_lines = all_lines.replace(old_str, new_str)
+
+			# Case matching must be done after conversion, otherwise tons of errors wil be generated
+			file_case_match = {}
+			for line_number, line in enumerate(all_lines.split('\n')):
+				# lua and ini separately because of naming differences especially for animations and lua 'require'
+				if Path(input_file_path).suffix == '.ini':
+					# Output file name because line numbers may differ between input and output
+					file_case_match.update(case_check.case_check_ini_line(line, output_file_path, line_number))
+				elif Path(input_file_path).suffix == '.lua':
+					file_case_match.update(case_check.case_check_lua_line(line, output_file_path, line_number))
+
+			if file_case_match:
+				for bad_file, new_file in file_case_match.items():
+					all_lines = all_lines.replace(bad_file, new_file)
 
 			all_lines = regex_rules.regex_replace(all_lines)
 			file_out.write(regex_rules.regex_replace_wavs(all_lines))
