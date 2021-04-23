@@ -36,11 +36,13 @@ def convert():
 
 	input_folder_path = cfg.sg.user_settings_get_entry("input_folder")
 	cortex_folder_path = cfg.sg.user_settings_get_entry("cortex_folder")
-	case_check.init_glob(cortex_folder_path, input_folder_path)
 
 	zips_py.unzip(input_folder_path)
 
+
 	update_progress.set_max_progress(input_folder_path)
+
+	case_check.init_glob(cortex_folder_path, input_folder_path)
 
 	for input_subfolder_path, input_subfolders, input_subfiles in os.walk(input_folder_path):
 		mod_subfolder = get_mod_subfolder(input_folder_path, input_subfolder_path)
@@ -116,7 +118,7 @@ def process_files(input_subfiles, input_subfolder_path, output_subfolder, input_
 
 def create_converted_file(input_file_path, output_file_path, input_folder_path):
 	# try: # TODO: Figure out why this try/except is necessary and why it doesn't check for an error type.
-	with open(input_file_path, "r") as file_in:
+	with open(input_file_path, "r", errors='ignore') as file_in:
 		with open(output_file_path, "w") as file_out:
 			all_lines_list = []
 			file_path = os.path.relpath(input_file_path, input_folder_path)
@@ -164,8 +166,11 @@ def create_converted_file(input_file_path, output_file_path, input_folder_path):
 				for bad_file, new_file in file_case_match.items():
 					all_lines = all_lines.replace(bad_file, new_file)
 
-			all_lines = regex_rules.regex_replace(all_lines)
-			file_out.write(regex_rules.regex_replace_wavs(all_lines))
+			if not cfg.sg.user_settings_get_entry("skip_conversions"):
+				all_lines = regex_rules.regex_replace(all_lines)
+				all_lines = regex_rules.regex_replace_wavs(all_lines)
+
+			file_out.write(all_lines)
 	# except:
 	# 	shutil.copyfile(input_file_path, output_file_path)
 

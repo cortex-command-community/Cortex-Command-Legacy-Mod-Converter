@@ -11,7 +11,7 @@ _path_glob_lowercase = None
 _images = None
 _image_ext = ['.png', '.bmp']
 
-_ini_file_includes = ['IncludeFile', 'ScriptPath', 'FilePath']
+_ini_file_includes = ['IncludeFile', 'ScriptPath', 'FilePath', 'Path']
 _lua_file_includes = ['require', 'dofile', 'loadfile', 'io.open']
 
 
@@ -43,28 +43,30 @@ def check_file_exists(path):
 	"ERROR" if file is missing entirely
 	"""
 
-	if (path in _path_glob) or (path[-4:] in _image_ext and any(path[:-4] in image for image in _images)):
+	if (path in _path_glob) or (path[-4:] in _image_ext and any((path[:-4] == image or (path[:-4] + '000') == image) for image in _images)):
 		return ""
 
-	path = Path(path).as_posix()
+	path = Path(path).as_posix().replace('\\', '/')
 	if path.lower() in _path_glob_lowercase:
 		return _path_glob[_path_glob_lowercase.index(path.lower())]
 
 	if path[-4:] in _image_ext:
-		for i, image in enumerate(_images):
+		for image in _images:
 			if path[:-4].lower() in image.lower():
-				if path[:-4].partition('000')[0] == path[:-4]:
-					return _images[i].partition('000')[0] + path[-4:]
+				if image[-3:]=='000':
+					return image[:-3] + path[-4:]
 				else:
-					return _images[i] + path[-4:]
+					return image + path[-4:]
 
 	return "ERROR"
 
 def case_check_ini_line(line, file, line_number):
-	line_uncommented = line.split('//')[0]
-	if any(include_op in line_uncommented for include_op in _ini_file_includes):
+	line_uncommented = line.split('//')[0].strip()
+	if any(line_uncommented.startswith(include_op) for include_op in _ini_file_includes):
+
 		content_file = line_uncommented.rpartition('=')[-1].strip()
 		out = check_file_exists(content_file)
+
 		if out == "":
 			return {}
 		if out == "ERROR":
@@ -83,28 +85,35 @@ def lua_include_exists(included_file):
 	Check if a lua file exists case sensitive. This looks up the lua file
 	in the glob and in relative direcctories.
 	"""
-	if any(included_file in file for file in _path_glob):
+	if included_file in _path_glob or any(included_file + '.lua' in file for file in _path_glob):
 		return ""
 
-	for file in _path_glob_lowercase:
+	included_file = Path(included_file).as_posix().replace('\\', '/')
+
+	for i, file in enumerate(_path_glob_lowercase):
 		if included_file.lower() in file:
-			return file
+			if '.rte' in included_file.lower().partition('/')[0]:
+				return _path_glob[i]
+			else:
+				if included_file.lower() == file.partition('/')[2][:-4]:
+					return _path_glob[i]
 
 	return "ERROR"
 
 def case_check_lua_line(line, lua_file, line_number):
 	if any(include_op in line.split('--')[0] for include_op in _lua_file_includes):
 		operation = line.split('--')[0].partition('"')[0].partition(
-		 "'")[0].rpartition('=')[-1].strip()
-		contents = re.search(f"['\"]([^'\"]*)['\"]", line)
+		 "'")[0].rpartition('=')[-1].strip('( ')
+		contents = re.search(r"['\"]([^'\"]*)['\"]", line)
 		out = ""
 		if contents:
-			out = lua_include_exists(contents.group(1))
+			contents = contents.group(1)
+			out = lua_include_exists(contents)
 		if out == "":
 			return {}
 		elif out == "ERROR":
 			logging.error(
-			 f"ERROR: could not locate: {contents.group(1)}"
+			 f"ERROR: could not locate: {contents}"
 			 f"\n\t included by {lua_file} at line {line_number}"
 			)
 			warnings.warning_results.append(f"'{lua_file}' line: {line_number} Could not locate: {contents}")
