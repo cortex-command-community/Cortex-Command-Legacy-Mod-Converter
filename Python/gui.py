@@ -133,7 +133,7 @@ def run_window(window):
 
 		if event == "-CORTEX FOLDER-":
 			cortex_folder = values[event]
-			if cortex_folder.exists():
+			if pathlib.Path(cortex_folder).exists():
 				valid_cortex_path = True
 				window[event](background_color = sg.theme_input_background_color())
 				sg.user_settings_set_entry("cortex_folder", cortex_folder)
