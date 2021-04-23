@@ -46,7 +46,7 @@ def check_file_exists(path):
 	if (path in _path_glob) or (path[-4:] in _image_ext and any(path[:-4] in image for image in _images)):
 		return ""
 
-	path = Path(path).as_posix()
+	path = Path(path).as_posix().replace('\\', '/')
 	if path.lower() in _path_glob_lowercase:
 		return _path_glob[_path_glob_lowercase.index(path.lower())]
 
@@ -85,6 +85,8 @@ def lua_include_exists(included_file):
 	"""
 	if included_file in _path_glob or any(included_file + '.lua' in file for file in _path_glob):
 		return ""
+
+	included_file = Path(included_file).as_posix().replace('\\', '/')
 
 	for i, file in enumerate(_path_glob_lowercase):
 		if included_file.lower() in file:
