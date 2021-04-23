@@ -43,7 +43,7 @@ def check_file_exists(path):
 	"ERROR" if file is missing entirely
 	"""
 
-	if (path in _path_glob) or (path[-4:] in _image_ext and any(path[:-4] in image for image in _images)):
+	if (path in _path_glob) or (path[-4:] in _image_ext and any((path[:-4] == image or (path[:-4] + '000') == image) for image in _images)):
 		return ""
 
 	path = Path(path).as_posix().replace('\\', '/')
@@ -51,20 +51,22 @@ def check_file_exists(path):
 		return _path_glob[_path_glob_lowercase.index(path.lower())]
 
 	if path[-4:] in _image_ext:
-		for i, image in enumerate(_images):
+		for image in _images:
 			if path[:-4].lower() in image.lower():
-				if path[:-4].partition('000')[0] == path[:-4]:
-					return _images[i].partition('000')[0] + path[-4:]
+				if image[-3:]=='000':
+					return image[:-3] + path[-4:]
 				else:
-					return _images[i] + path[-4:]
+					return image + path[-4:]
 
 	return "ERROR"
 
 def case_check_ini_line(line, file, line_number):
 	line_uncommented = line.split('//')[0].strip()
 	if any(line_uncommented.startswith(include_op) for include_op in _ini_file_includes):
+
 		content_file = line_uncommented.rpartition('=')[-1].strip()
 		out = check_file_exists(content_file)
+
 		if out == "":
 			return {}
 		if out == "ERROR":
