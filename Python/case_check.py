@@ -11,7 +11,7 @@ _path_glob_lowercase = None
 _images = None
 _image_ext = ['.png', '.bmp']
 
-_ini_file_includes = ['IncludeFile', 'ScriptPath', 'FilePath']
+_ini_file_includes = ['IncludeFile', 'ScriptPath', 'FilePath', 'Path']
 _lua_file_includes = ['require', 'dofile', 'loadfile', 'io.open']
 
 
@@ -61,8 +61,8 @@ def check_file_exists(path):
 	return "ERROR"
 
 def case_check_ini_line(line, file, line_number):
-	line_uncommented = line.split('//')[0]
-	if any(include_op in line_uncommented for include_op in _ini_file_includes):
+	line_uncommented = line.split('//')[0].strip()
+	if any(line_uncommented.startswith(include_op) for include_op in _ini_file_includes):
 		content_file = line_uncommented.rpartition('=')[-1].strip()
 		out = check_file_exists(content_file)
 		if out == "":
