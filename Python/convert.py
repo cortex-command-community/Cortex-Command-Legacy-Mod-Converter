@@ -41,7 +41,7 @@ def convert():
 	zips_py.unzip(input_folder_path)
 
 	update_progress.set_max_progress(input_folder_path)
-	
+
 	for input_subfolder_path, input_subfolders, input_subfiles in os.walk(input_folder_path):
 		mod_subfolder = get_mod_subfolder(input_folder_path, input_subfolder_path)
 
@@ -98,7 +98,10 @@ def process_files(input_subfiles, input_subfolder_path, output_subfolder, input_
 		output_file_path = os.path.join(output_subfolder, full_filename)
 
 		if palette.is_input_image(full_filename):
-			palette.process_image(full_filename, input_file_path, output_file_path)
+			if not cfg.sg.user_settings_get_entry("skip_conversion"):
+				palette.process_image(full_filename, input_file_path, output_file_path)
+			else:
+				shutil.copyfile(input_file_path, output_file_path)
 
 		if full_filename == "desktop.ini":
 			continue
@@ -122,7 +125,7 @@ def create_converted_file(input_file_path, output_file_path, input_folder_path):
 			for line in file_in:
 				line_number += 1
 
-				if ".bmp" in line:
+				if ".bmp" in line and not cfg.sg.user_settings_get_entry("skip_conversion"):
 					if not any(keep_bmp in line for keep_bmp in ["palette.bmp", "palettemat.bmp"]):
 						line = line.replace(".bmp", ".png")
 
@@ -138,13 +141,14 @@ def create_converted_file(input_file_path, output_file_path, input_folder_path):
 			all_lines = "".join(all_lines_list)
 
 			# Conversion rules can contain newlines, so they can't be applied on a per-line basis.
-			for old_str, new_str in conversion_rules.items():
-				old_str_parts = os.path.splitext(old_str)
-				# Because bmp -> png already happened on all_lines we'll make all old_str conversion rules png.
-				if old_str_parts[1] == ".bmp":
-					all_lines = all_lines.replace(old_str_parts[0] + ".png", new_str)
-				else:
-					all_lines = all_lines.replace(old_str, new_str)
+			if not cfg.sg.user_settings_get_entry("skip_conversion"):
+				for old_str, new_str in conversion_rules.items():
+					old_str_parts = os.path.splitext(old_str)
+					# Because bmp -> png already happened on all_lines we'll make all old_str conversion rules png.
+					if old_str_parts[1] == ".bmp":
+						all_lines = all_lines.replace(old_str_parts[0] + ".png", new_str)
+					else:
+						all_lines = all_lines.replace(old_str, new_str)
 
 			# Case matching must be done after conversion, otherwise tons of errors wil be generated
 			file_case_match = {}
