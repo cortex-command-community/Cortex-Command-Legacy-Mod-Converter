@@ -99,7 +99,7 @@ def lua_include_exists(included_file):
 def case_check_lua_line(line, lua_file, line_number):
 	if any(include_op in line.split('--')[0] for include_op in _lua_file_includes):
 		operation = line.split('--')[0].partition('"')[0].partition(
-		 "'")[0].rpartition('=')[-1].strip('(').strip()
+		 "'")[0].rpartition('=')[-1].strip('( ')
 		contents = re.search(f"['\"]([^'\"]*)['\"]", line)
 		out = ""
 		if contents:
