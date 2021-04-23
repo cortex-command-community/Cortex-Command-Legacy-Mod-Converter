@@ -166,7 +166,7 @@ def create_converted_file(input_file_path, output_file_path, input_folder_path):
 				for bad_file, new_file in file_case_match.items():
 					all_lines = all_lines.replace(bad_file, new_file)
 
-			if not cfg.sg.user_settings_get_entry("skip_conversions"):
+			if not cfg.sg.user_settings_get_entry("skip_conversion"):
 				all_lines = regex_rules.regex_replace(all_lines)
 				all_lines = regex_rules.regex_replace_wavs(all_lines)
 
