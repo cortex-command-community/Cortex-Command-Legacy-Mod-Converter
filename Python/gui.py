@@ -71,8 +71,12 @@ def init_window():
 	sg.user_settings_set_entry("play_finish_sound", True if play_finish_sound_setting == None else play_finish_sound_setting)
 
 	options_column = [
-		[sg.Frame(layout=[[
-			sg.Checkbox("Output zips", tooltip=" Zipping is slow ", key="-OUTPUT ZIPS-", default=sg.user_settings_get_entry("output_zips"), enable_events=True),
+		[sg.Frame(layout=[
+		[
+			sg.Checkbox("Skip conversion", tooltip="For previously converted mods, does not skip case matching", key="-SKIP CONV-", default=sg.user_settings_get_entry("skip_conversion"), enable_events=True)
+		],
+		[
+			sg.Checkbox("Output zips", tooltip="Zipping is slow ", key="-OUTPUT ZIPS-", default=sg.user_settings_get_entry("output_zips"), enable_events=True),
 			sg.Checkbox("Play finish sound", tooltip=" For when converting takes long ", key="-PLAY FINISH SOUND-", default=sg.user_settings_get_entry("play_finish_sound"), enable_events=True)
 		]], title="Options")],
 	]
@@ -140,6 +144,9 @@ def run_window(window):
 			sg.user_settings_set_entry("output_zips", values[event])
 		elif event == "-PLAY FINISH SOUND-":
 			sg.user_settings_set_entry("play_finish_sound", values[event])
+		elif event == "-SKIP CONV-":
+			sg.user_settings_set_entry("skip_conversion", values[event])
+
 		
 		elif event == "-CONVERT-":
 			if valid_input_path and valid_cortex_path:
