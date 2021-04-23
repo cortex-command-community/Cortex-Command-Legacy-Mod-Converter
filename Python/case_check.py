@@ -5,13 +5,14 @@ import re
 from Python import shared_globals as cfg
 from Python import warnings
 
-_path_glob = None
-_path_glob_lowercase = None
+_path_glob = []
+_path_glob_lowercase = []
+_modules = []
 
 _images = None
 _image_ext = ['.png', '.bmp']
 
-_ini_file_includes = ['IncludeFile', 'ScriptPath', 'FilePath', 'Path']
+_ini_file_includes = ['IncludeFile', 'ScriptPath', 'FilePath', 'Path', 'ScriptFile']
 _lua_file_includes = ['require', 'dofile', 'loadfile', 'io.open']
 
 
@@ -19,12 +20,17 @@ def init_glob(cortex_path, input_path):
 	"""
 	Initialize the path tree for later use
 	"""
-	global _path_glob_lowercase, _path_glob, _images
+	global _path_glob_lowercase, _path_glob, _images, _modules
 
 	_path_glob = [
 	 p.relative_to(cortex_path).as_posix()
 	 for p in sorted(Path(cortex_path).glob('*.rte/**/*.*'))
 	]
+	_modules = [p.relative_to(cortex_path).as_posix() for p in sorted(Path(cortex_path).glob('*.rte'))]
+	_modules.extend([
+	 p.relative_to(input_path).as_posix()
+	 for p in sorted(Path(input_path).glob('*.rte'))
+	])
 	_path_glob.extend([
 	 p.relative_to(input_path).as_posix()
 	 for p in sorted(Path(input_path).glob('*.rte/**/*.*'))
@@ -52,11 +58,11 @@ def check_file_exists(path):
 
 	if path[-4:] in _image_ext:
 		for image in _images:
-			if path[:-4].lower() in image.lower():
-				if image[-3:]=='000':
-					return image[:-3] + path[-4:]
-				else:
-					return image + path[-4:]
+			if path[:-4].lower() == image.lower():
+				return image + path[-4:]
+			elif path[:-4].lower() + '000' == image.lower():
+				return image[:-3] + path[-4:]
+
 
 	return "ERROR"
 
@@ -101,10 +107,11 @@ def lua_include_exists(included_file):
 	return "ERROR"
 
 def case_check_lua_line(line, lua_file, line_number):
+
 	if any(include_op in line.split('--')[0] for include_op in _lua_file_includes):
 		operation = line.split('--')[0].partition('"')[0].partition(
 		 "'")[0].rpartition('=')[-1].strip('( ')
-		contents = re.search(r"['\"]([^'\"]*)['\"]", line)
+		contents = re.search(r"['\"]([^'\"]*)['\"]", line.split('--')[0])
 		out = ""
 		if contents:
 			contents = contents.group(1)
@@ -124,4 +131,21 @@ def case_check_lua_line(line, lua_file, line_number):
 				return {contents:out.partition('/')[2][:-4]}
 			else:
 				return {contents:out}
+
+	if '.rte' in line.split('--')[0]:
+		contents = re.search(r"['\"]([^'\"]*)['\"]", line.split('--')[0])
+		if contents:
+			for match in contents.groups():
+				if '.rte' in match.partition('/')[0]:
+					module = match.partition('/')[0].strip(';:"\'')
+					if	module in _modules:
+						return {}
+					elif module.lower() in [m.lower() for m in _modules]:
+						return {module:_modules[[m.lower() for m in _modules].index(module.lower())]}
+					else:
+						logging.warn(f"could not locate {module} wanted by {lua_file}:{line_number}")
+						warnings.warning_results.append(f"'{lua_file}' line: {line_number} failed to find module: {module}")
+						return {}
+
+
 	return {}
