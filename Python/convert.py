@@ -118,13 +118,12 @@ def process_files(input_subfiles, input_subfolder_path, output_subfolder, input_
 
 def create_converted_file(input_file_path, output_file_path, input_folder_path):
 	# try: # TODO: Figure out why this try/except is necessary and why it doesn't check for an error type.
-	with open(input_file_path, "r") as file_in:
+	with open(input_file_path, "r", errors='ignore') as file_in:
 		with open(output_file_path, "w") as file_out:
 			all_lines_list = []
 			file_path = os.path.relpath(input_file_path, input_folder_path)
 
 			line_number = 0
-			print(input_file_path)
 			for line in file_in:
 				line_number += 1
 
