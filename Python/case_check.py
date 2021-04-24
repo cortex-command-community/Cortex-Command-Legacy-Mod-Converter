@@ -23,19 +23,19 @@ def init_glob(cortex_path, input_path):
 	global _path_glob_lowercase, _path_glob, _images, _modules
 
 	_path_glob = [
-	 p.relative_to(cortex_path).as_posix()
+	 p.relative_to(cortex_path).as_posix()[:-len(p.suffix)] + p.suffix.lower()
 	 for p in sorted(Path(cortex_path).glob('*.rte/**/*.*'))
 	]
+	_path_glob.extend([
+	 p.relative_to(input_path).as_posix()[:-len(p.suffix)] + p.suffix.lower()
+	 for p in sorted(Path(input_path).glob('*.rte/**/*.*'))
+	])
+	_path_glob_lowercase = [p.lower() for p in _path_glob]
 	_modules = [p.relative_to(cortex_path).as_posix() for p in sorted(Path(cortex_path).glob('*.rte'))]
 	_modules.extend([
 	 p.relative_to(input_path).as_posix()
 	 for p in sorted(Path(input_path).glob('*.rte'))
 	])
-	_path_glob.extend([
-	 p.relative_to(input_path).as_posix()
-	 for p in sorted(Path(input_path).glob('*.rte/**/*.*'))
-	])
-	_path_glob_lowercase = [p.lower() for p in _path_glob]
 	_images = [p[:-4] for p in _path_glob if Path(p).suffix in _image_ext]
 
 

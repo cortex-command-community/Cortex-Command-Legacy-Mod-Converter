@@ -94,10 +94,11 @@ def create_folder(input_subfolder_path, output_subfolder):
 def process_files(input_subfiles, input_subfolder_path, output_subfolder, input_folder_path, output_folder_path):
 	for full_filename in input_subfiles:
 		filename, file_extension = os.path.splitext(full_filename)
+		file_extension = file_extension.lower()
 
 		input_file_path = os.path.join(input_subfolder_path, full_filename)
 
-		output_file_path = os.path.join(output_subfolder, full_filename)
+		output_file_path = os.path.join(output_subfolder, "".join([filename, file_extension]))
 
 		if palette.is_input_image(full_filename):
 			if not cfg.sg.user_settings_get_entry("skip_conversion"):
