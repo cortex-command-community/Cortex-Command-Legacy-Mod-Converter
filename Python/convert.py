@@ -83,10 +83,10 @@ def try_print_mod_name(mod_subfolder_parts, mod_subfolder):
 	if len(mod_subfolder_parts) == 1:
 		print("Converting '{}'".format(mod_subfolder))
 		warnings.warning_results.append(
-             "------------------------------------------------------\n"
+			 "------------------------------------------------------\n"
 			f"\t{mod_subfolder}\n"
 			 "------------------------------------------------------"
-             )
+			 )
 
 
 def create_folder(input_subfolder_path, output_subfolder):
