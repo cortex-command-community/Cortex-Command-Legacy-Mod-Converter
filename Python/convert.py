@@ -82,6 +82,11 @@ def get_mod_subfolder(input_folder_path, input_subfolder_path):
 def try_print_mod_name(mod_subfolder_parts, mod_subfolder):
 	if len(mod_subfolder_parts) == 1:
 		print("Converting '{}'".format(mod_subfolder))
+		warnings.warning_results.append(
+			 "------------------------------------------------------\n"
+			f"\t{mod_subfolder}\n"
+			 "------------------------------------------------------"
+			 )
 
 
 def create_folder(input_subfolder_path, output_subfolder):
@@ -94,10 +99,11 @@ def create_folder(input_subfolder_path, output_subfolder):
 def process_files(input_subfiles, input_subfolder_path, output_subfolder, input_folder_path, output_folder_path):
 	for full_filename in input_subfiles:
 		filename, file_extension = os.path.splitext(full_filename)
+		file_extension = file_extension.lower()
 
 		input_file_path = os.path.join(input_subfolder_path, full_filename)
 
-		output_file_path = os.path.join(output_subfolder, full_filename)
+		output_file_path = os.path.join(output_subfolder, "".join([filename, file_extension]))
 
 		if palette.is_input_image(full_filename):
 			if not cfg.sg.user_settings_get_entry("skip_conversion"):
@@ -166,7 +172,7 @@ def create_converted_file(input_file_path, output_file_path, input_folder_path):
 				for bad_file, new_file in file_case_match.items():
 					all_lines = all_lines.replace(bad_file, new_file)
 
-			if not cfg.sg.user_settings_get_entry("skip_conversions"):
+			if not cfg.sg.user_settings_get_entry("skip_conversion"):
 				all_lines = regex_rules.regex_replace(all_lines)
 				all_lines = regex_rules.regex_replace_wavs(all_lines)
 
