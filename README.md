@@ -39,12 +39,10 @@ If you put the right things between the quotes that CCCP was complaining about t
 ### Programs that can help with creating conversion rules
 **You don’t need all of these programs to get started and feel free to use alternative programs:**
 
-* [Download “Everything”](https://voidtools.com/) - Like File Explorer on Windows. Very accurate and fast.
 * [Download “SourceTree”](https://www.sourcetreeapp.com/) - Like GitHub Desktop. Allows searching for specific words across all commits, which is super useful when for example you want to figure out what `Nanorifle` got changed to when that's crashing CCCP.
 * [Download “Notepad++”](https://notepad-plus-plus.org/downloads/) - Like Notepad. Allows mass replacing across thousands of files at once. You can also use an IDE like [VS Code](https://code.visualstudio.com/) for this purpose.
 
 ### Tutorials on how to use the programs effectively.
-* [Fixing CCCP crashes and errors with the program Everything](https://github.com/cortex-command-community/Cortex-Command-Legacy-Mod-Converter/wiki/Fixing-CCCP-crashes-and-errors-with-the-program-Everything)
 * [Fixing CCCP crashes and errors with the program SourceTree](https://github.com/cortex-command-community/Cortex-Command-Legacy-Mod-Converter/wiki/Fixing-CCCP-crashes-and-errors-with-the-program-SourceTree)
 
 ## Contributing
