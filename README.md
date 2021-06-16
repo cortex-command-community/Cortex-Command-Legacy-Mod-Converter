@@ -45,6 +45,7 @@ If you put the right things between the quotes that CCCP was complaining about t
 
 ### Tutorials on how to use the programs effectively.
 * [Fixing CCCP crashes and errors with the program Everything](https://github.com/cortex-command-community/Cortex-Command-Legacy-Mod-Converter/wiki/Fixing-CCCP-crashes-and-errors-with-the-program-Everything)
+* [Fixing CCCP crashes and errors with the program SourceTree](https://github.com/cortex-command-community/Cortex-Command-Legacy-Mod-Converter/wiki/Fixing-CCCP-crashes-and-errors-with-the-program-SourceTree)
 
 ## Contributing
 Feel free to submit `Pull Requests` or `Issues` on this GitHub project for any additional cases that you'd like to have supported.
