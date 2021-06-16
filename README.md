@@ -36,7 +36,7 @@ Open any of the JSON files in the `ConversionRules` folder with Notepad++ and ad
 
 If you put the right things between the quotes that CCCP was complaining about, then you can start the converter once more and you'll see that the crash/error should have disappeared. Repeat this process until the mod is fully converted and playable with no console errors (to check for console errors press the `` ` `` key in CCCP).
 
-## How to figure out what conversion rule to add to get rid of crashes and errors
+## How to figure out what conversion rules to add to get rid of crashes and errors
 Follow [this tutorial on fixing CCCP crashes and errors with Fork](https://github.com/cortex-command-community/Cortex-Command-Legacy-Mod-Converter/wiki/Fixing-CCCP-crashes-and-errors-with-Fork).
 
 ## Contributing
