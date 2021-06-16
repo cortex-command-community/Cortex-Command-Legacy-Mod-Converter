@@ -30,20 +30,14 @@ What this line of JSON says is that whenever the thing on the left is encountere
 <p align="center"><img src="Media/conversion-rules-screenshot.png" alt="Conversion rules screenshot"></p>
 
 ## How to add your own conversion rules
-Open any of the JSON files in the `ConversionRules` folder and add the line `"": "",` in a similar manner to how the other lines are placed. You can then start putting stuff between the quotation marks on the left and right side like in the example in the section above. The converter will now know how to apply one more conversion rule.
-
-If you put the right things between the quotes that CCCP was complaining about then you can start the converter once more and you'll see that the crash/error should have disappeared. Repeat this process until the mod is fully converted and playable with no console errors (to check for console errors press the `` ` `` key in CCCP).
-
-## Tutorials on constructing conversion rules efficiently
-
-### Programs that can help with creating conversion rules
-**You don’t need all of these programs to get started and feel free to use alternative programs:**
-
-* [Download “SourceTree”](https://www.sourcetreeapp.com/) - Like GitHub Desktop. Allows searching for specific words across all commits, which is super useful when for example you want to figure out what `Nanorifle` got changed to when that's crashing CCCP.
 * [Download “Notepad++”](https://notepad-plus-plus.org/downloads/) - Like Notepad. Allows mass replacing across thousands of files at once. You can also use an IDE like [VS Code](https://code.visualstudio.com/) for this purpose.
 
-### Tutorials on how to use the programs effectively.
-* [Fixing CCCP crashes and errors with the program SourceTree](https://github.com/cortex-command-community/Cortex-Command-Legacy-Mod-Converter/wiki/Fixing-CCCP-crashes-and-errors-with-the-program-SourceTree)
+Open any of the JSON files in the `ConversionRules` folder with Notepad++ and add the line `"": "",` in a similar manner to how the other lines in the file are already placed. You can then start putting stuff between the quotation marks on the left and right side, like in the example in the previous "What are conversion rules" section. You've now taught the converter how to apply one more conversion rule.
+
+If you put the right things between the quotes that CCCP was complaining about, then you can start the converter once more and you'll see that the crash/error should have disappeared. Repeat this process until the mod is fully converted and playable with no console errors (to check for console errors press the `` ` `` key in CCCP).
+
+## How to figure out what conversion rule to add to get rid of crashes and errors
+Follow [this tutorial on fixing CCCP crashes and errors with Fork](https://github.com/cortex-command-community/Cortex-Command-Legacy-Mod-Converter/wiki/Fixing-CCCP-crashes-and-errors-with-Fork).
 
 ## Contributing
 Feel free to submit `Pull Requests` or `Issues` on this GitHub project for any additional cases that you'd like to have supported.
