@@ -5,7 +5,7 @@
 import traceback
 import PySimpleGUI as sg
 
-from Python import gui
+from Python.gui import gui
 
 
 try:
