@@ -5,9 +5,10 @@ from PIL import Image
 
 
 def load_vips_env():
-	# pyvips from pip doesn't seem to work, unzip the latest vips-dev-w64-all.zip instead from https://github.com/libvips/libvips/releases.
-	vipshome = 'c:\\vips-dev-8.10\\bin'
-	os.environ['PATH'] = vipshome + ';' + os.environ['PATH']
+	# "import pyvips" doesn't work, so I unzipped the latest vips-dev-w64-all.zip and put it in "Libs/".
+	# https://github.com/libvips/libvips/releases
+	vipshome = "Libs/vips-dev-8.10/bin"
+	os.environ["PATH"] = vipshome + ";" + os.environ["PATH"]
 
 load_vips_env()
 
@@ -21,36 +22,35 @@ def resource_path(relative_path):
 	return os.path.join(os.path.abspath("."), relative_path)
 
 
-palette = Image.open(resource_path(os.path.join("Media", "palette.bmp"))).getpalette()
+regular_palette = Image.open(resource_path(os.path.join("Media", "palette.bmp"))).getpalette()
 
 
 def is_input_image(full_filename):
-	return full_filename.lower().endswith((".bmp", ".png", ".jpg", ".jpeg")) and full_filename.lower() != "palette.bmp"
+	return full_filename.lower().endswith((".bmp", ".png", ".jpg", ".jpeg")) and full_filename.lower() not in ("regular_palette.bmp")
 
 
 def process_image(full_filename, input_image_path, output_image_path):
-	global palette
+	global regular_palette
 
-	old_img = get_old_img(input_image_path)
+	old_img = get_old_img(input_image_path, test=full_filename)
 
-	scale = 1
-	old_img = old_img.resize((int(old_img.width * scale), int(old_img.height * scale)))
+	# old_img.save(full_filename)
 
-	# putpalette() always expects 256 * 3 ints.
-	for k in range(256 - int(len(palette) / 3)):
-		for j in range(3):
-			palette.append(palette[j])
+	# print(old_img.palette)
 
 	palette_img = Image.new('P', (1, 1))
-	palette_img.putpalette(palette)
+	palette_img.putpalette(regular_palette)
 	new_img = old_img.convert(mode="RGB").quantize(palette=palette_img, dither=False)
 
 	new_img.save(os.path.splitext(output_image_path)[0] + ".png")
 
 
-def get_old_img(input_image_path):
+def get_old_img(input_image_path, test):
 	# pyvips acts as a substitute for PIL and cv2, because both of those can throw a warning in the terminal with RLE bmps.
 	pyvips_img = pyvips.Image.new_from_file(input_image_path, access='sequential')
+	# print(dir(pyvips_img), "\n")
+	# print(pyvips_img)
+	# pyvips_img.write_to_file(test)
 	np_img = vips2numpy(pyvips_img)
 	return Image.fromarray(np.uint8(np_img))
 

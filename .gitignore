@@ -1,6 +1,3 @@
-/Input**
-
-!Input/.empty
 Output/*
 !Output/.empty
 ExampleLegacyMods
@@ -10,3 +7,7 @@ dist
 Legacy Mod Converter.spec
 .vscode
 settings.json
+
+# TODO: Remove this and push the updated libraries. Commit message:
+# Added the pyvips library to the Libs/ folder, because the pip pyvips is broken. For some people the exe didn't work when pyvips was only located on my local PC and that path was referenced in my Python code, so that's also why I had to copy it over into this project.
+Libs/*

@@ -1,4 +1,4 @@
-import os, sys, json
+import os, sys, json, webbrowser
 from jsoncomment import JsonComment
 
 from Python import shared_globals as cfg
@@ -10,7 +10,13 @@ warnings_path = os.path.join("ConversionRules", warnings_file_name)
 warnings_available = os.path.isfile(warnings_path)
 
 warning_rules = {}
-warning_results = []
+
+MANUAL_REPLACEMENT_TITLE_SEPARATOR = "=" * 50
+warning_results = [
+	MANUAL_REPLACEMENT_TITLE_SEPARATOR +
+	"\nLINES REQUIRING MANUAL REPLACEMENT\n" +
+	MANUAL_REPLACEMENT_TITLE_SEPARATOR + "\n"
+]
 
 
 def load_conversion_and_warning_rules():
@@ -41,6 +47,9 @@ def check_github_button_clicked_and_exit(clicked_github_button):
 
 def warnings_popup():
 	if warnings_available:
-		w = max(30, len(max(warning_results, key=len)))
-		h = min(50, len(warning_results)) + 1 # + 1 necessary because popup_scrolled adds an extra line.
-		cfg.sg.popup_scrolled("\n".join(warning_results), title="Lines needing manual replacing", size=(w, h), button_color=cfg.sg.theme_button_color(), background_color=cfg.sg.theme_background_color())
+		message = "\n".join(warning_results)
+
+		w = max(30, len(max(message.split("\n"), key=len)) + 1)
+		h = min(50, len(message.splitlines()) + 1) # + 1 is necessary, because popup_scrolled always adds an empty line at the bottom.
+
+		cfg.sg.popup_scrolled(message, title="Lines requiring manual replacement", size=(w, h), button_color=cfg.sg.theme_button_color(), background_color=cfg.sg.theme_background_color())

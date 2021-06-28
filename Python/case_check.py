@@ -16,32 +16,32 @@ _ini_file_includes = ['IncludeFile', 'ScriptPath', 'FilePath', 'Path', 'ScriptFi
 _lua_file_includes = ['require', 'dofile', 'loadfile', 'io.open']
 
 
-def init_glob(cortex_path, input_path):
+def init_glob(cccp_path, input_path):
 	"""
 	Initialize the path tree for later use
 	"""
 	global _path_glob_lowercase, _path_glob, _images, _modules
 
 	_path_glob = [
-	 p.relative_to(cortex_path).as_posix()[:-len(p.suffix)] + p.suffix.lower()
-	 for p in sorted(Path(cortex_path).glob('*.rte/**/*.*'))
+		p.relative_to(cccp_path).as_posix()[:-len(p.suffix)] + p.suffix.lower()
+		for p in sorted(Path(cccp_path).glob('*.rte/**/*.*'))
 	]
 	_path_glob.extend([
-	 p.relative_to(input_path).as_posix()[:-len(p.suffix)] + p.suffix.lower()
-	 for p in sorted(Path(input_path).glob('*.rte/**/*.*'))
+		p.relative_to(input_path).as_posix()[:-len(p.suffix)] + p.suffix.lower()
+		for p in sorted(Path(input_path).glob('*.rte/**/*.*'))
 	])
 	_path_glob_lowercase = [p.lower() for p in _path_glob]
-	_modules = [p.relative_to(cortex_path).as_posix() for p in sorted(Path(cortex_path).glob('*.rte'))]
+	_modules = [p.relative_to(cccp_path).as_posix() for p in sorted(Path(cccp_path).glob('*.rte'))]
 	_modules.extend([
-	 p.relative_to(input_path).as_posix()
-	 for p in sorted(Path(input_path).glob('*.rte'))
+		p.relative_to(input_path).as_posix()
+		for p in sorted(Path(input_path).glob('*.rte'))
 	])
 	_images = [p[:-4] for p in _path_glob if Path(p).suffix in _image_ext]
 
 
 def check_file_exists(path):
 	"""
-	Check if a file exists in the cortex tree
+	Check if a file exists in the CCCP tree.
 
 	returns:
 	"" if path exists
@@ -66,24 +66,28 @@ def check_file_exists(path):
 
 	return "ERROR"
 
-def case_check_ini_line(line, file, line_number):
+
+def case_check_ini_line(line, file_name, line_number):
 	line_uncommented = line.split('//')[0].strip()
 	if any(line_uncommented.startswith(include_op) for include_op in _ini_file_includes):
 
-		content_file = line_uncommented.rpartition('=')[-1].strip()
-		out = check_file_exists(content_file)
+		contents = line_uncommented.rpartition('=')[-1].strip()
+		out = check_file_exists(contents)
 
 		if out == "":
 			return {}
 		if out == "ERROR":
-			warnings.warning_results.append(
-				f"{file}:{line_number} Could not locate: {content_file}")
+			warnings.warning_results.append(get_error_message(file_name, line_number, contents))
 			return {}
 		else:
-			logging.info(f"File {content_file} was found here: \n\t{out}")
-			return {content_file:out}
+			logging.info(f"File {contents} was found here: \n\t{out}")
+			return {contents:out}
 	else:
 		return {}
+
+
+def get_error_message(file_name, line_number, couldnt_be_located):
+	return f"\nLine {line_number} at {file_name}\n\tCould not locate: {couldnt_be_located}"
 
 
 def lua_include_exists(included_file):
@@ -106,11 +110,11 @@ def lua_include_exists(included_file):
 
 	return "ERROR"
 
-def case_check_lua_line(line, lua_file, line_number):
+
+def case_check_lua_line(line, file_name, line_number):
 
 	if any(include_op in line.split('--')[0] for include_op in _lua_file_includes):
-		operation = line.split('--')[0].partition('"')[0].partition(
-		 "'")[0].rpartition('=')[-1].strip('( ')
+		operation = line.split('--')[0].partition('"')[0].partition("'")[0].rpartition('=')[-1].strip('( ')
 		contents = re.search(r"['\"]([^'\"]*)['\"]", line.split('--')[0])
 		out = ""
 		if contents:
@@ -119,11 +123,8 @@ def case_check_lua_line(line, lua_file, line_number):
 		if out == "":
 			return {}
 		elif out == "ERROR":
-			logging.error(
-			 f"ERROR: could not locate: {contents}"
-			 f"\n\t included by {lua_file} at line {line_number}"
-			)
-			warnings.warning_results.append(f"'{lua_file}' line: {line_number} Could not locate: {contents}")
+			logging.error(get_error_message(file_name, line_number, contents))
+			warnings.warning_results.append(get_error_message(file_name, line_number, contents))
 			return {}
 		else:
 			logging.info(f"File {contents} was found here {out}")
@@ -143,9 +144,8 @@ def case_check_lua_line(line, lua_file, line_number):
 					elif module.lower() in [m.lower() for m in _modules]:
 						return {module:_modules[[m.lower() for m in _modules].index(module.lower())]}
 					else:
-						logging.warn(f"could not locate {module} wanted by {lua_file}:{line_number}")
-						warnings.warning_results.append(f"'{lua_file}' line: {line_number} failed to find module: {module}")
+						logging.warn(get_error_message(file_name, line_number, module))
+						warnings.warning_results.append(f"'{file_name}' line: {line_number} failed to find module: {module}")
 						return {}
-
 
 	return {}

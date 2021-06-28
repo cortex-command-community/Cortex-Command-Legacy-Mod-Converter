@@ -15,6 +15,8 @@ foo = "bar"
 
 conversion_rules = {}
 
+WARNINGS_MOD_NAME_SEPARATOR = "-" * 50
+
 
 # TODO: Move to shared_globals.py
 def resource_path(relative_path):
@@ -35,14 +37,14 @@ def convert():
 	time_start = time.time()
 
 	input_folder_path = cfg.sg.user_settings_get_entry("input_folder")
-	cortex_folder_path = cfg.sg.user_settings_get_entry("cortex_folder")
+	cccp_folder_path = cfg.sg.user_settings_get_entry("cccp_folder")
 
 	zips_py.unzip(input_folder_path)
 
 
 	update_progress.set_max_progress(input_folder_path)
 
-	case_check.init_glob(cortex_folder_path, input_folder_path)
+	case_check.init_glob(cccp_folder_path, input_folder_path)
 
 	for input_subfolder_path, input_subfolders, input_subfiles in os.walk(input_folder_path):
 		mod_subfolder = get_mod_subfolder(input_folder_path, input_subfolder_path)
@@ -83,10 +85,10 @@ def try_print_mod_name(mod_subfolder_parts, mod_subfolder):
 	if len(mod_subfolder_parts) == 1:
 		print("Converting '{}'".format(mod_subfolder))
 		warnings.warning_results.append(
-			 "------------------------------------------------------\n"
-			f"\t{mod_subfolder}\n"
-			 "------------------------------------------------------"
-			 )
+			WARNINGS_MOD_NAME_SEPARATOR + "\n" +
+			f"\t{mod_subfolder}\n" +
+			WARNINGS_MOD_NAME_SEPARATOR
+		)
 
 
 def create_folder(input_subfolder_path, output_subfolder):
@@ -160,7 +162,7 @@ def create_converted_file(input_file_path, output_file_path, input_folder_path):
 
 			# Case matching must be done after conversion, otherwise tons of errors wil be generated
 			file_case_match = {}
-			for line_number, line in enumerate(all_lines.split('\n')):
+			for line_number, line in enumerate(all_lines.split('\n'), 1):
 				# lua and ini separately because of naming differences especially for animations and lua 'require'
 				if Path(input_file_path).suffix == '.ini':
 					# Output file name because line numbers may differ between input and output
