@@ -12,11 +12,14 @@ warnings_available = os.path.isfile(warnings_path)
 warning_rules = {}
 
 MANUAL_REPLACEMENT_TITLE_SEPARATOR = "=" * 50
-warning_results = [
-	MANUAL_REPLACEMENT_TITLE_SEPARATOR +
-	"\nLINES REQUIRING MANUAL REPLACEMENT\n" +
-	MANUAL_REPLACEMENT_TITLE_SEPARATOR + "\n"
-]
+warning_results = None # A global variable set in init_warning_results()
+def init_warning_results():
+	global warning_results
+	warning_results = [
+		"\n".join(
+			(MANUAL_REPLACEMENT_TITLE_SEPARATOR, "LINES REQUIRING MANUAL REPLACEMENT", MANUAL_REPLACEMENT_TITLE_SEPARATOR)
+		)
+	]
 
 
 def load_conversion_and_warning_rules():
@@ -49,8 +52,14 @@ def warnings_popup():
 	if warnings_available:
 		message = "\n".join(warning_results)
 
-		w = max(30, len(max(message.split("\n"), key=len)) + 1)
-		h = min(50, len(message.splitlines()) + 1) # + 1 is necessary, because popup_scrolled always adds an empty line at the bottom.
+		w = max(
+			30,
+			len(get_longest_line_length(message)) + 1 # TODO: Add a comment here on why + 1 is necessary.
+		)
+		h = min(
+			50,
+			len(message.splitlines()) + 1 # + 1 is necessary, because popup_scrolled always adds an empty line at the bottom.
+		)
 
 		cfg.sg.popup_scrolled(
 			message,
@@ -59,3 +68,7 @@ def warnings_popup():
 			button_color=cfg.sg.theme_button_color(),
 			background_color=cfg.sg.theme_background_color(),
 		)
+
+
+def get_longest_line_length(message):
+	return max(message.split("\n"), key=len)

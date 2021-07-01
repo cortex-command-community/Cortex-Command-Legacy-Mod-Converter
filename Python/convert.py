@@ -12,8 +12,6 @@ from Python.case_check import case_check
 from Python import utils
 
 
-foo = "bar"
-
 conversion_rules = {}
 
 WARNINGS_MOD_NAME_SEPARATOR = "-" * 50
@@ -32,6 +30,8 @@ def convert():
 
 	input_folder_path = cfg.sg.user_settings_get_entry("input_folder")
 	cccp_folder_path = cfg.sg.user_settings_get_entry("cccp_folder")
+
+	warnings.init_warning_results()
 
 	zips_py.unzip(input_folder_path)
 
@@ -60,10 +60,8 @@ def convert():
 		playsound(utils.resource_path("Media/finish.wav"), block=(platform.system()=='Linux'))
 	print("Finished in {} {}".format(elapsed, pluralize("second", elapsed)))
 
-	if len(warnings.warning_results) > 0:
+	if len(warnings.warning_results) > 1: # warning_results is initialized with a first line, so warning_results starts with a len of 1.
 		warnings.warnings_popup()
-
-	warnings.warning_results = []
 
 
 def get_mod_subfolder(input_folder_path, input_subfolder_path):
@@ -77,9 +75,9 @@ def try_print_mod_name(mod_subfolder_parts, mod_subfolder):
 	if len(mod_subfolder_parts) == 1:
 		print("Converting '{}'".format(mod_subfolder))
 		warnings.warning_results.append(
-			WARNINGS_MOD_NAME_SEPARATOR + "\n" +
-			f"\t{mod_subfolder}\n" +
-			WARNINGS_MOD_NAME_SEPARATOR
+			"\n" + "\n".join(
+				(WARNINGS_MOD_NAME_SEPARATOR, f"\t{mod_subfolder}", WARNINGS_MOD_NAME_SEPARATOR)
+			)
 		)
 
 
