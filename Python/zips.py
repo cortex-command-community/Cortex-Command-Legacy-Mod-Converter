@@ -1,8 +1,6 @@
 import os, shutil, zipfile
 from pathlib import Path
 
-from Python.update_progress import increment_progress
-
 
 def unzip(input_folder_path):
 	for f in os.listdir(input_folder_path):

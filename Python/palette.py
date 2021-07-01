@@ -3,6 +3,8 @@ import os, sys, io
 import numpy as np
 from PIL import Image
 
+from Python import utils
+
 
 def load_vips_env():
 	# "import pyvips" doesn't work, so I unzipped the latest vips-dev-w64-all.zip and put it in "Libs/".
@@ -15,14 +17,7 @@ load_vips_env()
 import pyvips
 
 
-# TODO: Move to shared_globals.py
-def resource_path(relative_path):
-	if hasattr(sys, '_MEIPASS'):
-		return os.path.join(sys._MEIPASS, relative_path)
-	return os.path.join(os.path.abspath("."), relative_path)
-
-
-regular_palette = Image.open(resource_path(os.path.join("Media", "palette.bmp"))).getpalette()
+regular_palette = Image.open(utils.resource_path(os.path.join("Media", "palette.bmp"))).getpalette()
 
 
 def is_input_image(full_filename):

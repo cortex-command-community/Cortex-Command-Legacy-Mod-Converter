@@ -24,6 +24,6 @@ def set_max_progress(input_folder_path):
 		for filename in input_subfiles:
 			total_progress += 1
 
-	# TODO: Find a way to see track how much progress the zipping is making.
+	# TODO: Find a way to track the progress of zipping.
 	# if cfg.sg.user_settings_get_entry("output_zips"):
 	# 	total_progress = total_progress * 2

@@ -1,9 +1,11 @@
 from pathlib import Path
-import logging
 import re
 
 from Python import shared_globals as cfg
 from Python import warnings
+
+from Python.case_check.case_check_errors import get_error_could_not_locate, get_error_failed_to_find_module
+
 
 _path_glob = []
 _path_glob_lowercase = []
@@ -77,23 +79,18 @@ def case_check_ini_line(line, file_name, line_number):
 		if out == "":
 			return {}
 		if out == "ERROR":
-			warnings.warning_results.append(get_error_message(file_name, line_number, contents))
+			warnings.warning_results.append(get_error_could_not_locate(file_name, line_number, contents))
 			return {}
 		else:
-			logging.info(f"File {contents} was found here: \n\t{out}")
 			return {contents:out}
 	else:
 		return {}
 
 
-def get_error_message(file_name, line_number, couldnt_be_located):
-	return f"\nLine {line_number} at {file_name}\n\tCould not locate: {couldnt_be_located}"
-
-
 def lua_include_exists(included_file):
 	"""
 	Check if a lua file exists case sensitive. This looks up the lua file
-	in the glob and in relative direcctories.
+	in the glob and in relative directories.
 	"""
 	if included_file in _path_glob or any(included_file + '.lua' in file for file in _path_glob):
 		return ""
@@ -123,11 +120,9 @@ def case_check_lua_line(line, file_name, line_number):
 		if out == "":
 			return {}
 		elif out == "ERROR":
-			logging.error(get_error_message(file_name, line_number, contents))
-			warnings.warning_results.append(get_error_message(file_name, line_number, contents))
+			warnings.warning_results.append(get_error_could_not_locate(file_name, line_number, contents))
 			return {}
 		else:
-			logging.info(f"File {contents} was found here {out}")
 			if operation == 'require':
 				return {contents:out.partition('/')[2][:-4]}
 			else:
@@ -144,8 +139,7 @@ def case_check_lua_line(line, file_name, line_number):
 					elif module.lower() in [m.lower() for m in _modules]:
 						return {module:_modules[[m.lower() for m in _modules].index(module.lower())]}
 					else:
-						logging.warn(get_error_message(file_name, line_number, module))
-						warnings.warning_results.append(f"'{file_name}' line: {line_number} failed to find module: {module}")
+						warnings.warning_results.append(get_error_failed_to_find_module(file_name, line_number, module))
 						return {}
 
 	return {}

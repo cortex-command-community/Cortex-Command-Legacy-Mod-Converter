@@ -2,11 +2,11 @@ import os, webbrowser
 import PySimpleGUI as sg
 from pathlib import Path, PurePosixPath
 
-from Python.gui import gui_layout
 from Python import utils
 from Python import shared_globals as cfg
 from Python import convert
 from Python import warnings
+from Python.gui import gui_layout
 
 
 no_path_set_color = "#b35858"
@@ -84,13 +84,11 @@ def run_window(window):
 		elif event == "SKIP_CONVERSION":
 			sg.user_settings_set_entry("skip_conversion", values[event])
 
-
 		elif event == "CONVERT":
 			if valid_cccp_path:
 				convert.convert()
 
-
 		elif event == "GITHUB":
 			webbrowser.open("https://github.com/cortex-command-community/Cortex-Command-Legacy-Mod-Converter")
 		elif event == "DISCORD":
-			webbrowser.open("https://discord.gg/SdNnKJN")
+			webbrowser.open("https://discord.gg/TSU6StNQUG")

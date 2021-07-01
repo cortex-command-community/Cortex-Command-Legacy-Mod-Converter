@@ -52,4 +52,10 @@ def warnings_popup():
 		w = max(30, len(max(message.split("\n"), key=len)) + 1)
 		h = min(50, len(message.splitlines()) + 1) # + 1 is necessary, because popup_scrolled always adds an empty line at the bottom.
 
-		cfg.sg.popup_scrolled(message, title="Lines requiring manual replacement", size=(w, h), button_color=cfg.sg.theme_button_color(), background_color=cfg.sg.theme_background_color())
+		cfg.sg.popup_scrolled(
+			message,
+			title="Lines requiring manual replacement",
+			size=(w, h),
+			button_color=cfg.sg.theme_button_color(),
+			background_color=cfg.sg.theme_background_color(),
+		)

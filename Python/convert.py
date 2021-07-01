@@ -8,7 +8,8 @@ from Python import zips as zips_py
 from Python import update_progress
 from Python import palette
 from Python import warnings
-from Python import case_check
+from Python.case_check import case_check
+from Python import utils
 
 
 foo = "bar"
@@ -16,13 +17,6 @@ foo = "bar"
 conversion_rules = {}
 
 WARNINGS_MOD_NAME_SEPARATOR = "-" * 50
-
-
-# TODO: Move to shared_globals.py
-def resource_path(relative_path):
-	if hasattr(sys, '_MEIPASS'):
-		return os.path.join(sys._MEIPASS, relative_path)
-	return os.path.join(os.path.abspath("."), relative_path)
 
 
 # If an exe executes this program then sys is frozen.
@@ -62,10 +56,8 @@ def convert():
 
 	elapsed = math.floor(time.time() - time_start)
 
-	update_progress.increment_progress() # TODO: This is a temporary solution for zipping not being accounted in the progress.
-
 	if cfg.sg.user_settings_get_entry("play_finish_sound"):
-		playsound(resource_path("Media/finish.wav"), block=(platform.system()=='Linux'))
+		playsound(utils.resource_path("Media/finish.wav"), block=(platform.system()=='Linux'))
 	print("Finished in {} {}".format(elapsed, pluralize("second", elapsed)))
 
 	if len(warnings.warning_results) > 0:
@@ -113,6 +105,8 @@ def process_files(input_subfiles, input_subfolder_path, output_subfolder, input_
 			else:
 				shutil.copyfile(input_file_path, output_file_path)
 
+		update_progress.increment_progress()
+
 		if full_filename == "desktop.ini":
 			continue
 
@@ -121,8 +115,6 @@ def process_files(input_subfiles, input_subfolder_path, output_subfolder, input_
 		else:
 			if not palette.is_input_image(full_filename):
 				shutil.copyfile(input_file_path, output_file_path)
-
-		update_progress.increment_progress()
 
 def create_converted_file(input_file_path, output_file_path, input_folder_path):
 	# try: # TODO: Figure out why this try/except is necessary and why it doesn't check for an error type.
