@@ -30,7 +30,7 @@ def get_paths_column():
 						),
 						sg.In(
 							sg.user_settings_get_entry("cccp_folder"),
-							size=(36, 1),
+							size=(34, 1),
 							tooltip=" Folder of your Cortex Command installation ",
 							enable_events = True,
 							key="CCCP_FOLDER",
@@ -51,10 +51,10 @@ def get_paths_column():
 					[
 						sg.ProgressBar(
 							999,
-							size=(34.2, 40),
+							size=(49.9, 40),
 							key="PROGRESS_BAR",
 							pad=(
-								(7, 0),
+								(15, 0),
 								(0, 0)
 							)
 						),
@@ -64,7 +64,7 @@ def get_paths_column():
 							size=(7, 1),
 							pad=(
 								(15, 0),
-								(14, 15)
+								(15, 15)
 							)
 						)
 					]
@@ -88,8 +88,8 @@ def get_options_column():
 							default=sg.user_settings_get_entry("skip_conversion"),
 							enable_events=True,
 							pad=(
-								(100, 0),
-								(0, 50)
+								(11, 0),
+								(5, 4)
 							)
 						),
 						sg.Checkbox(
@@ -97,14 +97,22 @@ def get_options_column():
 							tooltip=" Zipping is slow ",
 							key="OUTPUT_ZIPS",
 							default=sg.user_settings_get_entry("output_zips"),
-							enable_events=True
+							enable_events=True,
+							pad=(
+								(6, 0),
+								(1, 0)
+							)
 						),
 						sg.Checkbox(
 							"Play finish sound",
 							tooltip=" For when converting takes long ",
 							key="PLAY_FINISH_SOUND",
 							default=sg.user_settings_get_entry("play_finish_sound"),
-							enable_events=True
+							enable_events=True,
+							pad=(
+								(7, 10),
+								(1, 0)
+							)
 						)
 					]
 				],
@@ -125,14 +133,13 @@ def get_info_column():
 							enable_events=True,
 							key="GITHUB",
 							tooltip=" Visit this program's GitHub page ",
-							size=(47, 0)
+							size=(56, 47)
 						),
 						sg.Image(
 							utils.resource_path("Media/discord-icon.png"),
 							enable_events=True,
 							key="DISCORD",
 							tooltip=" Visit the CCCP Discord server for help ",
-							size=(48, 0)
 						)
 					]
 				],
