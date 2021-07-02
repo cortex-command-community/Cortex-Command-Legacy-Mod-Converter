@@ -37,7 +37,7 @@ def init_window():
 	sg.user_settings_set_entry("play_finish_sound", True if play_finish_sound_setting == None else play_finish_sound_setting)
 
 	cfg.sg = sg
-	warnings.load_conversion_and_warning_rules()
+	warnings.load_conversion_and_warning_rules() # TODO: Why is this called in this GUI function?
 
 	window = sg.Window(
 		"Legacy Mod Converter",

@@ -5,14 +5,14 @@ from Python import shared_globals as cfg
 from Python import convert
 
 
-warnings_file_name = "Warnings.json"
-warnings_path = os.path.join("ConversionRules", warnings_file_name)
-warnings_available = os.path.isfile(warnings_path)
+WARNINGS_FILENAME = "Warnings.json"
+WARNINGS_PATH = os.path.join("ConversionRules", WARNINGS_FILENAME)
 
-warning_rules = {}
+
+warning_rules = {} # A global that's initialized in load_conversion_and_warning_rules()
 
 MANUAL_REPLACEMENT_TITLE_SEPARATOR = "=" * 50
-warning_results = None # A global variable set in init_warning_results()
+warning_results = None # A global list set in init_warning_results()
 def init_warning_results():
 	global warning_results
 	warning_results = [
@@ -28,13 +28,13 @@ def load_conversion_and_warning_rules():
 	json_files_found = 0
 	try:
 		for name in os.listdir("ConversionRules"):
-			if name.endswith(".json") and name != warnings_file_name:
+			if name.endswith(".json") and name != WARNINGS_FILENAME:
 				json_files_found += 1
 				with open(os.path.join("ConversionRules", name)) as f:
 					convert.conversion_rules.update(json_parser.load(f)) 
-		if warnings_available:
-			with open(warnings_path) as f:
-				warning_rules.update(json_parser.load(f))
+
+		with open(WARNINGS_PATH) as f:
+			warning_rules.update(json_parser.load(f))
 	except:
 		check_github_button_clicked_and_exit(cfg.sg.Popup("The 'ConversionRules' folder wasn't found next to this executable. You can get the missing folder from the Legacy Mod Converter GitHub repo.", title="Missing ConversionRules folder", custom_text="Go to GitHub"))
 
@@ -49,25 +49,24 @@ def check_github_button_clicked_and_exit(clicked_github_button):
 
 
 def warnings_popup():
-	if warnings_available:
-		message = "\n".join(warning_results)
+	message = "\n".join(warning_results)
 
-		w = max(
-			30,
-			len(get_longest_line_length(message)) + 1 # TODO: Add a comment here on why + 1 is necessary.
-		)
-		h = min(
-			50,
-			len(message.splitlines()) + 1 # + 1 is necessary, because popup_scrolled always adds an empty line at the bottom.
-		)
+	w = max(
+		30,
+		len(get_longest_line_length(message)) + 1 # TODO: Add a comment here on why + 1 is necessary.
+	)
+	h = min(
+		50,
+		len(message.splitlines()) + 1 # + 1 is necessary, because popup_scrolled always adds an empty line at the bottom.
+	)
 
-		cfg.sg.popup_scrolled(
-			message,
-			title="Lines requiring manual replacement",
-			size=(w, h),
-			button_color=cfg.sg.theme_button_color(),
-			background_color=cfg.sg.theme_background_color(),
-		)
+	cfg.sg.popup_scrolled(
+		message,
+		title="Lines requiring manual replacement",
+		size=(w, h),
+		button_color=cfg.sg.theme_button_color(),
+		background_color=cfg.sg.theme_background_color(),
+	)
 
 
 def get_longest_line_length(message):

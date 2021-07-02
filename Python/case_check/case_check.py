@@ -4,7 +4,7 @@ import re
 from Python import shared_globals as cfg
 from Python import warnings
 
-from Python.case_check.case_check_errors import get_error_could_not_locate, get_error_failed_to_find_module
+from Python.case_check.case_check_errors import error_could_not_locate, error_failed_to_find_module
 
 
 _path_glob = []
@@ -79,7 +79,7 @@ def case_check_ini_line(line, file_name, line_number):
 		if out == "":
 			return {}
 		if out == "ERROR":
-			warnings.warning_results.append(get_error_could_not_locate(file_name, line_number, contents))
+			error_could_not_locate(file_name, line_number, contents)
 			return {}
 		else:
 			return {contents:out}
@@ -120,7 +120,7 @@ def case_check_lua_line(line, file_name, line_number):
 		if out == "":
 			return {}
 		elif out == "ERROR":
-			warnings.warning_results.append(get_error_could_not_locate(file_name, line_number, contents))
+			error_could_not_locate(file_name, line_number, contents)
 			return {}
 		else:
 			if operation == 'require':
@@ -139,7 +139,7 @@ def case_check_lua_line(line, file_name, line_number):
 					elif module.lower() in [m.lower() for m in _modules]:
 						return {module:_modules[[m.lower() for m in _modules].index(module.lower())]}
 					else:
-						warnings.warning_results.append(get_error_failed_to_find_module(file_name, line_number, module))
+						error_failed_to_find_module(file_name, line_number, module)
 						return {}
 
 	return {}

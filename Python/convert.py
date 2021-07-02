@@ -45,8 +45,11 @@ def convert():
 
 		mod_subfolder_parts = pathlib.Path(mod_subfolder).parts
 
-		if len(mod_subfolder_parts) > 0 and mod_subfolder_parts[0].endswith(".rte"):
-			try_print_mod_name(mod_subfolder_parts, mod_subfolder)
+		if is_mod_subfolder(mod_subfolder_parts):
+			mod_name = get_mod_name(mod_subfolder_parts)
+
+			print_mod_name(mod_name)
+			
 			output_subfolder = os.path.join(output_folder_path, mod_subfolder)
 			create_folder(input_subfolder_path, output_subfolder)
 			process_files(input_subfiles, input_subfolder_path, output_subfolder, input_folder_path, output_folder_path)
@@ -71,14 +74,22 @@ def get_mod_subfolder(input_folder_path, input_subfolder_path):
 		return os.path.relpath(input_subfolder_path, input_folder_path)
 
 
-def try_print_mod_name(mod_subfolder_parts, mod_subfolder):
-	if len(mod_subfolder_parts) == 1:
-		print("Converting '{}'".format(mod_subfolder))
-		warnings.warning_results.append(
-			"\n" + "\n".join(
-				(WARNINGS_MOD_NAME_SEPARATOR, f"\t{mod_subfolder}", WARNINGS_MOD_NAME_SEPARATOR)
-			)
+def print_mod_name(mod_name):
+	print("Converting '{}'".format(mod_name))
+	warnings.warning_results.append(
+		"\n" + "\n".join(
+			(WARNINGS_MOD_NAME_SEPARATOR, f"\t{mod_name}", WARNINGS_MOD_NAME_SEPARATOR)
 		)
+	)
+
+
+def get_mod_name(mod_subfolder_parts):
+	return mod_subfolder_parts[0]
+
+
+def is_mod_subfolder(mod_subfolder_parts):
+	# If it isn't the input folder and if it's (in) an rte folder.
+	return len(mod_subfolder_parts) > 0 and mod_subfolder_parts[0].endswith(".rte")
 
 
 def create_folder(input_subfolder_path, output_subfolder):
@@ -116,7 +127,7 @@ def process_files(input_subfiles, input_subfolder_path, output_subfolder, input_
 
 def create_converted_file(input_file_path, output_file_path, input_folder_path):
 	# try: # TODO: Figure out why this try/except is necessary and why it doesn't check for an error type.
-	with open(input_file_path, "r", errors='ignore') as file_in:
+	with open(input_file_path, "r", errors="ignore") as file_in: # TODO: Why ignore errors?
 		with open(output_file_path, "w") as file_out:
 			all_lines_list = []
 			file_path = os.path.relpath(input_file_path, input_folder_path)
@@ -129,12 +140,11 @@ def create_converted_file(input_file_path, output_file_path, input_folder_path):
 					if not any(keep_bmp in line for keep_bmp in ["palette.bmp", "palettemat.bmp"]):
 						line = line.replace(".bmp", ".png")
 
-				if warnings.warnings_available:
-					regex_rules.playsound_warning(line, file_path, line_number)
+				regex_rules.playsound_warning(line, file_path, line_number)
 
-					for old_str, new_str in warnings.warning_rules.items():
-						if old_str in line:
-							warnings.warning_results.append("'{}' line {}: {} -> {}".format(file_path, line_number, old_str, new_str))
+				for old_str, new_str in warnings.warning_rules.items():
+					if old_str in line:
+						warnings.warning_results.append("'{}' line {}: {} -> {}".format(file_path, line_number, old_str, new_str))
 
 				all_lines_list.append(line)
 
