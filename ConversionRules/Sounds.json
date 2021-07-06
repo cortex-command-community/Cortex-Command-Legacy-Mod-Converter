@@ -145,4 +145,10 @@
 	"Ronin.rte/Effects/Sounds/BazookaFire.wav": "Base.rte/Sounds/Devices/MissileFire.flac",
 	"Base.rte/Sounds/MissileFire.wav": "Base.rte/Sounds/Devices/MissileFire.flac",
 	"Base.rte/Devices/NapalmBombExplode.wav": "Base.rte/Devices/Explosives/NapalmBomb/Sounds/NapalmBombExplode.flac",
+	"Coalition.rte/Effects/Sounds/SniperRifle1.wav": "Coalition.rte/Devices/Weapons/SniperRifle/Sounds/Fire1.flac",
+	"Coalition.rte/Effects/Sounds/ShotPistolBlam.wav": "Coalition.rte/Devices/Weapons/HeavyPistol/Sounds/Fire1.flac",
+	"Browncoats.rte/Effects/Sounds/LightFlamerFire.wav": "Browncoats.rte/Devices/Weapons/Heatlance/Sounds/Loop.flac",
+	"Base.rte/Actors/DropShips/JetLoop.flac": "Base.rte/Sounds/Craft/JetLoop.flac",
+	"Base.rte/Actors/DropShips/JetStart.flac": "Base.rte/Sounds/Craft/JetStart.flac",
+	"Base.rte/Actors/DropShips/JetEnd.flac": "Base.rte/Sounds/Craft/JetEnd.flac",
 }
