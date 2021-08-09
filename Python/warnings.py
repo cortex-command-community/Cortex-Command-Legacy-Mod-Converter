@@ -12,10 +12,10 @@ WARNINGS_PATH = os.path.join("ConversionRules", WARNINGS_FILENAME)
 warning_rules = {} # A global that's initialized in load_conversion_and_warning_rules()
 
 MANUAL_REPLACEMENT_TITLE_SEPARATOR = "=" * 50
-warning_results = None # A global list set in init_warning_results()
-def init_warning_results():
-	global warning_results
-	warning_results = [
+mods_warnings = None # A global list set in init_mods_warnings()
+def init_mods_warnings():
+	global mods_warnings
+	mods_warnings = [
 		"\n".join(
 			(MANUAL_REPLACEMENT_TITLE_SEPARATOR, "LINES REQUIRING MANUAL REPLACEMENT", MANUAL_REPLACEMENT_TITLE_SEPARATOR)
 		)
@@ -48,8 +48,41 @@ def check_github_button_clicked_and_exit(clicked_github_button):
 	sys.exit()
 
 
+mod_warnings = None # A global list set in clear_mod_warnings()
+def clear_mod_warnings():
+	global mod_warnings
+	mod_warnings = []
+
+
+def append_mod_replacement_warning(file_path, line_number, old_str, new_str):
+	append_mod_warning(file_path, line_number, f"Replace '{old_str}' with", f"'{new_str}'")
+
+
+def append_mod_warning(file_path, line_number, error, error_subject):
+	global mod_warnings
+	warning = f"\nLine {line_number} at {file_path}\n\t{error}: {error_subject}"
+	mod_warnings.append(warning)
+
+
+def prepend_mod_title(mod_name):
+	title = "\n" + "\n".join(
+		(WARNINGS_MOD_NAME_SEPARATOR, f"\t{mod_name}", WARNINGS_MOD_NAME_SEPARATOR)
+	)
+	mod_warnings.insert(0, title)
+
+
+def push_mod_warnings():
+	global mod_warnings
+	mods_warnings.extend(mod_warnings)
+
+
+def show_popup_if_necessary():
+	if len(mods_warnings) > 1: # mods_warnings is initialized with a first line, so mods_warnings starts with a len of 1.
+		warnings_popup()
+
+
 def warnings_popup():
-	message = "\n".join(warning_results)
+	message = "\n".join(mods_warnings)
 
 	w = max(
 		30,

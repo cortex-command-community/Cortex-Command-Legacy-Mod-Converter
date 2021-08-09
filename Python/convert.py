@@ -31,7 +31,7 @@ def convert():
 	input_folder_path = cfg.sg.user_settings_get_entry("input_folder")
 	cccp_folder_path = cfg.sg.user_settings_get_entry("cccp_folder")
 
-	warnings.init_warning_results()
+	warnings.init_mods_warnings()
 
 	zips_py.unzip(input_folder_path)
 
@@ -45,10 +45,13 @@ def convert():
 
 		mod_subfolder_parts = pathlib.Path(mod_subfolder).parts
 
-		if is_mod_subfolder(mod_subfolder_parts):
+		if is_mod_folder(mod_subfolder_parts):
+			warnings.clear_mod_warnings()
+
+		if is_mod_folder_or_subfolder(mod_subfolder_parts):
 			mod_name = get_mod_name(mod_subfolder_parts)
 
-			print_mod_name(mod_name)
+			# print_mod_name(mod_name)
 			
 			output_subfolder = os.path.join(output_folder_path, mod_subfolder)
 			create_folder(input_subfolder_path, output_subfolder)
@@ -63,8 +66,7 @@ def convert():
 		playsound(utils.resource_path("Media/finish.wav"), block=(platform.system()=='Linux'))
 	print("Finished in {} {}".format(elapsed, pluralize("second", elapsed)))
 
-	if len(warnings.warning_results) > 1: # warning_results is initialized with a first line, so warning_results starts with a len of 1.
-		warnings.warnings_popup()
+	warnings.show_popup_if_necessary()
 
 
 def get_mod_subfolder(input_folder_path, input_subfolder_path):
@@ -76,18 +78,19 @@ def get_mod_subfolder(input_folder_path, input_subfolder_path):
 
 def print_mod_name(mod_name):
 	print("Converting '{}'".format(mod_name))
-	warnings.warning_results.append(
-		"\n" + "\n".join(
-			(WARNINGS_MOD_NAME_SEPARATOR, f"\t{mod_name}", WARNINGS_MOD_NAME_SEPARATOR)
-		)
-	)
+	warnings.prepend_mod_title(mod_name)
 
 
 def get_mod_name(mod_subfolder_parts):
 	return mod_subfolder_parts[0]
 
 
-def is_mod_subfolder(mod_subfolder_parts):
+def is_mod_folder(mod_subfolder_parts):
+	# If it isn't the input folder and if it's an rte folder.
+	return len(mod_subfolder_parts) == 1 and mod_subfolder_parts[0].endswith(".rte")
+
+
+def is_mod_folder_or_subfolder(mod_subfolder_parts):
 	# If it isn't the input folder and if it's (in) an rte folder.
 	return len(mod_subfolder_parts) > 0 and mod_subfolder_parts[0].endswith(".rte")
 
@@ -106,11 +109,11 @@ def process_files(input_subfiles, input_subfolder_path, output_subfolder, input_
 
 		input_file_path = os.path.join(input_subfolder_path, full_filename)
 
-		output_file_path = os.path.join(output_subfolder, "".join([filename, file_extension]))
+		output_file_path = os.path.join(output_subfolder, full_filename)
 
-		if palette.is_input_image(full_filename):
+		if palette.is_bmp(full_filename):
 			if not cfg.sg.user_settings_get_entry("skip_conversion"):
-				palette.process_image(full_filename, input_file_path, output_file_path)
+				palette.bmp_to_png(input_file_path, Path(output_file_path).with_suffix(".png"))
 			else:
 				shutil.copyfile(input_file_path, output_file_path)
 
@@ -122,7 +125,7 @@ def process_files(input_subfiles, input_subfolder_path, output_subfolder, input_
 		if file_extension in (".ini", ".lua"):
 			create_converted_file(input_file_path, output_file_path, input_folder_path)
 		else:
-			if not palette.is_input_image(full_filename):
+			if not palette.is_bmp(full_filename):
 				shutil.copyfile(input_file_path, output_file_path)
 
 def create_converted_file(input_file_path, output_file_path, input_folder_path):
@@ -137,14 +140,14 @@ def create_converted_file(input_file_path, output_file_path, input_folder_path):
 				line_number += 1
 
 				if ".bmp" in line and not cfg.sg.user_settings_get_entry("skip_conversion"):
-					if not any(keep_bmp in line for keep_bmp in ["palette.bmp", "palettemat.bmp"]):
+					if not any(keep_bmp in line for keep_bmp in ["palette.bmp", "palettemat.bmp"]): # TODO: Replace [] with () as it's a constant?
 						line = line.replace(".bmp", ".png")
 
 				regex_rules.playsound_warning(line, file_path, line_number)
 
 				for old_str, new_str in warnings.warning_rules.items():
 					if old_str in line:
-						warnings.warning_results.append("'{}' line {}: {} -> {}".format(file_path, line_number, old_str, new_str))
+						warnings.append_mod_replacement_warning(file_path, line_number, old_str, new_str)
 
 				all_lines_list.append(line)
 

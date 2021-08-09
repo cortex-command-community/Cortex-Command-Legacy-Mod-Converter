@@ -81,9 +81,14 @@ def regex_replace_wavs(all_lines):
 	return all_lines
 
 
+# TODO: Remove this function when PlaySound is automatically replaced.
 def playsound_warning(line, file_path, line_number):
-	pattern = "PlaySound(.*)"
+	pattern = "PlaySound(.*)" # TODO: PlaySound rule should probably be [whitespacehere]PlaySound so it doesn't false-flag on something like CF_PlaySound.
 	message = "No longer supported. Create a SoundContainer with CreateSoundContainer in the appropriate Create function."
 	matches = re.findall(pattern, line)
-	if len(matches) > 0 and matches[0].count(",") > 2:
-		warnings.warning_results.append("'{}' line {}: {} -> {}".format(file_path, line_number, pattern, message))
+
+	# print(file_path, pattern, line, matches)
+
+	if len(matches) > 0 and matches[0].count(",") > 2: # If there's a match and the PlaySound call has more than 3 arguments.
+		# Print a warning.
+		warnings.mods_warnings.append("'{}' line {}: {} -> {}".format(file_path, line_number, pattern, message))
