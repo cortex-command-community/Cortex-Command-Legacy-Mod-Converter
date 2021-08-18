@@ -1,12 +1,9 @@
 import os, sys, json, webbrowser
 from jsoncomment import JsonComment
+from pathlib import Path
 
 from Python import shared_globals as cfg
 from Python import convert
-
-
-WARNINGS_FILENAME = "Warnings.json"
-WARNINGS_PATH = os.path.join("ConversionRules", WARNINGS_FILENAME)
 
 
 warning_rules = {} # A global that's initialized in load_conversion_and_warning_rules()
@@ -25,21 +22,21 @@ def init_mods_warnings():
 def load_conversion_and_warning_rules():
 	json_parser = JsonComment(json)
 
-	json_files_found = 0
-	try:
-		for name in os.listdir("ConversionRules"):
-			if name.endswith(".json") and name != WARNINGS_FILENAME:
-				json_files_found += 1
-				with open(os.path.join("ConversionRules", name)) as f:
-					convert.conversion_rules.update(json_parser.load(f)) 
+	# try:
+	for folder_path, subfolders, subfiles in os.walk("ConversionRules"):
+		for filename in subfiles:
+			p = folder_path / Path(filename)
 
-		with open(WARNINGS_PATH) as f:
-			warning_rules.update(json_parser.load(f))
-	except:
-		check_github_button_clicked_and_exit(cfg.sg.Popup("The 'ConversionRules' folder wasn't found next to this executable. You can get the missing folder from the Legacy Mod Converter GitHub repo.", title="Missing ConversionRules folder", custom_text="Go to GitHub"))
-
-	if json_files_found == 0:
-		check_github_button_clicked_and_exit(cfg.sg.Popup("The 'ConversionRules' folder didn't contain any JSON files. You can get the JSON files from the Legacy Mod Converter GitHub repo.", title="Missing JSON files", custom_text="Go to GitHub"))
+			if p.is_file() and p.suffix.lower() == ".json":
+				with open(p) as f:
+					if p.stem == "Warnings":
+						warning_rules.update(json_parser.load(f))
+					else:
+						convert.conversion_rules.update(json_parser.load(f))
+	# except: # TODO: Add this try-except back in, but add a specific error type to it!
+		# check_github_button_clicked_and_exit(cfg.sg.Popup("The 'ConversionRules' folder couldn't be read because either:\n1. It contained a wrongly formatted JSON file, which is often caused by a missing comma at the end of a rule, or\n2. The folder doesn't exist.\nYou can get the missing folder from the Legacy Mod Converter GitHub repository.", title="Missing ConversionRules folder", custom_text="Go to the GitHub repository"))
+	if len(warning_rules) == 0 and len(convert.conversion_rules) == 0:
+		check_github_button_clicked_and_exit(cfg.sg.Popup("The 'ConversionRules' folder doesn't contain any JSON files.\nYou can get the JSON files from the Legacy Mod Converter GitHub repository.", title="Missing JSON files", custom_text="Go to the GitHub repository"))
 
 
 def check_github_button_clicked_and_exit(clicked_github_button):

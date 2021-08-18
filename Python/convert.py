@@ -6,7 +6,7 @@ from Python import shared_globals as cfg
 from Python import regex_rules
 from Python import zips as zips_py
 from Python import update_progress
-from Python import palette
+from Python import bmp_to_png
 from Python import warnings
 from Python.case_check import case_check
 from Python import utils
@@ -111,9 +111,9 @@ def process_files(input_subfiles, input_subfolder_path, output_subfolder, input_
 
 		output_file_path = os.path.join(output_subfolder, full_filename)
 
-		if palette.is_bmp(full_filename):
+		if bmp_to_png.is_bmp(full_filename):
 			if not cfg.sg.user_settings_get_entry("skip_conversion"):
-				palette.bmp_to_png(input_file_path, Path(output_file_path).with_suffix(".png"))
+				bmp_to_png.bmp_to_png(input_file_path, Path(output_file_path).with_suffix(".png"))
 			else:
 				shutil.copyfile(input_file_path, output_file_path)
 
@@ -125,7 +125,7 @@ def process_files(input_subfiles, input_subfolder_path, output_subfolder, input_
 		if file_extension in (".ini", ".lua"):
 			create_converted_file(input_file_path, output_file_path, input_folder_path)
 		else:
-			if not palette.is_bmp(full_filename):
+			if not bmp_to_png.is_bmp(full_filename):
 				shutil.copyfile(input_file_path, output_file_path)
 
 def create_converted_file(input_file_path, output_file_path, input_folder_path):

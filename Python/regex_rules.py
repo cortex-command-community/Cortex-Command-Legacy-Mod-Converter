@@ -8,12 +8,14 @@ def regex_replace(all_lines):
 	all_lines = simple_replace(all_lines, "\tPlayerCount = (.*)\n", "")
 	all_lines = simple_replace(all_lines, "\tTeamCount = (.*)\n", "")
 
+	all_lines = specific_replace(all_lines, regex_replace_tech, False, "ModuleName = (.*) Tech\n", "ModuleName = {}\n\tIsFaction = 1\n")
+
 	all_lines = specific_replace(all_lines, regex_replace_particle, False, "ParticleNumberToAdd = (.*)\n\tAddParticles = (.*)\n\t\tCopyOf = (.*)\n", "AddGib = Gib\n\t\tGibParticle = {}\n\t\t\tCopyOf = {}\n\t\tCount = {}\n")
-	
+
 	all_lines = specific_replace(all_lines, regex_replace_sound_priority, True, "SoundContainer(((?!SoundContainer).)*)Priority", "SoundContainer{}// Priority")
 
 	# all_lines = specific_replace(all_lines, regex_replace_sound_priority, True, "AddSound(((?! AddSound).)*)Priority", "AddSound{}// Priority")
-	
+
 	all_lines = specific_replace(all_lines, regex_use_capture, False, "FundsOfTeam(.*) =", "Team{}Funds =")
 	# all_lines = specific_replace(all_lines, regex_replace_playsound, False, "", "")
 
@@ -28,7 +30,7 @@ def simple_replace(all_lines, pattern, replacement):
 
 
 def specific_replace(all_lines, fn, dotall, pattern, replacement):
-	# TODO: Refactor so .findall takes re.DOTALL as an argument directly.
+	# TODO: Figure out how to use dotall in re.findall() directly to toggle re.DOTALL
 	if dotall:
 		matches = re.findall(pattern, all_lines, re.DOTALL)
 	else:
@@ -36,6 +38,12 @@ def specific_replace(all_lines, fn, dotall, pattern, replacement):
 	if len(matches) > 0:
 		return fn(all_lines, pattern, replacement, matches)
 	return all_lines
+
+
+
+
+def regex_replace_tech(all_lines, pattern, replacement, matches):
+	return re.sub(pattern, replacement, all_lines).format(*matches)
 
 
 def regex_replace_particle(all_lines, pattern, replacement, matches):
