@@ -4,28 +4,32 @@ from Python import warnings
 
 
 def regex_replace(all_lines):
-	all_lines = simple_replace(all_lines, "Framerate = (.*)", "SpriteAnimMode = 7")
-	all_lines = simple_replace(all_lines, "\tPlayerCount = (.*)\n", "")
-	all_lines = simple_replace(all_lines, "\tTeamCount = (.*)\n", "")
+	all_lines = replace_without_using_matches(all_lines, "Framerate = (.*)", "SpriteAnimMode = 7")
+	all_lines = replace_without_using_matches(all_lines, "\tPlayerCount = (.*)\n", "")
+	all_lines = replace_without_using_matches(all_lines, "\tTeamCount = (.*)\n", "")
+	
+	all_lines = replace_using_matches(all_lines, "ModuleName = (.*) Tech\n", "ModuleName = {}\n\tIsFaction = 1\n")
+	all_lines = replace_using_matches(all_lines, "FundsOfTeam(.*) =", "Team{}Funds =")
 
-	all_lines = specific_replace(all_lines, regex_replace_tech, False, "ModuleName = (.*) Tech\n", "ModuleName = {}\n\tIsFaction = 1\n")
-
-	all_lines = specific_replace(all_lines, regex_replace_particle, False, "ParticleNumberToAdd = (.*)\n\tAddParticles = (.*)\n\t\tCopyOf = (.*)\n", "AddGib = Gib\n\t\tGibParticle = {}\n\t\t\tCopyOf = {}\n\t\tCount = {}\n")
-
-	all_lines = specific_replace(all_lines, regex_replace_sound_priority, True, "SoundContainer(((?!SoundContainer).)*)Priority", "SoundContainer{}// Priority")
-
-	# all_lines = specific_replace(all_lines, regex_replace_sound_priority, True, "AddSound(((?! AddSound).)*)Priority", "AddSound{}// Priority")
-
-	all_lines = specific_replace(all_lines, regex_use_capture, False, "FundsOfTeam(.*) =", "Team{}Funds =")
-	# all_lines = specific_replace(all_lines, regex_replace_playsound, False, "", "")
+	all_lines = specific_replace(all_lines, regex_replace_particle, dotall=False, "ParticleNumberToAdd = (.*)\n\tAddParticles = (.*)\n\t\tCopyOf = (.*)\n", "AddGib = Gib\n\t\tGibParticle = {}\n\t\t\tCopyOf = {}\n\t\tCount = {}\n")
+	all_lines = specific_replace(all_lines, regex_replace_sound_priority, dotall=True, "SoundContainer(((?!SoundContainer).)*)Priority", "SoundContainer{}// Priority")
+	# all_lines = specific_replace(all_lines, regex_replace_sound_priority, dotall=True, "AddSound(((?! AddSound).)*)Priority", "AddSound{}// Priority")
+	# all_lines = specific_replace(all_lines, regex_replace_playsound, dotall=False, "", "")
 
 	return all_lines
 
 
-def simple_replace(all_lines, pattern, replacement):
+def replace_without_using_matches(all_lines, pattern, replacement):
 	matches = re.findall(pattern, all_lines)
 	if len(matches) > 0:
 		return re.sub(pattern, replacement, all_lines)
+	return all_lines
+
+
+def replace_using_matches(all_lines, pattern, replacement):
+	matches = re.findall(pattern, all_lines)
+	if len(matches) > 0:
+		return re.sub(pattern, replacement, all_lines).format(*matches)
 	return all_lines
 
 
@@ -40,10 +44,6 @@ def specific_replace(all_lines, fn, dotall, pattern, replacement):
 	return all_lines
 
 
-
-
-def regex_replace_tech(all_lines, pattern, replacement, matches):
-	return re.sub(pattern, replacement, all_lines).format(*matches)
 
 
 def regex_replace_particle(all_lines, pattern, replacement, matches):
@@ -70,10 +70,6 @@ def regex_replace_sound_priority(all_lines, pattern, replacement, matches):
 	return re.sub(pattern, replacement, all_lines, flags=re.DOTALL).format(*new)
 
 
-def regex_use_capture(all_lines, pattern, replacement, matches):
-	return re.sub(pattern, replacement, all_lines).format(*matches)
-
-
 # def regex_replace_playsound(all_lines, pattern, replacement, matches):
 # 	return all_lines
 # 	# TODO:
@@ -83,9 +79,7 @@ def regex_use_capture(all_lines, pattern, replacement, matches):
 
 
 def regex_replace_wavs(all_lines):
-	# TODO: Combine patterns into one.
-	all_lines = specific_replace(all_lines, regex_use_capture, False, "Base\.rte(.*?)\.wav", "Base.rte{}.flac")
-	all_lines = specific_replace(all_lines, regex_use_capture, False, "base\.rte(.*?)\.wav", "Base.rte{}.flac")
+	all_lines = replace_using_matches(all_lines, "[bB]ase\.rte(.*?)\.wav", "Base.rte{}.flac")
 	return all_lines
 
 
