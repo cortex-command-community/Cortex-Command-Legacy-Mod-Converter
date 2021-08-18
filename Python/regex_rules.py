@@ -10,11 +10,12 @@ def regex_replace(all_lines):
 	
 	all_lines = replace_using_matches(all_lines, "ModuleName = (.*) Tech\n", "ModuleName = {}\n\tIsFaction = 1\n")
 	all_lines = replace_using_matches(all_lines, "FundsOfTeam(.*) =", "Team{}Funds =")
+	all_lines = replace_using_matches(all_lines, "[bB]ase\.rte(.*?)\.wav", "Base.rte{}.flac")
 
-	all_lines = specific_replace(all_lines, regex_replace_particle, dotall=False, "ParticleNumberToAdd = (.*)\n\tAddParticles = (.*)\n\t\tCopyOf = (.*)\n", "AddGib = Gib\n\t\tGibParticle = {}\n\t\t\tCopyOf = {}\n\t\tCount = {}\n")
-	all_lines = specific_replace(all_lines, regex_replace_sound_priority, dotall=True, "SoundContainer(((?!SoundContainer).)*)Priority", "SoundContainer{}// Priority")
-	# all_lines = specific_replace(all_lines, regex_replace_sound_priority, dotall=True, "AddSound(((?! AddSound).)*)Priority", "AddSound{}// Priority")
-	# all_lines = specific_replace(all_lines, regex_replace_playsound, dotall=False, "", "")
+	all_lines = special_replace_using_matches(all_lines, regex_replace_particle, dotall=False, "ParticleNumberToAdd = (.*)\n\tAddParticles = (.*)\n\t\tCopyOf = (.*)\n", "AddGib = Gib\n\t\tGibParticle = {}\n\t\t\tCopyOf = {}\n\t\tCount = {}\n")
+	all_lines = special_replace_using_matches(all_lines, regex_replace_sound_priority, dotall=True, "SoundContainer(((?!SoundContainer).)*)Priority", "SoundContainer{}// Priority")
+	# all_lines = special_replace_using_matches(all_lines, regex_replace_sound_priority, dotall=True, "AddSound(((?! AddSound).)*)Priority", "AddSound{}// Priority")
+	# all_lines = special_replace_using_matches(all_lines, regex_replace_playsound, dotall=False, "", "")
 
 	return all_lines
 
@@ -33,14 +34,11 @@ def replace_using_matches(all_lines, pattern, replacement):
 	return all_lines
 
 
-def specific_replace(all_lines, fn, dotall, pattern, replacement):
-	# TODO: Figure out how to use dotall in re.findall() directly to toggle re.DOTALL
-	if dotall:
-		matches = re.findall(pattern, all_lines, re.DOTALL)
-	else:
-		matches = re.findall(pattern, all_lines)
+def special_replace_using_matches(all_lines, fn, dotall, pattern, replacement):
+	matches = re.findall(pattern, all_lines, flags=re.DOTALL if dotall else 0)
 	if len(matches) > 0:
-		return fn(all_lines, pattern, replacement, matches)
+		new = fn(all_lines, pattern, replacement, matches)
+		return re.sub(pattern, replacement, all_lines, flags=re.DOTALL if dotall else 0).format(*new)
 	return all_lines
 
 
@@ -56,7 +54,7 @@ def regex_replace_particle(all_lines, pattern, replacement, matches):
 	new[1::3], new[2::3], new[0::3]
 	
 	# new == ["foo", "bar", 4, "baz", "bee", 2]
-	return re.sub(pattern, replacement, all_lines).format(*new)
+	return new
 
 
 def regex_replace_sound_priority(all_lines, pattern, replacement, matches):
@@ -67,7 +65,7 @@ def regex_replace_sound_priority(all_lines, pattern, replacement, matches):
 	# matches == [(4, "foo"), (2, "bar")]
 	new = [item for tup in matches for item in tup][::2]
 	# new == [4, 2]
-	return re.sub(pattern, replacement, all_lines, flags=re.DOTALL).format(*new)
+	return new
 
 
 # def regex_replace_playsound(all_lines, pattern, replacement, matches):
@@ -76,11 +74,6 @@ def regex_replace_sound_priority(all_lines, pattern, replacement, matches):
 # 	# AudioMan:PlaySound("ModName.rte/Folder/SoundName.wav", SceneMan:TargetDistanceScalar(self.Pos), false, true, -1)
 # 	# to
 #	# AudioMan:PlaySound("ModName.rte/Folder/SoundName.wav", self.Pos)	-- Cut everything and leave the thing inside the brackets after SceneMan:TargetDistanceScalar
-
-
-def regex_replace_wavs(all_lines):
-	all_lines = replace_using_matches(all_lines, "[bB]ase\.rte(.*?)\.wav", "Base.rte{}.flac")
-	return all_lines
 
 
 # TODO: Remove this function when PlaySound is automatically replaced.
