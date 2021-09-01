@@ -12,10 +12,10 @@ def regex_replace(all_lines):
 	all_lines = replace_using_matches(all_lines, "FundsOfTeam(.*) =", "Team{}Funds =")
 	all_lines = replace_using_matches(all_lines, "[bB]ase\.rte(.*?)\.wav", "Base.rte{}.flac")
 
-	all_lines = special_replace_using_matches(all_lines, regex_replace_particle, dotall=False, "ParticleNumberToAdd = (.*)\n\tAddParticles = (.*)\n\t\tCopyOf = (.*)\n", "AddGib = Gib\n\t\tGibParticle = {}\n\t\t\tCopyOf = {}\n\t\tCount = {}\n")
-	all_lines = special_replace_using_matches(all_lines, regex_replace_sound_priority, dotall=True, "SoundContainer(((?!SoundContainer).)*)Priority", "SoundContainer{}// Priority")
-	# all_lines = special_replace_using_matches(all_lines, regex_replace_sound_priority, dotall=True, "AddSound(((?! AddSound).)*)Priority", "AddSound{}// Priority")
-	# all_lines = special_replace_using_matches(all_lines, regex_replace_playsound, dotall=False, "", "")
+	all_lines = special_replace_using_matches(all_lines, regex_replace_particle, "ParticleNumberToAdd = (.*)\n\tAddParticles = (.*)\n\t\tCopyOf = (.*)\n", "AddGib = Gib\n\t\tGibParticle = {}\n\t\t\tCopyOf = {}\n\t\tCount = {}\n", dotall=False)
+	all_lines = special_replace_using_matches(all_lines, regex_replace_sound_priority, "SoundContainer(((?!SoundContainer).)*)Priority", "SoundContainer{}// Priority", dotall=True)
+	# all_lines = special_replace_using_matches(all_lines, regex_replace_sound_priority, "AddSound(((?! AddSound).)*)Priority", "AddSound{}// Priority", dotall=True)
+	# all_lines = special_replace_using_matches(all_lines, regex_replace_playsound, "", "", dotall=False)
 
 	return all_lines
 
@@ -34,7 +34,7 @@ def replace_using_matches(all_lines, pattern, replacement):
 	return all_lines
 
 
-def special_replace_using_matches(all_lines, fn, dotall, pattern, replacement):
+def special_replace_using_matches(all_lines, fn, pattern, replacement, dotall):
 	matches = re.findall(pattern, all_lines, flags=re.DOTALL if dotall else 0)
 	if len(matches) > 0:
 		new = fn(all_lines, pattern, replacement, matches)

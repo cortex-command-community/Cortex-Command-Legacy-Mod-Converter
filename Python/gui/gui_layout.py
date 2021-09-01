@@ -1,6 +1,7 @@
 import PySimpleGUI as sg
 
 from Python import utils
+from Python import shared_globals as cfg
 
 
 def get_layout():
@@ -31,10 +32,10 @@ def get_paths_column():
 						sg.In(
 							sg.user_settings_get_entry("cccp_folder"),
 							size=(34, 1),
-							tooltip=" Folder of your Cortex Command installation ",
+							tooltip=" Location of your CCCP folder ",
 							enable_events = True,
 							key="CCCP_FOLDER",
-							background_color=sg.theme_input_background_color() if sg.user_settings_get_entry("cccp_folder") else no_path_set_color,
+							background_color=sg.theme_input_background_color() if sg.user_settings_get_entry("cccp_folder") else cfg.NO_PATH_SET_COLOR,
 							pad=(
 								(0, 0),
 								(3, 0),
@@ -105,7 +106,7 @@ def get_options_column():
 						),
 						sg.Checkbox(
 							"Play finish sound",
-							tooltip=" For when converting takes long ",
+							tooltip=" Notifies you when the conversion has finished ",
 							key="PLAY_FINISH_SOUND",
 							default=sg.user_settings_get_entry("play_finish_sound"),
 							enable_events=True,

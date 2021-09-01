@@ -1,6 +1,7 @@
 import os, sys, time, shutil, math, pathlib, webbrowser, platform
 from pathlib import Path
 from playsound import playsound
+import PySimpleGUI as sg
 
 from Python import shared_globals as cfg
 from Python import regex_rules
@@ -17,14 +18,10 @@ conversion_rules = {}
 WARNINGS_MOD_NAME_SEPARATOR = "-" * 50
 
 
-# If an exe executes this program then sys is frozen.
-output_folder_path = ".." if getattr(sys, 'frozen', False) else "Output"
-
-
 def convert():
-	global output_folder_path
+	print("") # Prints a newline.
 
-	print("") # Only prints a newline.
+	output_folder_path = sg.user_settings_get_entry("cccp_folder")
 
 	time_start = time.time()
 

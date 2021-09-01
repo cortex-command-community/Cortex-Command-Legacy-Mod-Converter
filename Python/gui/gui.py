@@ -9,11 +9,6 @@ from Python import warnings
 from Python.gui import gui_layout
 
 
-no_path_set_color = "#b35858"
-
-CONVERTER_FOLDER_NAME = "_Mod Converter"
-
-
 def init_window_theme():
 	path_set_color = "#528b30"
 	progress_bar_color = "#17569c"
@@ -71,11 +66,11 @@ def run_window(window):
 				
 				sg.user_settings_set_entry("cccp_folder", cccp_folder)
 
-				input_folder = PurePosixPath(cccp_folder) / CONVERTER_FOLDER_NAME / "Input" # Can't save Windows paths in settings.json
+				input_folder = PurePosixPath(cccp_folder) / cfg.CONVERTER_FOLDER_NAME / "Input" # Can't save Windows paths in settings.json
 				sg.user_settings_set_entry("input_folder", str(input_folder))
 			else:
 				valid_cccp_path = False
-				window[event](background_color = no_path_set_color)
+				window[event](background_color = cfg.NO_PATH_SET_COLOR)
 
 		elif event == "OUTPUT_ZIPS":
 			sg.user_settings_set_entry("output_zips", values[event])

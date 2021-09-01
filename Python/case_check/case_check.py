@@ -32,6 +32,7 @@ def init_glob(cccp_path, input_path):
 		p.relative_to(input_path).as_posix()[:-len(p.suffix)] + p.suffix.lower()
 		for p in sorted(Path(input_path).glob('*.rte/**/*.*'))
 	])
+	# print(_path_glob)
 	_path_glob_lowercase = [p.lower() for p in _path_glob]
 	_modules = [p.relative_to(cccp_path).as_posix() for p in sorted(Path(cccp_path).glob('*.rte'))]
 	_modules.extend([
