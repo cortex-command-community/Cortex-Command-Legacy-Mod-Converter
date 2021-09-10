@@ -1,8 +1,9 @@
 import os
-
 from PIL import Image
 from pathlib import Path
 import numpy as np
+
+from Python import shared_globals as cfg
 
 
 def is_bmp(full_filename):
@@ -203,3 +204,10 @@ def bmp_to_png(input_filepath, output_filepath):
 			convert_rle8_bmp_to_png(img, input_filepath, output_filepath)
 		else:
 			Image.open(input_filepath).save(output_filepath)
+
+
+def change_bmp_to_png_name(line):
+	if not any(skipped_filename in line for skipped_filename in ("palette.bmp", "palettemat.bmp")) and not cfg.sg.user_settings_get_entry("skip_conversion"):
+		return line.replace(".bmp", ".png")
+	else:
+		return line

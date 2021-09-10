@@ -18,7 +18,6 @@
 	"Base.rte/Actors/Rockets/ThrusterStart.wav": "Base.rte/Sounds/Craft/ThrusterStart.flac",
 	"Base.rte/Actors/Rockets/Thruster.wav": "Base.rte/Sounds/Craft/ThrusterLoop.flac",
 	"Base.rte/Actors/Rockets/ThrusterEnd.wav": "Base.rte/Sounds/Craft/ThrusterEnd.flac",
-	"Base.rte/Actors/Rockets/HatchOpen.wav": "Base.rte/Sounds/Craft/HatchOpen.flac",
 	"Base.rte/Actors/DropShips/JetLoop.wav": "Base.rte/Sounds/Craft/JetLoop.flac",
 	"Base.rte/Actors/DropShips/JetStart.wav": "Base.rte/Sounds/Craft/JetStart.flac",
 	"Base.rte/Actors/DropShips/JetEnd.wav": "Base.rte/Sounds/Craft/JetEnd.flac",

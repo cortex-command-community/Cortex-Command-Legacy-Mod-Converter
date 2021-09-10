@@ -16,6 +16,30 @@ def regex_replace(all_lines):
 	all_lines = special_replace_using_matches(all_lines, regex_replace_sound_priority, "SoundContainer(((?!SoundContainer).)*)Priority", "SoundContainer{}// Priority", dotall=True)
 	# all_lines = special_replace_using_matches(all_lines, regex_replace_sound_priority, "AddSound(((?! AddSound).)*)Priority", "AddSound{}// Priority", dotall=True)
 	# all_lines = special_replace_using_matches(all_lines, regex_replace_playsound, "", "", dotall=False)
+	
+	# TODO: Clean this mess up.
+	# Mass and MaxMass can be mentioned in either order, so that's why there are two nearly identical lines below.
+	# all_lines = special_replace_using_matches(all_lines, regex_replace_max_mass_1,
+	# 	"AddEffect = ACRocket(.*?)"\
+	# 	"Mass = (.*?)\n"\
+	# 	"(.*?)"\
+	# 	"MaxMass = (.*?)\n",
+	
+	# 	"AddEffect = ACRocket{}"\
+	# 	"Mass = {}\n"\
+	# 	"{}MaxInventoryMass = {}\n",
+	# dotall=True)
+
+	# all_lines = special_replace_using_matches(all_lines, regex_replace_max_mass_2,
+	# 	"AddEffect = ACRocket(.*?)"\
+	# 	"MaxMass = (.*?)\n"\
+	# 	"(.*?)"\
+	# 	"Mass = (.*?)\n",
+	
+	# 	"AddEffect = ACRocket{}"\
+	# 	"Mass = {}\n"\
+	# 	"{}MaxInventoryMass = {}\n",
+	# dotall=True)
 
 	return all_lines
 
@@ -36,6 +60,7 @@ def replace_using_matches(all_lines, pattern, replacement):
 
 def special_replace_using_matches(all_lines, fn, pattern, replacement, dotall):
 	matches = re.findall(pattern, all_lines, flags=re.DOTALL if dotall else 0)
+	print(matches)
 	if len(matches) > 0:
 		new = fn(all_lines, pattern, replacement, matches)
 		return re.sub(pattern, replacement, all_lines, flags=re.DOTALL if dotall else 0).format(*new)
@@ -74,6 +99,38 @@ def regex_replace_sound_priority(all_lines, pattern, replacement, matches):
 # 	# AudioMan:PlaySound("ModName.rte/Folder/SoundName.wav", SceneMan:TargetDistanceScalar(self.Pos), false, true, -1)
 # 	# to
 #	# AudioMan:PlaySound("ModName.rte/Folder/SoundName.wav", self.Pos)	-- Cut everything and leave the thing inside the brackets after SceneMan:TargetDistanceScalar
+
+
+# def regex_replace_max_mass_1(all_lines, pattern, replacement, matches):
+# 	new = []
+
+# 	for tup in matches:
+# 		filler1 = tup[0]
+# 		filler2 = tup[2]
+
+# 		mass = int(tup[1])
+# 		max_mass = int(tup[3])
+# 		max_inventory_mass = max_mass - mass
+
+# 		new += [filler1, mass, filler2, max_inventory_mass]
+
+# 	return new
+
+
+# def regex_replace_max_mass_2(all_lines, pattern, replacement, matches):
+# 	new = []
+
+# 	for tup in matches:
+# 		filler1 = tup[0]
+# 		filler2 = tup[2]
+
+# 		mass = int(tup[3])
+# 		max_mass = int(tup[1])
+# 		max_inventory_mass = max_mass - mass
+
+# 		new += [filler1, mass, filler2, max_inventory_mass]
+
+# 	return new
 
 
 # TODO: Remove this function when PlaySound is automatically replaced.

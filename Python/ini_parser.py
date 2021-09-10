@@ -1,0 +1,5 @@
+import configparser
+
+
+def foo():
+	

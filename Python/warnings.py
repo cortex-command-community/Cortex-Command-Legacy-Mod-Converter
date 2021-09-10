@@ -51,6 +51,12 @@ def clear_mod_warnings():
 	mod_warnings = []
 
 
+def append_mod_replacement_warnings(line, file_path, line_number):
+	for old_str, new_str in warning_rules.items():
+		if old_str in line:
+			append_mod_replacement_warning(file_path, line_number, old_str, new_str)
+
+
 def append_mod_replacement_warning(file_path, line_number, old_str, new_str):
 	append_mod_warning(file_path, line_number, f"Replace '{old_str}' with", f"'{new_str}'")
 

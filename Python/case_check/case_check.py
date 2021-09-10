@@ -42,6 +42,23 @@ def init_glob(cccp_path, input_path):
 	_images = [p[:-4] for p in _path_glob if Path(p).suffix in _image_ext]
 
 
+def case_check(all_lines, input_file_path, output_file_path):
+	file_case_match = {}
+
+	for line_number, line in enumerate(all_lines.split('\n'), start=1):
+		# lua and ini separately because of naming differences especially for animations and lua 'require'
+		if Path(input_file_path).suffix == ".ini":
+			# Output file name because line numbers may differ between input and output
+			file_case_match.update(case_check_ini_line(line, output_file_path, line_number))
+		elif Path(input_file_path).suffix == ".lua":
+			file_case_match.update(case_check_lua_line(line, output_file_path, line_number))
+
+	for bad_file, new_file in file_case_match.items():
+		all_lines = all_lines.replace(bad_file, new_file)
+
+	return all_lines
+
+
 def check_file_exists(path):
 	"""
 	Check if a file exists in the CCCP tree.
