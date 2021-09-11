@@ -34,7 +34,7 @@ def rough_parse_recursive(rough_parsed, f, depth_tab_count=0):
 	"""
 
 	is_comment = False
-	start_file_position = f.tell()
+	previous_file_position = f.tell() # This variable's purpose is to track the file position of an unused line.
 
 	for line in iter(f.readline, ""): # This is a workaround of "line in f" due to .tell() being disabled during such a for-loop.
 		tab_count = len(line) - len(line.lstrip("\t"))
@@ -57,11 +57,10 @@ def rough_parse_recursive(rough_parsed, f, depth_tab_count=0):
 			rough_parsed[prev_line] = OrderedDict()
 			rough_parsed[prev_line][line] = None # Placeholder for a potential OrderedDict.
 
-			previous_file_position = rough_parse_recursive(rough_parsed[prev_line], f, depth_tab_count+1)
-			if previous_file_position != None:
-				f.seek(previous_file_position) # Recycles an unused line.
+			rough_parse_recursive(rough_parsed[prev_line], f, depth_tab_count+1)
 		elif tab_count < depth_tab_count: # Note that this elif statement won't be reached if the line is totally empty, which is desired behavior.
-			return start_file_position
+			f.seek(previous_file_position) # Undoes the reading of this line.
+			break # Steps back to the caller so it can try to use the undone line.
 
 		prev_line = line
-		start_file_position = f.tell()
+		previous_file_position = f.tell()
