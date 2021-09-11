@@ -11,6 +11,7 @@ from Python import bmp_to_png
 from Python import warnings
 from Python.case_check import case_check
 from Python import utils
+from Python import ini_parser
 
 
 conversion_rules = {}
@@ -119,8 +120,11 @@ def process_files(input_subfiles, input_subfolder_path, output_subfolder, input_
 
 		update_progress.increment_progress()
 
-		if full_filename == "desktop.ini":
+		if full_filename == "desktop.ini": # Skip this bloat Windows metadata file.
 			continue
+
+		if file_extension == ".ini":
+			ini_parser.parse(input_file_path)
 
 		if file_extension in (".ini", ".lua"):
 			create_converted_file(input_file_path, output_file_path, input_folder_path)

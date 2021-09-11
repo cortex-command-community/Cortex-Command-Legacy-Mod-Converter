@@ -60,7 +60,7 @@ def replace_using_matches(all_lines, pattern, replacement):
 
 def special_replace_using_matches(all_lines, fn, pattern, replacement, dotall):
 	matches = re.findall(pattern, all_lines, flags=re.DOTALL if dotall else 0)
-	print(matches)
+	# print(matches)
 	if len(matches) > 0:
 		new = fn(all_lines, pattern, replacement, matches)
 		return re.sub(pattern, replacement, all_lines, flags=re.DOTALL if dotall else 0).format(*new)
