@@ -10,11 +10,12 @@ def parse(input_file_path):
 	pprint.pprint(parsed)
 
 
-# CC and CCCP use a custom INI-inspired file format, so the configparser library wouldn't help here.
-# TODO: Handle // comments.
-# TODO: Check if CCCP allows improper combinations of tabs/spaces.
 def rough_parse_recursive(rough_parsed, f, depth_tab_count=0):
 	"""
+	# CC and CCCP use a custom INI-inspired file format, so the configparser library wouldn't help here.
+	# TODO: Handle // comments.
+	# TODO: Check if CCCP allows improper combinations of tabs/spaces.
+
 	rough_parsed data structure format:
 
 	OrderedDict([
@@ -47,7 +48,7 @@ def rough_parse_recursive(rough_parsed, f, depth_tab_count=0):
 			is_comment = True
 		elif line == "*/":
 			is_comment = False
-			continue
+			continue # TODO: Is it possible for a multiline to end on the same line as an INI line statement?
 
 		if is_comment or line == "":
 			continue
