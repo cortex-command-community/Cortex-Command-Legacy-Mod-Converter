@@ -6,10 +6,11 @@ def parse(input_file_path):
 	rough_parsed = OrderedDict()
 	with open(input_file_path) as f:
 		rough_parse_recursive(rough_parsed, f)
-	pprint.pprint(rough_parsed)
+	parsed = clean_rough_parsed(rough_parsed)
+	pprint.pprint(parsed)
 
 
-# CC and CCCP use a custom INI-inspired file format, so that's why this code spaghetti is necessary.
+# CC and CCCP use a custom INI-inspired file format, so the configparser library wouldn't help here.
 # TODO: Handle // comments.
 # TODO: Check if CCCP allows improper combinations of tabs/spaces.
 def rough_parse_recursive(rough_parsed, f, depth_tab_count=0):
@@ -65,3 +66,14 @@ def rough_parse_recursive(rough_parsed, f, depth_tab_count=0):
 
 		prev_line = line
 		previous_file_position = f.tell()
+
+
+def clean_rough_parsed(rough_parsed):
+	for k, v in list(rough_parsed.items()): # list() is to get around the "OrderedDict mutated during iteration" error.
+		if v == None:
+			rough_parsed[k.split(" = ")[0]] = k.split(" = ")[1] # Replaces the None value with the right side of the equality in the key, and replaces the key with the left side of the equality in the key.
+			del rough_parsed[k]
+		else:
+			rough_parsed[k] = rough_parsed.pop(k) # This is solely to preserve the order of values in the OrderedDictionary.
+			clean_rough_parsed(v)
+	return rough_parsed
