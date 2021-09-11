@@ -39,7 +39,8 @@ def rough_parse_recursive(rough_parsed, f, depth_tab_count=0):
 	for line in iter(f.readline, ""): # This is a workaround of "line in f" due to .tell() being disabled during such a for-loop.
 		tab_count = len(line) - len(line.lstrip("\t"))
 
-		line = line.strip()
+		line = line.split("//")[0] # Removes single line comments.
+		line = line.strip() # Removes whitespace.
 
 		if line == "/*":
 			is_comment = True
@@ -60,7 +61,7 @@ def rough_parse_recursive(rough_parsed, f, depth_tab_count=0):
 			rough_parse_recursive(rough_parsed[prev_line], f, depth_tab_count+1)
 		elif tab_count < depth_tab_count: # Note that this elif statement won't be reached if the line is totally empty, which is desired behavior.
 			f.seek(previous_file_position) # Undoes the reading of this line.
-			break # Steps back to the caller so it can try to use the undone line.
+			break # Steps back up to the caller so it can try to use the undone line.
 
 		prev_line = line
 		previous_file_position = f.tell()
