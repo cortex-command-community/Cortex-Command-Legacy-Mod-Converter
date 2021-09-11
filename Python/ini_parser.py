@@ -55,8 +55,11 @@ def parse_recursive(parsed, f, depth_tab_count=0):
 		elif tab_count == depth_tab_count + 1:
 			parsed[prev_line] = OrderedDict()
 			parsed[prev_line][line] = None # Placeholder for a potential OrderedDict.
-			parse_recursive(parsed[prev_line], f, depth_tab_count+1)
+
+			foo = parse_recursive(parsed[prev_line], f, depth_tab_count+1)
+			if foo != None: # If it returned a line.
+				pass # TODO: Somehow recycle this line.
 		elif tab_count < depth_tab_count: # Note that this elif statement won't be reached if the line is blank, which is desired behavior.
-			break
+			return line
 
 		prev_line = line
