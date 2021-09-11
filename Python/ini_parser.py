@@ -20,18 +20,17 @@ def rough_parse_recursive(rough_parsed, f, depth_tab_count=0):
 
 	OrderedDict([
 		('AddEffect = MOSRotating', OrderedDict([
-				('PresetName = Screen Gib', None),
-				('SpriteFile = ContentFile', OrderedDict([
-					('FilePath = Base.rte/Effects/Gibs/BoneSmallA.png', None)
+			('PresetName = Screen Gib', None),
+			('SpriteFile = ContentFile', OrderedDict([
+				('FilePath = Base.rte/Effects/Gibs/BoneSmallA.png', None)
+			])),
+			('AtomGroup = AtomGroup', OrderedDict([
+				('Material = Material', OrderedDict([
+					('CopyOf = Metal', None)
 				])),
-				('AtomGroup = AtomGroup', OrderedDict([
-					('Material = Material', OrderedDict([
-						('CopyOf = Metal', None)
-					])),
-					('Resolution = 6', None),
-				])),
-			])
-		)
+				('Resolution = 6', None),
+			])),
+		]))
 	])
 	"""
 
@@ -70,6 +69,15 @@ def rough_parse_recursive(rough_parsed, f, depth_tab_count=0):
 
 
 def clean_rough_parsed(rough_parsed):
+	"""
+	OrderedDict([
+		('AddEffect = MOSRotating', OrderedDict([
+			('PresetName = Screen Gib', None),
+	->
+	OrderedDict([
+		('AddEffect = MOSRotating', OrderedDict([
+			('PresetName', 'Screen Gib'),
+	"""
 	for k, v in list(rough_parsed.items()): # list() is to get around the "OrderedDict mutated during iteration" error.
 		if v == None:
 			rough_parsed[k.split(" = ")[0]] = k.split(" = ")[1] # Replaces the None value with the right side of the equality in the key, and replaces the key with the left side of the equality in the key.
