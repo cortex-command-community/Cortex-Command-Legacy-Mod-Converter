@@ -3,63 +3,65 @@ from collections import OrderedDict
 
 
 def parse(input_file_path):
-	"""
-	Parsed data structure format:
-
-	["DataModule"] = None
-
-	["AddEffect = MOSRotating"] = {
-		["PresetName = Screen Gib"] = None,
-		["SpriteFile = ContentFile"] = {
-			["FilePath = Base.rte/Effects/Gibs/BoneSmallA.png"] = None,
-		}
-	},
-	"""
-
-	parsed = OrderedDict()
+	rough_parsed = OrderedDict()
 	with open(input_file_path) as f:
-		parse_recursive(parsed, f)
-	pprint.pprint(parsed)
+		rough_parse_recursive(rough_parsed, f)
+	pprint.pprint(rough_parsed)
 
 
-# CC and CCCP use a custom INI-inspired file format, so there's probably no Python library out there that can parse it.
+# CC and CCCP use a custom INI-inspired file format, so that's why this code spaghetti is necessary.
 # TODO: Handle // comments.
-# TODO: Handle (nested) /* */ comments.
 # TODO: Check if CCCP allows improper combinations of tabs/spaces.
-def parse_recursive(parsed, f, depth_tab_count=0):
-	is_comment = False
+def rough_parse_recursive(rough_parsed, f, depth_tab_count=0):
+	"""
+	rough_parsed data structure format:
 
-	for line in f:
+	OrderedDict([
+		('AddEffect = MOSRotating', OrderedDict([
+				('PresetName = Screen Gib', None),
+				('SpriteFile = ContentFile', OrderedDict([
+					('FilePath = Base.rte/Effects/Gibs/BoneSmallA.png', None)
+				])),
+				('AtomGroup = AtomGroup', OrderedDict([
+					('Material = Material', OrderedDict([
+						('CopyOf = Metal', None)
+					])),
+					('Resolution = 6', None),
+				])),
+			])
+		)
+	])
+	"""
+
+	is_comment = False
+	start_file_position = f.tell()
+
+	for line in iter(f.readline, ""): # This is a workaround of "line in f" due to .tell() being disabled during such a for-loop.
 		tab_count = len(line) - len(line.lstrip("\t"))
 
 		line = line.strip()
 
-		# TODO: Replace this with a proper way to handle multiline comments.
 		if line == "/*":
 			is_comment = True
 		elif line == "*/":
 			is_comment = False
+			continue
 
 		if is_comment or line == "":
 			continue
 
-		# TODO: This part assumes that comments have already been removed due to it assuming " = " only returns two values.
-		# if line == "DataModule":
-		# 	key = "DataModule"
-		# else:
-		# 	key = tuple(line.split(" = "))
-
 		# TODO: What if there are two or more tabs?
 		if tab_count == depth_tab_count:
-			parsed[line] = None # Placeholder for a potential OrderedDict.
+			rough_parsed[line] = None # Placeholder for a potential OrderedDict.
 		elif tab_count == depth_tab_count + 1:
-			parsed[prev_line] = OrderedDict()
-			parsed[prev_line][line] = None # Placeholder for a potential OrderedDict.
+			rough_parsed[prev_line] = OrderedDict()
+			rough_parsed[prev_line][line] = None # Placeholder for a potential OrderedDict.
 
-			foo = parse_recursive(parsed[prev_line], f, depth_tab_count+1)
-			if foo != None: # If it returned a line.
-				pass # TODO: Somehow recycle this line.
-		elif tab_count < depth_tab_count: # Note that this elif statement won't be reached if the line is blank, which is desired behavior.
-			return line
+			previous_file_position = rough_parse_recursive(rough_parsed[prev_line], f, depth_tab_count+1)
+			if previous_file_position != None:
+				f.seek(previous_file_position) # Recycles an unused line.
+		elif tab_count < depth_tab_count: # Note that this elif statement won't be reached if the line is totally empty, which is desired behavior.
+			return start_file_position
 
 		prev_line = line
+		start_file_position = f.tell()
