@@ -1,4 +1,5 @@
 import os, sys, time, shutil, math, pathlib, webbrowser, platform
+import pprint # TODO: Remove this.
 from pathlib import Path
 from playsound import playsound
 import PySimpleGUI as sg
@@ -14,13 +15,11 @@ from Python import utils
 from Python import ini_parser
 
 
-conversion_rules = {}
-
-WARNINGS_MOD_NAME_SEPARATOR = "-" * 50
+conversion_rules = {} # TODO: Move this.
 
 
 def convert():
-	print("") # Prints a newline.
+	print("") # Just prints a newline.
 
 	output_folder_path = sg.user_settings_get_entry("cccp_folder")
 
@@ -36,6 +35,9 @@ def convert():
 	update_progress.set_max_progress(input_folder_path)
 
 	case_check.init_glob(cccp_folder_path, input_folder_path)
+
+	parsed = ini_parser.parse(input_folder_path)
+	pprint.pprint(parsed)
 
 	convert_walk(input_folder_path, output_folder_path)
 
@@ -61,15 +63,14 @@ def convert_walk(input_folder_path, output_folder_path):
 			warnings.clear_mod_warnings()
 
 		if is_mod_folder_or_subfolder(mod_subfolder_parts):
-			mod_name = get_mod_name(mod_subfolder_parts)
-
-			# print_mod_name(mod_name)
+			# print_mod_name(mod_subfolder_parts)
 
 			output_subfolder = os.path.join(output_folder_path, mod_subfolder)
 			create_folder(input_subfolder_path, output_subfolder)
 			process_files(input_subfiles, input_subfolder_path, output_subfolder, input_folder_path, output_folder_path)
 
 
+# TODO: Can all calls to this function be replaced by get_mod_name()?
 def get_mod_subfolder(input_folder_path, input_subfolder_path):
 	if input_folder_path.endswith(".rte"):
 		return os.path.relpath(input_subfolder_path, os.path.join(input_folder_path, os.pardir))
@@ -77,7 +78,8 @@ def get_mod_subfolder(input_folder_path, input_subfolder_path):
 		return os.path.relpath(input_subfolder_path, input_folder_path)
 
 
-def print_mod_name(mod_name):
+def print_mod_name(mod_subfolder_parts):
+	mod_name = get_mod_name(mod_subfolder_parts)
 	print("Converting '{}'".format(mod_name))
 	warnings.prepend_mod_title(mod_name)
 
@@ -120,11 +122,8 @@ def process_files(input_subfiles, input_subfolder_path, output_subfolder, input_
 
 		update_progress.increment_progress()
 
-		if full_filename == "desktop.ini": # Skip this bloat Windows metadata file.
+		if full_filename == "desktop.ini": # Skip this Windows metadata file.
 			continue
-
-		if file_extension == ".ini":
-			ini_parser.parse(input_file_path)
 
 		if file_extension in (".ini", ".lua"):
 			create_converted_file(input_file_path, output_file_path, input_folder_path)

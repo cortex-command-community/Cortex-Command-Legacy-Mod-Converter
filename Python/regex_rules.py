@@ -17,7 +17,7 @@ def regex_replace(all_lines):
 	# all_lines = special_replace_using_matches(all_lines, regex_replace_sound_priority, "AddSound(((?! AddSound).)*)Priority", "AddSound{}// Priority", dotall=True)
 	# all_lines = special_replace_using_matches(all_lines, regex_replace_playsound, "", "", dotall=False)
 	
-	# TODO: Clean this mess up.
+	# TODO: Replace this mess.
 	# Mass and MaxMass can be mentioned in either order, so that's why there are two nearly identical lines below.
 	# all_lines = special_replace_using_matches(all_lines, regex_replace_max_mass_1,
 	# 	"AddEffect = ACRocket(.*?)"\

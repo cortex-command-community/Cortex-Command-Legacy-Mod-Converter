@@ -69,7 +69,7 @@ def append_mod_warning(file_path, line_number, error, error_subject):
 
 def prepend_mod_title(mod_name):
 	title = "\n" + "\n".join(
-		(WARNINGS_MOD_NAME_SEPARATOR, f"\t{mod_name}", WARNINGS_MOD_NAME_SEPARATOR)
+		(cfg.WARNINGS_MOD_NAME_SEPARATOR, f"\t{mod_name}", cfg.WARNINGS_MOD_NAME_SEPARATOR)
 	)
 	mod_warnings.insert(0, title)
 

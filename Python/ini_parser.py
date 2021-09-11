@@ -1,13 +1,27 @@
-import pprint
+import os
+from pathlib import Path
+# import pprint
 from collections import OrderedDict
 
 
-def parse(input_file_path):
+def parse(subfolder_path):
+	parsed = {}
+	for name in os.listdir(subfolder_path):
+		p = subfolder_path / Path(name)
+		if p.is_file() and p.suffix == ".ini" and p.name != "desktop.ini": # Skip the desktop.ini Windows metadata file.
+			parsed[name] = parse_file(str(p))
+		if p.is_dir():
+			parsed[name] = parse(p)
+	return parsed
+
+
+def parse_file(file_path):
 	rough_parsed = OrderedDict()
-	with open(input_file_path) as f:
+	with open(file_path) as f:
 		rough_parse_recursive(rough_parsed, f)
-	parsed = clean_rough_parsed(rough_parsed)
-	pprint.pprint(parsed)
+	parsed_file = clean_rough_parsed(rough_parsed)
+	# pprint.pprint(parsed_file)
+	return parsed_file
 
 
 def rough_parse_recursive(rough_parsed, f, depth_tab_count=0):

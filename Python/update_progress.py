@@ -18,7 +18,7 @@ def set_max_progress(input_folder_path):
 	global progress, total_progress  # TODO: See what happens when this line is removed.
 
 	progress = 0
-	total_progress = sum([len(files) for _, _, files in os.walk(input_folder_path)])
+	total_progress = sum([len(subfiles) if parent_subfolder_path[0].endswith(".rte") else 0 for parent_subfolder_path, _, subfiles in os.walk(input_folder_path)])
 
 	# TODO: Find a way to track the progress of zipping.
 	# if cfg.sg.user_settings_get_entry("output_zips"):
