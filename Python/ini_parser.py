@@ -51,23 +51,23 @@ def rough_parse_recursive(rough_parsed, f, depth_tab_count=0):
 		line, comment = split_comment(line)
 		line = line.strip() # Removes whitespace.
 
-		if line == "/*":
-			is_multiline_comment = True
-		elif line == "*/":
-			is_multiline_comment = False
-			continue # TODO: Is it possible for a multiline to end on the same line as an INI line statement?
-
-		if is_multiline_comment or (line == "" and comment == None):
-			continue
-
 		# TODO: What if there are two or more tabs?
 		if tab_count == depth_tab_count:
 			line_dict = {}
 
-			if line:
-				line_dict["property"] = line
-			if comment:
-				line_dict["comment"] = comment
+			if line == "/*":
+				is_multiline_comment = True
+
+			if is_multiline_comment:
+				line_dict["comment"] = line
+
+				if line == "*/":
+					is_multiline_comment = False # TODO: Is it possible for a multiline to end on the same line as an INI line statement begins?
+			else:
+				if comment:
+					line_dict["comment"] = comment
+				if line:
+					line_dict["property"] = line
 
 			rough_parsed.append(line_dict)
 		elif tab_count == depth_tab_count + 1:
