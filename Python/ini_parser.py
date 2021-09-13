@@ -61,6 +61,9 @@ def rough_parse_recursive(rough_parsed, f, depth_tab_count=0):
 			if is_multiline_comment:
 				line_dict["comment"] = line
 
+				if comment:
+					line_dict["comment"] += " // " + comment
+
 				if line == "*/":
 					is_multiline_comment = False # TODO: Is it possible for a multiline to end on the same line as an INI line statement begins?
 			else:
