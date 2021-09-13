@@ -1,4 +1,4 @@
-import os
+import os, re
 from pathlib import Path
 # import pprint
 from collections import OrderedDict
@@ -62,7 +62,7 @@ def rough_parse_recursive(rough_parsed, f, depth_tab_count=0):
 				line_dict["comment"] = line
 
 				if comment:
-					line_dict["comment"] += " // " + comment
+					line_dict["comment"] += comment
 
 				if line == "*/":
 					is_multiline_comment = False # TODO: Is it possible for a multiline to end on the same line as an INI line statement begins?
@@ -86,12 +86,21 @@ def rough_parse_recursive(rough_parsed, f, depth_tab_count=0):
 		previous_file_position = f.tell()
 
 
-def split_comment(line):
-	split = line.split("//")
-	if len(split) > 1:
-		return split[0], "//".join(split[1:]).strip()
+def split_comment(original_line):
+	original_line = original_line.rstrip("\n")
+	"""
+	Example split values:
+	['']
+	['AddEffect = MOSRotating', '    //    foo // bar ///', '']
+	['\tPresetName = Screen Gib']
+	['', '\t//Mass = 15', '']
+	['\tHitsMOs = 0']
+	"""
+	split = re.split("(\s*\/\/.*)", original_line)
+	if len(split) > 1: # If there is a comment it's always at index 1.
+		return split[0], split[1]
 	else:
-		return split[0], None
+		return split[0], ""
 
 
 def clean_rough_parsed(rough_parsed):
