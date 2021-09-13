@@ -16,87 +16,90 @@ def parse(subfolder_path):
 
 
 def parse_file(file_path):
-	rough_parsed = OrderedDict()
 	with open(file_path) as f:
+		rough_parsed = []
 		rough_parse_recursive(rough_parsed, f)
-	parsed_file = clean_rough_parsed(rough_parsed)
-	# pprint.pprint(parsed_file)
-	return parsed_file
+		parsed_file = clean_rough_parsed(rough_parsed)
+		return parsed_file
 
 
 def rough_parse_recursive(rough_parsed, f, depth_tab_count=0):
 	"""
-	# CC and CCCP use a custom INI-inspired file format, so the configparser library wouldn't help here.
+	# CC and CCCP use a custom INI format, so the configparser library can't be used here.
 	# TODO: Handle // comments.
 	# TODO: Check if CCCP allows improper combinations of tabs/spaces.
+	# TODO: Check if the first line can be tabbed, because then prev_line_index needs to be initialized to 0.
 
 	rough_parsed data structure format:
 
-	OrderedDict([
-		('AddEffect = MOSRotating', OrderedDict([
-			('PresetName = Screen Gib', None),
-			('SpriteFile = ContentFile', OrderedDict([
-				('FilePath = Base.rte/Effects/Gibs/BoneSmallA.png', None)
-			])),
-			('AtomGroup = AtomGroup', OrderedDict([
-				('Material = Material', OrderedDict([
-					('CopyOf = Metal', None)
-				])),
-				('Resolution = 6', None),
-			])),
-		]))
-	])
+	[
+		{ "property": "AddEffect = MOSRotating", "comment": " // foo", "value": [
+			{ "property": "PresetName = Screen Gib" },
+			{ "property": "SpriteFile = ContentFile", "value": [
+				{ "property": "FilePath = Base.rte/Effects/Gibs/BoneSmallA.png" }
+			]
+		]}
+	]
 	"""
 
-	is_comment = False
-	previous_file_position = f.tell() # This variable's purpose is to track the file position of an unused line.
+	is_multiline_comment = False
+	previous_file_position = f.tell() # Tracks the file position of a line that needs to be read again.
 
 	for line in iter(f.readline, ""): # This is a workaround of "line in f" due to .tell() being disabled during such a for-loop.
 		tab_count = len(line) - len(line.lstrip("\t"))
 
-		line = line.split("//")[0] # Removes single line comments.
+		line, comment = split_comment(line)
 		line = line.strip() # Removes whitespace.
 
 		if line == "/*":
-			is_comment = True
+			is_multiline_comment = True
 		elif line == "*/":
-			is_comment = False
+			is_multiline_comment = False
 			continue # TODO: Is it possible for a multiline to end on the same line as an INI line statement?
 
-		if is_comment or line == "":
+		if is_multiline_comment or line == "":
 			continue
 
 		# TODO: What if there are two or more tabs?
 		if tab_count == depth_tab_count:
-			rough_parsed[line] = None # Placeholder for a potential OrderedDict.
+			if comment:
+				rough_parsed.append({ "property": line, "comment": comment })
+			else:
+				rough_parsed.append({ "property": line })
 		elif tab_count == depth_tab_count + 1:
-			rough_parsed[prev_line] = OrderedDict()
-			rough_parsed[prev_line][line] = None # Placeholder for a potential OrderedDict.
+			rough_parsed[prev_line_index]["value"] = []
+			rough_parsed[prev_line_index]["value"].append({ "property": line })
 
-			rough_parse_recursive(rough_parsed[prev_line], f, depth_tab_count+1)
+			rough_parse_recursive(rough_parsed[prev_line_index]["value"], f, depth_tab_count+1)
 		elif tab_count < depth_tab_count: # Note that this elif statement won't be reached if the line is totally empty, which is desired behavior.
 			f.seek(previous_file_position) # Undoes the reading of this line.
 			break # Steps back up to the caller so it can try to use the undone line.
 
-		prev_line = line
+		prev_line_index = len(rough_parsed) - 1
 		previous_file_position = f.tell()
+
+
+def split_comment(line):
+	split = line.split("//")
+	if len(split) > 1:
+		return split[0], "//".join(split[1:]).strip()
+	else:
+		return split[0], None
 
 
 def clean_rough_parsed(rough_parsed):
 	"""
-	OrderedDict([
-		('AddEffect = MOSRotating', OrderedDict([
-			('PresetName = Screen Gib', None),
+	{ "property": "AddEffect = MOSRotating", "comment": " // foo", "value": [
+		{ "property": "PresetName = Screen Gib" },
 	->
-	OrderedDict([
-		('AddEffect = MOSRotating', OrderedDict([
-			('PresetName', 'Screen Gib'),
+	{ "property": "AddEffect = MOSRotating", "comment": " // foo", "value": [
+		{ "property": "PresetName", "value": "Screen Gib" },
 	"""
-	for k, v in list(rough_parsed.items()): # list() is to get around the "OrderedDict mutated during iteration" error.
-		if v == None:
-			rough_parsed[k.split(" = ")[0]] = k.split(" = ")[1] # Replaces the None value with the right side of the equality in the key, and replaces the key with the left side of the equality in the key.
-			del rough_parsed[k]
+	for line in rough_parsed:
+		if "value" in line:
+			clean_rough_parsed(line["value"])
 		else:
-			rough_parsed[k] = rough_parsed.pop(k) # This is solely to preserve the order of values in the OrderedDictionary.
-			clean_rough_parsed(v)
+			prop, value = line["property"].split(" = ")
+			line["property"] = prop
+			line["value"] = value
 	return rough_parsed

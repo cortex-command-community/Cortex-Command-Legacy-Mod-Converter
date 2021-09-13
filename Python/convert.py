@@ -39,7 +39,7 @@ def convert():
 	parsed = ini_parser.parse(input_folder_path)
 	pprint.pprint(parsed)
 
-	convert_walk(input_folder_path, output_folder_path)
+	converter_walk(input_folder_path, output_folder_path)
 
 	if cfg.sg.user_settings_get_entry("output_zips"):
 		zips_py.create_zips(input_folder_path, output_folder_path)
@@ -53,7 +53,7 @@ def convert():
 	warnings.show_popup_if_necessary()
 
 
-def convert_walk(input_folder_path, output_folder_path):
+def converter_walk(input_folder_path, output_folder_path):
 	for input_subfolder_path, input_subfolders, input_subfiles in os.walk(input_folder_path):
 		mod_subfolder = get_mod_subfolder(input_folder_path, input_subfolder_path)
 
