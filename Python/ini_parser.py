@@ -4,15 +4,26 @@ from pathlib import Path
 from collections import OrderedDict
 
 
-def parse(subfolder_path):
+def parse(subfolder_path, mod_names):
 	parsed = {}
 	for name in os.listdir(subfolder_path):
 		p = subfolder_path / Path(name)
-		if p.is_file() and p.suffix == ".ini" and p.name != "desktop.ini": # Skip the desktop.ini Windows metadata file.
+
+		if ".rte" not in str(p):
+			continue
+		elif not part_of_mod(p, mod_names): # TODO: Remove this once CCCP has a Mods folder that can be iterated over.
+			continue
+
+		if p.is_file() and p.suffix == ".ini" and p.stem != "desktop": # Skip the desktop.ini Windows metadata file.
 			parsed[name] = parse_file(str(p))
+
 		if p.is_dir():
-			parsed[name] = parse(p)
+			parsed[name] = parse(p, mod_names)
 	return parsed
+
+
+def part_of_mod(p, mod_names):
+	return any(mod_name in str(p) for mod_name in mod_names)
 
 
 def parse_file(file_path):

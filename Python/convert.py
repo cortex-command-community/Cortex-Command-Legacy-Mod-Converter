@@ -36,10 +36,11 @@ def convert():
 
 	case_check.init_glob(cccp_folder_path, input_folder_path)
 
-	parsed = ini_parser.parse(input_folder_path)
-	pprint.pprint(parsed)
-
 	converter_walk(input_folder_path, output_folder_path)
+
+	mod_names = get_mod_names(input_folder_path)
+	parsed = ini_parser.parse(output_folder_path, mod_names)
+	pprint.pprint(parsed)
 
 	if cfg.sg.user_settings_get_entry("output_zips"):
 		zips_py.create_zips(input_folder_path, output_folder_path)
@@ -178,3 +179,7 @@ def apply_conversion_rules(all_lines):
 
 def pluralize(word, count):
 	return word + "s" if count != 1 else word
+
+
+def get_mod_names(input_folder_path):
+	return [p.name for p in Path(input_folder_path).iterdir() if p.suffix == ".rte" and p.is_dir()]
