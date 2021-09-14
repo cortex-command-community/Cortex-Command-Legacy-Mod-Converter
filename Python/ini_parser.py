@@ -1,7 +1,17 @@
 import os, re
 from pathlib import Path
-# import pprint
+import pprint # TODO: Remove this.
 from collections import OrderedDict
+
+
+def parse_and_convert(input_folder_path, output_folder_path):
+	mod_names = get_mod_names(input_folder_path)
+	parsed = parse(output_folder_path, mod_names)
+	pprint.pprint(parsed)
+
+
+def get_mod_names(input_folder_path):
+	return [p.name for p in Path(input_folder_path).iterdir() if p.suffix == ".rte" and p.is_dir()]
 
 
 def parse(subfolder_path, mod_names):
