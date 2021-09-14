@@ -40,17 +40,19 @@ def part_of_mod(p, mod_names):
 def parse_file(file_path):
 	with open(file_path) as f:
 		rough_parsed = []
-		rough_parse_recursive(rough_parsed, f)
+		rough_parse_file_recursive(rough_parsed, f)
 		parsed_file = clean_rough_parsed(rough_parsed)
 		return parsed_file
 
 
-def rough_parse_recursive(rough_parsed, f, depth_tab_count=0):
+def rough_parse_file_recursive(rough_parsed, f, depth_tab_count=0):
 	"""
 	# CC and CCCP use a custom INI format, so the configparser library can't be used here.
 	# TODO: Handle // comments.
 	# TODO: Check if CCCP allows improper combinations of tabs/spaces.
 	# TODO: Check if the first line can be tabbed, because then prev_line_index needs to be initialized to 0.
+	# TODO: Check if nested single-line comments in multi-line comments work.
+	# TODO: What if there are two or more tabs?
 
 	rough_parsed data structure format:
 
@@ -70,36 +72,19 @@ def rough_parse_recursive(rough_parsed, f, depth_tab_count=0):
 	for line in iter(f.readline, ""): # This is a workaround of "line in f" due to .tell() being disabled during such a for-loop.
 		tab_count = len(line) - len(line.lstrip("\t"))
 
-		line, comment = split_comment(line)
-		line = line.strip() # Removes whitespace.
+		tab_string, line, comment = split_comment(line)
 
-		# TODO: What if there are two or more tabs?
 		if tab_count == depth_tab_count:
-			line_dict = {}
-
-			if line == "/*":
-				is_multiline_comment = True
-
-			if is_multiline_comment:
-				line_dict["comment"] = line
-
-				if comment:
-					line_dict["comment"] += comment
-
-				if line == "*/":
-					is_multiline_comment = False # TODO: Is it possible for a multiline to end on the same line as an INI line statement begins?
-			else:
-				if comment:
-					line_dict["comment"] = comment
-				if line:
-					line_dict["property"] = line
+			line_dict, is_multiline_comment = get_line_dict(tab_string, line, comment, is_multiline_comment)
 
 			rough_parsed.append(line_dict)
 		elif tab_count == depth_tab_count + 1:
-			rough_parsed[prev_line_index]["value"] = []
-			rough_parsed[prev_line_index]["value"].append({ "property": line })
+			line_dict, is_multiline_comment = get_line_dict(tab_string, line, comment, is_multiline_comment)
 
-			rough_parse_recursive(rough_parsed[prev_line_index]["value"], f, depth_tab_count+1)
+			rough_parsed[prev_line_index]["value"] = []
+			rough_parsed[prev_line_index]["value"].append(line_dict)
+
+			rough_parse_file_recursive(rough_parsed[prev_line_index]["value"], f, depth_tab_count+1)
 		elif tab_count < depth_tab_count: # Note that this elif statement won't be reached if the line is totally empty, which is desired behavior.
 			f.seek(previous_file_position) # Undoes the reading of this line.
 			break # Steps back up to the caller so it can try to use the undone line.
@@ -108,8 +93,11 @@ def rough_parse_recursive(rough_parsed, f, depth_tab_count=0):
 		previous_file_position = f.tell()
 
 
-def split_comment(original_line):
-	original_line = original_line.rstrip("\n")
+def split_comment(line):
+	line = line.rstrip("\n")
+
+	tab_string = get_tab_string(line)
+
 	"""
 	Example split values:
 	['']
@@ -118,11 +106,53 @@ def split_comment(original_line):
 	['', '\t//Mass = 15', '']
 	['\tHitsMOs = 0']
 	"""
-	split = re.split("(\s*\/\/.*)", original_line)
+	split = re.split("(\s*\/\/.*)", line)
+	# print(split)
+
+	split[0] = split[0].lstrip("\t")
+
+	# Fixes ['', '\t//Mass = 15', ''] -> ['', '//Mass = 15', '']
+	if split[0] == "" and len(split) > 1:
+		split[1] = split[1].lstrip("\t")
+
 	if len(split) > 1: # If there is a comment it's always at index 1.
-		return split[0], split[1]
+		return tab_string, split[0], split[1]
 	else:
-		return split[0], ""
+		return tab_string, split[0], ""
+
+
+def get_tab_string(line):
+	"""
+	Returns the string of tabs before the INI property, else it returns an empty string.
+	TODO: Replace with regex.
+	"""
+	for tab_count, string in enumerate(line.split("\t")):
+		if string != "":
+			return tab_count * "\t"
+	return len(line) * "\t"
+
+
+def get_line_dict(tab_string, line, comment, is_multiline_comment):
+	line_dict = { "tab_string": tab_string }
+
+	if "/*" in line:
+		is_multiline_comment = True
+
+	if is_multiline_comment:
+		line_dict["comment"] = line
+
+		if comment:
+			line_dict["comment"] += comment
+
+		if "*/" in line:
+			is_multiline_comment = False # TODO: Is it possible for a multiline to end on the same line as an INI line statement begins?
+	else:
+		if comment:
+			line_dict["comment"] = comment
+		if line:
+			line_dict["property"] = line
+	
+	return line_dict, is_multiline_comment
 
 
 def clean_rough_parsed(rough_parsed):
@@ -155,8 +185,11 @@ def write_converted_ini_recursively(parsed_portion, output_folder_path):
 
 
 def get_lines_from_dicts_recursively(dict_list, lines):
+	# TODO: Refactor this function.
 	for line_dict in dict_list:
 		line = ""
+
+		line += line_dict["tab_string"]
 
 		if "property" in line_dict:
 			line += line_dict["property"]
@@ -180,4 +213,6 @@ def get_lines_from_dicts_recursively(dict_list, lines):
 				get_lines_from_dicts_recursively(value, lines)
 		elif "comment" in line_dict:
 			line += line_dict["comment"]
+			lines.append(line)
+		elif "tab_string" in line_dict:
 			lines.append(line)

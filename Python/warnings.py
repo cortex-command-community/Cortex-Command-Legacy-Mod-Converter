@@ -23,7 +23,7 @@ def load_conversion_and_warning_rules():
 	json_parser = JsonComment(json)
 
 	# try:
-	for folder_path, subfolders, subfiles in os.walk("ConversionRules"):
+	for folder_path, subfolders, subfiles in os.walk("Conversion Rules"):
 		for filename in subfiles:
 			p = folder_path / Path(filename)
 
@@ -34,9 +34,9 @@ def load_conversion_and_warning_rules():
 					else:
 						convert.conversion_rules.update(json_parser.load(f))
 	# except: # TODO: Add this try-except back in, but add a specific error type to it!
-		# check_github_button_clicked_and_exit(cfg.sg.Popup("The 'ConversionRules' folder couldn't be read because either:\n1. It contained a wrongly formatted JSON file, which is often caused by a missing comma at the end of a rule, or\n2. The folder doesn't exist.\nYou can get the missing folder from the Legacy Mod Converter GitHub repository.", title="Missing ConversionRules folder", custom_text="Go to the GitHub repository"))
+		# check_github_button_clicked_and_exit(cfg.sg.Popup("The 'Conversion Rules' folder couldn't be read because either:\n1. It contained a wrongly formatted JSON file, which is often caused by a missing comma at the end of a rule, or\n2. The folder doesn't exist.\nYou can get the missing folder from the Legacy Mod Converter GitHub repository.", title="Missing ConversionRules folder", custom_text="Go to the GitHub repository"))
 	if len(warning_rules) == 0 and len(convert.conversion_rules) == 0:
-		check_github_button_clicked_and_exit(cfg.sg.Popup("The 'ConversionRules' folder doesn't contain any JSON files.\nYou can get the JSON files from the Legacy Mod Converter GitHub repository.", title="Missing JSON files", custom_text="Go to the GitHub repository"))
+		check_github_button_clicked_and_exit(cfg.sg.Popup("The 'Conversion Rules' folder doesn't contain any JSON files.\nYou can get the JSON files from the Legacy Mod Converter GitHub repository.", title="Missing JSON files", custom_text="Go to the GitHub repository"))
 
 
 def check_github_button_clicked_and_exit(clicked_github_button):
