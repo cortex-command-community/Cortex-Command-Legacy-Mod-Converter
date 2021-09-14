@@ -8,6 +8,7 @@ def parse_and_convert(input_folder_path, output_folder_path):
 	mod_names = get_mod_names(input_folder_path)
 	parsed = parse(output_folder_path, mod_names)
 	pprint.pprint(parsed)
+	write_converted_ini_recursively(parsed, Path(output_folder_path))
 
 
 def get_mod_names(input_folder_path):
@@ -140,3 +141,43 @@ def clean_rough_parsed(rough_parsed):
 			line["property"] = prop
 			line["value"] = value
 	return rough_parsed
+
+
+def write_converted_ini_recursively(parsed_portion, output_folder_path):
+	for name, dict_or_list in parsed_portion.items():
+		if isinstance(dict_or_list, dict): # If dict_or_list contains a dictionary of more filenames.
+			write_converted_ini_recursively(dict_or_list, output_folder_path / name)
+		else: # If dict_or_list contains a list of the lines of a file.
+			with open(str(output_folder_path / name), mode="w") as f:
+				lines = []
+				get_lines_from_dicts_recursively(dict_or_list, lines)
+				f.write("\n".join(lines))
+
+
+def get_lines_from_dicts_recursively(dict_list, lines):
+	for line_dict in dict_list:
+		line = ""
+
+		if "property" in line_dict:
+			line += line_dict["property"]
+
+		if "value" in line_dict:
+			value = line_dict["value"]
+
+			if isinstance(value, str):
+				line += " = " + value
+
+				if "comment" in line_dict:
+					line += line_dict["comment"]
+
+				lines.append(line)
+			else: # If the next line is tabbed, value is a dictionary.
+				if "comment" in line_dict:
+					line += line_dict["comment"]
+
+				lines.append(line)
+
+				get_lines_from_dicts_recursively(value, lines)
+		elif "comment" in line_dict:
+			line += line_dict["comment"]
+			lines.append(line)
