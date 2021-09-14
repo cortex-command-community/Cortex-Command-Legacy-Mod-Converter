@@ -1,13 +1,16 @@
 import os, re
 from pathlib import Path
-import pprint # TODO: Remove this.
-from collections import OrderedDict
+from inspect import getmembers, isfunction
+import pprint
+
+from Python.ini_parser import ini_rules
 
 
 def parse_and_convert(input_folder_path, output_folder_path):
 	mod_names = get_mod_names(input_folder_path)
 	parsed = parse(output_folder_path, mod_names)
-	pprint.pprint(parsed)
+	# pprint.pprint(parsed)
+	convert(parsed)
 	write_converted_ini_recursively(parsed, Path(output_folder_path))
 
 
@@ -38,12 +41,18 @@ def part_of_mod(p, mod_names):
 
 
 def parse_file(file_path):
+	# print(file_path)
 	with open(file_path) as f:
 		rough_parsed = []
 		rough_parse_file_recursive(rough_parsed, f)
 		parsed_file = clean_rough_parsed(rough_parsed)
 		return parsed_file
 
+
+# This global variable is only used by the function below.
+# It is necessary due to how a deep function call needs to be able to also change this variable for the less deep function calls.
+# Passing it as a function argument makes a copy of the boolean instead of being a reference to the original variable, so that's why a global variable is needed.
+is_multiline_comment = False
 
 def rough_parse_file_recursive(rough_parsed, f, depth_tab_count=0):
 	"""
@@ -65,14 +74,16 @@ def rough_parse_file_recursive(rough_parsed, f, depth_tab_count=0):
 		]}
 	]
 	"""
+	global is_multiline_comment
 
-	is_multiline_comment = False
 	previous_file_position = f.tell() # Tracks the file position of a line that needs to be read again.
 
 	for line in iter(f.readline, ""): # This is a workaround of "line in f" due to .tell() being disabled during such a for-loop.
+		# print(repr(line))
 		tab_count = len(line) - len(line.lstrip("\t"))
 
 		tab_string, line, comment = split_comment(line)
+		# print(repr(tab_string), repr(line), repr(comment))
 
 		if tab_count == depth_tab_count:
 			line_dict, is_multiline_comment = get_line_dict(tab_string, line, comment, is_multiline_comment)
@@ -81,6 +92,7 @@ def rough_parse_file_recursive(rough_parsed, f, depth_tab_count=0):
 		elif tab_count == depth_tab_count + 1:
 			line_dict, is_multiline_comment = get_line_dict(tab_string, line, comment, is_multiline_comment)
 
+			prev_line_index = len(rough_parsed) - 1 # - 1 because lists are 0-indexed.
 			rough_parsed[prev_line_index]["value"] = []
 			rough_parsed[prev_line_index]["value"].append(line_dict)
 
@@ -89,7 +101,6 @@ def rough_parse_file_recursive(rough_parsed, f, depth_tab_count=0):
 			f.seek(previous_file_position) # Undoes the reading of this line.
 			break # Steps back up to the caller so it can try to use the undone line.
 
-		prev_line_index = len(rough_parsed) - 1
 		previous_file_position = f.tell()
 
 
@@ -116,9 +127,13 @@ def split_comment(line):
 		split[1] = split[1].lstrip("\t")
 
 	if len(split) > 1: # If there is a comment it's always at index 1.
-		return tab_string, split[0], split[1]
+		line = split[0]
+		comment = split[1]
 	else:
-		return tab_string, split[0], ""
+		line = split[0]
+		comment = ""
+
+	return tab_string, line, comment
 
 
 def get_tab_string(line):
@@ -133,6 +148,7 @@ def get_tab_string(line):
 
 
 def get_line_dict(tab_string, line, comment, is_multiline_comment):
+	# print(repr(tab_string), repr(line), repr(comment), repr(is_multiline_comment))
 	line_dict = { "tab_string": tab_string }
 
 	if "/*" in line:
@@ -145,13 +161,13 @@ def get_line_dict(tab_string, line, comment, is_multiline_comment):
 			line_dict["comment"] += comment
 
 		if "*/" in line:
-			is_multiline_comment = False # TODO: Is it possible for a multiline to end on the same line as an INI line statement begins?
+			is_multiline_comment = False
 	else:
 		if comment:
 			line_dict["comment"] = comment
 		if line:
 			line_dict["property"] = line
-	
+
 	return line_dict, is_multiline_comment
 
 
@@ -171,6 +187,17 @@ def clean_rough_parsed(rough_parsed):
 			line["property"] = prop
 			line["value"] = value
 	return rough_parsed
+
+
+####
+
+
+def convert(parsed):
+	for _, function in getmembers(ini_rules, isfunction):
+		function(parsed)
+
+
+####
 
 
 def write_converted_ini_recursively(parsed_portion, output_folder_path):

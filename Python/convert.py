@@ -11,7 +11,7 @@ from Python import bmp_to_png
 from Python import warnings
 from Python.case_check import case_check
 from Python import utils
-from Python import ini_parser
+from Python.ini_parser import ini_parser
 
 
 conversion_rules = {} # TODO: Move this.
