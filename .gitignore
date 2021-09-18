@@ -3,5 +3,7 @@ __pycache__
 build
 dist
 Legacy Mod Converter.spec
-.vscode
 settings.json
+
+.vscode/*
+!.vscode/launch.json

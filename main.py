@@ -9,7 +9,7 @@ from Python.gui import gui
 
 
 if __name__ == '__main__':
-	try:
+	try: # TODO: The VS Code Python debugger isn't able to catch exceptions due to this.
 		gui.init_window_theme()
 		gui.run_window(gui.init_window())
 	except Exception as e:

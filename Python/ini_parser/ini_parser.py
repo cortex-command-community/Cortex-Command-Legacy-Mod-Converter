@@ -1,6 +1,5 @@
 import os, re
 from pathlib import Path
-from inspect import getmembers, isfunction
 import pprint
 
 from Python.ini_parser import ini_rules
@@ -9,8 +8,10 @@ from Python.ini_parser import ini_rules
 def parse_and_convert(input_folder_path, output_folder_path):
 	mod_names = get_mod_names(input_folder_path)
 	parsed = parse(output_folder_path, mod_names)
-	# pprint.pprint(parsed)
+
 	convert(parsed)
+	# pprint.pprint(parsed)
+
 	write_converted_ini_recursively(parsed, Path(output_folder_path))
 
 
@@ -97,9 +98,10 @@ def rough_parse_file_recursive(rough_parsed, f, depth_tab_count=0):
 			rough_parsed[prev_line_index]["value"].append(line_dict)
 
 			rough_parse_file_recursive(rough_parsed[prev_line_index]["value"], f, depth_tab_count+1)
-		elif tab_count < depth_tab_count: # Note that this elif statement won't be reached if the line is totally empty, which is desired behavior.
+		elif tab_count < depth_tab_count:
+			# print(repr(tab_string), repr(line), repr(comment))
 			f.seek(previous_file_position) # Undoes the reading of this line.
-			break # Steps back up to the caller so it can try to use the undone line.
+			break # Steps back up to the caller so the caller can try to use the undone line.
 
 		previous_file_position = f.tell()
 
@@ -171,6 +173,7 @@ def get_line_dict(tab_string, line, comment, is_multiline_comment):
 	return line_dict, is_multiline_comment
 
 
+# TODO: Maybe rough_parse_file_recursive() can do everything this function does?
 def clean_rough_parsed(rough_parsed):
 	"""
 	{ "property": "AddEffect = MOSRotating", "comment": " // foo", "value": [
@@ -193,8 +196,7 @@ def clean_rough_parsed(rough_parsed):
 
 
 def convert(parsed):
-	for _, function in getmembers(ini_rules, isfunction):
-		function(parsed)
+	ini_rules.apply_rules(parsed)
 
 
 ####
