@@ -90,6 +90,14 @@ def rough_parse_file_recursive(parsed, f, depth_tab_count=0):
 
 def get_line_data(line, multiline):
 	"""
+	line_data consists of a list of dictionary tokens:
+	[
+		{ "type": "extra", "value": "\t" },
+		{ "type": "property", "value": "Mass" },
+		{ "type": "value", "value": "2400" },
+		{ "type": "extra", "value": " /* */ foo /*" },
+	]
+
 	CCCP INI parser quirks to keep in mind:
 	1.
 		This works:
@@ -117,8 +125,10 @@ def get_line_data(line, multiline):
 	line_data = []
 
 	value_str = ""
+	space_str = ""
 	parsing_type = "property"
 	seen_equals = False
+	was_prev_char_special = True # "special" meaning whitespace, / or *
 
 	"""
 	# TODO: Use an enum for this.
@@ -133,7 +143,7 @@ def get_line_data(line, multiline):
 	print(repr(line))
 	# TODO: Find a way to have every value_str = "" call done by append_token()
 	for char in line:
-		if char != "=":
+		if (char != "=" or parsing_type == "single_comment") and not (was_prev_char_special and (char == "/" or char == "*")):
 			value_str += char
 
 		if parsing_type == "single_comment":
@@ -141,46 +151,59 @@ def get_line_data(line, multiline):
 
 		if char == "=" and not seen_equals:
 			seen_equals = True
-			append_token(parsing_type, value_str, line_data)
-			value_str = ""
+			value_str = append_token(parsing_type, value_str, line_data, 1)
 			parsing_type = "value"
 
 		if comment_state == 4 and char == "/":
 			comment_state = 0
-			append_token(parsing_type, value_str, line_data)
-			value_str = ""
 			multiline = False
+			value_str = append_token(parsing_type, value_str + "*/", line_data, 2)
 		elif comment_state == 3 and char == "*":
 			comment_state = 4
 		elif comment_state == 1:
 			if char == "/":
 				comment_state = 2
 				if seen_equals:
-					append_token(parsing_type, value_str, line_data)
-					value_str = ""
+					value_str = append_token(parsing_type, value_str, line_data, 3)
 				else:
-					append_token(parsing_type, value_str, line_data)
-					value_str = ""
-					parsing_type = "single_comment"
+					value_str = append_token(parsing_type, value_str, line_data, 4)
+				value_str += "//"
+				parsing_type = "single_comment"
 			elif char == "*":
 				comment_state = 3
 				multiline = True
+				value_str = append_token(parsing_type, value_str, line_data, 5)
+				value_str += "/*"
+				parsing_type = "multi_comment"
 		elif comment_state == 0 and char == "/":
 			comment_state = 1
 
+		was_prev_char_special = char.isspace() or char == "/" or char == "*"
+
 	if parsing_type == "single_comment":
-		append_token("extra", value_str, line_data)
-	elif parsing_type == "value":
-		append_token(parsing_type, value_str, line_data)
+		append_token("extra", value_str, line_data, 6)
+	elif parsing_type == "value" or parsing_type == "multi_comment":
+		append_token(parsing_type, value_str, line_data, 7)
 
 	return line_data, multiline
 
 
-def append_token(typ, value_str, line_data):
-	if typ == "property" or typ == "value":
-		value_str = value_str.strip()
+def append_token(typ, value_str, line_data, debug):
+	print(debug)
 
-	line_data.append( { "type": typ, "value": value_str } )
+	if value_str.strip() != "":
+		if typ == "property" or typ == "value":
+			token = { "type": typ, "value": value_str.strip() }
+		else:
+			token = { "type": typ, "value": value_str.rstrip() }
+
+		line_data.append(token)
+
+	return get_whitespace_on_right(value_str)
+
+
+def get_whitespace_on_right(string):
+	return string.replace(string.rstrip(), "")
 
 
 # TODO: Maybe rough_parse_file_recursive() can do everything this function does?
