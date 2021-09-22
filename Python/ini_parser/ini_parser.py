@@ -7,7 +7,7 @@ from Python.ini_parser import ini_rules
 
 def parse_and_convert(input_folder_path, output_folder_path):
 	mod_names = get_mod_names(input_folder_path)
-	parsed = parse(output_folder_path, mod_names)
+	parsed = initialize_parsed(output_folder_path, mod_names)
 
 	convert(parsed)
 	# pprint.pprint(parsed)
@@ -19,7 +19,7 @@ def get_mod_names(input_folder_path):
 	return [p.name for p in Path(input_folder_path).iterdir() if p.suffix == ".rte" and p.is_dir()]
 
 
-def parse(subfolder_path, mod_names):
+def initialize_parsed(subfolder_path, mod_names):
 	parsed = {}
 	for name in os.listdir(subfolder_path):
 		p = subfolder_path / Path(name)
@@ -33,7 +33,7 @@ def parse(subfolder_path, mod_names):
 			parsed[name] = parse_file(str(p))
 
 		if p.is_dir():
-			parsed[name] = parse(p, mod_names)
+			parsed[name] = initialize_parsed(p, mod_names)
 	return parsed
 
 
