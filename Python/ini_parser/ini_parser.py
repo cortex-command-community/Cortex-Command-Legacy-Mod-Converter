@@ -44,9 +44,9 @@ def part_of_mod(p, mod_names):
 def parse_file(file_path):
 	# print(file_path)
 	with open(file_path) as f:
-		rough_parsed = []
-		rough_parse_file_recursive(rough_parsed, f)
-		parsed_file = clean_rough_parsed(rough_parsed)
+		parsed = []
+		rough_parse_file_recursive(parsed, f)
+		parsed_file = clean_rough_parsed(parsed)
 		return parsed_file
 
 
@@ -55,29 +55,13 @@ def parse_file(file_path):
 # Passing it as a function argument makes a copy of the boolean instead of being a reference to the original variable, so that's why a global variable is needed.
 is_multiline_comment = False
 
-def rough_parse_file_recursive(rough_parsed, f, depth_tab_count=0):
+def rough_parse_file_recursive(parsed, f, depth_tab_count=0):
 	"""
-	# CC and CCCP use a custom INI format, so the configparser library can't be used here.
-	# TODO: Handle // comments.
-	# TODO: Check if CCCP allows improper combinations of tabs/spaces.
+	# CC and CCCP use a custom INI format, so the configparser library can't be used to parse the INI files.
 	# TODO: Check if the first line can be tabbed, because then prev_line_index needs to be initialized to 0.
-	# TODO: Check if nested single-line comments in multi-line comments work.
-	# TODO: What if there are two or more tabs?
-
-	rough_parsed data structure format:
-
-	[
-		{ "property": "AddEffect = MOSRotating", "comment": " // foo", "value": [
-			{ "property": "PresetName = Screen Gib" },
-			{ "property": "SpriteFile = ContentFile", "value": [
-				{ "property": "FilePath = Base.rte/Effects/Gibs/BoneSmallA.png" }
-			]
-		]}
-	]
 	"""
-	global is_multiline_comment
 
-	previous_file_position = f.tell() # Tracks the file position of a line that needs to be read again.
+	global is_multiline_comment
 
 	for line in iter(f.readline, ""): # This is a workaround of "line in f" due to .tell() being disabled during such a for-loop.
 		# print(repr(line))
@@ -86,24 +70,22 @@ def rough_parse_file_recursive(rough_parsed, f, depth_tab_count=0):
 		tab_string, line, comment = split_comment(line)
 		# print(repr(tab_string), repr(line), repr(comment))
 
+		line_dict, is_multiline_comment = get_line_dict(tab_string, line, comment, is_multiline_comment)
+
 		if tab_count == depth_tab_count:
-			line_dict, is_multiline_comment = get_line_dict(tab_string, line, comment, is_multiline_comment)
-
-			rough_parsed.append(line_dict)
+			parsed.append(line_dict)
 		elif tab_count == depth_tab_count + 1:
-			line_dict, is_multiline_comment = get_line_dict(tab_string, line, comment, is_multiline_comment)
+			prev_line_index = len(parsed) - 1
+			parsed[prev_line_index]["value"] = []
+			parsed[prev_line_index]["value"].append(line_dict)
 
-			prev_line_index = len(rough_parsed) - 1 # - 1 because lists are 0-indexed.
-			rough_parsed[prev_line_index]["value"] = []
-			rough_parsed[prev_line_index]["value"].append(line_dict)
-
-			rough_parse_file_recursive(rough_parsed[prev_line_index]["value"], f, depth_tab_count+1)
+			child_values = rough_parse_file_recursive(parsed[prev_line_index]["value"], f, depth_tab_count+1)
+			if child_values != None and child_values["tab_count"] == depth_tab_count:
+				parsed.append(child_values["line_dict"])
+			else:
+				return child_values
 		elif tab_count < depth_tab_count:
-			# print(repr(tab_string), repr(line), repr(comment))
-			f.seek(previous_file_position) # Undoes the reading of this line.
-			break # Steps back up to the caller so the caller can try to use the undone line.
-
-		previous_file_position = f.tell()
+			return { "line_dict": line_dict, "tab_count": tab_count }
 
 
 def split_comment(line):
@@ -112,27 +94,27 @@ def split_comment(line):
 	tab_string = get_tab_string(line)
 
 	"""
-	Example split values:
+	Example split_by_comment values:
 	['']
 	['AddEffect = MOSRotating', '    //    foo // bar ///', '']
 	['\tPresetName = Screen Gib']
 	['', '\t//Mass = 15', '']
 	['\tHitsMOs = 0']
 	"""
-	split = re.split("(\s*\/\/.*)", line)
-	# print(split)
+	split_by_comment = re.split("(\s*\/\/.*)", line)
+	# print(split_by_comment)
 
-	split[0] = split[0].lstrip("\t")
+	split_by_comment[0] = split_by_comment[0].lstrip("\t")
 
-	# Fixes ['', '\t//Mass = 15', ''] -> ['', '//Mass = 15', '']
-	if split[0] == "" and len(split) > 1:
-		split[1] = split[1].lstrip("\t")
+	# Transforms ['', '\t//Mass = 15', ''] to ['', '//Mass = 15', '']
+	if split_by_comment[0] == "" and len(split_by_comment) > 1:
+		split_by_comment[1] = split_by_comment[1].lstrip("\t")
 
-	if len(split) > 1: # If there is a comment it's always at index 1.
-		line = split[0]
-		comment = split[1]
+	if len(split_by_comment) > 1: # If there is a comment it'll always be at index 1.
+		line = split_by_comment[0]
+		comment = split_by_comment[1]
 	else:
-		line = split[0]
+		line = split_by_comment[0]
 		comment = ""
 
 	return tab_string, line, comment
@@ -152,6 +134,10 @@ def get_tab_string(line):
 def get_line_dict(tab_string, line, comment, is_multiline_comment):
 	# print(repr(tab_string), repr(line), repr(comment), repr(is_multiline_comment))
 	line_dict = { "tab_string": tab_string }
+
+	# TODO: Can't assume that /* means the entire line is a comment, and vice versa with */ !
+
+	# TODO: What if the string is "\t//*"? What if it's "\t///*"?
 
 	if "/*" in line:
 		is_multiline_comment = True
@@ -174,7 +160,7 @@ def get_line_dict(tab_string, line, comment, is_multiline_comment):
 
 
 # TODO: Maybe rough_parse_file_recursive() can do everything this function does?
-def clean_rough_parsed(rough_parsed):
+def clean_rough_parsed(parsed):
 	"""
 	{ "property": "AddEffect = MOSRotating", "comment": " // foo", "value": [
 		{ "property": "PresetName = Screen Gib" },
@@ -182,14 +168,14 @@ def clean_rough_parsed(rough_parsed):
 	{ "property": "AddEffect = MOSRotating", "comment": " // foo", "value": [
 		{ "property": "PresetName", "value": "Screen Gib" },
 	"""
-	for line in rough_parsed:
+	for line in parsed:
 		if "value" in line:
 			clean_rough_parsed(line["value"])
 		elif "property" in line:
 			prop, value = line["property"].split(" = ")
 			line["property"] = prop
 			line["value"] = value
-	return rough_parsed
+	return parsed
 
 
 ####

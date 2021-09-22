@@ -94,15 +94,6 @@ def max_mass_to_max_inventory_mass(section_properties_list):
 				# print(max_inventory_mass)
 				line_dictionary["value"] = max_inventory_mass
 
-# 	for line_dictionary in value:
-# 		subvalue = line_dictionary["value"]
-# 		if "value" in line_dictionary and isinstance(subvalue, list):
-# 			max_mass_to_max_inventory_mass(subvalue)
-# 		else:
-# 			subproperty = line_dictionary["property"]
-# 			if subproperty == "Mass":
-# 				print('foo')
-
 
 def duplicate_script_path(parsed_subset):
 	pass
