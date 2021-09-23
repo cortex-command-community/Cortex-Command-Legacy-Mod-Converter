@@ -8,9 +8,10 @@ from Python.ini_parser import ini_rules
 def parse_and_convert(input_folder_path, output_folder_path):
 	mod_names = get_mod_names(input_folder_path)
 	parsed = parse(output_folder_path, mod_names)
-
-	# convert(parsed)
 	# pprint.pprint(parsed)
+
+	convert(parsed)
+	pprint.pprint(parsed)
 
 	# write_converted_ini_recursively(parsed, Path(output_folder_path))
 
@@ -45,7 +46,7 @@ def parse_file(file_path):
 	# print(file_path)
 	with open(file_path) as f:
 		parsed = []
-		rough_parse_file_recursive(parsed, f)
+		parse_file_recursively(parsed, f)
 		# parsed = clean_rough_parsed(parsed)
 		return parsed
 
@@ -55,7 +56,7 @@ def parse_file(file_path):
 # Passing it as a function argument makes a copy of the boolean instead of being a reference to the original variable, so that's why a global variable is needed.
 multiline = False
 
-def rough_parse_file_recursive(parsed, f, depth_tab_count=0):
+def parse_file_recursively(parsed, f, depth_tab_count=0):
 	"""
 	# CC and CCCP use a custom INI format, so the configparser library can't be used to parse the INI files.
 	# TODO: Check if the first line can be tabbed, because then prev_line_index needs to be initialized to 0.
@@ -66,10 +67,14 @@ def rough_parse_file_recursive(parsed, f, depth_tab_count=0):
 	for line in f:
 		# print(repr(line))
 		line = line.strip("\n")
-		tab_count = len(line) - len(line.lstrip("\t"))
+
+		if multiline:
+			tab_count = depth_tab_count # Prevents multi-line comments from starting a new section.
+		else:
+			tab_count = len(line) - len(line.lstrip("\t"))
 
 		line_data, multiline = get_line_data(line, multiline)
-		print(line_data)
+		# print(line_data)
 		# return # TODO: Remove this!
 
 		if tab_count == depth_tab_count:
@@ -80,7 +85,7 @@ def rough_parse_file_recursive(parsed, f, depth_tab_count=0):
 			b = a[-1]["value"]
 			b.append(line_data)
 
-			child_values = rough_parse_file_recursive(b, f, depth_tab_count+1)
+			child_values = parse_file_recursively(b, f, depth_tab_count+1)
 			if child_values != None and child_values["tab_count"] == depth_tab_count:
 				parsed.append(child_values["line_data"])
 			else:
@@ -146,7 +151,6 @@ def get_line_data(line, multiline):
 	comment_state = 3 if multiline else 0
 
 	# print(repr(line))
-	# TODO: Find a way to have every value_str = "" call done by append_token()
 	for char in line:
 		if comment_state == 2 or comment_state == 3 or comment_state == 4:
 			value_str += char
@@ -210,30 +214,11 @@ def get_whitespace_on_right(string):
 	return string.replace(string.rstrip(), "")
 
 
-# TODO: Maybe rough_parse_file_recursive() can do everything this function does?
-# def clean_rough_parsed(parsed):
-# 	"""
-# 	{ "property": "AddEffect = MOSRotating", "comment": " // foo", "value": [
-# 		{ "property": "PresetName = Screen Gib" },
-# 	->
-# 	{ "property": "AddEffect = MOSRotating", "comment": " // foo", "value": [
-# 		{ "property": "PresetName", "value": "Screen Gib" },
-# 	"""
-# 	for line in parsed:
-# 		if "value" in line:
-# 			clean_rough_parsed(line["value"])
-# 		elif "property" in line:
-# 			prop, value = line["property"].split(" = ")
-# 			line["property"] = prop
-# 			line["value"] = value
-# 	return parsed
-
-
 ####
 
 
-# def convert(parsed):
-# 	ini_rules.apply_rules(parsed)
+def convert(parsed):
+	ini_rules.apply_rules(parsed)
 
 
 ####
