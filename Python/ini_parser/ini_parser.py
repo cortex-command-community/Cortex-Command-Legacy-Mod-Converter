@@ -98,6 +98,7 @@ def get_line_data(line, multiline):
 		{ "type": "extra", "value": " /* */ foo /*" },
 	]
 
+
 	CCCP INI parser quirks to keep in mind:
 	1.
 		This works:
@@ -120,6 +121,14 @@ def get_line_data(line, multiline):
 		foo
 			// */ bar
 	So a multi-line comment can't start during a single-line comment, and vice versa.
+
+
+	# TODO: Use an enum for this.
+	0 = not in a comment
+	1 = read the first / of a single-/multi-line comment
+	2 = inside a single-line comment
+	3 = inside a multi-line comment
+	4 = read * which is possibly the ending of a multi-line comment
 	"""
 
 	line_data = []
@@ -130,20 +139,12 @@ def get_line_data(line, multiline):
 	seen_equals = False
 	was_prev_char_special = True # "special" meaning whitespace, / or *
 
-	"""
-	# TODO: Use an enum for this.
-	0 = not in a comment
-	1 = read the first / of a single-/multi-line comment
-	2 = inside a single-line comment
-	3 = inside a multi-line comment
-	4 = read * which is possibly the ending of a multi-line comment
-	"""
 	comment_state = 0
 
-	print(repr(line))
+	# print(repr(line))
 	# TODO: Find a way to have every value_str = "" call done by append_token()
 	for char in line:
-		if (char != "=" or parsing_type == "single_comment") and not (was_prev_char_special and (char == "/" or char == "*")):
+		if (char != "=" or parsing_type == "single_comment") and not (was_prev_char_special and (char == "/" or char == "*") and parsing_type != "single_comment"):
 			value_str += char
 
 		if parsing_type == "single_comment":
@@ -163,16 +164,13 @@ def get_line_data(line, multiline):
 		elif comment_state == 1:
 			if char == "/":
 				comment_state = 2
-				if seen_equals:
-					value_str = append_token(parsing_type, value_str, line_data, 3)
-				else:
-					value_str = append_token(parsing_type, value_str, line_data, 4)
+				value_str = append_token(parsing_type, value_str, line_data, 3)
 				value_str += "//"
 				parsing_type = "single_comment"
 			elif char == "*":
 				comment_state = 3
 				multiline = True
-				value_str = append_token(parsing_type, value_str, line_data, 5)
+				value_str = append_token(parsing_type, value_str, line_data, 4)
 				value_str += "/*"
 				parsing_type = "multi_comment"
 		elif comment_state == 0 and char == "/":
@@ -181,15 +179,15 @@ def get_line_data(line, multiline):
 		was_prev_char_special = char.isspace() or char == "/" or char == "*"
 
 	if parsing_type == "single_comment":
-		append_token("extra", value_str, line_data, 6)
+		append_token("extra", value_str, line_data, 5)
 	elif parsing_type == "value" or parsing_type == "multi_comment":
-		append_token(parsing_type, value_str, line_data, 7)
+		append_token(parsing_type, value_str, line_data, 6)
 
 	return line_data, multiline
 
 
 def append_token(typ, value_str, line_data, debug):
-	print(debug)
+	# print(debug)
 
 	if value_str.strip() != "":
 		if typ == "property" or typ == "value":
