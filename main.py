@@ -5,12 +5,14 @@
 import traceback
 import PySimpleGUI as sg
 
+from Python import tests
 from Python.gui import gui
 
 
 if __name__ == '__main__':
 	try: # TODO: The VS Code Python debugger isn't able to catch exceptions due to this.
 		gui.init_window_theme()
+		tests.run()
 		gui.run_window(gui.init_window())
 	except Exception as e:
 		tb = traceback.format_exc()
