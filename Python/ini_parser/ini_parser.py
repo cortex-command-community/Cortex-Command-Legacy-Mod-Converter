@@ -70,22 +70,23 @@ def rough_parse_file_recursive(parsed, f, depth_tab_count=0):
 
 		line_data, multiline = get_line_data(line, multiline)
 		print(line_data)
-		return # TODO: Remove this line.
+		# return # TODO: Remove this!
 
-		# if tab_count == depth_tab_count:
-		# 	parsed.append(line_data)
-		# elif tab_count == depth_tab_count + 1:
-		# 	prev_line_index = len(parsed) - 1
-		# 	parsed[prev_line_index]["value"] = []
-		# 	parsed[prev_line_index]["value"].append(line_data)
+		if tab_count == depth_tab_count:
+			parsed.append(line_data)
+		elif tab_count == depth_tab_count + 1:
+			a = parsed[-1]
+			a.append( { "type": "children", "value": [] } )
+			b = a[-1]["value"]
+			b.append(line_data)
 
-		# 	child_values = rough_parse_file_recursive(parsed[prev_line_index]["value"], f, depth_tab_count+1)
-		# 	if child_values != None and child_values["tab_count"] == depth_tab_count:
-		# 		parsed.append(child_values["line_data"])
-		# 	else:
-		# 		return child_values
-		# elif tab_count < depth_tab_count:
-		# 	return { "line_data": line_data, "tab_count": tab_count }
+			child_values = rough_parse_file_recursive(b, f, depth_tab_count+1)
+			if child_values != None and child_values["tab_count"] == depth_tab_count:
+				parsed.append(child_values["line_data"])
+			else:
+				return child_values
+		elif tab_count < depth_tab_count:
+			return { "line_data": line_data, "tab_count": tab_count }
 
 
 def get_line_data(line, multiline):
@@ -135,59 +136,70 @@ def get_line_data(line, multiline):
 
 	value_str = ""
 	space_str = ""
-	parsing_type = "property"
+
+	parsing_type = "multi_comment" if multiline else "property"
+	prev_parsing_type = "property" # Used so parsing_type can be set back when a multiline comment ends.
+
 	seen_equals = False
 	was_prev_char_special = True # "special" meaning whitespace, / or *
 
-	comment_state = 0
+	comment_state = 3 if multiline else 0
 
 	# print(repr(line))
 	# TODO: Find a way to have every value_str = "" call done by append_token()
 	for char in line:
-		if (char != "=" or parsing_type == "single_comment") and not (was_prev_char_special and (char == "/" or char == "*") and parsing_type != "single_comment"):
+		# TODO: Clean this messy if-statement up.
+		# if (char != "=" or parsing_type == "single_comment") and not (was_prev_char_special and (char == "/" or char == "*") and parsing_type != "single_comment"):
+		# 	value_str += char
+
+		if parsing_type == "single_comment" or parsing_type == "multi_comment":
+			value_str += char
+		elif char != "=" and not (was_prev_char_special and (char == "/" or char == "*")):
 			value_str += char
 
-		if parsing_type == "single_comment":
+		if parsing_type == "single_comment": # TODO: Necessary?
 			continue
 
 		if char == "=" and not seen_equals:
 			seen_equals = True
-			value_str = append_token(parsing_type, value_str, line_data, 1)
+			value_str = append_token("property", value_str, line_data, 1)
 			parsing_type = "value"
 
 		if comment_state == 4 and char == "/":
 			comment_state = 0
-			multiline = False
-			value_str = append_token(parsing_type, value_str + "*/", line_data, 2)
+			value_str = append_token("extra", value_str, line_data, 2)
+			parsing_type = prev_parsing_type
 		elif comment_state == 3 and char == "*":
 			comment_state = 4
 		elif comment_state == 1:
 			if char == "/":
 				comment_state = 2
 				value_str = append_token(parsing_type, value_str, line_data, 3)
-				value_str += "//"
+				# value_str += "//"
 				parsing_type = "single_comment"
 			elif char == "*":
 				comment_state = 3
-				multiline = True
 				value_str = append_token(parsing_type, value_str, line_data, 4)
 				value_str += "/*"
+				prev_parsing_type = parsing_type
 				parsing_type = "multi_comment"
 		elif comment_state == 0 and char == "/":
 			comment_state = 1
 
 		was_prev_char_special = char.isspace() or char == "/" or char == "*"
 
-	if parsing_type == "single_comment":
+	if parsing_type == "single_comment" or parsing_type == "multi_comment":
 		append_token("extra", value_str, line_data, 5)
-	elif parsing_type == "value" or parsing_type == "multi_comment":
+	elif parsing_type == "value": # TODO: Can this be moved into the above for-loop?
 		append_token(parsing_type, value_str, line_data, 6)
 
+	multiline = comment_state == 3
 	return line_data, multiline
 
 
 def append_token(typ, value_str, line_data, debug):
-	# print(debug)
+	print(debug)
+	# print(typ)
 
 	if value_str.strip() != "":
 		if typ == "property" or typ == "value":
