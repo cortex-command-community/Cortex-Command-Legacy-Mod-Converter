@@ -137,7 +137,8 @@ def get_line_data(line, multiline):
 	value_str = ""
 	space_str = ""
 
-	parsing_property_or_value = "property"
+	# parsing_property_or_value = "property" # TODO: Can this be used instead?
+	parsing_property_or_value = "extra" if multiline else "property"
 
 	seen_equals = False
 	was_prev_char_special = True # "special" meaning whitespace, / or *
@@ -147,7 +148,7 @@ def get_line_data(line, multiline):
 	# print(repr(line))
 	# TODO: Find a way to have every value_str = "" call done by append_token()
 	for char in line:
-		if comment_state == 2 or comment_state == 3:
+		if comment_state == 2 or comment_state == 3 or comment_state == 4:
 			value_str += char
 		elif char != "=" and not (was_prev_char_special and (char == "/" or char == "*")):
 			value_str += char
@@ -174,6 +175,8 @@ def get_line_data(line, multiline):
 				comment_state = 3
 				value_str = append_token(parsing_property_or_value, value_str, line_data, 4)
 				value_str += "/*"
+			else:
+				comment_state = 0
 		elif comment_state == 0 and char == "/":
 			comment_state = 1
 

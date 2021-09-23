@@ -1,3 +1,5 @@
+import sys
+
 from Python.ini_parser import ini_parser
 
 
@@ -6,23 +8,30 @@ def run():
 
 
 def ini_parser_tests():
-	foo("a = b", [{'type': 'property', 'value': 'a'}, {'type': 'value', 'value': 'b'}])
-	foo("// a = b", [{'type': 'extra', 'value': '// a = b'}])
-	foo("a = b //", [{'type': 'property', 'value': 'a'}, {'type': 'value', 'value': 'b'}, {'type': 'extra', 'value': ' //'}])
-	foo(" // a = b", [{'type': 'extra', 'value': ' // a = b'}])
-	foo("a = b // ", [{'type': 'property', 'value': 'a'}, {'type': 'value', 'value': 'b'}, {'type': 'extra', 'value': ' //'}])
-	# foo("/* a = b */", [{'type': 'extra', 'value': '/* a = b */'}])
-	foo("/* a = b */ c = d", [{'type': 'extra', 'value': '/* a = b */'}, {'type': 'property', 'value': 'c'}, {'type': 'value', 'value': 'd'}])
-	# foo("", )
+	ini_parser_get_line_data("a = b", [{'type': 'property', 'value': 'a'}, {'type': 'value', 'value': 'b'}])
+	ini_parser_get_line_data("// a = b", [{'type': 'extra', 'value': '// a = b'}])
+	ini_parser_get_line_data("a = b //", [{'type': 'property', 'value': 'a'}, {'type': 'value', 'value': 'b'}, {'type': 'extra', 'value': ' //'}])
+	ini_parser_get_line_data(" // a = b", [{'type': 'extra', 'value': ' // a = b'}])
+	ini_parser_get_line_data("a = b // ", [{'type': 'property', 'value': 'a'}, {'type': 'value', 'value': 'b'}, {'type': 'extra', 'value': ' //'}])
+	ini_parser_get_line_data("/* a = b */", [{'type': 'extra', 'value': '/* a = b */'}])
+	ini_parser_get_line_data("/* a = b */ c = d", [{'type': 'extra', 'value': '/* a = b */'}, {'type': 'property', 'value': 'c'}, {'type': 'value', 'value': 'd'}])
+	ini_parser_get_line_data("// /*", [{'type': 'extra', 'value': '// /*'}])
+	ini_parser_get_line_data("foo/bar/baz", [{'type': 'property', 'value': 'foo/bar/baz'}])
+	# ini_parser_get_line_data("", )
+	# ini_parser_get_line_data("", )
 
 
 multiline = False
 
-def foo(line, expected):
+def ini_parser_get_line_data(line, expected):
 	global multiline
 
 	line_data, multiline = ini_parser.get_line_data(line, multiline)
 
-	error_message = f"Test error!\nInput:\n{line}\nBecame:\n{str(line_data)}\nExpected:\n{str(expected)}"
+	test(line, line_data, expected)
 
-	assert line_data == expected, error_message
+
+def test(input_str, result, expected):
+	function_name = sys._getframe(1).f_code.co_name
+	error_message = f"Test error!\n\nTest function name: {function_name}\n\nInput:\n{input_str}\n\nResult:\n{str(result)}\n\nExpected:\n{str(expected)}"
+	assert result == expected, error_message # TODO: Make the error_message not show twice in the popup.
