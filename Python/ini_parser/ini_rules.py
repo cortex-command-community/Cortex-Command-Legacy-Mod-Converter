@@ -2,23 +2,26 @@ import pprint, math
 
 
 """
-The initial parsed_subset structure passed to the apply_rules function:
+The structure of the "parsed" variable that's passed to the apply_rules function looks like this,
+where the "v" character is used to point down:
+
 {
-	foo.rte: {
-		FolderName {
+	foo.rte: {       parsed
+		FolderName { v
 			Bar.ini: [
-				{
-					value: [
-						{
-							value: [
-								{
-									value: ""
-								}
-							]
-						}
-					]
-				}
-			]	
+				section (and also line_data)
+				v   token
+				[   v
+					{ "type": "children", "value": [
+						line_data
+						v   token
+						[   v
+							{ "type": "property", "value": "PresetName" },
+							{ "type": "value", "value": "foo" }
+						]
+					]}
+				]
+			]
 		}
 	}
 }
