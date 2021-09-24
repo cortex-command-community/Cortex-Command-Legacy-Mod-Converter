@@ -1,8 +1,17 @@
 import os, re
-from pathlib import Path
 import pprint
+from pathlib import Path
+from enum import Enum, auto
 
 from Python.ini_parser import ini_rules
+
+
+class State(Enum):
+	NOT_IN_A_COMMENT      = auto() # 0
+	READ_FIRST_SLASH      = auto() # 1
+	INSIDE_SINGLE_COMMENT = auto() # 2
+	INSIDE_MULTI_COMMENT  = auto() # 3
+	POSSIBLE_MULTI_ENDING = auto() # 4
 
 
 def parse_and_convert(input_folder_path, output_folder_path):
@@ -67,10 +76,7 @@ def parse_file_recursively(parsed_portion, f, depth_tab_count=0):
 		# print(repr(line))
 		line = line.strip("\n")
 
-		if multiline:
-			tab_count = depth_tab_count # Prevents multi-line comments from starting a new section.
-		else:
-			tab_count = len(line) - len(line.lstrip("\t"))
+		tab_count = get_tab_count(depth_tab_count, multiline, line)
 
 		line_data, multiline = get_line_data(line, multiline)
 		# print(line_data)
@@ -91,6 +97,11 @@ def parse_file_recursively(parsed_portion, f, depth_tab_count=0):
 				return child_values
 		elif tab_count < depth_tab_count:
 			return { "line_data": line_data, "tab_count": tab_count }
+
+
+def get_tab_count(depth_tab_count, multiline, line):
+	# depth_tab_count prevents multi-line comments from starting a new section.
+	return depth_tab_count if multiline else len(line) - len(line.lstrip("\t"))
 
 
 def get_line_data(line, multiline):
@@ -126,14 +137,6 @@ def get_line_data(line, multiline):
 		foo
 			// */ bar
 	So a multi-line comment can't start during a single-line comment, and vice versa.
-
-
-	# TODO: Use an enum for this.
-	0 = not in a comment
-	1 = read the first / of a single-/multi-line comment
-	2 = inside a single-line comment
-	3 = inside a multi-line comment
-	4 = read * which is possibly the ending of a multi-line comment
 	"""
 
 	line_data = []
@@ -147,62 +150,63 @@ def get_line_data(line, multiline):
 	seen_equals = False
 	was_prev_char_special = True # "special" meaning whitespace, / or *
 
-	comment_state = 3 if multiline else 0
+	comment_state = State.INSIDE_MULTI_COMMENT if multiline else State.NOT_IN_A_COMMENT
 
 	# print(repr(line))
 	for char in line:
-		if comment_state == 2 or comment_state == 3 or comment_state == 4:
+		if comment_state in (State.INSIDE_SINGLE_COMMENT, State.INSIDE_MULTI_COMMENT, State.POSSIBLE_MULTI_ENDING):
 			value_str += char
-		elif char != "=" and not (was_prev_char_special and (char == "/" or char == "*")):
+		elif char != "=" and not (was_prev_char_special and (char in ("/", "*"))):
 			value_str += char
 
-		if comment_state == 2: # TODO: Necessary?
+		if comment_state == State.INSIDE_SINGLE_COMMENT: # TODO: Necessary?
 			continue
 
-		if char == "=" and not seen_equals and comment_state != 2 and comment_state != 3:
+		if char == "=" and not seen_equals and comment_state != State.INSIDE_SINGLE_COMMENT and comment_state != State.INSIDE_MULTI_COMMENT:
 			seen_equals = True
 			value_str = append_token("property", value_str, line_data, 1)
+			value_str = append_token("extra", value_str + "= ", line_data, 2)
 			parsing_property_or_value = "value"
 
-		if comment_state == 4 and char == "/":
-			comment_state = 0
-			value_str = append_token("extra", value_str, line_data, 2)
-		elif comment_state == 3 and char == "*":
-			comment_state = 4
-		elif comment_state == 1:
+		if comment_state == State.POSSIBLE_MULTI_ENDING and char == "/":
+			comment_state = State.NOT_IN_A_COMMENT
+			value_str = append_token("extra", value_str, line_data, 3)
+		elif comment_state == State.INSIDE_MULTI_COMMENT and char == "*":
+			comment_state = State.POSSIBLE_MULTI_ENDING
+		elif comment_state == State.READ_FIRST_SLASH:
 			if char == "/":
-				comment_state = 2
-				value_str = append_token(parsing_property_or_value, value_str, line_data, 3)
+				comment_state = State.INSIDE_SINGLE_COMMENT
+				value_str = append_token(parsing_property_or_value, value_str, line_data, 4)
 				value_str += "//"
 			elif char == "*":
-				comment_state = 3
-				value_str = append_token(parsing_property_or_value, value_str, line_data, 4)
+				comment_state = State.INSIDE_MULTI_COMMENT
+				value_str = append_token(parsing_property_or_value, value_str, line_data, 5)
 				value_str += "/*"
 			else:
-				comment_state = 0
-		elif comment_state == 0 and char == "/":
-			comment_state = 1
+				comment_state = State.NOT_IN_A_COMMENT
+		elif comment_state == State.NOT_IN_A_COMMENT and char == "/":
+			comment_state = State.READ_FIRST_SLASH
 
-		was_prev_char_special = char.isspace() or char == "/" or char == "*"
+		was_prev_char_special = char.isspace() or char in ("/", "*")
 
-	if comment_state == 2 or comment_state == 3:
-		append_token("extra", value_str, line_data, 5)
+	if comment_state in (State.INSIDE_SINGLE_COMMENT, State.INSIDE_MULTI_COMMENT):
+		append_token("extra", value_str, line_data, 6)
 	else:
-		append_token(parsing_property_or_value, value_str, line_data, 6)
+		append_token(parsing_property_or_value, value_str, line_data, 7)
 
-	multiline = comment_state == 3
+	multiline = comment_state == State.INSIDE_MULTI_COMMENT
 	return line_data, multiline
 
 
 def append_token(typ, value_str, line_data, debug):
-	# print(debug)
-	# print(typ)
+	# print(debug, typ)
 
 	if value_str.strip() != "":
-		if typ == "property" or typ == "value":
+		if typ in ("property", "value"):
 			token = { "type": typ, "value": value_str.strip() }
 		else:
-			token = { "type": typ, "value": value_str.rstrip() }
+			# token = { "type": typ, "value": value_str.rstrip() }
+			token = { "type": typ, "value": value_str }
 
 		line_data.append(token)
 
@@ -238,7 +242,7 @@ def write_converted_ini_recursively(parsed_portion, output_folder_path):
 
 
 def get_lines_from_dicts_recursively(line_data, lines):
-	""" The function needs to loop twice through line_data to have lines written in the correct order. """
+	# This function loops twice through line_data so the lines can be appended in the correct order.
 
 	line = ""
 	for dictionary in line_data:

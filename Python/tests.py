@@ -8,13 +8,13 @@ def run():
 
 
 def ini_parser_tests():
-	ini_parser_get_line_data("a = b", [{'type': 'property', 'value': 'a'}, {'type': 'value', 'value': 'b'}])
+	ini_parser_get_line_data("a = b", [{'type': 'property', 'value': 'a'}, {'type': 'extra', 'value': ' = '}, {'type': 'value', 'value': 'b'}])
 	ini_parser_get_line_data("// a = b", [{'type': 'extra', 'value': '// a = b'}])
-	ini_parser_get_line_data("a = b //", [{'type': 'property', 'value': 'a'}, {'type': 'value', 'value': 'b'}, {'type': 'extra', 'value': ' //'}])
+	ini_parser_get_line_data("a = b //", [{'type': 'property', 'value': 'a'}, {'type': 'extra', 'value': ' = '}, {'type': 'value', 'value': 'b'}, {'type': 'extra', 'value': ' //'}])
 	ini_parser_get_line_data(" // a = b", [{'type': 'extra', 'value': ' // a = b'}])
-	ini_parser_get_line_data("a = b // ", [{'type': 'property', 'value': 'a'}, {'type': 'value', 'value': 'b'}, {'type': 'extra', 'value': ' //'}])
+	ini_parser_get_line_data("a = b // ", [{'type': 'property', 'value': 'a'}, {'type': 'extra', 'value': ' = '}, {'type': 'value', 'value': 'b'}, {'type': 'extra', 'value': ' // '}])
 	ini_parser_get_line_data("/* a = b */", [{'type': 'extra', 'value': '/* a = b */'}])
-	ini_parser_get_line_data("/* a = b */ c = d", [{'type': 'extra', 'value': '/* a = b */'}, {'type': 'property', 'value': 'c'}, {'type': 'value', 'value': 'd'}])
+	ini_parser_get_line_data("/* a = b */ c = d", [{'type': 'extra', 'value': '/* a = b */'}, {'type': 'property', 'value': 'c'}, {'type': 'extra', 'value': ' = '}, {'type': 'value', 'value': 'd'}])
 	ini_parser_get_line_data("// /*", [{'type': 'extra', 'value': '// /*'}])
 	ini_parser_get_line_data("foo/bar/baz", [{'type': 'property', 'value': 'foo/bar/baz'}])
 	# ini_parser_get_line_data("", )
@@ -33,5 +33,11 @@ def ini_parser_get_line_data(line, expected):
 
 def test(input_str, result, expected):
 	function_name = sys._getframe(1).f_code.co_name
-	error_message = f"Test error!\n\nTest function name: {function_name}\n\nInput:\n{input_str}\n\nResult:\n{str(result)}\n\nExpected:\n{str(expected)}"
+	error_message = (
+		"Test error!"
+		f"\n\nTest function name: {function_name}"
+		f"\n\nInput:\n{input_str}"
+		f"\n\nExpected:\n{str(expected)}"
+		f"\n\nResult:\n{str(result)}"
+	)
 	assert result == expected, error_message # TODO: Make the error_message not show twice in the popup.
