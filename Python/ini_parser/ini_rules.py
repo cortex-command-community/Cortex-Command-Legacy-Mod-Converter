@@ -6,10 +6,16 @@ The structure of the "parsed" variable that's passed to the apply_rules function
 where the "v" character is used to point down:
 
 {
-	foo.rte: {       parsed
-		FolderName { v
-			Bar.ini: [
-				section (and also line_data)
+	"foo.rte": {
+		"FolderName": {
+			"Bar.ini": [ < holds sections of a file
+				section and also line_data
+				v   token
+				[   v
+					{ "type": "extra", "value": "// foo" }
+				],
+
+				section and also line_data
 				v   token
 				[   v
 					{ "type": "children", "value": [
