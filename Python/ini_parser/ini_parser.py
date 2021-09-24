@@ -7,11 +7,11 @@ from Python.ini_parser import ini_rules
 
 
 class State(Enum):
-	NOT_IN_A_COMMENT      = auto() # 0
-	READ_FIRST_SLASH      = auto() # 1
-	INSIDE_SINGLE_COMMENT = auto() # 2
-	INSIDE_MULTI_COMMENT  = auto() # 3
-	POSSIBLE_MULTI_ENDING = auto() # 4
+	NOT_IN_A_COMMENT      = auto()
+	READ_FIRST_SLASH      = auto()
+	INSIDE_SINGLE_COMMENT = auto()
+	INSIDE_MULTI_COMMENT  = auto()
+	POSSIBLE_MULTI_ENDING = auto()
 
 
 def parse_and_convert(input_folder_path, output_folder_path):
@@ -162,8 +162,11 @@ def get_line_data(line, multiline):
 		if comment_state == State.INSIDE_SINGLE_COMMENT: # TODO: Necessary?
 			continue
 
-		if char == "=" and not seen_equals and comment_state != State.INSIDE_SINGLE_COMMENT and comment_state != State.INSIDE_MULTI_COMMENT:
+		if char == "=" and not seen_equals and comment_state not in (State.INSIDE_SINGLE_COMMENT, State.INSIDE_MULTI_COMMENT):
 			seen_equals = True
+
+			possibly_append_tabs(value_str, line_data)
+
 			value_str = append_token("property", value_str, line_data, 1)
 			value_str = append_token("extra", value_str + "= ", line_data, 2)
 			parsing_property_or_value = "value"
@@ -215,6 +218,12 @@ def append_token(typ, value_str, line_data, debug):
 
 def get_whitespace_on_right(string):
 	return string.replace(string.rstrip(), "")
+
+
+def possibly_append_tabs(value_str, line_data):
+	tab_count = len(value_str) - len(value_str.lstrip("\t"))
+	if tab_count > 0:
+		line_data.append( { "type": "extra", "value": tab_count * "\t" } )
 
 
 ####
