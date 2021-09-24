@@ -11,9 +11,9 @@ def parse_and_convert(input_folder_path, output_folder_path):
 	# pprint.pprint(parsed)
 
 	convert(parsed)
-	pprint.pprint(parsed)
+	# pprint.pprint(parsed)
 
-	# write_converted_ini_recursively(parsed, Path(output_folder_path))
+	write_converted_ini_recursively(parsed, Path(output_folder_path))
 
 
 def get_mod_names(input_folder_path):
@@ -21,7 +21,7 @@ def get_mod_names(input_folder_path):
 
 
 def parse(subfolder_path, mod_names):
-	parsed = {}
+	parsed_portion = {}
 	for name in os.listdir(subfolder_path):
 		p = subfolder_path / Path(name)
 
@@ -31,11 +31,11 @@ def parse(subfolder_path, mod_names):
 			continue
 
 		if p.is_file() and p.suffix == ".ini" and p.stem != "desktop": # Skip the desktop.ini Windows metadata file.
-			parsed[name] = parse_file(str(p))
+			parsed_portion[name] = parse_file(str(p))
 
 		if p.is_dir():
-			parsed[name] = parse(p, mod_names)
-	return parsed
+			parsed_portion[name] = parse(p, mod_names)
+	return parsed_portion
 
 
 def part_of_mod(p, mod_names):
@@ -45,10 +45,9 @@ def part_of_mod(p, mod_names):
 def parse_file(file_path):
 	# print(file_path)
 	with open(file_path) as f:
-		parsed = []
-		parse_file_recursively(parsed, f)
-		# parsed = clean_rough_parsed(parsed)
-		return parsed
+		parsed_file = []
+		parse_file_recursively(parsed_file, f)
+		return parsed_file
 
 
 # This global variable is only used by the function below.
@@ -56,7 +55,7 @@ def parse_file(file_path):
 # Passing it as a function argument makes a copy of the boolean instead of being a reference to the original variable, so that's why a global variable is needed.
 multiline = False
 
-def parse_file_recursively(parsed, f, depth_tab_count=0):
+def parse_file_recursively(parsed_portion, f, depth_tab_count=0):
 	"""
 	# CC and CCCP use a custom INI format, so the configparser library can't be used to parse the INI files.
 	# TODO: Check if the first line can be tabbed, because then prev_line_index needs to be initialized to 0.
@@ -78,16 +77,16 @@ def parse_file_recursively(parsed, f, depth_tab_count=0):
 		# return # TODO: Remove this!
 
 		if tab_count == depth_tab_count:
-			parsed.append(line_data)
+			parsed_portion.append(line_data)
 		elif tab_count == depth_tab_count + 1:
-			a = parsed[-1]
+			a = parsed_portion[-1]
 			a.append( { "type": "children", "value": [] } )
 			b = a[-1]["value"]
 			b.append(line_data)
 
 			child_values = parse_file_recursively(b, f, depth_tab_count+1)
 			if child_values != None and child_values["tab_count"] == depth_tab_count:
-				parsed.append(child_values["line_data"])
+				parsed_portion.append(child_values["line_data"])
 			else:
 				return child_values
 		elif tab_count < depth_tab_count:
@@ -224,46 +223,30 @@ def convert(parsed):
 ####
 
 
-# def write_converted_ini_recursively(parsed_portion, output_folder_path):
-# 	for name, dict_or_list in parsed_portion.items():
-# 		if isinstance(dict_or_list, dict): # If dict_or_list contains a dictionary of more filenames.
-# 			write_converted_ini_recursively(dict_or_list, output_folder_path / name)
-# 		else: # If dict_or_list contains a list of the lines of a file.
-# 			with open(str(output_folder_path / name), mode="w") as f:
-# 				lines = []
-# 				get_lines_from_dicts_recursively(dict_or_list, lines)
-# 				f.write("\n".join(lines))
+def write_converted_ini_recursively(parsed_portion, output_folder_path):
+	# pprint.pprint(parsed_portion)
+	for name, dict_or_list in parsed_portion.items():
+		if isinstance(dict_or_list, dict): # If dict_or_list contains a dictionary of more filenames.
+			write_converted_ini_recursively(dict_or_list, output_folder_path / name)
+		else: # If dict_or_list contains a list of the lines of a file.
+			# pprint.pprint(dict_or_list)
+			with open(str(output_folder_path / name), mode="w") as f:
+				lines = []
+				for section in dict_or_list:
+					get_lines_from_dicts_recursively(section, lines)
+				f.write("\n".join(lines))
 
 
-# def get_lines_from_dicts_recursively(dict_list, lines):
-# 	# TODO: Refactor this function.
-# 	for line_data in dict_list:
-# 		line = ""
+def get_lines_from_dicts_recursively(line_data, lines):
+	""" The function needs to loop twice through line_data to have lines written in the correct order. """
 
-# 		line += line_data["tab_string"]
+	line = ""
+	for dictionary in line_data:
+		if dictionary["type"] != "children":
+			line += dictionary["value"]
+	lines.append(line)
 
-# 		if "property" in line_data:
-# 			line += line_data["property"]
-
-# 		if "value" in line_data:
-# 			value = line_data["value"]
-
-# 			if isinstance(value, str):
-# 				line += " = " + value
-
-# 				if "comment" in line_data:
-# 					line += line_data["comment"]
-
-# 				lines.append(line)
-# 			else: # If the next line is tabbed, value is a dictionary.
-# 				if "comment" in line_data:
-# 					line += line_data["comment"]
-
-# 				lines.append(line)
-
-# 				get_lines_from_dicts_recursively(value, lines)
-# 		elif "comment" in line_data:
-# 			line += line_data["comment"]
-# 			lines.append(line)
-# 		elif "tab_string" in line_data:
-# 			lines.append(line)
+	for dictionary in line_data:
+		if dictionary["type"] == "children":
+			for line_data in dictionary["value"]:
+				get_lines_from_dicts_recursively(line_data, lines)
