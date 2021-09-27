@@ -43,19 +43,19 @@ def apply_rules(parsed_subset):
 			for children in [token["value"] for section in value for token in section if token["type"] == "children"]:
 				if children_contain_property_shallowly(children, "Mass") and children_contain_property_shallowly(children, "MaxMass"):
 					max_mass_to_max_inventory_mass(children)
+				
+				for line_data in children:
+					min_throttle_range_to_negative_throttle_multiplier(line_data)
+					max_throttle_range_to_positive_throttle_multiplier(line_data)
 
 
 def children_contain_property_shallowly(children, prop):
-	"""
-	This function deliberately doesn't check the section's contents recursively.
-	"""
+	""" This function deliberately doesn't check the section's contents recursively. """
 	return [True for line_data in children for token in line_data if token["type"] == "property" and token["value"] == prop] != []
 
 
 def max_mass_to_max_inventory_mass(children):
-	"""
-	MaxInventoryMass = MaxMass - Mass
-	"""
+	""" MaxInventoryMass = MaxMass - Mass """
 	# TODO: Find a way to split these into subfunctions.
 	for line_data in children:
 		for token in line_data:
@@ -72,7 +72,7 @@ def max_mass_to_max_inventory_mass(children):
 							max_mass = float(token_2["value"])
 							break
 
-	max_inventory_mass = f"{(max_mass - mass):g}" # :g removes excess zeros.
+	max_inventory_mass = remove_excess_zeroes(max_mass - mass)
 
 	for line_data in children:
 		for token in line_data:
@@ -83,6 +83,36 @@ def max_mass_to_max_inventory_mass(children):
 						if token_2["type"] == "value":
 							token_2["value"] = max_inventory_mass
 							return
+
+
+def remove_excess_zeroes(string):
+	return f"{string:g}"
+
+
+def min_throttle_range_to_negative_throttle_multiplier(line_data):
+	""" NegativeThrottleMultiplier = 1 - abs(MinThrottleRange) """
+	for token in line_data:
+		if token["type"] == "property":
+			if token["value"] == "MinThrottleRange":
+				token["value"] = "NegativeThrottleMultiplier"
+				for token_2 in line_data:
+					if token_2["type"] == "value":
+						new_value = 1 - abs(float(token_2["value"]))
+						token_2["value"] = remove_excess_zeroes(new_value)
+						return
+
+
+def max_throttle_range_to_positive_throttle_multiplier(line_data):
+	""" PositiveThrottleMultiplier = 1 + abs(MaxThrottleRange) """
+	for token in line_data:
+		if token["type"] == "property":
+			if token["value"] == "MaxThrottleRange":
+				token["value"] = "PositiveThrottleMultiplier"
+				for token_2 in line_data:
+					if token_2["type"] == "value":
+						new_value = 1 + abs(float(token_2["value"]))
+						token_2["value"] = remove_excess_zeroes(new_value)
+						return
 
 
 def duplicate_script_path(parsed_subset):
