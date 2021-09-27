@@ -104,6 +104,9 @@ def get_tab_count(depth_tab_count, multiline, line):
 	return depth_tab_count if multiline else len(line) - len(line.lstrip("\t"))
 
 
+# This global string is used so append_token() can clear its value in get_line_data().
+value_str = ""
+
 def get_line_data(line, multiline):
 	"""
 	line_data consists of a list of dictionary tokens:
@@ -139,10 +142,9 @@ def get_line_data(line, multiline):
 	So a multi-line comment can't start during a single-line comment, and vice versa.
 	"""
 
-	line_data = []
+	global value_str
 
-	value_str = ""
-	space_str = ""
+	line_data = []
 
 	# parsing_property_or_value = "property" # TODO: Can this be used instead?
 	parsing_property_or_value = "extra" if multiline else "property"
@@ -165,25 +167,23 @@ def get_line_data(line, multiline):
 		if char == "=" and not seen_equals and comment_state not in (State.INSIDE_SINGLE_COMMENT, State.INSIDE_MULTI_COMMENT):
 			seen_equals = True
 
-			possibly_append_tabs(value_str, line_data)
-
-			value_str = append_token("property", value_str, line_data, 1)
-			value_str = append_token("extra", value_str + "= ", line_data, 2)
+			append_token("property", value_str, line_data, 1)
+			append_token("extra", "=", line_data, 2)
 			parsing_property_or_value = "value"
 
 		if comment_state == State.POSSIBLE_MULTI_ENDING and char == "/":
 			comment_state = State.NOT_IN_A_COMMENT
-			value_str = append_token("extra", value_str, line_data, 3)
+			append_token("extra", value_str, line_data, 3)
 		elif comment_state == State.INSIDE_MULTI_COMMENT and char == "*":
 			comment_state = State.POSSIBLE_MULTI_ENDING
 		elif comment_state == State.READ_FIRST_SLASH:
 			if char == "/":
 				comment_state = State.INSIDE_SINGLE_COMMENT
-				value_str = append_token(parsing_property_or_value, value_str, line_data, 4)
+				append_token(parsing_property_or_value, value_str, line_data, 4)
 				value_str += "//"
 			elif char == "*":
 				comment_state = State.INSIDE_MULTI_COMMENT
-				value_str = append_token(parsing_property_or_value, value_str, line_data, 5)
+				append_token(parsing_property_or_value, value_str, line_data, 5)
 				value_str += "/*"
 			else:
 				comment_state = State.NOT_IN_A_COMMENT
@@ -201,29 +201,17 @@ def get_line_data(line, multiline):
 	return line_data, multiline
 
 
-def append_token(typ, value_str, line_data, debug):
+def append_token(typ, passed_str, line_data, debug):
+	global value_str
+	value_str = ""
+
 	# print(debug, typ)
 
-	if value_str.strip() != "":
-		if typ in ("property", "value"):
-			token = { "type": typ, "value": value_str.strip() }
-		else:
-			# token = { "type": typ, "value": value_str.rstrip() }
-			token = { "type": typ, "value": value_str }
-
+	# Transforms "\t Mass  " to ['\t ', 'Mass', '  '] and appends all of the tokens.
+	# TODO: Combine tokens of the same type, like [{'type': 'extra', 'value': ' '}, {'type': 'extra', 'value': '//'}]
+	for string in re.findall(r"\S+|\s+", passed_str):
+		token = { "type": "extra" if string.isspace() else typ, "value": string }
 		line_data.append(token)
-
-	return get_whitespace_on_right(value_str)
-
-
-def get_whitespace_on_right(string):
-	return string.replace(string.rstrip(), "")
-
-
-def possibly_append_tabs(value_str, line_data):
-	tab_count = len(value_str) - len(value_str.lstrip("\t"))
-	if tab_count > 0:
-		line_data.append( { "type": "extra", "value": tab_count * "\t" } )
 
 
 ####
