@@ -53,47 +53,21 @@ def convert():
 
 def converter_walk(input_folder_path, output_folder_path):
 	for input_subfolder_path, input_subfolders, input_subfiles in os.walk(input_folder_path):
-		mod_subfolder = get_mod_subfolder(input_folder_path, input_subfolder_path)
+		relative_subfolder = utils.get_relative_subfolder(input_folder_path, input_subfolder_path)
 
-		mod_subfolder_parts = pathlib.Path(mod_subfolder).parts
-
-		if is_mod_folder(mod_subfolder_parts):
+		if is_mod_folder(relative_subfolder):
 			warnings.clear_mod_warnings()
 
-		if is_mod_folder_or_subfolder(mod_subfolder_parts):
-			# print_mod_name(mod_subfolder_parts)
-
-			output_subfolder = os.path.join(output_folder_path, mod_subfolder)
+		if utils.is_mod_folder_or_subfolder(relative_subfolder):
+			output_subfolder = os.path.join(output_folder_path, relative_subfolder)
 			create_folder(input_subfolder_path, output_subfolder)
 			process_files(input_subfiles, input_subfolder_path, output_subfolder, input_folder_path, output_folder_path)
 
 
-# TODO: Can all calls to this function be replaced by get_mod_name()?
-def get_mod_subfolder(input_folder_path, input_subfolder_path):
-	if input_folder_path.endswith(".rte"):
-		return os.path.relpath(input_subfolder_path, os.path.join(input_folder_path, os.pardir))
-	else:
-		return os.path.relpath(input_subfolder_path, input_folder_path)
-
-
-def print_mod_name(mod_subfolder_parts):
-	mod_name = get_mod_name(mod_subfolder_parts)
-	print("Converting '{}'".format(mod_name))
-	warnings.prepend_mod_title(mod_name)
-
-
-def get_mod_name(mod_subfolder_parts):
-	return mod_subfolder_parts[0]
-
-
-def is_mod_folder(mod_subfolder_parts):
-	# If it isn't the input folder and if it's an rte folder.
+def is_mod_folder(relative_subfolder):
+	# If it isn't the input folder and if it's the rte folder.
+	mod_subfolder_parts = utils.get_mod_subfolder_parts(relative_subfolder)
 	return len(mod_subfolder_parts) == 1 and mod_subfolder_parts[0].endswith(".rte")
-
-
-def is_mod_folder_or_subfolder(mod_subfolder_parts):
-	# If it isn't the input folder and if it's (in) an rte folder.
-	return len(mod_subfolder_parts) > 0 and mod_subfolder_parts[0].endswith(".rte")
 
 
 def create_folder(input_subfolder_path, output_subfolder):

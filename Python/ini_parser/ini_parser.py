@@ -59,9 +59,8 @@ def parse_file(file_path):
 		return parsed_file
 
 
-# This global variable is only used by the function below.
-# It is necessary due to how a deep function call needs to be able to also change this variable for the less deep function calls.
-# Passing it as a function argument makes a copy of the boolean instead of being a reference to the original variable, so that's why a global variable is needed.
+# This global variable is necessary due to how a deep function call needs to be able to also change this variable for the less deep function calls.
+# Passing it as a function argument makes a copy of the boolean instead of being a reference to the original variable.
 multiline = False
 
 def parse_file_recursively(parsed_portion, f, depth_tab_count=0):
@@ -76,18 +75,16 @@ def parse_file_recursively(parsed_portion, f, depth_tab_count=0):
 		# print(repr(line))
 		line = line.strip("\n")
 
-		tab_count = get_tab_count(depth_tab_count, multiline, line)
-
-		line_data, multiline = get_line_data(line, multiline)
+		line_data, tab_count = get_line_data(line, depth_tab_count)
 		# print(line_data)
 
 		if tab_count == depth_tab_count:
 			parsed_portion.append(line_data)
 		elif tab_count == depth_tab_count + 1:
-			last_appended_line_data = parsed_portion[-1]
-			last_appended_line_data.append( { "type": "children", "value": [ line_data ] } )
+			previous_appended_line_data = parsed_portion[-1]
+			previous_appended_line_data.append( { "type": "children", "value": [ line_data ] } )
 
-			child_line_data = last_appended_line_data[-1]["value"]
+			child_line_data = previous_appended_line_data[-1]["value"]
 			child_return_values = parse_file_recursively(child_line_data, f, depth_tab_count+1)
 
 			if child_return_values != None and child_return_values["tab_count"] == depth_tab_count:
@@ -99,15 +96,10 @@ def parse_file_recursively(parsed_portion, f, depth_tab_count=0):
 			return child_return_values
 
 
-def get_tab_count(depth_tab_count, multiline, line):
-	# depth_tab_count prevents multi-line comments from starting a new section.
-	return depth_tab_count if multiline else len(line) - len(line.lstrip("\t"))
-
-
-# This global string is used so append_token() can clear its value in get_line_data().
+# This string is global so append_token() can clear its value for get_line_data()
 value_str = ""
 
-def get_line_data(line, multiline):
+def get_line_data(line, depth_tab_count):
 	"""
 	line_data consists of a list of dictionary tokens:
 	[
@@ -142,17 +134,20 @@ def get_line_data(line, multiline):
 	So a multi-line comment can't start during a single-line comment, and vice versa.
 	"""
 
-	global value_str
+	global multiline, value_str
 
 	line_data = []
-
-	# parsing_property_or_value = "property" # TODO: Can this be used instead?
-	parsing_property_or_value = "extra" if multiline else "property"
 
 	seen_equals = False
 	was_prev_char_special = True # "special" meaning whitespace, / or *
 
 	comment_state = State.INSIDE_MULTI_COMMENT if multiline else State.NOT_IN_A_COMMENT
+
+	# parsing_state = "property" # TODO: Can this be used instead?
+	parsing_state = "extra" if multiline else "property"
+
+	tab_count = depth_tab_count if multiline else 0
+	counting_tabs = not multiline
 
 	# print(repr(line))
 	for char in line:
@@ -164,12 +159,18 @@ def get_line_data(line, multiline):
 		if comment_state == State.INSIDE_SINGLE_COMMENT: # TODO: Necessary?
 			continue
 
+		if counting_tabs and char.isspace():
+			if char == "\t":
+				tab_count += 1
+		else:
+			counting_tabs = False
+
 		if char == "=" and not seen_equals and comment_state not in (State.INSIDE_SINGLE_COMMENT, State.INSIDE_MULTI_COMMENT):
 			seen_equals = True
 
 			append_token("property", value_str, line_data, 1)
 			append_token("extra", "=", line_data, 2)
-			parsing_property_or_value = "value"
+			parsing_state = "value"
 
 		if comment_state == State.POSSIBLE_MULTI_ENDING and char == "/":
 			comment_state = State.NOT_IN_A_COMMENT
@@ -179,12 +180,12 @@ def get_line_data(line, multiline):
 		elif comment_state == State.READ_FIRST_SLASH:
 			if char == "/":
 				comment_state = State.INSIDE_SINGLE_COMMENT
-				append_token(parsing_property_or_value, value_str, line_data, 4)
-				value_str += "//"
+				append_token(parsing_state, value_str, line_data, 4)
+				value_str = "//"
 			elif char == "*":
 				comment_state = State.INSIDE_MULTI_COMMENT
-				append_token(parsing_property_or_value, value_str, line_data, 5)
-				value_str += "/*"
+				append_token(parsing_state, value_str, line_data, 5)
+				value_str = "/*"
 			else:
 				comment_state = State.NOT_IN_A_COMMENT
 		elif comment_state == State.NOT_IN_A_COMMENT and char == "/":
@@ -195,10 +196,14 @@ def get_line_data(line, multiline):
 	if comment_state in (State.INSIDE_SINGLE_COMMENT, State.INSIDE_MULTI_COMMENT):
 		append_token("extra", value_str, line_data, 6)
 	else:
-		append_token(parsing_property_or_value, value_str, line_data, 7)
+		append_token(parsing_state, value_str, line_data, 7)
 
 	multiline = comment_state == State.INSIDE_MULTI_COMMENT
-	return line_data, multiline
+
+	if parsing_state != "value": # If no = sign was encountered then the entire line was a comment.
+		tab_count = depth_tab_count
+
+	return line_data, tab_count
 
 
 def append_token(typ, passed_str, line_data, debug):

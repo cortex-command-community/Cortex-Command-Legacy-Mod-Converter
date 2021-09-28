@@ -16,30 +16,6 @@ def regex_replace(all_lines):
 	all_lines = special_replace_using_matches(all_lines, regex_replace_sound_priority, "SoundContainer(((?!SoundContainer).)*)Priority", "SoundContainer{}// Priority", dotall=True)
 	# all_lines = special_replace_using_matches(all_lines, regex_replace_sound_priority, "AddSound(((?! AddSound).)*)Priority", "AddSound{}// Priority", dotall=True)
 	# all_lines = special_replace_using_matches(all_lines, regex_replace_playsound, "", "", dotall=False)
-	
-	# TODO: Replace this mess.
-	# Mass and MaxMass can be mentioned in either order, so that's why there are two nearly identical lines below.
-	# all_lines = special_replace_using_matches(all_lines, regex_replace_max_mass_1,
-	# 	"AddEffect = ACRocket(.*?)"\
-	# 	"Mass = (.*?)\n"\
-	# 	"(.*?)"\
-	# 	"MaxMass = (.*?)\n",
-	
-	# 	"AddEffect = ACRocket{}"\
-	# 	"Mass = {}\n"\
-	# 	"{}MaxInventoryMass = {}\n",
-	# dotall=True)
-
-	# all_lines = special_replace_using_matches(all_lines, regex_replace_max_mass_2,
-	# 	"AddEffect = ACRocket(.*?)"\
-	# 	"MaxMass = (.*?)\n"\
-	# 	"(.*?)"\
-	# 	"Mass = (.*?)\n",
-	
-	# 	"AddEffect = ACRocket{}"\
-	# 	"Mass = {}\n"\
-	# 	"{}MaxInventoryMass = {}\n",
-	# dotall=True)
 
 	return all_lines
 

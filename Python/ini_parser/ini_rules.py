@@ -43,10 +43,11 @@ def apply_rules(parsed_subset):
 			for children in [token["value"] for section in value for token in section if token["type"] == "children"]:
 				if children_contain_property_shallowly(children, "Mass") and children_contain_property_shallowly(children, "MaxMass"):
 					max_mass_to_max_inventory_mass(children)
-				
-				for line_data in children:
-					min_throttle_range_to_negative_throttle_multiplier(line_data)
-					max_throttle_range_to_positive_throttle_multiplier(line_data)
+
+				# TODO: Uncomment this!!!
+				# for line_data in children:
+				# 	min_throttle_range_to_negative_throttle_multiplier(line_data)
+				# 	max_throttle_range_to_positive_throttle_multiplier(line_data)
 
 
 def children_contain_property_shallowly(children, prop):
