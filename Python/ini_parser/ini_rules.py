@@ -40,25 +40,47 @@ def apply_rules(parsed_subset):
 		if isinstance(value, dict):
 			apply_rules(value)
 		else: # If it's a list of the sections of a file.
-			for children in [token["value"] for section in value for token in section if token["type"] == "children"]:
-				if children_contain_property_shallowly(children, "Mass") and children_contain_property_shallowly(children, "MaxMass"):
-					max_mass_to_max_inventory_mass(children)
+			for section in value:
+				for token in section:
+					if token["type"] == "children":
+						children = token["value"]
 
-				# TODO: Uncomment this!!!
-				# for line_data in children:
-				# 	replace_property_and_value(line_data, "MinThrottleRange", "NegativeThrottleMultiplier", min_throttle_range_to_negative_throttle_multiplier)
-				# 	replace_property_and_value(line_data, "MaxThrottleRange", "PositiveThrottleMultiplier", max_throttle_range_to_positive_throttle_multiplier)
+						if contains_property_shallowly(children, "Mass") and contains_property_shallowly(children, "MaxMass"):
+							max_mass_to_max_inventory_mass(children)
 
-				max_length_to_offsets(children)
+						# TODO: Uncomment this!!!
+						# for line_data in children:
+						# 	replace_property_and_value(line_data, "MinThrottleRange", "NegativeThrottleMultiplier", min_throttle_range_to_negative_throttle_multiplier)
+						# 	replace_property_and_value(line_data, "MaxThrottleRange", "PositiveThrottleMultiplier", max_throttle_range_to_positive_throttle_multiplier)
+
+				if contains_property_and_value_shallowly(section, "AddActor", "Leg"):
+					for token in section:
+						if token["type"] == "children":
+							children = token["value"]
+
+							max_length_to_offsets(children)
 
 
-def children_contain_property_shallowly(children, prop):
+def contains_property_shallowly(children, prop):
 	""" This function deliberately doesn't check the section's contents recursively. """
 	return [True for line_data in children for token in line_data if token["type"] == "property" and token["value"] == prop] != []
 
 
+def contains_property_and_value_shallowly(section, prop, value):
+	contains_property = contains_value = False
+
+	for token in section:
+		if token["type"] == "property" and token["value"] == prop:
+			contains_property = True
+		if token["type"] == "value" and token["value"] == value:
+			contains_value = True
+
+	return contains_property and contains_value
+
+
 def max_mass_to_max_inventory_mass(children):
 	""" MaxInventoryMass = MaxMass - Mass """
+
 	# TODO: Find a way to split these into subfunctions.
 	for line_data in children:
 		for token in line_data:
@@ -115,6 +137,7 @@ def max_throttle_range_to_positive_throttle_multiplier(line_data):
 
 def max_length_to_offsets(children):
 	"""
+	If the parent line is AddActor = Leg:
 	MaxLength = old_value
 	->
 	ContractedOffset = Vector
@@ -124,6 +147,7 @@ def max_length_to_offsets(children):
 		X = old_value
 		Y = 0
 	"""
+
 	for index, line_data in enumerate(children):
 		old_value = max_length_to_offsets_2(line_data)
 
@@ -131,26 +155,21 @@ def max_length_to_offsets(children):
 			# print(index, old_value)
 
 			children.insert(index + 1, [
-				{
-					"type": "property", "value": "ExtendedOffset"
-				},
-				{
-					"type": "value", "value": "Vector"
-				},
-				{
-					"type": "children", "value": [
-						[
-							{ "type": "property", "value": "X" },
-							{ "type": "extra", "value": " "}, {"type": "extra", "value": "="}, {"type": "extra", "value": " "},
-							{ "type": "value", "value": remove_excess_zeroes(old_value) }
-						],
-						[
-							{ "type": "property", "value": "Y" },
-							{ "type": "extra", "value": " "}, {"type": "extra", "value": "="}, {"type": "extra", "value": " "},
-							{ "type": "value", "value": remove_excess_zeroes(0) }
-						]
+				{ "type": "property", "value": "ExtendedOffset" },
+				{ "type": "extra", "value": " "}, {"type": "extra", "value": "="}, {"type": "extra", "value": " "},
+				{ "type": "value", "value": "Vector" },
+				{ "type": "children", "value": [
+					[
+						{ "type": "property", "value": "X" },
+						{ "type": "extra", "value": " "}, {"type": "extra", "value": "="}, {"type": "extra", "value": " "},
+						{ "type": "value", "value": remove_excess_zeroes(old_value) }
+					],
+					[
+						{ "type": "property", "value": "Y" },
+						{ "type": "extra", "value": " "}, {"type": "extra", "value": "="}, {"type": "extra", "value": " "},
+						{ "type": "value", "value": remove_excess_zeroes(0) }
 					]
-				}
+				]}
 			])
 
 
