@@ -3,31 +3,56 @@ import re
 from Python import warnings
 
 
-def regex_replace(all_lines):
-	all_lines = replace_without_using_matches(all_lines, "Framerate = (.*)", "SpriteAnimMode = 7")
-	all_lines = replace_without_using_matches(all_lines, "\tPlayerCount = (.*)\n", "")
-	all_lines = replace_without_using_matches(all_lines, "\tTeamCount = (.*)\n", "")
-	
-	all_lines = replace_using_matches(all_lines, "ModuleName = (.*) Tech\n", "ModuleName = {}\n\tIsFaction = 1\n")
-	all_lines = replace_using_matches(all_lines, "FundsOfTeam(.*) =", "Team{}Funds =")
-	all_lines = replace_using_matches(all_lines, "[bB]ase\.rte(.*?)\.wav", "Base.rte{}.flac")
+# TODO: Remove this function once PlaySound is automatically converted.
+def playsound_warning(line, file_path, line_number):
+	pattern = "PlaySound(.*)" # TODO: PlaySound rule should probably be [whitespacehere]PlaySound so it doesn't false-flag on something like CF_PlaySound.
+	message = "No longer supported. Create a SoundContainer with CreateSoundContainer in the appropriate Create function."
+	matches = re.findall(pattern, line)
 
-	all_lines = special_replace_using_matches(all_lines, regex_replace_particle, "ParticleNumberToAdd = (.*)\n\tAddParticles = (.*)\n\t\tCopyOf = (.*)\n", "AddGib = Gib\n\t\tGibParticle = {}\n\t\t\tCopyOf = {}\n\t\tCount = {}\n", dotall=False)
+	# print(file_path, pattern, line, matches)
+
+	if len(matches) > 0 and matches[0].count(",") > 2: # If there's a match and the PlaySound call has more than 3 arguments.
+		# Print a warning.
+		warnings.mods_warnings.append("'{}' line {}: {} -> {}".format(file_path, line_number, pattern, message))
+
+
+def regex_replace(all_lines):
+	all_lines = replace_without_using_match(all_lines, "Framerate = (.*)", "SpriteAnimMode = 7")
+	all_lines = replace_without_using_match(all_lines, "\tPlayerCount = (.*)\n", "")
+	all_lines = replace_without_using_match(all_lines, "\tTeamCount = (.*)\n", "")
+	
+	all_lines = replace_using_match(all_lines, "ModuleName = (.*) Tech\n", "ModuleName = {}\n\tIsFaction = 1\n")
+	all_lines = replace_using_match(all_lines, "FundsOfTeam(.*) =", "Team{}Funds =")
+	all_lines = replace_using_match(all_lines, "[bB]ase\.rte(.*?)\.wav", "Base.rte{}.flac")
+
+	all_lines = special_replace_using_matches(all_lines, regex_replace_particle,
+		"ParticleNumberToAdd = (.*)" \
+		"\n\tAddParticles = (.*)" \
+		"\n\t\tCopyOf = (.*)" \
+		"\n",
+		"AddGib = Gib" \
+		"\n\t\tGibParticle = {}" \
+		"\n\t\t\tCopyOf = {}" \
+		"\n\t\tCount = {}" \
+		"\n",
+		dotall=False
+	)
 	all_lines = special_replace_using_matches(all_lines, regex_replace_sound_priority, "SoundContainer(((?!SoundContainer).)*)Priority", "SoundContainer{}// Priority", dotall=True)
+
 	# all_lines = special_replace_using_matches(all_lines, regex_replace_sound_priority, "AddSound(((?! AddSound).)*)Priority", "AddSound{}// Priority", dotall=True)
 	# all_lines = special_replace_using_matches(all_lines, regex_replace_playsound, "", "", dotall=False)
 
 	return all_lines
 
 
-def replace_without_using_matches(all_lines, pattern, replacement):
+def replace_without_using_match(all_lines, pattern, replacement):
 	matches = re.findall(pattern, all_lines)
 	if len(matches) > 0:
 		return re.sub(pattern, replacement, all_lines)
 	return all_lines
 
 
-def replace_using_matches(all_lines, pattern, replacement):
+def replace_using_match(all_lines, pattern, replacement):
 	matches = re.findall(pattern, all_lines)
 	if len(matches) > 0:
 		return re.sub(pattern, replacement, all_lines).format(*matches)
@@ -107,16 +132,3 @@ def regex_replace_sound_priority(all_lines, pattern, replacement, matches):
 # 		new += [filler1, mass, filler2, max_inventory_mass]
 
 # 	return new
-
-
-# TODO: Remove this function when PlaySound is automatically replaced.
-def playsound_warning(line, file_path, line_number):
-	pattern = "PlaySound(.*)" # TODO: PlaySound rule should probably be [whitespacehere]PlaySound so it doesn't false-flag on something like CF_PlaySound.
-	message = "No longer supported. Create a SoundContainer with CreateSoundContainer in the appropriate Create function."
-	matches = re.findall(pattern, line)
-
-	# print(file_path, pattern, line, matches)
-
-	if len(matches) > 0 and matches[0].count(",") > 2: # If there's a match and the PlaySound call has more than 3 arguments.
-		# Print a warning.
-		warnings.mods_warnings.append("'{}' line {}: {} -> {}".format(file_path, line_number, pattern, message))

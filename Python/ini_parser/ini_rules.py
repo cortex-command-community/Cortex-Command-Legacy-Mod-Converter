@@ -1,4 +1,4 @@
-import pprint, math
+import pprint
 
 
 """
@@ -46,8 +46,8 @@ def apply_rules(parsed_subset):
 
 				# TODO: Uncomment this!!!
 				# for line_data in children:
-				# 	min_throttle_range_to_negative_throttle_multiplier(line_data)
-				# 	max_throttle_range_to_positive_throttle_multiplier(line_data)
+				# 	replace_property_and_value(line_data, "MinThrottleRange", "NegativeThrottleMultiplier", min_throttle_range_to_negative_throttle_multiplier)
+				# 	replace_property_and_value(line_data, "MaxThrottleRange", "PositiveThrottleMultiplier", max_throttle_range_to_positive_throttle_multiplier)
 
 
 def children_contain_property_shallowly(children, prop):
@@ -90,30 +90,25 @@ def remove_excess_zeroes(string):
 	return f"{string:g}"
 
 
-def min_throttle_range_to_negative_throttle_multiplier(line_data):
-	""" NegativeThrottleMultiplier = 1 - abs(MinThrottleRange) """
+def replace_property_and_value(line_data, old_property, new_property, value_function):
 	for token in line_data:
 		if token["type"] == "property":
-			if token["value"] == "MinThrottleRange":
-				token["value"] = "NegativeThrottleMultiplier"
+			if token["value"] == old_property:
+				token["value"] = new_property
 				for token_2 in line_data:
 					if token_2["type"] == "value":
-						new_value = 1 - abs(float(token_2["value"]))
-						token_2["value"] = remove_excess_zeroes(new_value)
+						token_2["value"] = value_function(token_2["value"])
 						return
+
+
+def min_throttle_range_to_negative_throttle_multiplier(old_value):
+	new_value = abs(1 - abs(float(token_2["value"])))
+	return remove_excess_zeroes(new_value)
 
 
 def max_throttle_range_to_positive_throttle_multiplier(line_data):
-	""" PositiveThrottleMultiplier = 1 + abs(MaxThrottleRange) """
-	for token in line_data:
-		if token["type"] == "property":
-			if token["value"] == "MaxThrottleRange":
-				token["value"] = "PositiveThrottleMultiplier"
-				for token_2 in line_data:
-					if token_2["type"] == "value":
-						new_value = 1 + abs(float(token_2["value"]))
-						token_2["value"] = remove_excess_zeroes(new_value)
-						return
+	new_value = abs(1 + abs(float(token_2["value"])))
+	return remove_excess_zeroes(new_value)
 
 
 def duplicate_script_path(parsed_subset):

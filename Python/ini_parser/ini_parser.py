@@ -4,6 +4,7 @@ from pathlib import Path
 from enum import Enum, auto
 
 from Python.ini_parser import ini_rules
+from Python.ini_parser import ini_writer
 
 
 class State(Enum):
@@ -19,10 +20,10 @@ def parse_and_convert(input_folder_path, output_folder_path):
 	parsed = parse(output_folder_path, mod_names)
 	# pprint.pprint(parsed)
 
-	convert(parsed)
+	ini_rules.apply_rules(parsed)
 	# pprint.pprint(parsed)
 
-	write_converted_ini_recursively(parsed, Path(output_folder_path))
+	ini_writer.write_converted_ini_recursively(parsed, Path(output_folder_path))
 
 
 def get_mod_names(input_folder_path):
@@ -215,44 +216,5 @@ def append_token(typ, passed_str, line_data, debug):
 	# Transforms "\t Mass  " to ['\t ', 'Mass', '  '] and appends all of the tokens.
 	# TODO: Combine tokens of the same type, like [{'type': 'extra', 'value': ' '}, {'type': 'extra', 'value': '//'}]
 	for string in re.findall(r"\S+|\s+", passed_str):
-		token = { "type": "extra" if string.isspace() else typ, "value": string }
+		token = { "type": "extra" if string.isspace() else typ, "value": string.split("\t")[-1] }
 		line_data.append(token)
-
-
-####
-
-
-def convert(parsed):
-	ini_rules.apply_rules(parsed)
-
-
-####
-
-
-def write_converted_ini_recursively(parsed_portion, output_folder_path):
-	# pprint.pprint(parsed_portion)
-	for name, dict_or_list in parsed_portion.items():
-		if isinstance(dict_or_list, dict): # If dict_or_list contains a dictionary of more filenames.
-			write_converted_ini_recursively(dict_or_list, output_folder_path / name)
-		else: # If dict_or_list contains a list of the lines of a file.
-			# pprint.pprint(dict_or_list)
-			with open(str(output_folder_path / name), mode="w") as f:
-				lines = []
-				for section in dict_or_list:
-					get_lines_from_dicts_recursively(section, lines)
-				f.write("\n".join(lines))
-
-
-def get_lines_from_dicts_recursively(line_data, lines):
-	# This function loops twice through line_data so the lines can be appended in the correct order.
-
-	line = ""
-	for dictionary in line_data:
-		if dictionary["type"] != "children":
-			line += dictionary["value"]
-	lines.append(line)
-
-	for dictionary in line_data:
-		if dictionary["type"] == "children":
-			for line_data in dictionary["value"]:
-				get_lines_from_dicts_recursively(line_data, lines)

@@ -46,7 +46,7 @@ def convert():
 		playsound(utils.resource_path("Media/finish.wav"), block=(platform.system()=='Linux'))
 
 	elapsed = math.floor(time.time() - time_start)
-	print(f"Finished in {elapsed} {pluralize('second', elapsed)}")
+	print(f"Finished in {elapsed} {pluralize('second', elapsed)}.")
 
 	warnings.show_popup_if_necessary()
 
