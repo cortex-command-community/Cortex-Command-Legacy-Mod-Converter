@@ -80,23 +80,23 @@ def parse_file_recursively(parsed_portion, f, depth_tab_count=0):
 
 		line_data, multiline = get_line_data(line, multiline)
 		# print(line_data)
-		# return # TODO: Remove this!
 
 		if tab_count == depth_tab_count:
 			parsed_portion.append(line_data)
 		elif tab_count == depth_tab_count + 1:
-			a = parsed_portion[-1]
-			a.append( { "type": "children", "value": [] } )
-			b = a[-1]["value"]
-			b.append(line_data)
+			last_appended_line_data = parsed_portion[-1]
+			last_appended_line_data.append( { "type": "children", "value": [ line_data ] } )
 
-			child_values = parse_file_recursively(b, f, depth_tab_count+1)
-			if child_values != None and child_values["tab_count"] == depth_tab_count:
-				parsed_portion.append(child_values["line_data"])
+			child_line_data = last_appended_line_data[-1]["value"]
+			child_return_values = parse_file_recursively(child_line_data, f, depth_tab_count+1)
+
+			if child_return_values != None and child_return_values["tab_count"] == depth_tab_count:
+				parsed_portion.append(child_return_values["line_data"])
 			else:
-				return child_values
+				return child_return_values
 		elif tab_count < depth_tab_count:
-			return { "line_data": line_data, "tab_count": tab_count }
+			child_return_values = { "line_data": line_data, "tab_count": tab_count }
+			return child_return_values
 
 
 def get_tab_count(depth_tab_count, multiline, line):
