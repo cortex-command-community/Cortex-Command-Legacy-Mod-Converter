@@ -82,7 +82,16 @@ def parse_file_recursively(parsed_portion, f, depth_tab_count=0):
 		if tab_count == depth_tab_count:
 			parsed_portion.append(line_data)
 		elif tab_count == depth_tab_count + 1:
+			if parsed_portion == []:
+				raise TabError(
+					f"Tab error in file\n" \
+					f"'{f.name}'\n" \
+					f"on line\n" \
+					f"'{line}'"
+				)
+
 			previous_appended_line_data = parsed_portion[-1]
+
 			previous_appended_line_data.append( { "type": "children", "value": [ line_data ] } )
 
 			child_line_data = previous_appended_line_data[-1]["value"]
