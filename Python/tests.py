@@ -11,6 +11,7 @@ def run():
 def single_line_tests():
 	ini_parser_get_line_data("a = b", 0, [{'type': 'property', 'value': 'a'}, {'type': 'extra', 'value': ' '}, {'type': 'extra', 'value': '='}, {'type': 'extra', 'value': ' '}, {'type': 'value', 'value': 'b'}])
 	ini_parser_get_line_data("// a = b", 0, [{'type': 'extra', 'value': '//'}, {'type': 'extra', 'value': ' '}, {'type': 'extra', 'value': 'a'}, {'type': 'extra', 'value': ' '}, {'type': 'extra', 'value': '='}, {'type': 'extra', 'value': ' '}, {'type': 'extra', 'value': 'b'}])
+	ini_parser_get_line_data("c// a = b", 0, [{'type': 'property', 'value': 'c'}, {'type': 'extra', 'value': '//'}, {'type': 'extra', 'value': ' '}, {'type': 'extra', 'value': 'a'}, {'type': 'extra', 'value': ' '}, {'type': 'extra', 'value': '='}, {'type': 'extra', 'value': ' '}, {'type': 'extra', 'value': 'b'}])
 	ini_parser_get_line_data("a = b //", 0, [{'type': 'property', 'value': 'a'}, {'type': 'extra', 'value': ' '}, {'type': 'extra', 'value': '='}, {'type': 'extra', 'value': ' '}, {'type': 'value', 'value': 'b'}, {'type': 'extra', 'value': ' '}, {'type': 'extra', 'value': '//'}])
 	ini_parser_get_line_data(" // a = b", 0, [{'type': 'extra', 'value': ' '}, {'type': 'extra', 'value': '//'}, {'type': 'extra', 'value': ' '}, {'type': 'extra', 'value': 'a'}, {'type': 'extra', 'value': ' '}, {'type': 'extra', 'value': '='}, {'type': 'extra', 'value': ' '}, {'type': 'extra', 'value': 'b'}])
 	ini_parser_get_line_data("a = b // ", 0, [{'type': 'property', 'value': 'a'}, {'type': 'extra', 'value': ' '}, {'type': 'extra', 'value': '='}, {'type': 'extra', 'value': ' '}, {'type': 'value', 'value': 'b'}, {'type': 'extra', 'value': ' '}, {'type': 'extra', 'value': '//'}, {'type': 'extra', 'value': ' '}])
@@ -18,6 +19,8 @@ def single_line_tests():
 	ini_parser_get_line_data("/* a = b */ c = d", 0, [{'type': 'extra', 'value': '/*'}, {'type': 'extra', 'value': ' '}, {'type': 'extra', 'value': 'a'}, {'type': 'extra', 'value': ' '}, {'type': 'extra', 'value': '='}, {'type': 'extra', 'value': ' '}, {'type': 'extra', 'value': 'b'}, {'type': 'extra', 'value': ' '}, {'type': 'extra', 'value': '*/'}, {'type': 'extra', 'value': ' '}, {'type': 'property', 'value': 'c'}, {'type': 'extra', 'value': ' '}, {'type': 'extra', 'value': '='}, {'type': 'extra', 'value': ' '}, {'type': 'value', 'value': 'd'}])
 	ini_parser_get_line_data("// /*", 0, [{'type': 'extra', 'value': '//'}, {'type': 'extra', 'value': ' '}, {'type': 'extra', 'value': '/*'}])
 	ini_parser_get_line_data("foo/bar/baz", 0, [{'type': 'property', 'value': 'foo/bar/baz'}])
+	ini_parser_get_line_data("foo//bar", 0, [{'type': 'property', 'value': 'foo'}, {'type': 'extra', 'value': '//bar'}])
+	ini_parser_get_line_data("foo/*bar*/", 0, [{'type': 'property', 'value': 'foo'}, {'type': 'extra', 'value': '/*bar*/'}])
 	ini_parser_get_line_data("	 Mass  =  240 ", 0, [{'type': 'extra', 'value': ' '}, {'type': 'property', 'value': 'Mass'}, {'type': 'extra', 'value': '  '}, {'type': 'extra', 'value': '='}, {'type': 'extra', 'value': '  '}, {'type': 'value', 'value': '240'}, {'type': 'extra', 'value': ' '}])
 	# ini_parser_get_line_data("", 0, [])
 	# ini_parser_get_line_data("", 0, [])

@@ -72,7 +72,7 @@ def parse_file_recursively(parsed_portion, f, depth_tab_count=0):
 
 	global multiline
 
-	for line in f:
+	for line_number, line in enumerate(f, start=1):
 		# print(repr(line))
 		line = line.strip("\n")
 
@@ -83,12 +83,8 @@ def parse_file_recursively(parsed_portion, f, depth_tab_count=0):
 			parsed_portion.append(line_data)
 		elif tab_count == depth_tab_count + 1:
 			if parsed_portion == []:
-				raise TabError(
-					f"Tab error in file\n" \
-					f"'{f.name}'\n" \
-					f"on line\n" \
-					f"'{line}'"
-				)
+				file_path = f.name
+				raise TabError(f"\nWrong tabbing on line {line_number} in file {file_path} on line '{line}'")
 
 			previous_appended_line_data = parsed_portion[-1]
 
@@ -163,10 +159,11 @@ def get_line_data(line, depth_tab_count):
 	for char in line:
 		if comment_state in (State.INSIDE_SINGLE_COMMENT, State.INSIDE_MULTI_COMMENT, State.POSSIBLE_MULTI_ENDING):
 			value_str += char
-		elif char != "=" and not (was_prev_char_special and (char in ("/", "*"))):
+		elif char != "=":
 			value_str += char
 
-		if comment_state == State.INSIDE_SINGLE_COMMENT: # TODO: Necessary?
+		# TODO: See what happens when this check and continue are removed.
+		if comment_state == State.INSIDE_SINGLE_COMMENT:
 			continue
 
 		if counting_tabs and char.isspace():
@@ -190,14 +187,15 @@ def get_line_data(line, depth_tab_count):
 		elif comment_state == State.READ_FIRST_SLASH:
 			if char == "/":
 				comment_state = State.INSIDE_SINGLE_COMMENT
-				append_token(parsing_state, value_str, line_data, 4)
+				append_token(parsing_state, value_str[:-2], line_data, 4)
 				value_str = "//"
 			elif char == "*":
 				comment_state = State.INSIDE_MULTI_COMMENT
-				append_token(parsing_state, value_str, line_data, 5)
+				append_token(parsing_state, value_str[:-2], line_data, 5)
 				value_str = "/*"
 			else:
 				comment_state = State.NOT_IN_A_COMMENT
+				value_str[:-1] + "/" + char
 		elif comment_state == State.NOT_IN_A_COMMENT and char == "/":
 			comment_state = State.READ_FIRST_SLASH
 
@@ -216,14 +214,14 @@ def get_line_data(line, depth_tab_count):
 	return line_data, tab_count
 
 
-def append_token(typ, passed_str, line_data, debug):
+def append_token(typ, passed_str, line_data, debug_id):
 	global value_str
 	value_str = ""
 
-	# print(debug, typ)
+	# print(debug_id, typ)
 
-	# Transforms "\t Mass  " to ['\t ', 'Mass', '  '] and appends all of the tokens.
-	# TODO: Combine tokens of the same type, like [{'type': 'extra', 'value': ' '}, {'type': 'extra', 'value': '//'}]
+	# Transforms "\t Mass  " into ['\t ', 'Mass', '  '] and appends all of the tokens.
+	# TODO: Combine consecutive tokens of the same type, like [{'type': 'extra', 'value': ' '}, {'type': 'extra', 'value': '//'}]
 	for string in re.findall(r"\S+|\s+", passed_str):
 		token = { "type": "extra" if string.isspace() else typ, "value": string.split("\t")[-1] }
 		line_data.append(token)

@@ -53,8 +53,6 @@ def apply_rules(parsed_subset):
 						# 	replace_property_and_value(line_data, "MinThrottleRange", "NegativeThrottleMultiplier", min_throttle_range_to_negative_throttle_multiplier)
 						# 	replace_property_and_value(line_data, "MaxThrottleRange", "PositiveThrottleMultiplier", max_throttle_range_to_positive_throttle_multiplier)
 
-						foot_none_to_attachable(children)
-
 				if contains_property_and_value_shallowly(section, "AddActor", "Leg"):
 					for token in section:
 						if token["type"] == "children":
@@ -200,55 +198,6 @@ def max_length_to_offsets_2(line_data):
 						] } )
 
 						return old_value
-
-
-def foot_none_to_attachable(children):
-	"""
-	Foot = None
-	->
-	Foot = Attachable
-		CopyOf = Null Foot
-		ParentOffset = Vector
-			X = 0
-			Y = 0
-	"""
-	for line_data in children:
-		for token in line_data:
-			if token["type"] == "property":
-				if token["value"] == "Foot":
-					for token_2 in line_data:
-						if token_2["type"] == "value":
-							foot_type = token_2["value"]
-
-							if foot_type == "None":
-								token_2["value"] = "Attachable"
-
-								line_data.append( { "type": "children", "value": [
-									[
-										{ "type": "property", "value": "CopyOf" },
-										{ "type": "extra", "value": " "}, {"type": "extra", "value": "="}, {"type": "extra", "value": " "},
-										{ "type": "value", "value": "Null Foot" }
-									],
-									[
-										{ "type": "property", "value": "ParentOffset" },
-										{ "type": "extra", "value": " "}, {"type": "extra", "value": "="}, {"type": "extra", "value": " "},
-										{ "type": "value", "value": "Vector" },
-										{ "type": "children", "value": [
-											[
-												{ "type": "property", "value": "X" },
-												{ "type": "extra", "value": " "}, {"type": "extra", "value": "="}, {"type": "extra", "value": " "},
-												{ "type": "value", "value": "0" }
-											],
-											[
-												{ "type": "property", "value": "Y" },
-												{ "type": "extra", "value": " "}, {"type": "extra", "value": "="}, {"type": "extra", "value": " "},
-												{ "type": "value", "value": "0" }
-											]
-										]}
-									]
-								] } )
-
-								return
 
 
 def duplicate_script_path(parsed_subset):

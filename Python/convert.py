@@ -12,6 +12,7 @@ from Python import warnings
 from Python.case_check import case_check
 from Python import utils
 from Python.ini_parser import ini_parser
+from Python.lua_parser import lua_parser
 
 
 conversion_rules = {} # TODO: Move this.
@@ -98,12 +99,12 @@ def process_files(input_subfiles, input_subfolder_path, output_subfolder, input_
 			continue
 
 		if file_extension in (".ini", ".lua"):
-			create_converted_file(input_file_path, output_file_path, input_folder_path)
+			create_converted_file(input_file_path, output_file_path, input_folder_path, file_extension)
 		elif not bmp_to_png.is_bmp(full_filename):
 			shutil.copyfile(input_file_path, output_file_path)
 
 
-def create_converted_file(input_file_path, output_file_path, input_folder_path):
+def create_converted_file(input_file_path, output_file_path, input_folder_path, file_extension):
 	# try: # TODO: Figure out why this try/except is necessary and why it doesn't check for an error type.
 	with open(input_file_path, "r", errors="ignore") as file_in: # TODO: Why ignore errors?
 		with open(output_file_path, "w") as file_out:
@@ -115,6 +116,8 @@ def create_converted_file(input_file_path, output_file_path, input_folder_path):
 				line_number += 1
 
 				line = bmp_to_png.change_bmp_to_png_name(line)
+
+				# line = lua_parser.convert(line)
 
 				regex_rules.playsound_warning(line, file_path, line_number)
 
