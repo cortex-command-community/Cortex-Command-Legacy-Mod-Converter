@@ -3,6 +3,4 @@
 	"CollidesWithTerrainWhileAttached": "Attachable terrain collisions will now propagate to any child Attachables on them. This means that Attachables will not collide with terrain, even if set to, if they're attached to a parent that doesn't collide with terrain.\nThis means that the attachable.CollidesWithTerrainWhileAttached value may not represent the true state of things, you should instead use attachable.CanCollideWithTerrain to determine whether a given Attachable can collide with terrain.",
 	"MaxMass": "The Actor property MaxMass now no longer includes the Mass of the Actor, and has been renamed to MaxInventoryMass for clarity. In mods, this is most important for ACraft, which will now need their total Mass subtracted from the old value.",
 	"": "",
-	"": "",
-	"": "",
 }

@@ -11,8 +11,8 @@ from Python import bmp_to_png
 from Python import warnings
 from Python.case_check import case_check
 from Python import utils
-from Python.ini_parser import ini_parser
-from Python.lua_parser import lua_parser
+from Python.ini_converting import ini_parser
+from Python.lua_converting import lua_parser
 
 
 conversion_rules = {} # TODO: Move this.

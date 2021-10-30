@@ -8,14 +8,14 @@ def write_converted_ini_recursively(parsed_portion, output_folder_path):
 			with open(str(output_folder_path / name), mode="w") as f:
 				lines = []
 				for section in dict_or_list:
-					get_lines_from_dicts_recursively(section, lines, 0)
+					get_lines_from_dicts_recursively(section, lines)
 				f.write("\n".join(lines))
 
 
-def get_lines_from_dicts_recursively(line_data, lines, depth_tab_count):
+def get_lines_from_dicts_recursively(line_data, lines):
 	# This function loops twice through line_data so the lines can be appended in the correct order.
 
-	line = depth_tab_count * "\t"
+	line = ""
 	for dictionary in line_data:
 		if dictionary["type"] != "children":
 			line += dictionary["value"]
@@ -24,4 +24,4 @@ def get_lines_from_dicts_recursively(line_data, lines, depth_tab_count):
 	for dictionary in line_data:
 		if dictionary["type"] == "children":
 			for line_data in dictionary["value"]:
-				get_lines_from_dicts_recursively(line_data, lines, depth_tab_count+1)
+				get_lines_from_dicts_recursively(line_data, lines)

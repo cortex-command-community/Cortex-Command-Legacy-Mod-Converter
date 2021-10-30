@@ -3,8 +3,8 @@ import pprint
 from pathlib import Path
 from enum import Enum, auto
 
-from Python.ini_parser import ini_rules
-from Python.ini_parser import ini_writer
+from Python.ini_converting import ini_rules
+from Python.ini_converting import ini_writer
 
 
 class State(Enum):
@@ -20,7 +20,7 @@ def parse_and_convert(input_folder_path, output_folder_path):
 	parsed = parse(output_folder_path, mod_names)
 	# pprint.pprint(parsed)
 
-	ini_rules.apply_rules(parsed)
+	ini_rules.apply_rules_on_parsed(parsed)
 	# pprint.pprint(parsed)
 
 	ini_writer.write_converted_ini_recursively(parsed, Path(output_folder_path))
@@ -61,7 +61,7 @@ def parse_file(file_path):
 
 
 # This global variable is necessary due to how a deep function call needs to be able to also change this variable for the less deep function calls.
-# Passing it as a function argument makes a copy of the boolean instead of being a reference to the original variable.
+# Passing it as a function argument would copy it by value instead of by reference.
 multiline = False
 
 def parse_file_recursively(parsed_portion, f, depth_tab_count=0):
@@ -91,6 +91,7 @@ def parse_file_recursively(parsed_portion, f, depth_tab_count=0):
 			previous_appended_line_data.append( { "type": "children", "value": [ line_data ] } )
 
 			child_line_data = previous_appended_line_data[-1]["value"]
+
 			child_return_values = parse_file_recursively(child_line_data, f, depth_tab_count+1)
 
 			if child_return_values != None and child_return_values["tab_count"] == depth_tab_count:
@@ -145,18 +146,20 @@ def get_line_data(line, depth_tab_count):
 	line_data = []
 
 	seen_equals = False
-	was_prev_char_special = True # "special" meaning whitespace, / or *
 
 	comment_state = State.INSIDE_MULTI_COMMENT if multiline else State.NOT_IN_A_COMMENT
 
 	# parsing_state = "property" # TODO: Can this be used instead?
 	parsing_state = "extra" if multiline else "property"
 
+	# print(line, multiline)
 	tab_count = depth_tab_count if multiline else 0
+	# print(line, tab_count)
 	counting_tabs = not multiline
 
 	# print(repr(line))
 	for char in line:
+		# TODO: Get rid of this if and elif statement.
 		if comment_state in (State.INSIDE_SINGLE_COMMENT, State.INSIDE_MULTI_COMMENT, State.POSSIBLE_MULTI_ENDING):
 			value_str += char
 		elif char != "=":
@@ -166,9 +169,11 @@ def get_line_data(line, depth_tab_count):
 		if comment_state == State.INSIDE_SINGLE_COMMENT:
 			continue
 
+		# The reason to first check isspace() is so the else statement isn't entered when char == " ".
 		if counting_tabs and char.isspace():
 			if char == "\t":
 				tab_count += 1
+				# print(line)
 		else:
 			counting_tabs = False
 
@@ -182,6 +187,8 @@ def get_line_data(line, depth_tab_count):
 		if comment_state == State.POSSIBLE_MULTI_ENDING and char == "/":
 			comment_state = State.NOT_IN_A_COMMENT
 			append_token("extra", value_str, line_data, 3)
+			counting_tabs = True
+			tab_count = 0
 		elif comment_state == State.INSIDE_MULTI_COMMENT and char == "*":
 			comment_state = State.POSSIBLE_MULTI_ENDING
 		elif comment_state == State.READ_FIRST_SLASH:
@@ -199,8 +206,6 @@ def get_line_data(line, depth_tab_count):
 		elif comment_state == State.NOT_IN_A_COMMENT and char == "/":
 			comment_state = State.READ_FIRST_SLASH
 
-		was_prev_char_special = char.isspace() or char in ("/", "*")
-
 	if comment_state in (State.INSIDE_SINGLE_COMMENT, State.INSIDE_MULTI_COMMENT):
 		append_token("extra", value_str, line_data, 6)
 	else:
@@ -208,9 +213,11 @@ def get_line_data(line, depth_tab_count):
 
 	multiline = comment_state == State.INSIDE_MULTI_COMMENT
 
-	if parsing_state != "value": # If no = sign was encountered then the entire line was a comment.
+	# This prevents a single/multi-line comment becoming the parent of a regular next line.
+	if parsing_state != "value":
 		tab_count = depth_tab_count
 
+	# print(line_data, tab_count)
 	return line_data, tab_count
 
 
@@ -223,5 +230,10 @@ def append_token(typ, passed_str, line_data, debug_id):
 	# Transforms "\t Mass  " into ['\t ', 'Mass', '  '] and appends all of the tokens.
 	# TODO: Combine consecutive tokens of the same type, like [{'type': 'extra', 'value': ' '}, {'type': 'extra', 'value': '//'}]
 	for string in re.findall(r"\S+|\s+", passed_str):
-		token = { "type": "extra" if string.isspace() else typ, "value": string.split("\t")[-1] }
+		used_type = "extra" if string.isspace() else typ
+
+		# TODO: Is this .split() with [-1] correct when passed_string is "\t \t"? 
+		# token = { "type": "extra" if string.isspace() else typ, "value": string.split("\t")[-1] }
+
+		token = { "type": used_type, "value": string }
 		line_data.append(token)

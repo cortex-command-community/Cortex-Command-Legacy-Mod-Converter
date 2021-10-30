@@ -15,5 +15,4 @@ if __name__ == '__main__':
 		tests.run()
 		gui.run_window(gui.init_window())
 	except Exception as e:
-		tb = traceback.format_exc()
-		sg.popup_error("AN EXCEPTION OCCURRED!\n\nYou should make a screenshot of this and either make a GitHub issue for this by clicking the GitHub icon in this program, or you can send it to MyNameIsTrez#1585 on Discord.\n" + "_" * 60, e, tb, title="AN EXCEPTION OCCURRED!")
+		sg.popup_error("AN EXCEPTION OCCURRED!\n\nYou should make a screenshot of this and either make a GitHub issue for this by clicking the GitHub icon in this program, or you can send it to MyNameIsTrez#1585 on Discord.\n" + "_" * 60, traceback.format_exc(), title="AN EXCEPTION OCCURRED!")
