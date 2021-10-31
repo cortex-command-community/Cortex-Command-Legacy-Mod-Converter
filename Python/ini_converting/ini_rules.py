@@ -52,7 +52,7 @@ def apply_rules_on_sections(parsed_subset):
 				children = token["value"]
 
 				# TODO: Remove contains_property_shallowly() and write out what they do in this function
-				if contains_property_shallowly(children, "Mass") and contains_property_shallowly(children, "MaxMass"):
+				if contains_property_shallowly(children, "MaxMass"):
 					max_mass_to_max_inventory_mass(children)
 
 				iconfile_path = iconfile_path_to_thumbnail_generator(children)
@@ -91,6 +91,8 @@ def contains_property_and_value_shallowly(section, prop, value):
 def max_mass_to_max_inventory_mass(children):
 	""" MaxInventoryMass = MaxMass - Mass """
 
+	mass = 0 # The Mass is optionally defined in the INI file.
+
 	# TODO: Find a way to split these into subfunctions.
 	for line_data in children:
 		for token in line_data:
@@ -107,7 +109,7 @@ def max_mass_to_max_inventory_mass(children):
 							max_mass = float(token_2["value"])
 							break
 
-	max_inventory_mass = remove_excess_zeroes(max_mass - mass)
+	max_inventory_mass = remove_excess_zeros(max_mass - mass)
 
 	for line_data in children:
 		for token in line_data:
@@ -120,7 +122,7 @@ def max_mass_to_max_inventory_mass(children):
 							return
 
 
-def remove_excess_zeroes(string):
+def remove_excess_zeros(string):
 	return f"{string:g}"
 
 
@@ -137,14 +139,15 @@ def replace_property_and_value(line_data, old_property, new_property, new_value_
 
 def min_throttle_range_to_negative_throttle_multiplier(old_value):
 	new_value = abs(1 - abs(float(old_value)))
-	return remove_excess_zeroes(new_value)
+	return remove_excess_zeros(new_value)
 
 
 def max_throttle_range_to_positive_throttle_multiplier(old_value):
 	new_value = abs(1 + abs(float(old_value)))
-	return remove_excess_zeroes(new_value)
+	return remove_excess_zeros(new_value)
 
 
+# TODO: Refactor max_length_to_offsets and max_length_to_offsets_2
 def max_length_to_offsets(children):
 	"""
 	If the parent line is AddActor = Leg:
@@ -165,23 +168,25 @@ def max_length_to_offsets(children):
 			# print(index, old_value)
 
 			children.insert(index + 1, [
+				{ "type": "extra", "value": "\t" },
 				{ "type": "property", "value": "ExtendedOffset" },
 				{ "type": "extra", "value": " "}, {"type": "extra", "value": "="}, {"type": "extra", "value": " "},
 				{ "type": "value", "value": "Vector" },
 				{ "type": "children", "value": [
 					[
+						{ "type": "extra", "value": "\t\t" },
 						{ "type": "property", "value": "X" },
 						{ "type": "extra", "value": " "}, {"type": "extra", "value": "="}, {"type": "extra", "value": " "},
-						{ "type": "value", "value": remove_excess_zeroes(old_value) }
+						{ "type": "value", "value": remove_excess_zeros(old_value) }
 					],
 					[
+						{ "type": "extra", "value": "\t\t" },
 						{ "type": "property", "value": "Y" },
 						{ "type": "extra", "value": " "}, {"type": "extra", "value": "="}, {"type": "extra", "value": " "},
-						{ "type": "value", "value": remove_excess_zeroes(0) }
+						{ "type": "value", "value": remove_excess_zeros(0) }
 					]
 				]}
 			])
-
 
 
 def max_length_to_offsets_2(line_data):
@@ -197,14 +202,16 @@ def max_length_to_offsets_2(line_data):
 
 						line_data.append( { "type": "children", "value": [
 							[
+								{ "type": "extra", "value": "\t\t" },
 								{ "type": "property", "value": "X" },
 								{ "type": "extra", "value": " "}, {"type": "extra", "value": "="}, {"type": "extra", "value": " "},
-								{ "type": "value", "value": remove_excess_zeroes(old_value / 2) }
+								{ "type": "value", "value": remove_excess_zeros(old_value / 2) }
 							],
 							[
+								{ "type": "extra", "value": "\t\t" },
 								{ "type": "property", "value": "Y" },
 								{ "type": "extra", "value": " "}, {"type": "extra", "value": "="}, {"type": "extra", "value": " "},
-								{ "type": "value", "value": remove_excess_zeroes(0) }
+								{ "type": "value", "value": remove_excess_zeros(0) }
 							]
 						] } )
 
