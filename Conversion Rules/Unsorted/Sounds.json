@@ -78,7 +78,7 @@
 	"Base.rte/Actors/MetalRicochet2.wav": "Base.rte/Sounds/Penetration/MetalRicochet2.flac",
 	"Ronin.rte/Effects/Sounds/Spas12Fire.wav": "Ronin.rte/Devices/Weapons/SPAS12/Sounds/Fire1.flac",
 	"Techion.rte/Effects/Sounds/GigaPulsarSpin.wav": "Techion.rte/Devices/Weapons/GigaPulsar/Sounds/SpinSound.flac",
-	"Base.rte/Devices/RemoteExplosiveDetonate.wav": "Base.rte/Devices/Explosives/RemoteExplosive/Sounds/RemoteExplosiveDetonate.flac",
+	"Base.rte/Devices/RemoteExplosiveDetonate.wav": "Base.rte/Sounds/Devices/BeepShort.flac",
 	"Imperatus.rte/Effects/Sounds/BullpupFire1.wav": "Imperatus.rte/Devices/Weapons/Bullpup/Sounds/Fire1.flac",
 	"Imperatus.rte/Effects/Sounds/BullpupFire2.wav": "Imperatus.rte/Devices/Weapons/Bullpup/Sounds/Fire2.flac",
 	"Imperatus.rte/Effects/Sounds/BullpupFire3.wav": "Imperatus.rte/Devices/Weapons/Bullpup/Sounds/Fire3.flac",
