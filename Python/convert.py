@@ -85,7 +85,7 @@ def process_files(input_subfiles, input_subfolder_path, output_subfolder, input_
 
 		input_file_path = os.path.join(input_subfolder_path, full_filename)
 
-		output_file_path = os.path.join(output_subfolder, full_filename)
+		output_file_path = os.path.join(output_subfolder, filename + "." + file_extension)
 
 		if bmp_to_png.is_bmp(full_filename):
 			if not cfg.sg.user_settings_get_entry("skip_conversion"):
