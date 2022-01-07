@@ -32,6 +32,9 @@ What this line of JSON says is that whenever the thing on the left is encountere
 ## How to add your own conversion rules
 Follow [this tutorial on fixing CCCP crashes and errors with Fork](https://github.com/cortex-command-community/Cortex-Command-Legacy-Mod-Converter/wiki/Fixing-CCCP-crashes-and-errors-with-Fork).
 
+## If you want to run the latest version of the converter
+Clone or download this repository, run `pip install -r requirements.txt` and then run `python main.py`. Python version 3.10.1 or newer is recommended.
+
 ## Contributing
 Feel free to submit `Pull Requests` or `Issues` on this GitHub project for any additional cases that you'd like to have supported.
 
