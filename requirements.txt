@@ -1,5 +1,5 @@
 PySimpleGUI
-playsound
+playsound==1.2.2 # playsound() has an error in the current latest version, 1.3.0: https://stackoverflow.com/a/69398568/13279557
 pyinstaller
 Pillow
-# python3 needs sudo apt-get install python3-tk
+# python3 may need sudo apt-get install python3-tk # TODO: Check if this comment is still relevant
