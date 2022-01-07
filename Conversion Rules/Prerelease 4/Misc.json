@@ -26,5 +26,6 @@
 	":IsDrawnAfterParent()": ".DrawnAfterParent",
 	"CollidesWithTerrainWhenAttached": "CollidesWithTerrainWhileAttached",
 	"Robot Crouch Path": "Human Crouch Path",
-	"\tPath =": "\tFilePath ="
+	"\tPath =": "\tFilePath =",
+	"10 Gold Brick": "10oz Gold Brick"
 }
