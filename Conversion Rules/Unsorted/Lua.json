@@ -18,5 +18,5 @@
 	"Base.rte/Actors/Medic Drone/Medic.lua": "Base.rte/Actors/Mecha/Medic/Medic.lua",
 	"Base.rte/Scripts/TrajectoryGuide.lua": "Base.rte/Devices/Shared/Scripts/TrajectoryGuide.lua",
 	"Coalition.rte/Devices/Weapons/Burst.lua": "Base.rte/Devices/Shared/Scripts/BurstFire.lua",
-	"Base.rte/Scripts/NoCasualty.lua": "Base.rte/Scripts/Shared/NoCasualty.lua",
+	"Base.rte/Scripts/NoCasualty.lua": "Base.rte/Scripts/Shared/NoCasualty.lua"
 }

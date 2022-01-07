@@ -1,6 +1,5 @@
 {
 	"Base.rte/Actors/Rockets/HatchOpen.wav": "Base.rte/Sounds/Craft/HatchOpen1.flac",
 	"Base.rte/Sounds/Craft/HatchOpen.wav": "Base.rte/Sounds/Craft/HatchOpen1.flac",
-	"Base.rte/Devices/Explosives/RemoteExplosive/Sounds/RemoteExplosiveDetonate.flac": "Base.rte/Sounds/Devices/BeepShort.flac",
-	"": "",
+	"Base.rte/Devices/Explosives/RemoteExplosive/Sounds/RemoteExplosiveDetonate.flac": "Base.rte/Sounds/Devices/BeepShort.flac"
 }

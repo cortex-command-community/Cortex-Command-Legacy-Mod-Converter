@@ -149,5 +149,5 @@
 	"Browncoats.rte/Effects/Sounds/LightFlamerFire.wav": "Browncoats.rte/Devices/Weapons/Heatlance/Sounds/Loop.flac",
 	"Base.rte/Actors/DropShips/JetLoop.flac": "Base.rte/Sounds/Craft/JetLoop.flac",
 	"Base.rte/Actors/DropShips/JetStart.flac": "Base.rte/Sounds/Craft/JetStart.flac",
-	"Base.rte/Actors/DropShips/JetEnd.flac": "Base.rte/Sounds/Craft/JetEnd.flac",
+	"Base.rte/Actors/DropShips/JetEnd.flac": "Base.rte/Sounds/Craft/JetEnd.flac"
 }

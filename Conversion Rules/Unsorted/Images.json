@@ -190,16 +190,5 @@
 	"Ronin.rte/Devices/Sprites/MagazineRifleA.bmp": "Base.rte/Null.png",
 	"Base.rte/Actors/Rockets/RocketLeg.bmp": "Base.rte/Craft/Shared/RocketLegA.png",
 	"Base.rte/Scenes/Terrains/Mountains_1.bmp": "Base.rte/Scenes/Terrains/YskelyMountains.png",
-	"Base.rte/Scenes/Terrains/GrassPlains_2.bmp": "Base.rte/Scenes/Terrains/VesodPlains.png",
-	"": "",
-	"": "",
-	"": "",
-	"": "",
-	"": "",
-	"": "",
-	"": "",
-	"": "",
-	"": "",
-	"": "",
-	"": "",
+	"Base.rte/Scenes/Terrains/GrassPlains_2.bmp": "Base.rte/Scenes/Terrains/VesodPlains.png"
 }

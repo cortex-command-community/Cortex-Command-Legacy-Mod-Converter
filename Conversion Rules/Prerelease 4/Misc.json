@@ -26,6 +26,5 @@
 	":IsDrawnAfterParent()": ".DrawnAfterParent",
 	"CollidesWithTerrainWhenAttached": "CollidesWithTerrainWhileAttached",
 	"Robot Crouch Path": "Human Crouch Path",
-	"\tPath =": "\tFilePath =",
-	"": "",
+	"\tPath =": "\tFilePath ="
 }

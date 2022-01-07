@@ -1,5 +1,5 @@
 {
 	"Attachable.OnlyLinearForces": "Attachable.OnlyLinearForces has been renamed to Attachable.ApplyTransferredForcesAtOffset and its effect has been reversed, so something that checked OnlyLinearForces == true would now check ApplyTransferredForcesAtOffset == false, since this makes more sense to use.",
 	"CollidesWithTerrainWhileAttached": "Attachable terrain collisions will now propagate to any child Attachables on them. This means that Attachables will not collide with terrain, even if set to, if they're attached to a parent that doesn't collide with terrain.\nThis means that the attachable.CollidesWithTerrainWhileAttached value may not represent the true state of things, you should instead use attachable.CanCollideWithTerrain to determine whether a given Attachable can collide with terrain.",
-	"": "",
+	"~= 255": "~= rte.NoMOID"
 }

@@ -197,14 +197,5 @@
 	"Rocket A Leg A": "Rocket Leg A",
 	"Coalition Null Bullet": "Null Bullet",
 	"require(\"Actors/AI/NativeCrabAI\")": "require(\"AI/NativeCrabAI\")",
-	"dofile(\"Base.rte/Actors/AI/CrabAI.lua\")": "require(\"AI/CrabAI\")",
-	"": "",
-	"": "",
-	"": "",
-	"": "",
-	"": "",
-	"": "",
-	"": "",
-	"": "",
-	"": "",
+	"dofile(\"Base.rte/Actors/AI/CrabAI.lua\")": "require(\"AI/CrabAI\")"
 }

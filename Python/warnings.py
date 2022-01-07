@@ -1,5 +1,5 @@
 import os, sys, json, webbrowser
-from jsoncomment import JsonComment
+from json.decoder import JSONDecodeError
 from pathlib import Path
 
 from Python import shared_globals as cfg
@@ -8,8 +8,10 @@ from Python import convert
 
 warning_rules = {} # A global that's initialized in load_conversion_and_warning_rules()
 
+
 MANUAL_REPLACEMENT_TITLE_SEPARATOR = "=" * 50
 mods_warnings = None # A global list set in init_mods_warnings()
+
 def init_mods_warnings():
 	global mods_warnings
 	mods_warnings = [
@@ -19,24 +21,28 @@ def init_mods_warnings():
 	]
 
 
+FRESH_CONVERSION_RULES_REMINDER = "You can get a fresh Conversion Rules folder by redownloading the Legacy Mod Converter from its GitHub repository with the below button."
+
+
 def load_conversion_and_warning_rules():
-	json_parser = JsonComment(json)
+	try:
+		for folder_path, subfolders, subfiles in os.walk("Conversion Rules"):
+			for filename in subfiles:
+				p = folder_path / Path(filename)
 
-	# try:
-	for folder_path, subfolders, subfiles in os.walk("Conversion Rules"):
-		for filename in subfiles:
-			p = folder_path / Path(filename)
+				if p.is_file() and p.suffix.lower() == ".json":
+					with open(p) as f:
+						json_string = json.load(f)
 
-			if p.is_file() and p.suffix.lower() == ".json":
-				with open(p) as f:
-					if p.stem == "Warnings":
-						warning_rules.update(json_parser.load(f))
-					else:
-						convert.conversion_rules.update(json_parser.load(f))
-	# except: # TODO: Add this try-except back in, but add a specific error type to it!
-		# check_github_button_clicked_and_exit(cfg.sg.Popup("The 'Conversion Rules' folder couldn't be read because either:\n1. It contained a wrongly formatted JSON file, which is often caused by a missing comma at the end of a rule, or\n2. The folder doesn't exist.\nYou can get the missing folder from the Legacy Mod Converter GitHub repository.", title="Missing ConversionRules folder", custom_text="Go to the GitHub repository"))
+						if p.stem == "Warnings":
+							warning_rules.update(json_string)
+						else:
+							convert.conversion_rules.update(json_string)
+	except JSONDecodeError as e:
+		check_github_button_clicked_and_exit(cfg.sg.Popup(f"Error at path '{p}':\n{e}\n\nThis means the 'Conversion Rules' folder couldn't be read, because it contained a wrongly formatted JSON file, which is often caused by a missing comma at the end of a rule.\n\n{FRESH_CONVERSION_RULES_REMINDER}", title="Malformed Conversion Rules", custom_text="Go to the GitHub repository"))
+
 	if len(warning_rules) == 0 and len(convert.conversion_rules) == 0:
-		check_github_button_clicked_and_exit(cfg.sg.Popup("The 'Conversion Rules' folder doesn't contain any JSON files.\nYou can get the JSON files from the Legacy Mod Converter GitHub repository.", title="Missing JSON files", custom_text="Go to the GitHub repository"))
+		check_github_button_clicked_and_exit(cfg.sg.Popup(f"The 'Conversion Rules' folder doesn't contain any JSON files.\n\n{FRESH_CONVERSION_RULES_REMINDER}", title="Missing JSON files", custom_text="Go to the GitHub repository"))
 
 
 def check_github_button_clicked_and_exit(clicked_github_button):
