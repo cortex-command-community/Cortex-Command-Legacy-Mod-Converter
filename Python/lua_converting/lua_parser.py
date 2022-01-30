@@ -21,16 +21,16 @@
 # 	local found = SceneMan:CastMORay(Vector(self.Pos.X, self.Pos.Y + self.gunOffset), Vector(distX, distY), self.ID, 128, false, 2);
 # 	->
 # 	[
-# 		{ "type": "extra", "value": "local found = SceneMan:CastMORay(" },
-# 		{ "type": "children", "value": [
-			
+# 		{ "type": "extra", "content": "local found = SceneMan:CastMORay(" },
+# 		{ "type": "children", "content": [
+
 # 		]},
-# 		{ "type": "extra", "value": "\t" },
+# 		{ "type": "extra", "content": "\t" },
 # 	]
 # 	Vector(self.Pos.X, self.Pos.Y + self.gunOffset), Vector(distX, distY), self.ID, 128, false, 2);
 # 	"""
 # 	parsed = []
-	
+
 # 	state = State.NOT_IN_A_COMMENT
 # 	for char in line:
 

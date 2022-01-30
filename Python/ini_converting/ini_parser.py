@@ -3,6 +3,8 @@ import pprint
 from pathlib import Path
 from enum import Enum, auto
 
+from Python.reading_types import ReadingTypes
+
 from Python.ini_converting import ini_rules
 from Python.ini_converting import ini_writer
 
@@ -60,24 +62,18 @@ def parse_file(file_path):
 		return parsed_file
 
 
-# This global variable is necessary due to how a deep function call needs to be able to also change this variable for the less deep function calls.
-# Passing it as a function argument would copy it by value instead of by reference.
-multiline = False
-
 def parse_file_recursively(parsed_portion, f, depth_tab_count=0):
 	"""
 	# CC and CCCP use a custom INI format, so the configparser library can't be used to parse the INI files.
 	# TODO: Check if the first line can be tabbed, because then prev_line_index needs to be initialized to 0.
 	"""
 
-	global multiline
-
 	for line_number, line in enumerate(f, start=1):
 		# print(repr(line))
 		line = line.strip("\n")
 
 		line_data, tab_count = get_line_data(line, depth_tab_count)
-		# print(line_data)
+		print(line_data)
 
 		if tab_count == depth_tab_count:
 			parsed_portion.append(line_data)
@@ -88,9 +84,9 @@ def parse_file_recursively(parsed_portion, f, depth_tab_count=0):
 
 			previous_appended_line_data = parsed_portion[-1]
 
-			previous_appended_line_data.append( { "type": "children", "value": [ line_data ] } )
+			previous_appended_line_data.append( { "type": "children", "content": [ line_data ] } )
 
-			child_line_data = previous_appended_line_data[-1]["value"]
+			child_line_data = previous_appended_line_data[-1]["content"]
 
 			child_return_values = parse_file_recursively(child_line_data, f, depth_tab_count+1)
 
@@ -103,19 +99,19 @@ def parse_file_recursively(parsed_portion, f, depth_tab_count=0):
 			return child_return_values
 
 
-# This string is global so append_token() can clear its value for get_line_data()
-value_str = ""
+# This global variable is necessary due to how a deep function call needs to be able to also change this variable for the less deep function calls.
+# Passing it as a function argument would copy it by value instead of by reference.
+# multiline = False
 
 def get_line_data(line, depth_tab_count):
 	"""
-	line_data consists of a list of dictionary tokens:
+	The returned line_data looks like this:
 	[
-		{ "type": "extra", "value": "\t" },
-		{ "type": "property", "value": "Mass" },
-		{ "type": "value", "value": "2400" },
-		{ "type": "extra", "value": " /* */ foo /*" },
+		{ "type": "extra", "content": "\t" },
+		{ "type": "property", "content": "Mass" },
+		{ "type": "value", "content": "2400" },
+		{ "type": "extra", "content": " /* */ foo /*" },
 	]
-
 
 	CCCP INI parser quirks to keep in mind:
 	1.
@@ -133,107 +129,47 @@ def get_line_data(line, depth_tab_count):
 			/*
 		foo
 			// */ Mass = 2400
-		
+
 		while this crashes the game:
 			/*
 		foo
 			// */ bar
-	So a multi-line comment can't start during a single-line comment, and vice versa.
 	"""
-
-	global multiline, value_str
 
 	line_data = []
 
+	comment = False
+
+	string = ""
+	unidentified_string = ""
+
 	seen_equals = False
 
-	comment_state = State.INSIDE_MULTI_COMMENT if multiline else State.NOT_IN_A_COMMENT
+	"""
+	a b  =  c d
+	"""
 
-	# parsing_state = "property" # TODO: Can this be used instead?
-	parsing_state = "extra" if multiline else "property"
-
-	# print(line, multiline)
-	tab_count = depth_tab_count if multiline else 0
-	# print(line, tab_count)
-	counting_tabs = not multiline
-
-	# print(repr(line))
 	for char in line:
-		# TODO: Get rid of this if and elif statement.
-		if comment_state in (State.INSIDE_SINGLE_COMMENT, State.INSIDE_MULTI_COMMENT, State.POSSIBLE_MULTI_ENDING):
-			value_str += char
-		elif char != "=":
-			value_str += char
-
-		# TODO: See what happens when this check and continue are removed.
-		if comment_state == State.INSIDE_SINGLE_COMMENT:
-			continue
-
-		# The reason to first check isspace() is so the else statement isn't entered when char == " ".
-		if counting_tabs and char.isspace():
-			if char == "\t":
-				tab_count += 1
-				# print(line)
-		else:
-			counting_tabs = False
-
-		if char == "=" and not seen_equals and comment_state not in (State.INSIDE_SINGLE_COMMENT, State.INSIDE_MULTI_COMMENT):
+		if char.isspace():
+			unidentified_string += char
+		elif char == "=":
 			seen_equals = True
+			unidentified_string += char
+		else:
+			if unidentified_string != "":
+				if seen_equals:
+					line_data.append({ "type": ReadingTypes.PROPERTY, "content": string })
+					string = ""
+					line_data.append({ "type": ReadingTypes.EXTRA, "content": unidentified_string })
+					unidentified_string = ""
 
-			append_token("property", value_str, line_data, 1)
-			append_token("extra", "=", line_data, 2)
-			parsing_state = "value"
-
-		if comment_state == State.POSSIBLE_MULTI_ENDING and char == "/":
-			comment_state = State.NOT_IN_A_COMMENT
-			append_token("extra", value_str, line_data, 3)
-			counting_tabs = True
-			tab_count = 0
-		elif comment_state == State.INSIDE_MULTI_COMMENT and char == "*":
-			comment_state = State.POSSIBLE_MULTI_ENDING
-		elif comment_state == State.READ_FIRST_SLASH:
-			if char == "/":
-				comment_state = State.INSIDE_SINGLE_COMMENT
-				append_token(parsing_state, value_str[:-2], line_data, 4)
-				value_str = "//"
-			elif char == "*":
-				comment_state = State.INSIDE_MULTI_COMMENT
-				append_token(parsing_state, value_str[:-2], line_data, 5)
-				value_str = "/*"
+				string += unidentified_string + char
+				unidentified_string = ""
 			else:
-				comment_state = State.NOT_IN_A_COMMENT
-				value_str[:-1] + "/" + char
-		elif comment_state == State.NOT_IN_A_COMMENT and char == "/":
-			comment_state = State.READ_FIRST_SLASH
+				string += char
 
-	if comment_state in (State.INSIDE_SINGLE_COMMENT, State.INSIDE_MULTI_COMMENT):
-		append_token("extra", value_str, line_data, 6)
-	else:
-		append_token(parsing_state, value_str, line_data, 7)
+	line_data.append({ "type": ReadingTypes.VALUE, "content": string })
 
-	multiline = comment_state == State.INSIDE_MULTI_COMMENT
+	tab_count = depth_tab_count
 
-	# This prevents a single/multi-line comment becoming the parent of a regular next line.
-	if parsing_state != "value":
-		tab_count = depth_tab_count
-
-	# print(line_data, tab_count)
 	return line_data, tab_count
-
-
-def append_token(typ, passed_str, line_data, debug_id):
-	global value_str
-	value_str = ""
-
-	# print(debug_id, typ)
-
-	# Transforms "\t Mass  " into ['\t ', 'Mass', '  '] and appends all of the tokens.
-	# TODO: Combine consecutive tokens of the same type, like [{'type': 'extra', 'value': ' '}, {'type': 'extra', 'value': '//'}]
-	for string in re.findall(r"\S+|\s+", passed_str):
-		used_type = "extra" if string.isspace() else typ
-
-		# TODO: Is this .split() with [-1] correct when passed_string is "\t \t"? 
-		# token = { "type": "extra" if string.isspace() else typ, "value": string.split("\t")[-1] }
-
-		token = { "type": used_type, "value": string }
-		line_data.append(token)

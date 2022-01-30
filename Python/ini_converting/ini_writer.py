@@ -18,10 +18,10 @@ def get_lines_from_dicts_recursively(line_data, lines):
 	line = ""
 	for dictionary in line_data:
 		if dictionary["type"] != "children":
-			line += dictionary["value"]
+			line += dictionary["content"]
 	lines.append(line)
 
 	for dictionary in line_data:
 		if dictionary["type"] == "children":
-			for line_data in dictionary["value"]:
+			for line_data in dictionary["content"]:
 				get_lines_from_dicts_recursively(line_data, lines)
