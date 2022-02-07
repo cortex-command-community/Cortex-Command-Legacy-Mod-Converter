@@ -145,7 +145,7 @@ def get_tokenized_line(line, depth_tab_count):
 
 	seen_equals = False
 	added_property = False
-	token_start_seen = False
+	seen_non_whitespace = False
 
 	for char in line:
 		if   comment_state == CommentState.INSIDE_SINGLE_COMMENT:
@@ -179,15 +179,15 @@ def get_tokenized_line(line, depth_tab_count):
 			string = char
 			add_token(line_tokens, ReadingTypes.EXTRA, unidentified_string)
 			unidentified_string = ""
-		elif token_start_seen:
+		elif seen_non_whitespace:
 			comment_state = CommentState.NOT_IN_A_COMMENT
 			string += unidentified_string + char
 			unidentified_string = ""
 		elif unidentified_string == "":
-			token_start_seen = True
+			seen_non_whitespace = True
 			string += char
 		else:
-			token_start_seen = True
+			seen_non_whitespace = True
 			string += char
 			add_token(line_tokens, ReadingTypes.EXTRA, unidentified_string)
 			unidentified_string = ""
