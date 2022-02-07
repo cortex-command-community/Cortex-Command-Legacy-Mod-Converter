@@ -149,16 +149,15 @@ def get_tokenized_line(line, depth_tab_count):
 		if char == "/" and comment_state == CommentState.POSSIBLE_COMMENT_START and seen_equals and string != "":
 			comment_state = CommentState.INSIDE_SINGLE_COMMENT
 			add_token(line_tokens, ReadingTypes.VALUE, string)
-			string = unidentified_string
+			string = unidentified_string + char
 		elif char == "/" and comment_state == CommentState.POSSIBLE_COMMENT_START and not seen_equals and string != "":
 			comment_state = CommentState.INSIDE_SINGLE_COMMENT
 			add_token(line_tokens, ReadingTypes.PROPERTY, string)
-			string = unidentified_string
+			string = unidentified_string + char
 		elif char == "/" and comment_state == CommentState.POSSIBLE_COMMENT_START:
 			comment_state = CommentState.INSIDE_SINGLE_COMMENT
-			string = unidentified_string
-
-		if char == "/" and comment_state == CommentState.NOT_IN_A_COMMENT:
+			string = unidentified_string + char
+		elif char == "/" and comment_state == CommentState.NOT_IN_A_COMMENT:
 			comment_state = CommentState.POSSIBLE_COMMENT_START
 			unidentified_string += char
 		elif comment_state == CommentState.INSIDE_SINGLE_COMMENT:
