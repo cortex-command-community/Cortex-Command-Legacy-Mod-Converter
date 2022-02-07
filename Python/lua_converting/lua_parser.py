@@ -22,7 +22,7 @@
 # 	->
 # 	[
 # 		{ "type": "extra", "content": "local found = SceneMan:CastMORay(" },
-# 		{ "type": "children", "content": [
+# 		{ "type": "lines_tokens", "content": [
 
 # 		]},
 # 		{ "type": "extra", "content": "\t" },

@@ -8,7 +8,7 @@ def single_line_tests():
 	# TODO: Add multiline tests.
 	# TODO: Move these tests to the file ini_converting/ini_parser_tests.py
 	run_single_line_test("a = b", [{"type": ReadingTypes.PROPERTY, "content": "a"}, {"type": ReadingTypes.EXTRA, "content": " = "}, {"type": ReadingTypes.VALUE, "content": "b"}])
-	# run_single_line_test("// a = b", [{"type": "extra", "content": "//"}, {"type": "extra", "content": " "}, {"type": "extra", "content": "a"}, {"type": "extra", "content": " "}, {"type": "extra", "content": "="}, {"type": "extra", "content": " "}, {"type": "extra", "content": "b"}])
+	run_single_line_test("// a = b", [{"type": ReadingTypes.EXTRA, "content": "// a = b"}])
 	# run_single_line_test("c// a = b", [{"type": "property", "content": "c"}, {"type": "extra", "content": "//"}, {"type": "extra", "content": " "}, {"type": "extra", "content": "a"}, {"type": "extra", "content": " "}, {"type": "extra", "content": "="}, {"type": "extra", "content": " "}, {"type": "extra", "content": "b"}])
 	# run_single_line_test("a = b //", [{"type": "property", "content": "a"}, {"type": "extra", "content": " "}, {"type": "extra", "content": "="}, {"type": "extra", "content": " "}, {"type": "value", "content": "b"}, {"type": "extra", "content": " "}, {"type": "extra", "content": "//"}])
 	# run_single_line_test(" // a = b", [{"type": "extra", "content": " "}, {"type": "extra", "content": "//"}, {"type": "extra", "content": " "}, {"type": "extra", "content": "a"}, {"type": "extra", "content": " "}, {"type": "extra", "content": "="}, {"type": "extra", "content": " "}, {"type": "extra", "content": "b"}])
@@ -27,9 +27,9 @@ def single_line_tests():
 def run_single_line_test(line, expected):
 	# TODO: Verify the value of tab_count as well.
 	depth_tab_count = 0
-	line_data, tab_count = ini_parser.get_line_data(line, depth_tab_count)
+	line_tokens, tab_count = ini_parser.get_tokenized_line(line, depth_tab_count)
 
-	tests.test(line, line_data, expected)
+	tests.test(line, line_tokens, expected)
 
 
 def multi_line_tests():

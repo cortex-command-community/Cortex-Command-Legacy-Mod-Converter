@@ -12,16 +12,16 @@ def write_converted_ini_recursively(parsed_portion, output_folder_path):
 				f.write("\n".join(lines))
 
 
-def get_lines_from_dicts_recursively(line_data, lines):
-	# This function loops twice through line_data so the lines can be appended in the correct order.
+def get_lines_from_dicts_recursively(line_tokens, lines):
+	# This function loops twice through line_tokens so the lines can be appended in the correct order.
 
 	line = ""
-	for dictionary in line_data:
-		if dictionary["type"] != "children":
+	for dictionary in line_tokens:
+		if dictionary["type"] != "lines_tokens":
 			line += dictionary["content"]
 	lines.append(line)
 
-	for dictionary in line_data:
-		if dictionary["type"] == "children":
-			for line_data in dictionary["content"]:
-				get_lines_from_dicts_recursively(line_data, lines)
+	for dictionary in line_tokens:
+		if dictionary["type"] == "lines_tokens":
+			for line_tokens in dictionary["content"]:
+				get_lines_from_dicts_recursively(line_tokens, lines)

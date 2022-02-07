@@ -10,11 +10,11 @@ from Python.ini_converting import ini_writer
 
 
 class State(Enum):
-	NOT_IN_A_COMMENT      = auto()
-	READ_FIRST_SLASH      = auto()
-	INSIDE_SINGLE_COMMENT = auto()
-	INSIDE_MULTI_COMMENT  = auto()
-	POSSIBLE_MULTI_ENDING = auto()
+	NOT_IN_A_COMMENT       = auto()
+	POSSIBLE_COMMENT_START = auto()
+	INSIDE_SINGLE_COMMENT  = auto()
+	INSIDE_MULTI_COMMENT   = auto()
+	POSSIBLE_MULTI_ENDING  = auto()
 
 
 def parse_and_convert(input_folder_path, output_folder_path):
@@ -72,30 +72,30 @@ def parse_file_recursively(parsed_portion, f, depth_tab_count=0):
 		# print(repr(line))
 		line = line.strip("\n")
 
-		line_data, tab_count = get_line_data(line, depth_tab_count)
-		print(line_data)
+		line_tokens, tab_count = get_tokenized_line(line, depth_tab_count)
+		print(line_tokens)
 
 		if tab_count == depth_tab_count:
-			parsed_portion.append(line_data)
+			parsed_portion.append(line_tokens)
 		elif tab_count == depth_tab_count + 1:
 			if parsed_portion == []:
 				file_path = f.name
 				raise TabError(f"\nWrong tabbing on line {line_number} in file {file_path} on line '{line}'")
 
-			previous_appended_line_data = parsed_portion[-1]
+			previous_appended_line_tokens = parsed_portion[-1]
 
-			previous_appended_line_data.append( { "type": "children", "content": [ line_data ] } )
+			previous_appended_line_tokens.append( { "type": "lines_tokens", "content": [ line_tokens ] } )
 
-			child_line_data = previous_appended_line_data[-1]["content"]
+			child_line_tokens = previous_appended_line_tokens[-1]["content"]
 
-			child_return_values = parse_file_recursively(child_line_data, f, depth_tab_count+1)
+			child_return_values = parse_file_recursively(child_line_tokens, f, depth_tab_count+1)
 
 			if child_return_values != None and child_return_values["tab_count"] == depth_tab_count:
-				parsed_portion.append(child_return_values["line_data"])
+				parsed_portion.append(child_return_values["line_tokens"])
 			else:
 				return child_return_values
 		elif tab_count < depth_tab_count:
-			child_return_values = { "line_data": line_data, "tab_count": tab_count }
+			child_return_values = { "line_tokens": line_tokens, "tab_count": tab_count }
 			return child_return_values
 
 
@@ -103,9 +103,9 @@ def parse_file_recursively(parsed_portion, f, depth_tab_count=0):
 # Passing it as a function argument would copy it by value instead of by reference.
 # multiline = False
 
-def get_line_data(line, depth_tab_count):
+def get_tokenized_line(line, depth_tab_count):
 	"""
-	The returned line_data looks like this:
+	The returned line_tokens looks like this:
 	[
 		{ "type": "extra", "content": "\t" },
 		{ "type": "property", "content": "Mass" },
@@ -136,40 +136,48 @@ def get_line_data(line, depth_tab_count):
 			// */ bar
 	"""
 
-	line_data = []
+	line_tokens = []
 
-	comment = False
+	state = State.NOT_IN_A_COMMENT
 
 	string = ""
 	unidentified_string = ""
 
 	seen_equals = False
 
-	"""
-	a b  =  c d
-	"""
-
 	for char in line:
-		if char.isspace():
+		if char == '/' and state == State.NOT_IN_A_COMMENT:
+			state = State.POSSIBLE_COMMENT_START
+		elif char == '/' and state == State.POSSIBLE_COMMENT_START:
+			state = State.INSIDE_SINGLE_COMMENT
+
+		if state == State.INSIDE_SINGLE_COMMENT:
+			string += char
+		elif char.isspace():
 			unidentified_string += char
 		elif char == "=":
 			seen_equals = True
 			unidentified_string += char
+		elif unidentified_string != "" and seen_equals:
+			add_token(line_tokens, ReadingTypes.PROPERTY, string)
+			string = char
+			add_token(line_tokens, ReadingTypes.EXTRA, unidentified_string)
+			unidentified_string = ""
+		elif unidentified_string != "":
+			string += unidentified_string + char
+			unidentified_string = ""
 		else:
-			if unidentified_string != "":
-				if seen_equals:
-					line_data.append({ "type": ReadingTypes.PROPERTY, "content": string })
-					string = ""
-					line_data.append({ "type": ReadingTypes.EXTRA, "content": unidentified_string })
-					unidentified_string = ""
+			string += char
 
-				string += unidentified_string + char
-				unidentified_string = ""
-			else:
-				string += char
-
-	line_data.append({ "type": ReadingTypes.VALUE, "content": string })
+	if state == State.INSIDE_SINGLE_COMMENT:
+		add_token(line_tokens, ReadingTypes.EXTRA, string)
+	else:
+		add_token(line_tokens, ReadingTypes.VALUE, string)
 
 	tab_count = depth_tab_count
 
-	return line_data, tab_count
+	return line_tokens, tab_count
+
+
+def add_token(line_tokens, type_, content):
+	line_tokens.append({ "type": type_, "content": content })
