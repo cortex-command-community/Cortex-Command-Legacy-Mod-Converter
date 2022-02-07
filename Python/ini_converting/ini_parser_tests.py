@@ -26,9 +26,11 @@ def single_line_tests():
 	run_single_line_test("a = b c", [{"type": ReadingTypes.PROPERTY, "content": "a"}, {"type": ReadingTypes.EXTRA, "content": " = "}, {"type": ReadingTypes.VALUE, "content": "b c"}])
 	run_single_line_test("", [])
 	run_single_line_test("	 Mass  =  240 ", [{"type": ReadingTypes.EXTRA, "content": "	 "}, {"type": ReadingTypes.PROPERTY, "content": "Mass"}, {"type": ReadingTypes.EXTRA, "content": "  =  "}, {"type": ReadingTypes.VALUE, "content": "240"}, {"type": ReadingTypes.EXTRA, "content": " "}])
+	run_single_line_test(" ", [{"type": ReadingTypes.EXTRA, "content": " "}])
+	run_single_line_test("/**/", [{"type": ReadingTypes.EXTRA, "content": "/**/"}])
+	run_single_line_test("/* a */", [{"type": ReadingTypes.EXTRA, "content": "/* a */"}])
+	run_single_line_test("/* a */ b", [{"type": ReadingTypes.EXTRA, "content": "/* a */ "}, {"type": ReadingTypes.PROPERTY, "content": "b"}])
 
-	# run_single_line_test(" ", [{"type": ReadingTypes.EXTRA, "content": " "}])
-	# run_single_line_test("/**/", [{"type": ReadingTypes.EXTRA, "content": "/**/"}])
 	# run_single_line_test("/* a = b */", [{"type": ReadingTypes.EXTRA, "content": "/*"}, {"type": "extra", "content": " "}, {"type": "extra", "content": "a"}, {"type": "extra", "content": " "}, {"type": "extra", "content": "="}, {"type": "extra", "content": " "}, {"type": "extra", "content": "b"}, {"type": "extra", "content": " "}, {"type": "extra", "content": "*/"}])
 	# run_single_line_test("/* a = b */ c = d", [{"type": "extra", "content": "/*"}, {"type": "extra", "content": " "}, {"type": "extra", "content": "a"}, {"type": "extra", "content": " "}, {"type": "extra", "content": "="}, {"type": "extra", "content": " "}, {"type": "extra", "content": "b"}, {"type": "extra", "content": " "}, {"type": "extra", "content": "*/"}, {"type": "extra", "content": " "}, {"type": "property", "content": "c"}, {"type": "extra", "content": " "}, {"type": "extra", "content": "="}, {"type": "extra", "content": " "}, {"type": "value", "content": "d"}])
 	# run_single_line_test("// /*", [{"type": "extra", "content": "//"}, {"type": "extra", "content": " "}, {"type": "extra", "content": "/*"}])

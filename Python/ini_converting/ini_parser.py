@@ -152,9 +152,7 @@ def get_tokenized_line(line, depth_tab_count):
 	seen_non_whitespace = False
 
 	for char in line:
-		if   comment_state == CommentState.INSIDE_SINGLE_COMMENT:
-			unidentified_string += char
-		elif char == "/" and comment_state == CommentState.POSSIBLE_COMMENT_START and string != "" and seen_equals:
+		if   char == "/" and comment_state == CommentState.POSSIBLE_COMMENT_START and string != "" and seen_equals:
 			comment_state = CommentState.INSIDE_SINGLE_COMMENT
 			add_token(line_tokens, ReadingTypes.VALUE, string)
 			unidentified_string += char
@@ -167,18 +165,19 @@ def get_tokenized_line(line, depth_tab_count):
 		elif char == "/" and comment_state == CommentState.POSSIBLE_COMMENT_START and string == "":
 			comment_state = CommentState.INSIDE_SINGLE_COMMENT
 			unidentified_string += char
-		# elif char == "*" and comment_state == CommentState.POSSIBLE_COMMENT_START:
-		# 	comment_state = CommentState.INSIDE_MULTI_COMMENT
-		# 	string = unidentified_string + char
-		# 	unidentified_string = ""
-		# elif char == "*" and comment_state == CommentState.INSIDE_MULTI_COMMENT:
-		# 	comment_state = CommentState.POSSIBLE_MULTI_ENDING
-		# 	unidentified_string += char
-		# elif char == "/" and comment_state == CommentState.POSSIBLE_MULTI_ENDING:
-		# 	comment_state = CommentState.NOT_IN_A_COMMENT
-		# 	unidentified_string += char
+		elif char == "*" and comment_state == CommentState.POSSIBLE_COMMENT_START:
+			comment_state = CommentState.INSIDE_MULTI_COMMENT
+			unidentified_string += char
+		elif char == "*" and comment_state == CommentState.INSIDE_MULTI_COMMENT:
+			comment_state = CommentState.POSSIBLE_MULTI_ENDING
+			unidentified_string += char
+		elif char == "/" and comment_state == CommentState.POSSIBLE_MULTI_ENDING:
+			comment_state = CommentState.NOT_IN_A_COMMENT
+			unidentified_string += char
 		elif char == "/" and comment_state == CommentState.NOT_IN_A_COMMENT:
 			comment_state = CommentState.POSSIBLE_COMMENT_START
+			unidentified_string += char
+		elif comment_state == CommentState.INSIDE_SINGLE_COMMENT or comment_state == CommentState.INSIDE_MULTI_COMMENT:
 			unidentified_string += char
 		elif char.isspace():
 			unidentified_string += char
