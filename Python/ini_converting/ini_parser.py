@@ -192,10 +192,7 @@ def get_tokenized_line(line, depth_tab_count):
 			add_token(line_tokens, ReadingTypes.EXTRA, unidentified_string)
 			unidentified_string = ""
 
-	if   comment_state == CommentState.INSIDE_SINGLE_COMMENT and line != "" and unidentified_string != "":
-		add_token(line_tokens, ReadingTypes.EXTRA, string)
-		add_token(line_tokens, ReadingTypes.EXTRA, unidentified_string)
-	elif comment_state == CommentState.INSIDE_SINGLE_COMMENT and line != "":
+	if   comment_state == CommentState.INSIDE_SINGLE_COMMENT and line != "":
 		add_token(line_tokens, ReadingTypes.EXTRA, string)
 	elif seen_equals and line != "" and unidentified_string != "":
 		add_token(line_tokens, ReadingTypes.VALUE, string)
