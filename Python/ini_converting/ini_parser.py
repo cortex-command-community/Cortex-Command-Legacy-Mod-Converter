@@ -145,21 +145,25 @@ def get_tokenized_line(line, depth_tab_count):
 
 	seen_equals = False
 	added_property = False
+	token_start_seen = False
 
 	for char in line:
-		if comment_state == CommentState.INSIDE_SINGLE_COMMENT:
+		if   comment_state == CommentState.INSIDE_SINGLE_COMMENT:
 			string += char
-		elif char == "/" and comment_state == CommentState.POSSIBLE_COMMENT_START and seen_equals and string != "":
+		elif char == "/" and comment_state == CommentState.POSSIBLE_COMMENT_START and string != "" and seen_equals:
 			comment_state = CommentState.INSIDE_SINGLE_COMMENT
 			add_token(line_tokens, ReadingTypes.VALUE, string)
 			string = unidentified_string + char
-		elif char == "/" and comment_state == CommentState.POSSIBLE_COMMENT_START and not seen_equals and string != "":
+			unidentified_string = ""
+		elif char == "/" and comment_state == CommentState.POSSIBLE_COMMENT_START and string != "" and not seen_equals:
 			comment_state = CommentState.INSIDE_SINGLE_COMMENT
 			add_token(line_tokens, ReadingTypes.PROPERTY, string)
 			string = unidentified_string + char
+			unidentified_string = ""
 		elif char == "/" and comment_state == CommentState.POSSIBLE_COMMENT_START:
 			comment_state = CommentState.INSIDE_SINGLE_COMMENT
 			string = unidentified_string + char
+			unidentified_string = ""
 		elif char == "/" and comment_state == CommentState.NOT_IN_A_COMMENT:
 			comment_state = CommentState.POSSIBLE_COMMENT_START
 			unidentified_string += char
@@ -175,17 +179,32 @@ def get_tokenized_line(line, depth_tab_count):
 			string = char
 			add_token(line_tokens, ReadingTypes.EXTRA, unidentified_string)
 			unidentified_string = ""
-		elif unidentified_string != "":
+		elif token_start_seen:
 			comment_state = CommentState.NOT_IN_A_COMMENT
 			string += unidentified_string + char
 			unidentified_string = ""
-		else:
+		elif unidentified_string == "":
+			token_start_seen = True
 			string += char
+		else:
+			token_start_seen = True
+			string += char
+			add_token(line_tokens, ReadingTypes.EXTRA, unidentified_string)
+			unidentified_string = ""
 
-	if comment_state == CommentState.INSIDE_SINGLE_COMMENT and line != "":
+	if   comment_state == CommentState.INSIDE_SINGLE_COMMENT and line != "" and unidentified_string != "":
 		add_token(line_tokens, ReadingTypes.EXTRA, string)
+		add_token(line_tokens, ReadingTypes.EXTRA, unidentified_string)
+	elif comment_state == CommentState.INSIDE_SINGLE_COMMENT and line != "":
+		add_token(line_tokens, ReadingTypes.EXTRA, string)
+	elif seen_equals and line != "" and unidentified_string != "":
+		add_token(line_tokens, ReadingTypes.VALUE, string)
+		add_token(line_tokens, ReadingTypes.EXTRA, unidentified_string)
 	elif seen_equals and line != "":
 		add_token(line_tokens, ReadingTypes.VALUE, string)
+	elif line != "" and unidentified_string != "":
+		add_token(line_tokens, ReadingTypes.PROPERTY, string)
+		add_token(line_tokens, ReadingTypes.EXTRA, unidentified_string)
 	elif line != "":
 		add_token(line_tokens, ReadingTypes.PROPERTY, string)
 
