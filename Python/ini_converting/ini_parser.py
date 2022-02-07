@@ -204,8 +204,6 @@ def get_tokenized_line(line, depth_tab_count):
 			add_token(line_tokens, ReadingTypes.EXTRA, unidentified_string)
 			unidentified_string = ""
 
-	# if   comment_state == CommentState.INSIDE_MULTI_COMMENT and line != "":
-	# 	add_token(line_tokens, ReadingTypes.EXTRA, string)
 	if seen_equals and line != "" and unidentified_string != "" and string != "":
 		add_token(line_tokens, ReadingTypes.VALUE, string)
 		add_token(line_tokens, ReadingTypes.EXTRA, unidentified_string)
