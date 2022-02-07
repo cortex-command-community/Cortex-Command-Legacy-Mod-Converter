@@ -144,9 +144,12 @@ def get_tokenized_line(line, depth_tab_count):
 	unidentified_string = ""
 
 	seen_equals = False
+	added_property = False
 
 	for char in line:
-		if char == "/" and comment_state == CommentState.POSSIBLE_COMMENT_START and seen_equals and string != "":
+		if comment_state == CommentState.INSIDE_SINGLE_COMMENT:
+			string += char
+		elif char == "/" and comment_state == CommentState.POSSIBLE_COMMENT_START and seen_equals and string != "":
 			comment_state = CommentState.INSIDE_SINGLE_COMMENT
 			add_token(line_tokens, ReadingTypes.VALUE, string)
 			string = unidentified_string + char
@@ -160,28 +163,31 @@ def get_tokenized_line(line, depth_tab_count):
 		elif char == "/" and comment_state == CommentState.NOT_IN_A_COMMENT:
 			comment_state = CommentState.POSSIBLE_COMMENT_START
 			unidentified_string += char
-		elif comment_state == CommentState.INSIDE_SINGLE_COMMENT:
-			string += char
 		elif char.isspace():
 			unidentified_string += char
 		elif char == "=":
 			seen_equals = True
 			unidentified_string += char
-		elif unidentified_string != "" and seen_equals:
+		elif unidentified_string != "" and seen_equals and not added_property:
+			comment_state = CommentState.NOT_IN_A_COMMENT
 			add_token(line_tokens, ReadingTypes.PROPERTY, string)
+			added_property = True
 			string = char
 			add_token(line_tokens, ReadingTypes.EXTRA, unidentified_string)
 			unidentified_string = ""
 		elif unidentified_string != "":
+			comment_state = CommentState.NOT_IN_A_COMMENT
 			string += unidentified_string + char
 			unidentified_string = ""
 		else:
 			string += char
 
-	if comment_state == CommentState.INSIDE_SINGLE_COMMENT:
+	if comment_state == CommentState.INSIDE_SINGLE_COMMENT and line != "":
 		add_token(line_tokens, ReadingTypes.EXTRA, string)
-	else:
+	elif seen_equals and line != "":
 		add_token(line_tokens, ReadingTypes.VALUE, string)
+	elif line != "":
+		add_token(line_tokens, ReadingTypes.PROPERTY, string)
 
 	tab_count = depth_tab_count
 

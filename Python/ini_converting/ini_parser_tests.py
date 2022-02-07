@@ -5,25 +5,27 @@ from Python.ini_converting import ini_parser
 
 
 def single_line_tests():
-	# TODO: Add multiline tests.
-	# TODO: Move these tests to the file ini_converting/ini_parser_tests.py
 	run_single_line_test("a //", [{"type": ReadingTypes.PROPERTY, "content": "a"}, {"type": ReadingTypes.EXTRA, "content": " //"}])
 	run_single_line_test("a = b //", [{"type": ReadingTypes.PROPERTY, "content": "a"}, {"type": ReadingTypes.EXTRA, "content": " = "}, {"type": ReadingTypes.VALUE, "content": "b"}, {"type": ReadingTypes.EXTRA, "content": " //"}])
+	run_single_line_test("a = b // ", [{"type": ReadingTypes.PROPERTY, "content": "a"}, {"type": ReadingTypes.EXTRA, "content": " = "}, {"type": ReadingTypes.VALUE, "content": "b"}, {"type": ReadingTypes.EXTRA, "content": " // "}])
 	run_single_line_test("a = b", [{"type": ReadingTypes.PROPERTY, "content": "a"}, {"type": ReadingTypes.EXTRA, "content": " = "}, {"type": ReadingTypes.VALUE, "content": "b"}])
 	run_single_line_test("// a = b", [{"type": ReadingTypes.EXTRA, "content": "// a = b"}])
-	# run_single_line_test("c// a = b", [{"type": ReadingTypes.PROPERTY, "content": "c"}, {"type": ReadingTypes.EXTRA, "content": "// a = b"}])
-	# run_single_line_test("a = b //", [{"type": "property", "content": "a"}, {"type": "extra", "content": " "}, {"type": "extra", "content": "="}, {"type": "extra", "content": " "}, {"type": "value", "content": "b"}, {"type": "extra", "content": " "}, {"type": "extra", "content": "//"}])
-	# run_single_line_test(" // a = b", [{"type": "extra", "content": " "}, {"type": "extra", "content": "//"}, {"type": "extra", "content": " "}, {"type": "extra", "content": "a"}, {"type": "extra", "content": " "}, {"type": "extra", "content": "="}, {"type": "extra", "content": " "}, {"type": "extra", "content": "b"}])
-	# run_single_line_test("a = b // ", [{"type": "property", "content": "a"}, {"type": "extra", "content": " "}, {"type": "extra", "content": "="}, {"type": "extra", "content": " "}, {"type": "value", "content": "b"}, {"type": "extra", "content": " "}, {"type": "extra", "content": "//"}, {"type": "extra", "content": " "}])
+	run_single_line_test(" // a = b", [{"type": ReadingTypes.EXTRA, "content": " // a = b"}])
+	run_single_line_test("c// a = b", [{"type": ReadingTypes.PROPERTY, "content": "c"}, {"type": ReadingTypes.EXTRA, "content": "// a = b"}])
+	run_single_line_test("foo/bar/baz", [{"type": ReadingTypes.PROPERTY, "content": "foo/bar/baz"}])
+	run_single_line_test("foo / bar / baz", [{"type": ReadingTypes.PROPERTY, "content": "foo / bar / baz"}])
+	run_single_line_test("a = b/c/d", [{"type": ReadingTypes.PROPERTY, "content": "a"}, {"type": ReadingTypes.EXTRA, "content": " = "}, {"type": ReadingTypes.VALUE, "content": "b/c/d"}])
+	run_single_line_test("a // = b", [{"type": ReadingTypes.PROPERTY, "content": "a"}, {"type": ReadingTypes.EXTRA, "content": " // = b"}])
+	run_single_line_test("foo//bar", [{"type": ReadingTypes.PROPERTY, "content": "foo"}, {"type": ReadingTypes.EXTRA, "content": "//bar"}])
+	run_single_line_test("a = foo/bar/baz", [{"type": ReadingTypes.PROPERTY, "content": "a"}, {"type": ReadingTypes.EXTRA, "content": " = "}, {"type": ReadingTypes.VALUE, "content": "foo/bar/baz"}])
+	run_single_line_test("a = b c", [{"type": ReadingTypes.PROPERTY, "content": "a"}, {"type": ReadingTypes.EXTRA, "content": " = "}, {"type": ReadingTypes.VALUE, "content": "b c"}])
+	run_single_line_test("", [])
+	# run_single_line_test("	 Mass  =  240 ", [{"type": ReadingTypes.EXTRA, "content": "	 "}, {"type": ReadingTypes.PROPERTY, "content": "Mass"}, {"type": ReadingTypes.EXTRA, "content": "  =  "}, {"type": ReadingTypes.VALUE, "content": "240"}, {"type": ReadingTypes.EXTRA, "content": " "}])
+
 	# run_single_line_test("/* a = b */", [{"type": "extra", "content": "/*"}, {"type": "extra", "content": " "}, {"type": "extra", "content": "a"}, {"type": "extra", "content": " "}, {"type": "extra", "content": "="}, {"type": "extra", "content": " "}, {"type": "extra", "content": "b"}, {"type": "extra", "content": " "}, {"type": "extra", "content": "*/"}])
 	# run_single_line_test("/* a = b */ c = d", [{"type": "extra", "content": "/*"}, {"type": "extra", "content": " "}, {"type": "extra", "content": "a"}, {"type": "extra", "content": " "}, {"type": "extra", "content": "="}, {"type": "extra", "content": " "}, {"type": "extra", "content": "b"}, {"type": "extra", "content": " "}, {"type": "extra", "content": "*/"}, {"type": "extra", "content": " "}, {"type": "property", "content": "c"}, {"type": "extra", "content": " "}, {"type": "extra", "content": "="}, {"type": "extra", "content": " "}, {"type": "value", "content": "d"}])
 	# run_single_line_test("// /*", [{"type": "extra", "content": "//"}, {"type": "extra", "content": " "}, {"type": "extra", "content": "/*"}])
-	# run_single_line_test("foo/bar/baz", [{"type": "property", "content": "foo/bar/baz"}])
-	# run_single_line_test("foo//bar", [{"type": "property", "content": "foo"}, {"type": "extra", "content": "//bar"}])
 	# run_single_line_test("foo/*bar*/", [{"type": "property", "content": "foo"}, {"type": "extra", "content": "/*bar*/"}])
-	# run_single_line_test("	 Mass  =  240 ", [{"type": "extra", "content": "	 "}, {"type": "property", "content": "Mass"}, {"type": "extra", "content": "  "}, {"type": "extra", "content": "="}, {"type": "extra", "content": "  "}, {"type": "value", "content": "240"}, {"type": "extra", "content": " "}])
-	# run_single_line_test("a = b c", [{"type": "property", "content": "a"}, {"type": "extra", "content": " "}, {"type": "extra", "content": "="}, {"type": "extra", "content": " "}, {"type": "value", "content": "b c"}])
-	# run_single_line_test("", [])
 
 
 def run_single_line_test(line, expected):
