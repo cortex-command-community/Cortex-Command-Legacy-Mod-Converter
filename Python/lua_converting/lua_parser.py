@@ -6,7 +6,7 @@
 # from enum import Enum, auto
 
 
-# class State(Enum):
+# class CommentState(Enum):
 # 	POSSIBLE_MULTI_ENDING = auto()
 
 
@@ -31,7 +31,7 @@
 # 	"""
 # 	parsed = []
 
-# 	state = State.NOT_IN_A_COMMENT
+# 	state = CommentState.NOT_IN_A_COMMENT
 # 	for char in line:
 
 # 	return parsed

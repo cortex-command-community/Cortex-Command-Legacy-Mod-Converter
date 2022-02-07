@@ -9,7 +9,7 @@ from Python.ini_converting import ini_rules
 from Python.ini_converting import ini_writer
 
 
-class State(Enum):
+class CommentState(Enum):
 	NOT_IN_A_COMMENT       = auto()
 	POSSIBLE_COMMENT_START = auto()
 	INSIDE_SINGLE_COMMENT  = auto()
@@ -138,7 +138,7 @@ def get_tokenized_line(line, depth_tab_count):
 
 	line_tokens = []
 
-	state = State.NOT_IN_A_COMMENT
+	comment_state = CommentState.NOT_IN_A_COMMENT
 
 	string = ""
 	unidentified_string = ""
@@ -146,12 +146,22 @@ def get_tokenized_line(line, depth_tab_count):
 	seen_equals = False
 
 	for char in line:
-		if char == '/' and state == State.NOT_IN_A_COMMENT:
-			state = State.POSSIBLE_COMMENT_START
-		elif char == '/' and state == State.POSSIBLE_COMMENT_START:
-			state = State.INSIDE_SINGLE_COMMENT
+		if char == "/" and comment_state == CommentState.POSSIBLE_COMMENT_START and seen_equals and string != "":
+			comment_state = CommentState.INSIDE_SINGLE_COMMENT
+			add_token(line_tokens, ReadingTypes.VALUE, string)
+			string = unidentified_string
+		elif char == "/" and comment_state == CommentState.POSSIBLE_COMMENT_START and not seen_equals and string != "":
+			comment_state = CommentState.INSIDE_SINGLE_COMMENT
+			add_token(line_tokens, ReadingTypes.PROPERTY, string)
+			string = unidentified_string
+		elif char == "/" and comment_state == CommentState.POSSIBLE_COMMENT_START:
+			comment_state = CommentState.INSIDE_SINGLE_COMMENT
+			string = unidentified_string
 
-		if state == State.INSIDE_SINGLE_COMMENT:
+		if char == "/" and comment_state == CommentState.NOT_IN_A_COMMENT:
+			comment_state = CommentState.POSSIBLE_COMMENT_START
+			unidentified_string += char
+		elif comment_state == CommentState.INSIDE_SINGLE_COMMENT:
 			string += char
 		elif char.isspace():
 			unidentified_string += char
@@ -169,7 +179,7 @@ def get_tokenized_line(line, depth_tab_count):
 		else:
 			string += char
 
-	if state == State.INSIDE_SINGLE_COMMENT:
+	if comment_state == CommentState.INSIDE_SINGLE_COMMENT:
 		add_token(line_tokens, ReadingTypes.EXTRA, string)
 	else:
 		add_token(line_tokens, ReadingTypes.VALUE, string)
