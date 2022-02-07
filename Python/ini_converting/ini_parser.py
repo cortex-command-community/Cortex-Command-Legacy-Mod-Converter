@@ -17,6 +17,10 @@ class CommentState(Enum):
 	POSSIBLE_MULTI_ENDING  = auto()
 
 
+class SeriousDesignError(Exception):
+    pass
+
+
 def parse_and_convert(input_folder_path, output_folder_path):
 	mod_names = get_mod_names(input_folder_path)
 	parsed = parse(output_folder_path, mod_names)
@@ -149,21 +153,30 @@ def get_tokenized_line(line, depth_tab_count):
 
 	for char in line:
 		if   comment_state == CommentState.INSIDE_SINGLE_COMMENT:
-			string += char
+			unidentified_string += char
 		elif char == "/" and comment_state == CommentState.POSSIBLE_COMMENT_START and string != "" and seen_equals:
 			comment_state = CommentState.INSIDE_SINGLE_COMMENT
 			add_token(line_tokens, ReadingTypes.VALUE, string)
-			string = unidentified_string + char
-			unidentified_string = ""
+			unidentified_string += char
+			string = ""
 		elif char == "/" and comment_state == CommentState.POSSIBLE_COMMENT_START and string != "" and not seen_equals:
 			comment_state = CommentState.INSIDE_SINGLE_COMMENT
 			add_token(line_tokens, ReadingTypes.PROPERTY, string)
-			string = unidentified_string + char
-			unidentified_string = ""
-		elif char == "/" and comment_state == CommentState.POSSIBLE_COMMENT_START:
+			unidentified_string += char
+			string = ""
+		elif char == "/" and comment_state == CommentState.POSSIBLE_COMMENT_START and string == "":
 			comment_state = CommentState.INSIDE_SINGLE_COMMENT
-			string = unidentified_string + char
-			unidentified_string = ""
+			unidentified_string += char
+		# elif char == "*" and comment_state == CommentState.POSSIBLE_COMMENT_START:
+		# 	comment_state = CommentState.INSIDE_MULTI_COMMENT
+		# 	string = unidentified_string + char
+		# 	unidentified_string = ""
+		# elif char == "*" and comment_state == CommentState.INSIDE_MULTI_COMMENT:
+		# 	comment_state = CommentState.POSSIBLE_MULTI_ENDING
+		# 	unidentified_string += char
+		# elif char == "/" and comment_state == CommentState.POSSIBLE_MULTI_ENDING:
+		# 	comment_state = CommentState.NOT_IN_A_COMMENT
+		# 	unidentified_string += char
 		elif char == "/" and comment_state == CommentState.NOT_IN_A_COMMENT:
 			comment_state = CommentState.POSSIBLE_COMMENT_START
 			unidentified_string += char
@@ -192,18 +205,26 @@ def get_tokenized_line(line, depth_tab_count):
 			add_token(line_tokens, ReadingTypes.EXTRA, unidentified_string)
 			unidentified_string = ""
 
-	if   comment_state == CommentState.INSIDE_SINGLE_COMMENT and line != "":
-		add_token(line_tokens, ReadingTypes.EXTRA, string)
+	# if   comment_state == CommentState.INSIDE_MULTI_COMMENT and line != "":
+	# 	add_token(line_tokens, ReadingTypes.EXTRA, string)
+	if seen_equals and line != "" and unidentified_string != "" and string != "":
+		add_token(line_tokens, ReadingTypes.VALUE, string)
+		add_token(line_tokens, ReadingTypes.EXTRA, unidentified_string)
 	elif seen_equals and line != "" and unidentified_string != "":
-		add_token(line_tokens, ReadingTypes.VALUE, string)
 		add_token(line_tokens, ReadingTypes.EXTRA, unidentified_string)
-	elif seen_equals and line != "":
+	elif seen_equals and line != "" and string != "":
 		add_token(line_tokens, ReadingTypes.VALUE, string)
+	elif line != "" and unidentified_string != "" and string != "":
+		add_token(line_tokens, ReadingTypes.PROPERTY, string)
+		add_token(line_tokens, ReadingTypes.EXTRA, unidentified_string)
 	elif line != "" and unidentified_string != "":
-		add_token(line_tokens, ReadingTypes.PROPERTY, string)
 		add_token(line_tokens, ReadingTypes.EXTRA, unidentified_string)
-	elif line != "":
+	elif line != "" and string != "":
 		add_token(line_tokens, ReadingTypes.PROPERTY, string)
+	elif line == "":
+		pass
+	else:
+		raise SeriousDesignError()
 
 	tab_count = depth_tab_count
 
