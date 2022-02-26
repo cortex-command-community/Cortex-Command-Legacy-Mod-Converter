@@ -35,21 +35,115 @@ def part_of_mod(p, mod_names):
 def get_tokens(text):
 	tokens = []
 
+	text_len = len(text)
+
 	i = 0
-	while i < len(text):
-		if text[i] == '\t':
-			i = tokenize_tabs(i, tokens)
-		elif text[i] == ' ':
-			i = tokenize_spaces(i, tokens)
+	while i < text_len:
+		if text[i] == "/":
+			i = tokenize_comment(i, text_len, text, tokens)
+		elif text[i] == "\t":
+			i = tokenize_tabs(i, text_len, text, tokens)
+		elif text[i] == " ":
+			i = tokenize_spaces(i, text_len, text, tokens)
+		elif text[i] == "=":
+			i = tokenize_equals(i, text_len, text, tokens)
+		elif text[i] == "\n":
+			i = tokenize_newline(i, text_len, text, tokens)
 		else:
-			raise ValueError("This line in the Python code is supposed to be unreachable.")
+			i = tokenize_word(i, text_len, text, tokens)
 
 	return tokens
 
 
-def tokenize_tabs(i, tokens):
+def tokenize_comment(i, text_len, text, tokens):
+	if i + 1 < text_len and text[i + 1] == "/":
+		return tokenize_single_line_comment(i, text_len, text, tokens)
+	else:
+		return tokenize_multi_line_comment(i, text_len, text, tokens)
+
+
+def tokenize_single_line_comment(i, text_len, text, tokens):
+	token = ""
+
+	while i < text_len and text[i] != "\n":
+		token += text[i]
+		i += 1
+
+	tokens.append(("EXTRA", token))
+
 	return i
 
 
-def tokenize_spaces(i, tokens):
+def tokenize_multi_line_comment(i, text_len, text, tokens):
+	token = ""
+
+	while i < text_len and not (text[i] == "*" and i + 1 < text_len and text[i + 1] == "/"):
+		token += text[i]
+		i += 1
+
+	token += "*/"
+	i += 2
+
+	tokens.append(("EXTRA", token))
+
+	return i
+
+
+def tokenize_tabs(i, text_len, text, tokens):
+	token = ""
+
+	while i < text_len and text[i] == "\t":
+		token += text[i]
+		i += 1
+
+	tokens.append(("TABS", token))
+
+	return i
+
+
+def tokenize_spaces(i, text_len, text, tokens):
+	token = ""
+
+	while i < text_len and text[i] == " ":
+		token += text[i]
+		i += 1
+
+	tokens.append(("EXTRA", token))
+
+	return i
+
+
+def tokenize_equals(i, text_len, text, tokens):
+	token = ""
+
+	while i < text_len and text[i] == "=":
+		token += text[i]
+		i += 1
+
+	tokens.append(("EQUALS", token))
+
+	return i
+
+
+def tokenize_newline(i, text_len, text, tokens):
+	token = ""
+
+	while i < text_len and text[i] == "\n":
+		token += text[i]
+		i += 1
+
+	tokens.append(("NEWLINES", token))
+
+	return i
+
+
+def tokenize_word(i, text_len, text, tokens):
+	token = ""
+
+	while i < text_len and text[i] not in ("\t =\n") and not (text[i] == "/" and i + 1 < text_len and text[i + 1] == "/"):
+		token += text[i]
+		i += 1
+
+	tokens.append(("WORD", token))
+
 	return i
