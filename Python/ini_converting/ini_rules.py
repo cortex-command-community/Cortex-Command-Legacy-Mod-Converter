@@ -4,7 +4,7 @@ from Python import thumbnail_generator
 
 
 """
-The structure of the "parsed" variable that's passed to the apply_rules_on_parsed function looks like this,
+The structure of the "parsed" variable that's passed to the apply_rules_on_cst function looks like this,
 where the "v" character is used to point down:
 
 {
@@ -36,11 +36,11 @@ where the "v" character is used to point down:
 """
 
 
-def apply_rules_on_parsed(parsed_subset):
+def apply_rules_on_cst(parsed_subset):
 	# print(pprint.pprint(parsed_subset))
 	for key, value in parsed_subset.items():
 		if isinstance(value, dict):
-			apply_rules_on_parsed(value)
+			apply_rules_on_cst(value)
 		else: # If it's a list of the sections of a file.
 			apply_rules_on_sections(value)
 

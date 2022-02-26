@@ -5,9 +5,6 @@ from enum import Enum, auto
 
 from Python.reading_types import ReadingTypes
 
-from Python.ini_converting import ini_rules
-from Python.ini_converting import ini_writer
-
 
 class CommentState(Enum):
 	NOT_IN_A_COMMENT       = auto()
@@ -17,53 +14,13 @@ class CommentState(Enum):
 	POSSIBLE_MULTI_ENDING  = auto()
 
 
-class SeriousDesignError(Exception):
-    pass
+def parse_token_cst():
+	pass
 
 
-def parse_and_convert(input_folder_path, output_folder_path):
-	mod_names = get_mod_names(input_folder_path)
-	parsed = parse(output_folder_path, mod_names)
-	# pprint.pprint(parsed)
-
-	ini_rules.apply_rules_on_parsed(parsed)
-	# pprint.pprint(parsed)
-
-	ini_writer.write_converted_ini_recursively(parsed, Path(output_folder_path))
-
-
-def get_mod_names(input_folder_path):
-	return [p.name for p in Path(input_folder_path).iterdir() if p.suffix == ".rte" and p.is_dir()]
-
-
-def parse(subfolder_path, mod_names):
-	parsed_portion = {}
-	for name in os.listdir(subfolder_path):
-		p = subfolder_path / Path(name)
-
-		if ".rte" not in str(p):
-			continue
-		elif not part_of_mod(p, mod_names): # TODO: Remove this once CCCP has a Mods folder that can be iterated over.
-			continue
-
-		if p.is_file() and p.suffix == ".ini" and p.stem != "desktop": # Skip the desktop.ini Windows metadata file.
-			parsed_portion[name] = parse_file(str(p))
-
-		if p.is_dir():
-			parsed_portion[name] = parse(p, mod_names)
-	return parsed_portion
-
-
-def part_of_mod(p, mod_names):
-	return any(mod_name in str(p) for mod_name in mod_names)
-
-
-def parse_file(file_path):
-	# print(file_path)
-	with open(file_path) as f:
-		parsed_file = []
-		parse_file_recursively(parsed_file, f)
-		return parsed_file
+# TODO: Why does convert.py already have a function with the same name?
+# def is_mod_folder(p):
+# 	return ".rte" in str(p)
 
 
 def parse_file_recursively(parsed_portion, f, depth_tab_count=0):
@@ -73,11 +30,10 @@ def parse_file_recursively(parsed_portion, f, depth_tab_count=0):
 	"""
 
 	for line_number, line in enumerate(f, start=1):
-		# print(repr(line))
 		line = line.strip("\n")
 
 		line_tokens, tab_count = get_tokenized_line(line, depth_tab_count)
-		print(line_tokens)
+		# print(line_tokens)
 
 		if tab_count == depth_tab_count:
 			parsed_portion.append(line_tokens)
@@ -221,7 +177,7 @@ def get_tokenized_line(line, depth_tab_count):
 	elif line == "":
 		pass
 	else:
-		raise SeriousDesignError()
+		raise ValueError("This line in the Python code is supposed to be unreachable.")
 
 	tab_count = depth_tab_count
 
