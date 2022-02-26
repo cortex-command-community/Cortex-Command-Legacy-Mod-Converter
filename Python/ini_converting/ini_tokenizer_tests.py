@@ -1,5 +1,6 @@
 from pathlib import Path
 
+from Python import utils
 from Python import tests
 from Python.ini_converting import ini_tokenizer
 
@@ -24,4 +25,4 @@ def test(filename, expected):
 
 
 def read_test(filename):
-	return ("Python/ini_converting/ini_tokenizer_test_files" / Path(filename + ".ini")).read_text()
+	return Path(utils.resource_path(f"Python/ini_converting/ini_test_files/{filename}.ini")).read_text()
