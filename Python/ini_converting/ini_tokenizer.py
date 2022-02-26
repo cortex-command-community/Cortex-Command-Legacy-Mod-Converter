@@ -55,6 +55,10 @@ def get_tokens(text):
 	return tokens
 
 
+def get_token(type_, content):
+	return { "type": type_, "content": content }
+
+
 def tokenize_comment(i, text_len, text, tokens):
 	if i + 1 < text_len and text[i + 1] == "/":
 		return tokenize_single_line_comment(i, text_len, text, tokens)
@@ -69,7 +73,7 @@ def tokenize_single_line_comment(i, text_len, text, tokens):
 		token += text[i]
 		i += 1
 
-	tokens.append(("EXTRA", token))
+	tokens.append(get_token("EXTRA", token))
 
 	return i
 
@@ -84,7 +88,7 @@ def tokenize_multi_line_comment(i, text_len, text, tokens):
 	token += "*/"
 	i += 2
 
-	tokens.append(("EXTRA", token))
+	tokens.append(get_token("EXTRA", token))
 
 	return i
 
@@ -96,7 +100,7 @@ def tokenize_tabs(i, text_len, text, tokens):
 		token += text[i]
 		i += 1
 
-	tokens.append(("TABS", token))
+	tokens.append(get_token("TABS", token))
 
 	return i
 
@@ -108,7 +112,7 @@ def tokenize_spaces(i, text_len, text, tokens):
 		token += text[i]
 		i += 1
 
-	tokens.append(("EXTRA", token))
+	tokens.append(get_token("EXTRA", token))
 
 	return i
 
@@ -120,7 +124,7 @@ def tokenize_equals(i, text_len, text, tokens):
 		token += text[i]
 		i += 1
 
-	tokens.append(("EQUALS", token))
+	tokens.append(get_token("EQUALS", token))
 
 	return i
 
@@ -132,7 +136,7 @@ def tokenize_newline(i, text_len, text, tokens):
 		token += text[i]
 		i += 1
 
-	tokens.append(("NEWLINES", token))
+	tokens.append(get_token("NEWLINES", token))
 
 	return i
 
@@ -144,6 +148,6 @@ def tokenize_word(i, text_len, text, tokens):
 		token += text[i]
 		i += 1
 
-	tokens.append(("WORD", token))
+	tokens.append(get_token("WORD", token))
 
 	return i
