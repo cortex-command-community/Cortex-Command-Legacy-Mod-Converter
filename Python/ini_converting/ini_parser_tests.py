@@ -4,6 +4,11 @@ from Python.ini_converting import ini_parser
 
 
 def parser_tests():
+	test("simple", [
+		[
+			{ "type": "property", "content": "AddEffect" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "MOPixel" }
+		]
+	])
 	test("multiple", [
 		[
 			{ "type": "property", "content": "Foo" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Bar" }, { "type": "extra", "content": "\n" },
