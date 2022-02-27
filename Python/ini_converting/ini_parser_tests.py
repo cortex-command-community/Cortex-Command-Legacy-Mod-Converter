@@ -19,7 +19,7 @@ def parser_tests():
 		[
 			{ "type": "property", "content": "A" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "B" }, { "type": "extra", "content": "\n" },
 			{ "type": "lines_tokens", "content": [
-				{ "type": "extra", "content": "\t" }, { "type": "property", "content": "C" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "D" }
+				{ "type": "extra", "content": "\t" }, { "type": "property", "content": "C" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "D" }, { "type": "extra", "content": "\n" }
 			]}
 		]
 	])
@@ -43,4 +43,5 @@ def parser_tests():
 def test(filename, expected):
 	text = tests.read_test(filename)
 	tokens = ini_tokenizer.get_tokens(text)
-	tests.test(text, ini_parser.get_parsed_tokens(tokens), expected)
+	ini_cst, _ = ini_parser.get_parsed_tokens(tokens, [])
+	tests.test(text, ini_cst, expected)
