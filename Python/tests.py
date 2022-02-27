@@ -1,21 +1,20 @@
 import sys
+from pathlib import Path
 
+from Python import utils
 from Python.ini_converting import ini_tokenizer_tests
 from Python.ini_converting import ini_parser_tests
 
 
 def run():
 	ini_tokenizer_tests.tokenizer_tests()
-	single_line_tests()
-	multi_line_tests()
+	ini_parser_tests.parser_tests()
+	# ini_parser_tests.single_line_tests()
+	# ini_parser_tests.multi_line_tests()
 
 
-def single_line_tests():
-	ini_parser_tests.single_line_tests()
-
-
-def multi_line_tests():
-	ini_parser_tests.multi_line_tests()
+def read_test(filename):
+	return Path(utils.resource_path(f"Python/ini_converting/ini_test_files/{filename}.ini")).read_text()
 
 
 def test(input_str, result, expected):

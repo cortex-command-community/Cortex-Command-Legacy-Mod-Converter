@@ -12,8 +12,7 @@ from Python import warnings
 from Python.case_check import case_check
 from Python import utils
 
-from Python.ini_converting import ini_tokenizer
-from Python.ini_converting import ini_parser
+from Python.ini_converting import ini_cst_builder
 from Python.ini_converting import ini_rules
 from Python.ini_converting import ini_writer
 
@@ -43,12 +42,9 @@ def convert():
 
 	converter_walk(input_folder_path, output_folder_path)
 
-
-	token_cst = ini_tokenizer.get_token_cst(input_folder_path, mod_names)
-	cst = ini_parser.parse_token_cst(token_cst)
-	ini_rules.apply_rules_on_cst(cst)
-	ini_writer.write_converted_ini_recursively(cst, Path(output_folder_path))
-
+	ini_cst = ini_cst_builder.get_ini_cst(input_folder_path, input_folder_path)
+	ini_rules.apply_rules_on_ini_cst(ini_cst)
+	ini_writer.write_converted_ini_cst(ini_cst, Path(output_folder_path))
 
 	if cfg.sg.user_settings_get_entry("output_zips"):
 		zips_py.create_zips(input_folder_path, output_folder_path)

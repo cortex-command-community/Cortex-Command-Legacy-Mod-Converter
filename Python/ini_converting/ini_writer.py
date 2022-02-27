@@ -1,8 +1,8 @@
-def write_converted_ini_recursively(parsed_portion, output_folder_path):
+def write_converted_ini_cst(parsed_portion, output_folder_path):
 	# pprint.pprint(parsed_portion)
 	for name, dict_or_list in parsed_portion.items():
 		if isinstance(dict_or_list, dict): # If dict_or_list contains a dictionary of more filenames.
-			write_converted_ini_recursively(dict_or_list, output_folder_path / name)
+			write_converted_ini_cst(dict_or_list, output_folder_path / name)
 		else: # If dict_or_list contains a list of the sections of a file.
 			# pprint.pprint(dict_or_list)
 			with open(str(output_folder_path / name), mode="w") as f:
