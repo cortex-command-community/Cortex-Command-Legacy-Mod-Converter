@@ -18,7 +18,7 @@ def parser_tests():
 			]}
 		]
 	])
-	test("2", [
+	test("complex", [
 		[
 			{ "type": "extra", "content": "\n" },
 			{ "type": "extra", "content": "// foo"}, { "type": "extra", "content": "\n" },

@@ -3,7 +3,7 @@ from Python.ini_converting import ini_tokenizer
 
 
 def tokenizer_tests():
-	test("1", [
+	test("simple", [
 		{ "type": "WORD", "content": "AddEffect" }, { "type": "EXTRA", "content": " " }, { "type": "EQUALS", "content": "=" }, { "type": "EXTRA", "content": " " }, { "type": "WORD", "content": "MOPixel" },
 	])
 	test("multiple", [
@@ -12,7 +12,7 @@ def tokenizer_tests():
 		{ "type": "WORD", "content": "A" }, { "type": "EXTRA", "content": " " }, { "type": "EQUALS", "content": "=" }, { "type": "EXTRA", "content": " " }, { "type": "WORD", "content": "B" }, { "type": "NEWLINES", "content": "\n" },
 		{ "type": "TABS", "content": "\t" }, { "type": "WORD", "content": "C" }, { "type": "EXTRA", "content": " " }, { "type": "EQUALS", "content": "=" }, { "type": "EXTRA", "content": " " }, { "type": "WORD", "content": "D" }, { "type": "NEWLINES", "content": "\n" },
 	])
-	test("2", [
+	test("complex", [
 		{ "type": "NEWLINES", "content": "\n" },
 		{ "type": "EXTRA", "content": "// foo" }, { "type": "NEWLINES", "content": "\n" },
 		{ "type": "EXTRA", "content": "/*a\nb\nc*/" }, { "type": "NEWLINES", "content": "\n" },
