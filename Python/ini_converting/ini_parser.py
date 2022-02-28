@@ -1,4 +1,4 @@
-def get_parsed_tokens(tokens, parsed, token_idx, depth=0):
+def get_parsed_tokens(tokens, parsed, token_idx, depth=-1):
 	"""
 	start -> tabs -> property -> equals -> value -> newline
     ^   v            ^                              v
@@ -13,13 +13,21 @@ def get_parsed_tokens(tokens, parsed, token_idx, depth=0):
 		if state == "start" and token["type"] == "TABS" and is_less_deep(depth, token):
 			return
 		elif state == "start" and token["type"] == "TABS" and is_deeper(depth, token):
-			parsed.append( { "type": "lines_tokens", "content": [] } )
-			get_parsed_tokens(tokens, parsed[-1]["content"], token_idx, depth + 1)
-		elif state == "start" and token["type"] == "TABS":
-			parsed.append( [ { "type": "lines_tokens", "content": [] } ] )
+			parsed.append(
+			{ "type": "lines_tokens", "content": [
+				[
+					{ "type": "extra", "content": token["content"] }
+				]
+			]}
+			)
 			token_idx[0] += 1
-			get_parsed_tokens(tokens, parsed[-1], token_idx, depth)
-		elif (state == "start" or state == "tabs") and token["type"] == "WORD":
+			get_parsed_tokens(tokens, parsed[-1]["content"][0], token_idx, depth + 1)
+		elif state == "start" and token["type"] == "TABS":
+			return
+		elif state == "start" and token["type"] == "WORD" and depth == -1:
+			parsed.append([])
+			get_parsed_tokens(tokens, parsed[-1], token_idx, depth + 1)
+		elif state == "start" and token["type"] == "WORD":
 			parsed.append( { "type": "property", "content": token["content"] } )
 			state = "property"
 			token_idx[0] += 1
