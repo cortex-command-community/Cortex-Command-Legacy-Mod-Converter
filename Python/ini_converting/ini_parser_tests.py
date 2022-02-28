@@ -4,18 +4,18 @@ from Python.ini_converting import ini_parser
 
 
 def parser_tests():
-	# test("simple", [
-	# 	[
-	# 		{ "type": "property", "content": "AddEffect" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "MOPixel" }
-	# 	]
-	# ])
-	# test("comments", [
-	# 	[
-	# 		{ "type": "extra", "content": "\n" },
-	# 		{ "type": "extra", "content": "// foo"}, { "type": "extra", "content": "\n" },
-	# 		{ "type": "extra", "content": "/*a\nb\nc*/" }, { "type": "extra", "content": "\n" },
-	# 	],
-	# ])
+	test("simple", [
+		[
+			{ "type": "property", "content": "AddEffect" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "MOPixel" }
+		]
+	])
+	test("comments", [
+		[
+			{ "type": "extra", "content": "\n" },
+			{ "type": "extra", "content": "// foo"}, { "type": "extra", "content": "\n" },
+			{ "type": "extra", "content": "/*a\nb\nc*/" }, { "type": "extra", "content": "\n" },
+		],
+	])
 	test("nested", [
 		[
 			{ "type": "property", "content": "Foo" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Bar" }, { "type": "extra", "content": "\n" },

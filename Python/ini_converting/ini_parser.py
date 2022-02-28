@@ -10,27 +10,31 @@ def get_parsed_tokens(tokens, parsed, token_idx, depth=-1):
 	while token_idx[0] < len(tokens):
 		token = tokens[token_idx[0]]
 
-		if state == "start" and token["type"] == "TABS" and is_less_deep(depth, token):
-			return
+		if depth == -1:
+			parsed.append([])
+			get_parsed_tokens(tokens, parsed[-1], token_idx, depth + 1)
+
 		elif state == "start" and token["type"] == "TABS" and is_deeper(depth, token):
 			parsed.append(
 			{ "type": "lines_tokens", "content": [
 				[
-					{ "type": "extra", "content": token["content"] }
+
 				]
 			]}
 			)
-			token_idx[0] += 1
 			get_parsed_tokens(tokens, parsed[-1]["content"][0], token_idx, depth + 1)
+
 		elif state == "start" and token["type"] == "TABS":
-			return
-		elif state == "start" and token["type"] == "WORD" and depth == -1:
-			parsed.append([])
-			get_parsed_tokens(tokens, parsed[-1], token_idx, depth + 1)
-		elif state == "start" and token["type"] == "WORD":
+			parsed.append( { "type": "extra", "content": token["content"] } )
+			state = "tabs"
+			token_idx[0] += 1
+		elif (state == "start" or state == "tabs") and token["type"] == "WORD":
 			parsed.append( { "type": "property", "content": token["content"] } )
 			state = "property"
 			token_idx[0] += 1
+		elif state == "start" and is_less_deep(depth, token):
+			return
+
 		elif state == "property" and token["type"] == "EQUALS":
 			parsed.append( { "type": "extra", "content": token["content"] } )
 			state = "equals"
@@ -43,6 +47,7 @@ def get_parsed_tokens(tokens, parsed, token_idx, depth=-1):
 			parsed.append( { "type": "extra", "content": token["content"] } )
 			state = "start"
 			token_idx[0] += 1
+
 		else:
 			parsed.append( { "type": "extra", "content": token["content"] } )
 			token_idx[0] += 1
@@ -51,13 +56,13 @@ def get_parsed_tokens(tokens, parsed, token_idx, depth=-1):
 
 
 def is_less_deep(depth, token):
-	return get_depth(token["content"]) < depth
+	return get_depth(token) < depth
 
 
 def is_deeper(depth, token):
 	# TODO: This should throw an error if it's deeper by more than 1.
-	return get_depth(token["content"]) > depth
+	return get_depth(token) > depth
 
 
-def get_depth(content):
-	return len(content)
+def get_depth(token):
+	return len(token["content"])
