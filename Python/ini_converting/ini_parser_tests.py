@@ -69,6 +69,6 @@ def parser_tests():
 
 def test(filename, expected):
 	text = tests.read_test(filename)
-	tokens = ini_tokenizer.get_tokens(text)
-	ini_cst = ini_parser.get_parsed_tokens(tokens, [], [0])
+	tokens = ini_tokenizer.get_tokens(filename)
+	ini_cst = ini_parser.get_parsed_tokens(tokens)
 	tests.test(text, ini_cst, expected)

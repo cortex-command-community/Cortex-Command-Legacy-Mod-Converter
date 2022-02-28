@@ -1,34 +1,41 @@
-def get_parsed_tokens(tokens, parsed, token_idx, depth=0):
+def get_parsed_tokens(tokens, parsed=None, token_idx=None, depth=0):
 	"""
-	start -> tabs -> property -> equals -> value -> newline
-    ^   v            ^                              v
-	|   +------------+                              |
-	+-----------------------------------------------+
+	newline -> start -> property -> equals -> value
+	^                                         v
+	+-----------------------------------------+
 	"""
-	state = "start"
+
+	if parsed == None:
+		parsed = []
+	if token_idx == None:
+		token_idx = [0]
+
+	state = "newline"
 
 	while token_idx[0] < len(tokens):
 		token = tokens[token_idx[0]]
 
-		if state == "start" and token["type"] == "TABS" and is_deeper(depth, token):
+		if state == "newline" and token["type"] == "EXTRA":
+			parsed[-1].append( { "type": "extra", "content": token["content"] } )
+			token_idx[0] += 1
+		elif state == "newline" and token["type"] == "NEWLINES":
+			parsed[-1].append( { "type": "extra", "content": token["content"] } )
+			token_idx[0] += 1
+
+		elif state == "newline" and token["type"] == "TABS" and is_deeper(depth, token):
 			children = { "type": "children", "content": [] }
 			parsed[-1].append(children)
 			get_parsed_tokens(tokens, children["content"], token_idx, depth + 1)
-		elif state == "start" and is_less_deep(depth, token):
+		elif state == "newline" and is_less_deep(depth, token):
 			return
-
-		elif state == "start":
+		elif state == "newline":
 			parsed.append([])
-			state = "not-start"
-		elif state == "not-start" and token["type"] == "TABS":
-			parsed[-1].append( { "type": "extra", "content": token["content"] } )
-			state = "tabs"
-			token_idx[0] += 1
-		elif (state == "not-start" or state == "tabs") and token["type"] == "WORD":
+			state = "start"
+
+		elif state == "start" and token["type"] == "WORD":
 			parsed[-1].append( { "type": "property", "content": token["content"] } )
 			state = "property"
 			token_idx[0] += 1
-
 		elif state == "property" and token["type"] == "EQUALS":
 			parsed[-1].append( { "type": "extra", "content": token["content"] } )
 			state = "equals"
@@ -39,7 +46,7 @@ def get_parsed_tokens(tokens, parsed, token_idx, depth=0):
 			token_idx[0] += 1
 		elif state == "value" and token["type"] == "NEWLINES":
 			parsed[-1].append( { "type": "extra", "content": token["content"] } )
-			state = "start"
+			state = "newline"
 			token_idx[0] += 1
 
 		else:
@@ -54,9 +61,28 @@ def is_less_deep(depth, token):
 
 
 def is_deeper(depth, token):
-	# TODO: This should throw an error if it's deeper by more than 1.
-	return get_depth(token) > depth
+	new_depth = get_depth(token)
+	if new_depth > depth + 1:
+		line, column = get_token_pos(token)
+		raise ValueError(f"Too many tabs found at line {line}, column {column} in {token['filepath']}")
+	return new_depth > depth
 
 
 def get_depth(token):
 	return len(token["content"]) if token["type"] == "TABS" else 0
+
+
+def get_token_pos(token):
+	with open(token["filepath"], "r") as f:
+		text = f.read()
+	i = 0
+	line = 1
+	column = 1
+	while i < token["index"]:
+		if text[i] == '\n':
+			line += 1
+			column = 0
+		else:
+			column += 1
+		i += 1
+	return line, column

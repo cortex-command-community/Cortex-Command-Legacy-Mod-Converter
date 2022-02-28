@@ -30,4 +30,4 @@ def tokenizer_tests():
 
 def test(filename, expected):
 	text = tests.read_test(filename)
-	tests.test(text, ini_tokenizer.get_tokens(text), expected)
+	tests.test(text, ini_tokenizer.get_tokens(filename), expected)
