@@ -20,7 +20,7 @@ def get_ini_cst(input_folder_path, subfolder_path):
 			continue
 		elif p.is_file() and p.suffix == ".ini" and p.stem != "desktop": # Skip the desktop.ini Windows metadata file.
 			tokens = ini_tokenizer.get_tokens(p.read_text())
-			parsed_portion[name], _ = ini_parser.get_parsed_tokens(tokens, []) # _ is to get rid of the returned i, cause otherwise it'd return a tuple.
+			parsed_portion[name] = ini_parser.get_parsed_tokens(tokens, [], [0])
 		elif p.is_dir():
 			parsed_portion[name] = get_ini_cst(input_folder_path, str(p))
 

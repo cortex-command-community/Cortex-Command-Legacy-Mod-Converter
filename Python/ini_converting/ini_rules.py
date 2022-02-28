@@ -4,32 +4,11 @@ from Python import thumbnail_generator
 
 
 """
-The structure of the "parsed" variable that's passed to the apply_rules_on_ini_cst function looks like this,
-where the "v" character is used to point down:
-
 {
 	"foo.rte": {
+		"Foo.ini": ini_cst,
 		"FolderName": {
-			"Bar.ini": [ < holds sections of a file
-				section and also line_tokens
-				v   token
-				[   v
-					{ "type": "extra", "content": "// foo" }
-				],
-
-				section and also line_tokens
-				v   token
-				[   v
-					{ "type": "lines_tokens", "content": [
-						line_tokens
-						v   token
-						[   v
-							{ "type": "property", "content": "PresetName" },
-							{ "type": "value", "content": "foo" }
-						]
-					]}
-				]
-			]
+			"Bar.ini": ini_cst,
 		}
 	}
 }

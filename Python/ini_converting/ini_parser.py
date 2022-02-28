@@ -1,4 +1,4 @@
-def get_parsed_tokens(tokens, parsed, i=0, depth=-1):
+def get_parsed_tokens(tokens, parsed, token_idx, depth=0):
 	"""
 	start -> tabs -> property -> equals -> value -> newline
     ^   v            ^                              v
@@ -7,48 +7,39 @@ def get_parsed_tokens(tokens, parsed, i=0, depth=-1):
 	"""
 	state = "start"
 
-	while i < len(tokens):
-		token = tokens[i]
+	while token_idx[0] < len(tokens):
+		token = tokens[token_idx[0]]
 
-		if depth == -1:
-			parsed.append( { "type": "lines_tokens", "content": [] } )
-			_, i = get_parsed_tokens(tokens, parsed[-1]["content"], i, depth + 1)
-		elif state == "start" and token["type"] == "TABS" and is_less_deep(depth, token):
-			return parsed, i
+		if state == "start" and token["type"] == "TABS" and is_less_deep(depth, token):
+			return
 		elif state == "start" and token["type"] == "TABS" and is_deeper(depth, token):
 			parsed.append( { "type": "lines_tokens", "content": [] } )
-			return get_parsed_tokens(tokens, parsed[-1]["content"], i, depth + 1)
+			get_parsed_tokens(tokens, parsed[-1]["content"], token_idx, depth + 1)
 		elif state == "start" and token["type"] == "TABS":
-			parsed.append( { "type": "extra", "content": token["content"] } )
-			state = "tabs"
-			i += 1
-		elif state == "tabs" and token["type"] == "WORD":
+			parsed.append( [ { "type": "lines_tokens", "content": [] } ] )
+			token_idx[0] += 1
+			get_parsed_tokens(tokens, parsed[-1], token_idx, depth)
+		elif (state == "start" or state == "tabs") and token["type"] == "WORD":
 			parsed.append( { "type": "property", "content": token["content"] } )
 			state = "property"
-			i += 1
-		elif state == "start" and token["type"] == "WORD" and depth == 0:
-			parsed.append( { "type": "property", "content": token["content"] } )
-			state = "property"
-			i += 1
-		elif state == "start" and token["type"] == "WORD":
-			return parsed, i
+			token_idx[0] += 1
 		elif state == "property" and token["type"] == "EQUALS":
 			parsed.append( { "type": "extra", "content": token["content"] } )
 			state = "equals"
-			i += 1
+			token_idx[0] += 1
 		elif state == "equals" and token["type"] == "WORD":
 			parsed.append( { "type": "value", "content": token["content"] } )
 			state = "value"
-			i += 1
+			token_idx[0] += 1
 		elif state == "value" and token["type"] == "NEWLINES":
 			parsed.append( { "type": "extra", "content": token["content"] } )
 			state = "start"
-			i += 1
+			token_idx[0] += 1
 		else:
 			parsed.append( { "type": "extra", "content": token["content"] } )
-			i += 1
+			token_idx[0] += 1
 
-	return parsed, i
+	return parsed
 
 
 def is_less_deep(depth, token):
