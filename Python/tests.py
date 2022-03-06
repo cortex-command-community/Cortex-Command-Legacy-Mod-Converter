@@ -13,8 +13,12 @@ def run():
 	# ini_parser_tests.multi_line_tests()
 
 
-def read_test(filename):
-	return Path(utils.resource_path(f"Python/ini_converting/ini_test_files/{filename}.ini")).read_text()
+def get_test_path_from_filename(filename):
+	return Path(utils.resource_path(f"Python/ini_converting/ini_test_files/{filename}.ini"))
+
+
+def read_test(filepath):
+	return filepath.read_text()
 
 
 def test(input_str, result, expected):
@@ -28,5 +32,13 @@ def test(input_str, result, expected):
 	)
 
 	# print(result)
+
+	# TODO: Comment these out before releasing this!
+	# import json
+	# with open("result.json", "w") as f:
+	# 	f.write(json.dumps(result))
+	# with open("expected.json", "w") as f:
+	# 	f.write(json.dumps(expected))
+
 	# TODO: Make the error_message not show twice in the popup.
 	assert result == expected, error_message

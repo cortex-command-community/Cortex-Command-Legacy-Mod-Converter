@@ -35,5 +35,10 @@ def tokenizer_tests():
 
 
 def test(filename, expected):
-	text = tests.read_test(filename)
-	tests.test(text, ini_tokenizer.get_tokens(filename), expected)
+	filepath = tests.get_test_path_from_filename(filename)
+	text = tests.read_test(filepath)
+
+	tokens = ini_tokenizer.get_tokens(str(filepath))
+	tokens_without_metadata = [ { "type": token["type"], "content": token["content"] } for token in tokens]
+
+	tests.test(text, tokens_without_metadata, expected)

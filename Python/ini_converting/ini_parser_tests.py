@@ -15,6 +15,23 @@ def parser_tests():
 	# 		{ "type": "extra", "content": "\t\t" }, { "type": "property", "content": "Foo" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Bar" }
 	# 	]
 	# ])
+	# test("comments", [
+	# 	[
+	# 		{ "type": "extra", "content": "\n" },
+	# 		{ "type": "extra", "content": "// foo"}, { "type": "extra", "content": "\n" },
+	# 		{ "type": "extra", "content": "/*a\nb\nc*/" }, { "type": "extra", "content": "\n" },
+	# 	],
+	# ])
+	# test("nested", [
+	# 	[
+	# 		{ "type": "property", "content": "Foo" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Bar" }, { "type": "extra", "content": "\n" },
+	# 		{ "type": "lines_tokens", "content": [
+	# 			[
+	# 				{ "type": "extra", "content": "\t" }, { "type": "property", "content": "Baz" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Bee" }, { "type": "extra", "content": "\n" }
+	# 			]
+	# 		]}
+	# 	]
+	# ])
 	# test("multiple", [
 	# 	[
 	# 		{ "type": "property", "content": "Foo" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Bar" }, { "type": "extra", "content": "\n" },
@@ -57,7 +74,8 @@ def parser_tests():
 
 
 def test(filename, expected):
-	text = tests.read_test(filename)
-	tokens = ini_tokenizer.get_tokens(filename)
+	filepath = tests.get_test_path_from_filename(filename)
+	text = tests.read_test(filepath)
+	tokens = ini_tokenizer.get_tokens(str(filepath))
 	ini_cst = ini_parser.get_parsed_tokens(tokens)
 	tests.test(text, ini_cst, expected)
