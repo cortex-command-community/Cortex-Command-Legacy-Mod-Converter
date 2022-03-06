@@ -75,14 +75,15 @@ def get_depth(token):
 def get_token_pos(token):
 	with open(token["filepath"], "r") as f:
 		text = f.read()
-	i = 0
+
 	line = 1
 	column = 1
-	while i < token["index"]:
-		if text[i] == '\n':
+
+	for char in text[:token["index"]]:
+		if char == '\n':
 			line += 1
 			column = 0
 		else:
 			column += 1
-		i += 1
+
 	return line, column
