@@ -6,6 +6,12 @@ def tokenizer_tests():
 	test("simple", [
 		{ "type": "WORD", "content": "AddEffect" }, { "type": "EXTRA", "content": " " }, { "type": "EQUALS", "content": "=" }, { "type": "EXTRA", "content": " " }, { "type": "WORD", "content": "MOPixel" },
 	])
+	# It's fine that the tokenizer doesn't notice that there's invalid tabbing in "invalid_tabbing.ini" and happily outputs this data,
+	# because checking for invalid tabbing is the parser's responsibility.
+	test("invalid_tabbing", [
+		{ "type": "WORD", "content": "AddEffect" }, { "type": "EXTRA", "content": " " }, { "type": "EQUALS", "content": "=" }, { "type": "EXTRA", "content": " " }, { "type": "WORD", "content": "MOPixel" }, { "type": "NEWLINES", "content": "\n" },
+		{ "type": "TABS", "content": "\t\t" }, { "type": "WORD", "content": "Foo" }, { "type": "EXTRA", "content": " " }, { "type": "EQUALS", "content": "=" }, { "type": "EXTRA", "content": " " }, { "type": "WORD", "content": "Bar" },
+	])
 	test("comments", [
 		{ "type": "NEWLINES", "content": "\n" },
 		{ "type": "EXTRA", "content": "// foo" }, { "type": "NEWLINES", "content": "\n" },
