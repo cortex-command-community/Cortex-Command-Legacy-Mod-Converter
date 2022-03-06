@@ -18,7 +18,7 @@
 	"Particle Napalm Bomb 2": "Particle Napalm Bomb",
 	"Particle Napalm Bomb 3": "Particle Napalm Bomb",
 	"CopyOf = Atom Group Null": "CopyOf = Null AtomGroup",
-	"CopyOf = HandGroup": "CopyOf = Human Hand",
+	"CopyOf = HandGroup\n": "CopyOf = Human Hand\n",
 	"CopyOf = Foot\n": "CopyOf = Human Foot\n",
 	"CopyOf = CrabFootGroup": "CopyOf = Crab Foot",
 	"CopyOf = Rocket Landing Gear Foot Right": "CopyOf = Rocket Landing Gear Foot",
