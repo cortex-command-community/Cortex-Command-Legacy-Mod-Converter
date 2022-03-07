@@ -17,11 +17,11 @@ def get_lines_from_dicts_recursively(line_tokens, lines):
 
 	line = ""
 	for dictionary in line_tokens:
-		if dictionary["type"] != "lines_tokens":
+		if dictionary["type"] != "children":
 			line += dictionary["content"]
 	lines.append(line)
 
 	for dictionary in line_tokens:
-		if dictionary["type"] == "lines_tokens":
+		if dictionary["type"] == "children":
 			for line_tokens in dictionary["content"]:
 				get_lines_from_dicts_recursively(line_tokens, lines)

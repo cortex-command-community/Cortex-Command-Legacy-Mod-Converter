@@ -15,14 +15,14 @@ def get_parsed_tokens(tokens, parsed=None, token_idx=None, depth=0):
 	while token_idx[0] < len(tokens):
 		token = tokens[token_idx[0]]
 
-		if state == "newline" and token["type"] == "EXTRA":
-			parsed[-1].append( { "type": "extra", "content": token["content"] } )
-			token_idx[0] += 1
-		elif state == "newline" and token["type"] == "NEWLINES":
-			parsed[-1].append( { "type": "extra", "content": token["content"] } )
-			token_idx[0] += 1
+		# if state == "newline" and token["type"] == "EXTRA":
+		# 	parsed[-1].append( { "type": "extra", "content": token["content"] } )
+		# 	token_idx[0] += 1
+		# elif state == "newline" and token["type"] == "NEWLINES":
+		# 	parsed[-1].append( { "type": "extra", "content": token["content"] } )
+		# 	token_idx[0] += 1
 
-		elif state == "newline" and token["type"] == "TABS" and is_deeper(depth, token):
+		if state == "newline" and token["type"] == "TABS" and is_deeper(depth, token):
 			children = { "type": "children", "content": [] }
 			parsed[-1].append(children)
 			get_parsed_tokens(tokens, children["content"], token_idx, depth + 1)

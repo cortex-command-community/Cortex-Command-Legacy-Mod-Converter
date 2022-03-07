@@ -27,16 +27,16 @@ def apply_rules_on_ini_cst(parsed_subset):
 def apply_rules_on_sections(parsed_subset):
 	for section in parsed_subset:
 		for token in section:
-			if token["type"] == "lines_tokens":
-				lines_tokens = token["content"]
+			if token["type"] == "children":
+				children = token["content"]
 
 				# TODO: Remove contains_property_shallowly() and write out what they do in this function
-				if contains_property_shallowly(lines_tokens, "MaxMass"):
-					max_mass_to_max_inventory_mass(lines_tokens)
+				if contains_property_shallowly(children, "MaxMass"):
+					max_mass_to_max_inventory_mass(children)
 
-				iconfile_path = iconfile_path_to_thumbnail_generator(lines_tokens)
+				iconfile_path = iconfile_path_to_thumbnail_generator(children)
 
-				for line_tokens in lines_tokens:
+				for line_tokens in children:
 					replace_property_and_value(line_tokens, "MinThrottleRange", "NegativeThrottleMultiplier", min_throttle_range_to_negative_throttle_multiplier)
 					replace_property_and_value(line_tokens, "MaxThrottleRange", "PositiveThrottleMultiplier", max_throttle_range_to_positive_throttle_multiplier)
 
@@ -44,15 +44,15 @@ def apply_rules_on_sections(parsed_subset):
 		# TODO: I don't remember whether this one works
 		if contains_property_and_value_shallowly(section, "AddActor", "Leg"):
 			for token in section:
-				if token["type"] == "lines_tokens":
-					lines_tokens = token["content"]
+				if token["type"] == "children":
+					children = token["content"]
 
-					max_length_to_offsets(lines_tokens)
+					max_length_to_offsets(children)
 
 
-def contains_property_shallowly(lines_tokens, prop):
+def contains_property_shallowly(children, prop):
 	""" This function deliberately doesn't check the section's contents recursively. """
-	return [True for line_tokens in lines_tokens for token in line_tokens if token["type"] == "property" and token["content"] == prop] != []
+	return [True for line_tokens in children for token in line_tokens if token["type"] == "property" and token["content"] == prop] != []
 
 
 def contains_property_and_value_shallowly(section, prop, value):
@@ -67,13 +67,13 @@ def contains_property_and_value_shallowly(section, prop, value):
 	return contains_property and contains_value
 
 
-def max_mass_to_max_inventory_mass(lines_tokens):
+def max_mass_to_max_inventory_mass(children):
 	""" MaxInventoryMass = MaxMass - Mass """
 
 	mass = 0 # The Mass is optionally defined in the INI file.
 
 	# TODO: Find a way to split these into subfunctions.
-	for line_tokens in lines_tokens:
+	for line_tokens in children:
 		for token in line_tokens:
 			if token["type"] == "property":
 				if token["content"] == "Mass":
@@ -90,7 +90,7 @@ def max_mass_to_max_inventory_mass(lines_tokens):
 
 	max_inventory_mass = remove_excess_zeros(max_mass - mass)
 
-	for line_tokens in lines_tokens:
+	for line_tokens in children:
 		for token in line_tokens:
 			if token["type"] == "property":
 				if token["content"] == "MaxMass":
@@ -127,7 +127,7 @@ def max_throttle_range_to_positive_throttle_multiplier(old_value):
 
 
 # TODO: Refactor max_length_to_offsets and max_length_to_offsets_2
-def max_length_to_offsets(lines_tokens):
+def max_length_to_offsets(children):
 	"""
 	If the parent line is AddActor = Leg:
 	MaxLength = old_value
@@ -140,18 +140,18 @@ def max_length_to_offsets(lines_tokens):
 		Y = 0
 	"""
 
-	for index, line_tokens in enumerate(lines_tokens):
+	for index, line_tokens in enumerate(children):
 		old_value = max_length_to_offsets_2(line_tokens)
 
 		if old_value != None:
 			# print(index, old_value)
 
-			lines_tokens.insert(index + 1, [
+			children.insert(index + 1, [
 				{ "type": "extra", "content": "\t" },
 				{ "type": "property", "content": "ExtendedOffset" },
 				{ "type": "extra", "content": " "}, {"type": "extra", "content": "="}, {"type": "extra", "content": " "},
 				{ "type": "value", "content": "Vector" },
-				{ "type": "lines_tokens", "content": [
+				{ "type": "children", "content": [
 					[
 						{ "type": "extra", "content": "\t\t" },
 						{ "type": "property", "content": "X" },
@@ -179,7 +179,7 @@ def max_length_to_offsets_2(line_tokens):
 						old_value = float(token_2["content"])
 						token_2["content"] = "Vector"
 
-						line_tokens.append( { "type": "lines_tokens", "content": [
+						line_tokens.append( { "type": "children", "content": [
 							[
 								{ "type": "extra", "content": "\t\t" },
 								{ "type": "property", "content": "X" },
@@ -197,15 +197,15 @@ def max_length_to_offsets_2(line_tokens):
 						return old_value
 
 
-def iconfile_path_to_thumbnail_generator(lines_tokens):
-	for line_tokens in lines_tokens:
+def iconfile_path_to_thumbnail_generator(children):
+	for line_tokens in children:
 		if {"type": "property", "content": "IconFile"} in line_tokens and {"type": "value", "content": "ContentFile"} in line_tokens:
 			for token in line_tokens:
-				if token["type"] == "lines_tokens":
-					sublines_tokens = token["content"]
-					# print(sublines_tokens)
+				if token["type"] == "children":
+					subchildren = token["content"]
+					# print(subchildren)
 
-					for subline_tokens in sublines_tokens:
+					for subline_tokens in subchildren:
 						if {"type": "property", "content": "FilePath"} in subline_tokens:
 							# print(subline_tokens)
 							for subtoken in subline_tokens:
