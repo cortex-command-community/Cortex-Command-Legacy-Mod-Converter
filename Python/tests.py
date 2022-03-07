@@ -21,24 +21,13 @@ def read_test(filepath):
 	return filepath.read_text()
 
 
-def test(input_str, result, expected):
-	function_name = sys._getframe(1).f_code.co_name
-	error_message = (
-		"A test error occurred, report it to MyNameIsTrez#1585!"
-		f"\n\nTest function name: {function_name}"
-		f"\n\nInput:\n{repr(input_str)}"
-		f"\n\nExpected:\n{str(expected)}"
-		f"\n\nResult:\n{str(result)}"
-	)
+def test(test_name, result, expected):
+	if result != expected:
+		# TODO: Comment these out before releasing this!
+		import json
+		with open("result.json", "w") as f:
+			f.write(json.dumps(result, indent=4))
+		with open("expected.json", "w") as f:
+			f.write(json.dumps(expected, indent=4))
 
-	# print(result)
-
-	# TODO: Comment these out before releasing this!
-	# import json
-	# with open("result.json", "w") as f:
-	# 	f.write(json.dumps(result))
-	# with open("expected.json", "w") as f:
-	# 	f.write(json.dumps(expected))
-
-	# TODO: Make the error_message not show twice in the popup.
-	assert result == expected, error_message
+		raise ValueError(f"The test '{test_name}' failed, report it to MyNameIsTrez#1585!")
