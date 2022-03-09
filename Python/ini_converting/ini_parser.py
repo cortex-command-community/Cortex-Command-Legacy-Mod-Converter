@@ -15,22 +15,15 @@ def get_parsed_tokens(tokens, parsed=None, token_idx=None, depth=0):
 	while token_idx[0] < len(tokens):
 		token = tokens[token_idx[0]]
 
-		# if state == "newline" and token["type"] == "EXTRA":
-		# 	parsed[-1].append( { "type": "extra", "content": token["content"] } )
-		# 	token_idx[0] += 1
-		# elif state == "newline" and token["type"] == "NEWLINES":
-		# 	parsed[-1].append( { "type": "extra", "content": token["content"] } )
-		# 	token_idx[0] += 1
-
-		if state == "newline" and token["type"] == "TABS" and is_deeper(depth, token):
+		if   state == "newline" and is_deeper(depth, token):
 			children = { "type": "children", "content": [] }
 			parsed[-1].append(children)
 			get_parsed_tokens(tokens, children["content"], token_idx, depth + 1)
-			# state = "start" # TODO: Should state be set to start on this comment's line?
+			# "state" is deliberately not being changed here.
 		elif state == "newline" and is_same_depth(token, depth):
 			parsed.append([])
 			state = "start"
-		elif state == "newline" and depth > 0 and is_shallower(depth, token, tokens, token_idx[0] + 1):
+		elif state == "newline" and is_shallower(depth, token, tokens, token_idx[0] + 1):
 			return
 		elif state == "newline" and (len(parsed) == 0 or token["type"] == "WORD"):
 			parsed.append([])
@@ -69,7 +62,7 @@ def is_same_depth(token, depth):
 
 
 def is_shallower(depth, token, tokens, next_token_idx):
-	if token["type"] == "NEWLINES":
+	if depth == 0 or token["type"] == "NEWLINES":
 		return False
 
 	while next_token_idx < len(tokens):
@@ -86,6 +79,9 @@ def is_shallower(depth, token, tokens, next_token_idx):
 
 
 def is_deeper(depth, token):
+	if token["type"] != "TABS":
+		return False
+
 	new_depth = get_depth(token)
 
 	if new_depth > depth + 1:
