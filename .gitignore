@@ -7,3 +7,6 @@ settings.json
 
 .vscode/*
 !.vscode/launch.json
+
+expected.json
+result.json

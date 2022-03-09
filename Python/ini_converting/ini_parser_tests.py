@@ -71,6 +71,98 @@ def parser_tests():
 			]}
 		]
 	])
+	test("deindentation_1", [
+		[
+			{ "type": "property", "content": "PresetName" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Foo" }, { "type": "extra", "content": "\n" },
+			{ "type": "children", "content": [
+				[
+					{ "type": "extra", "content": "\t" }, { "type": "property", "content": "A1" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "X" }, { "type": "extra", "content": "\n\n" },
+				],
+				[
+					{ "type": "extra", "content": "\t" }, { "type": "property", "content": "A2" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "X" }, { "type": "extra", "content": "\n" },
+				],
+				[
+					{ "type": "extra", "content": "\t" }, { "type": "property", "content": "B1" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "X" }, { "type": "extra", "content": "\n" },
+					{ "type": "extra", "content": " " }, { "type": "extra", "content": "\n" },
+				],
+				[
+					{ "type": "extra", "content": "\t" }, { "type": "property", "content": "B2" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "X" }, { "type": "extra", "content": "\n" },
+				],
+				[
+					{ "type": "extra", "content": "\t" }, { "type": "property", "content": "C1" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "X" }, { "type": "extra", "content": "\n" },
+					{ "type": "extra", "content": "//foo" }, { "type": "extra", "content": "\n" },
+				],
+				[
+					{ "type": "extra", "content": "\t" }, { "type": "property", "content": "C2" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "X" },
+				]
+			]}
+		]
+	])
+	test("deindentation_2", [
+		[
+			{ "type": "property", "content": "AddEffect" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "MOPixel" }, { "type": "extra", "content": "\n" },
+			{ "type": "children", "content": [
+				[
+					{ "type": "extra", "content": "\t" }, { "type": "property", "content": "PresetName" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Foo" }, { "type": "extra", "content": "\n" },
+					{ "type": "children", "content": [
+						[
+							{ "type": "extra", "content": "\t\t" }, { "type": "property", "content": "A1" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "X" }, { "type": "extra", "content": "\n\n" },
+						],
+						[
+							{ "type": "extra", "content": "\t\t" }, { "type": "property", "content": "A2" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "X" }, { "type": "extra", "content": "\n" },
+						],
+						[
+							{ "type": "extra", "content": "\t\t" }, { "type": "property", "content": "B1" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "X" }, { "type": "extra", "content": "\n" },
+							{ "type": "extra", "content": " " }, { "type": "extra", "content": "\n" },
+						],
+						[
+							{ "type": "extra", "content": "\t\t" }, { "type": "property", "content": "B2" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "X" }, { "type": "extra", "content": "\n" },
+						],
+						[
+							{ "type": "extra", "content": "\t\t" }, { "type": "property", "content": "C1" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "X" }, { "type": "extra", "content": "\n" },
+							{ "type": "extra", "content": "//foo" }, { "type": "extra", "content": "\n" },
+						],
+						[
+							{ "type": "extra", "content": "\t\t" }, { "type": "property", "content": "C2" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "X" },
+						]
+					]}
+				]
+			]}
+		]
+	])
+	test("deindentation_3", [
+		[
+			{ "type": "property", "content": "AddEffect" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "MOPixel" }, { "type": "extra", "content": "\n" },
+			{ "type": "children", "content": [
+				[
+					{ "type": "extra", "content": "\t" }, { "type": "property", "content": "PresetName" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Foo" }, { "type": "extra", "content": "\n" },
+					{ "type": "children", "content": [
+						[
+							{ "type": "extra", "content": "\t\t" }, { "type": "property", "content": "A1" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "X" }, { "type": "extra", "content": "\n" },
+							{ "type": "extra", "content": "\t" }, { "type": "extra", "content": "\n" },
+						],
+						[
+							{ "type": "extra", "content": "\t\t" }, { "type": "property", "content": "A2" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "X" }, { "type": "extra", "content": "\n" },
+						],
+						[
+							{ "type": "extra", "content": "\t\t" }, { "type": "property", "content": "B1" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "X" }, { "type": "extra", "content": "\n" },
+							{ "type": "extra", "content": "\t" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "\n" },
+						],
+						[
+							{ "type": "extra", "content": "\t\t" }, { "type": "property", "content": "B2" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "X" }, { "type": "extra", "content": "\n" },
+						],
+						[
+							{ "type": "extra", "content": "\t\t" }, { "type": "property", "content": "C1" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "X" }, { "type": "extra", "content": "\n" },
+							{ "type": "extra", "content": "\t" }, { "type": "extra", "content": "//foo" }, { "type": "extra", "content": "\n" },
+						],
+						[
+							{ "type": "extra", "content": "\t\t" }, { "type": "property", "content": "C2" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "X" },
+						]
+					]}
+				]
+			]}
+		]
+	])
 
 
 def test(filename, expected):
