@@ -98,6 +98,15 @@ def tokenizer_tests():
 		{ "type": "WORD", "content": "Foo" }, { "type": "EXTRA", "content": " " }, { "type": "EQUALS", "content": "=" }, { "type": "EXTRA", "content": " " }, { "type": "WORD", "content": "Bar" }, { "type": "NEWLINES", "content": "\n" },
 		{ "type": "EXTRA", "content": "    " }, { "type": "WORD", "content": "Baz" }, { "type": "EXTRA", "content": " " }, { "type": "EQUALS", "content": "=" }, { "type": "EXTRA", "content": " " }, { "type": "WORD", "content": "Bee" },
 	])
+	test("datamodule", [
+		{ "type": "WORD", "content": "DataModule" }, { "type": "NEWLINES", "content": "\n" },
+		{ "type": "TABS", "content": "\t" }, { "type": "WORD", "content": "IconFile" }, { "type": "EXTRA", "content": " " }, { "type": "EQUALS", "content": "=" }, { "type": "EXTRA", "content": " " }, { "type": "WORD", "content": "ContentFile" }, { "type": "NEWLINES", "content": "\n" },
+		{ "type": "TABS", "content": "\t\t" }, { "type": "WORD", "content": "FilePath" }, { "type": "EXTRA", "content": " " }, { "type": "EQUALS", "content": "=" }, { "type": "EXTRA", "content": " " }, { "type": "WORD", "content": "Foo" }, { "type": "NEWLINES", "content": "\n" },
+		{ "type": "TABS", "content": "\t" }, { "type": "WORD", "content": "ModuleName" }, { "type": "EXTRA", "content": " " }, { "type": "EQUALS", "content": "=" }, { "type": "EXTRA", "content": " " }, { "type": "WORD", "content": "Bar" },
+	])
+	test("value_on_next_line", [
+		{ "type": "WORD", "content": "Foo" }, { "type": "EXTRA", "content": " " }, { "type": "EQUALS", "content": "=" }, { "type": "NEWLINES", "content": "\n" }, { "type": "WORD", "content": "Bar" },
+	])
 
 
 def test(filename, expected):

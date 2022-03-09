@@ -222,6 +222,30 @@ def parser_tests():
 			{ "type": "property", "content": "Baz" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Bee" },
 		]
 	])
+	test("datamodule", [
+		[
+			{ "type": "property", "content": "DataModule" }, { "type": "extra", "content": "\n" },
+			{ "type": "children", "content": [
+				[
+					{ "type": "extra", "content": "\t" }, { "type": "property", "content": "IconFile" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "ContentFile" }, { "type": "extra", "content": "\n" },
+					{ "type": "children", "content": [
+						[
+							{ "type": "extra", "content": "\t\t" }, { "type": "property", "content": "FilePath" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Foo" }, { "type": "extra", "content": "\n" },
+						]
+					]}
+				],
+				[
+					{ "type": "extra", "content": "\t" }, { "type": "property", "content": "ModuleName" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Bar" },
+				]
+			]}
+		]
+	])
+	test("value_on_next_line", [
+		[
+			{ "type": "property", "content": "Foo" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": "\n" },
+			{ "type": "value", "content": "Bar" },
+		]
+	])
 
 
 def test(filename, expected):
