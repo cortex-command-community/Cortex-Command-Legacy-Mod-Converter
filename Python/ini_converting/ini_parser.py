@@ -37,6 +37,10 @@ def get_parsed_tokens(tokens, parsed=None, token_idx=None, depth=0):
 			parsed[-1].append( { "type": "extra", "content": token["content"] } )
 			state = "equals"
 			token_idx[0] += 1
+		elif state == "property" and token["type"] == "NEWLINES":
+			parsed[-1].append( { "type": "extra", "content": token["content"] } )
+			state = "newline"
+			token_idx[0] += 1
 		elif state == "equals" and token["type"] == "WORD":
 			parsed[-1].append( { "type": "value", "content": token["content"] } )
 			state = "value"

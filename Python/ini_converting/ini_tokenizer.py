@@ -110,7 +110,7 @@ def tokenize_newline(i, text_len, text, tokens, filepath):
 		token += text[i]
 		i += 1
 
-	tokens.append(get_token("NEWLINES", token, i, filepath)) # TODO: Maybe use "NEWLINE" instead of the plural version?
+	tokens.append(get_token("NEWLINES", token, i, filepath))
 
 	return i
 
@@ -121,6 +121,7 @@ def tokenize_word(i, text_len, text, tokens, filepath):
 	subtext = text[i:]
 	token = re.match("(\S+([\t\f\v ]*\S+)*)", subtext).group(0)
 
+	# TODO: Become a regex wizard and do this in the above regex instead.
 	token = token.split("//", maxsplit=1)[0]
 	token = token.split("/*", maxsplit=1)[0]
 	token = token.split("=", maxsplit=1)[0]
