@@ -151,18 +151,21 @@ def max_length_to_offsets(children):
 				{ "type": "property", "content": "ExtendedOffset" },
 				{ "type": "extra", "content": " "}, {"type": "extra", "content": "="}, {"type": "extra", "content": " "},
 				{ "type": "value", "content": "Vector" },
+				{ "type": "extra", "content": "\n" },
 				{ "type": "children", "content": [
 					[
 						{ "type": "extra", "content": "\t\t" },
 						{ "type": "property", "content": "X" },
 						{ "type": "extra", "content": " "}, {"type": "extra", "content": "="}, {"type": "extra", "content": " "},
-						{ "type": "value", "content": remove_excess_zeros(old_value) }
+						{ "type": "value", "content": remove_excess_zeros(old_value) },
+						{ "type": "extra", "content": "\n" },
 					],
 					[
 						{ "type": "extra", "content": "\t\t" },
 						{ "type": "property", "content": "Y" },
 						{ "type": "extra", "content": " "}, {"type": "extra", "content": "="}, {"type": "extra", "content": " "},
-						{ "type": "value", "content": remove_excess_zeros(0) }
+						{ "type": "value", "content": remove_excess_zeros(0) },
+						{ "type": "extra", "content": "\n" },
 					]
 				]}
 			])
@@ -184,13 +187,15 @@ def max_length_to_offsets_2(line_tokens):
 								{ "type": "extra", "content": "\t\t" },
 								{ "type": "property", "content": "X" },
 								{ "type": "extra", "content": " "}, {"type": "extra", "content": "="}, {"type": "extra", "content": " "},
-								{ "type": "value", "content": remove_excess_zeros(old_value / 2) }
+								{ "type": "value", "content": remove_excess_zeros(old_value / 2) },
+								{ "type": "extra", "content": "\n" },
 							],
 							[
 								{ "type": "extra", "content": "\t\t" },
 								{ "type": "property", "content": "Y" },
 								{ "type": "extra", "content": " "}, {"type": "extra", "content": "="}, {"type": "extra", "content": " "},
-								{ "type": "value", "content": remove_excess_zeros(0) }
+								{ "type": "value", "content": remove_excess_zeros(0) },
+								{ "type": "extra", "content": "\n" },
 							]
 						] } )
 
