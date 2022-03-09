@@ -1,3 +1,6 @@
+import re
+
+
 def get_tokens(filepath):
 	tokens = []
 
@@ -115,9 +118,16 @@ def tokenize_newline(i, text_len, text, tokens, filepath):
 def tokenize_word(i, text_len, text, tokens, filepath):
 	token = ""
 
-	while i < text_len and text[i] not in ("\t =\n") and not (text[i] == "/" and i + 1 < text_len and text[i + 1] == "/"):
-		token += text[i]
-		i += 1
+	subtext = text[i:]
+	token = re.match("(\S+([\t\f\v ]*\S+)*)", subtext).group(0)
+
+	token = token.split("//", maxsplit=1)[0]
+	token = token.split("/*", maxsplit=1)[0]
+	token = token.split("=", maxsplit=1)[0]
+	
+	token = token.rstrip()
+
+	i += len(token)
 
 	tokens.append(get_token("WORD", token, i, filepath))
 
