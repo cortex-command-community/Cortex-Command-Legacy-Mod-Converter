@@ -26,9 +26,9 @@ def get_parsed_tokens(tokens, parsed=None, token_idx=None, depth=0):
 			children = { "type": "children", "content": [] }
 			parsed[-1].append(children)
 			get_parsed_tokens(tokens, children["content"], token_idx, depth + 1)
-		elif state == "newline" and is_less_deep(depth, token):
+		elif state == "newline" and depth > 0 and is_shallower(depth, token, tokens, token_idx[0] + 1):
 			return
-		elif state == "newline":
+		elif state == "newline" and (len(parsed) == 0 or token["type"] == "WORD" or token["type"] == "TABS"):
 			parsed.append([])
 			state = "start"
 
@@ -56,20 +56,37 @@ def get_parsed_tokens(tokens, parsed=None, token_idx=None, depth=0):
 	return parsed
 
 
-def is_less_deep(depth, token):
-	return get_depth(token) < depth
+def is_shallower(depth, token, tokens, next_token_idx):
+	if token["type"] == "TABS" and get_depth(token) >= depth:
+		return False
+	elif token["type"] == "NEWLINES":
+		return False
+
+	while next_token_idx < len(tokens):
+		next_token = tokens[next_token_idx]
+
+		if next_token["type"] == "WORD":
+			return True
+		elif next_token["type"] == "NEWLINES":
+			return False
+
+		next_token_idx += 1
+	
+	return False # Reached when the while-loop read the last character of the file and didn't return.
+
+
+def get_depth(token):
+	return len(token["content"])
 
 
 def is_deeper(depth, token):
 	new_depth = get_depth(token)
+
 	if new_depth > depth + 1:
 		line, column = get_token_pos(token)
 		raise ValueError(f"Too many tabs found at line {line}, column {column} in {token['filepath']}")
+	
 	return new_depth > depth
-
-
-def get_depth(token):
-	return len(token["content"]) if token["type"] == "TABS" else 0
 
 
 def get_token_pos(token):
