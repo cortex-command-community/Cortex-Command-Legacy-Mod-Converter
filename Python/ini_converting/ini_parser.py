@@ -54,9 +54,6 @@ def get_parsed_tokens(tokens, parsed=None, token_idx=None, depth=0):
 
 
 def is_deeper(depth, token, tokens, next_token_idx):
-	if token["type"] != "TABS":
-		return False
-
 	new_depth = get_depth(token, tokens, next_token_idx)
 
 	if new_depth > depth + 1:
@@ -71,12 +68,18 @@ def get_depth(token, tokens, next_token_idx):
 		return -1
 	elif token["type"] == "WORD":
 		return 0
+	elif token["type"] == "TABS":
+		tabs_seen = len(token["content"])
+	else:
+		tabs_seen = 0
 
 	while next_token_idx < len(tokens):
 		next_token = tokens[next_token_idx]
 
 		if next_token["type"] == "WORD":
-			return len(token["content"]) # Counts the number of tabs.
+			return tabs_seen
+		elif next_token["type"] == "TABS":
+			tabs_seen += len(next_token["content"])
 		elif next_token["type"] == "NEWLINES":
 			return -1
 
