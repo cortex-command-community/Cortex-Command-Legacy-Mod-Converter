@@ -4,17 +4,17 @@ from Python.ini_converting import ini_parser
 
 
 def parser_tests():
-	test("simple", [
-		[
-			{ "type": "property", "content": "AddEffect" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "MOPixel" },
-		]
-	])
-	# test("invalid_tabbing", [
+	# test("invalid_tabbing", [ # This is expected to raise a "Too many tabs found" error.
 	# 	[
 	# 		{ "type": "property", "content": "AddEffect" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "MOPixel" }, { "type": "extra", "content": "\n" },
 	# 		{ "type": "extra", "content": "\t\t" }, { "type": "property", "content": "Foo" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Bar" },
 	# 	]
 	# ])
+	test("simple", [
+		[
+			{ "type": "property", "content": "AddEffect" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "MOPixel" },
+		]
+	])
 	test("comments", [
 		[
 			{ "type": "extra", "content": "\n" },
@@ -168,7 +168,30 @@ def parser_tests():
 			{ "type": "property", "content": "Foo" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Bar Baz" },
 		]
 	])
-	test("whitespace_in_tabs", [
+	test("comment_before_tabs", [
+		[
+			{ "type": "property", "content": "A1" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "A2" }, { "type": "extra", "content": "\n" },
+			{ "type": "children", "content": [
+				[
+					{ "type": "extra", "content": "\t" }, { "type": "property", "content": "B1" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "B2" }, { "type": "extra", "content": "\n" },
+					{ "type": "children", "content": [
+						[
+							{ "type": "extra", "content": "\t\t" }, { "type": "property", "content": "C1" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "C2" }, { "type": "extra", "content": "\n" }, { "type": "extra", "content": "/*foo*/" },
+							{ "type": "children", "content": [
+								[
+									{ "type": "extra", "content": "\t\t\t" }, { "type": "property", "content": "D1" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "D2" }, { "type": "extra", "content": "\n" },
+								],
+								[
+									{ "type": "extra", "content": "\t\t\t" }, { "type": "property", "content": "E1" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "E2" },
+								]
+							]}
+						]
+					]}
+				]
+			]}
+		]
+	])
+	test("comment_in_tabs", [
 		[
 			{ "type": "property", "content": "A1" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "A2" }, { "type": "extra", "content": "\n" },
 			{ "type": "children", "content": [
@@ -189,6 +212,14 @@ def parser_tests():
 					]}
 				]
 			]}
+		]
+	])
+	test("spaces_at_start_of_line", [
+		[
+			{ "type": "property", "content": "Foo" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Bar" }, { "type": "extra", "content": "\n" }, { "type": "extra", "content": "    " },
+		],
+		[
+			{ "type": "property", "content": "Baz" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Bee" },
 		]
 	])
 

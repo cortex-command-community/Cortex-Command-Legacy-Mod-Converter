@@ -3,14 +3,14 @@ from Python.ini_converting import ini_tokenizer
 
 
 def tokenizer_tests():
-	test("simple", [
-		{ "type": "WORD", "content": "AddEffect" }, { "type": "EXTRA", "content": " " }, { "type": "EQUALS", "content": "=" }, { "type": "EXTRA", "content": " " }, { "type": "WORD", "content": "MOPixel" },
-	])
 	# It's fine that the tokenizer doesn't notice that there's invalid tabbing in "invalid_tabbing.ini" and happily outputs this data,
 	# because checking for invalid tabbing is the parser's responsibility.
 	test("invalid_tabbing", [
 		{ "type": "WORD", "content": "AddEffect" }, { "type": "EXTRA", "content": " " }, { "type": "EQUALS", "content": "=" }, { "type": "EXTRA", "content": " " }, { "type": "WORD", "content": "MOPixel" }, { "type": "NEWLINES", "content": "\n" },
 		{ "type": "TABS", "content": "\t\t" }, { "type": "WORD", "content": "Foo" }, { "type": "EXTRA", "content": " " }, { "type": "EQUALS", "content": "=" }, { "type": "EXTRA", "content": " " }, { "type": "WORD", "content": "Bar" },
+	])
+	test("simple", [
+		{ "type": "WORD", "content": "AddEffect" }, { "type": "EXTRA", "content": " " }, { "type": "EQUALS", "content": "=" }, { "type": "EXTRA", "content": " " }, { "type": "WORD", "content": "MOPixel" },
 	])
 	test("comments", [
 		{ "type": "NEWLINES", "content": "\n" },
@@ -80,12 +80,23 @@ def tokenizer_tests():
 	test("spaces", [
 		{ "type": "WORD", "content": "Foo" }, { "type": "EXTRA", "content": " " }, { "type": "EQUALS", "content": "=" }, { "type": "EXTRA", "content": " " }, { "type": "WORD", "content": "Bar Baz" },
 	])
-	test("whitespace_in_tabs", [
+	test("comment_before_tabs", [
+		{ "type": "WORD", "content": "A1" }, { "type": "EXTRA", "content": " " }, { "type": "EQUALS", "content": "=" }, { "type": "EXTRA", "content": " " }, { "type": "WORD", "content": "A2" }, { "type": "NEWLINES", "content": "\n" },
+		{ "type": "TABS", "content": "\t" }, { "type": "WORD", "content": "B1" }, { "type": "EXTRA", "content": " " }, { "type": "EQUALS", "content": "=" }, { "type": "EXTRA", "content": " " }, { "type": "WORD", "content": "B2" }, { "type": "NEWLINES", "content": "\n" },
+		{ "type": "TABS", "content": "\t\t" }, { "type": "WORD", "content": "C1" }, { "type": "EXTRA", "content": " " }, { "type": "EQUALS", "content": "=" }, { "type": "EXTRA", "content": " " }, { "type": "WORD", "content": "C2" }, { "type": "NEWLINES", "content": "\n" },
+		{ "type": "EXTRA", "content": "/*foo*/" }, { "type": "TABS", "content": "\t\t\t" }, { "type": "WORD", "content": "D1" }, { "type": "EXTRA", "content": " " }, { "type": "EQUALS", "content": "=" }, { "type": "EXTRA", "content": " " }, { "type": "WORD", "content": "D2" }, { "type": "NEWLINES", "content": "\n" },
+		{ "type": "TABS", "content": "\t\t\t" }, { "type": "WORD", "content": "E1" }, { "type": "EXTRA", "content": " " }, { "type": "EQUALS", "content": "=" }, { "type": "EXTRA", "content": " " }, { "type": "WORD", "content": "E2" },
+	])
+	test("comment_in_tabs", [
 		{ "type": "WORD", "content": "A1" }, { "type": "EXTRA", "content": " " }, { "type": "EQUALS", "content": "=" }, { "type": "EXTRA", "content": " " }, { "type": "WORD", "content": "A2" }, { "type": "NEWLINES", "content": "\n" },
 		{ "type": "TABS", "content": "\t" }, { "type": "WORD", "content": "B1" }, { "type": "EXTRA", "content": " " }, { "type": "EQUALS", "content": "=" }, { "type": "EXTRA", "content": " " }, { "type": "WORD", "content": "B2" }, { "type": "NEWLINES", "content": "\n" },
 		{ "type": "TABS", "content": "\t\t" }, { "type": "WORD", "content": "C1" }, { "type": "EXTRA", "content": " " }, { "type": "EQUALS", "content": "=" }, { "type": "EXTRA", "content": " " }, { "type": "WORD", "content": "C2" }, { "type": "NEWLINES", "content": "\n" },
 		{ "type": "TABS", "content": "\t" }, { "type": "EXTRA", "content": "/*foo*/" }, { "type": "TABS", "content": "\t\t" }, { "type": "WORD", "content": "D1" }, { "type": "EXTRA", "content": " " }, { "type": "EQUALS", "content": "=" }, { "type": "EXTRA", "content": " " }, { "type": "WORD", "content": "D2" }, { "type": "NEWLINES", "content": "\n" },
 		{ "type": "TABS", "content": "\t\t\t" }, { "type": "WORD", "content": "E1" }, { "type": "EXTRA", "content": " " }, { "type": "EQUALS", "content": "=" }, { "type": "EXTRA", "content": " " }, { "type": "WORD", "content": "E2" },
+	])
+	test("spaces_at_start_of_line", [
+		{ "type": "WORD", "content": "Foo" }, { "type": "EXTRA", "content": " " }, { "type": "EQUALS", "content": "=" }, { "type": "EXTRA", "content": " " }, { "type": "WORD", "content": "Bar" }, { "type": "NEWLINES", "content": "\n" },
+		{ "type": "EXTRA", "content": "    " }, { "type": "WORD", "content": "Baz" }, { "type": "EXTRA", "content": " " }, { "type": "EQUALS", "content": "=" }, { "type": "EXTRA", "content": " " }, { "type": "WORD", "content": "Bee" },
 	])
 
 
