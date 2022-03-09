@@ -53,6 +53,19 @@ def get_parsed_tokens(tokens, parsed=None, token_idx=None, depth=0):
 	return parsed
 
 
+def is_deeper(depth, token):
+	if token["type"] != "TABS":
+		return False
+
+	new_depth = get_depth(token)
+
+	if new_depth > depth + 1:
+		line, column = get_token_position(token)
+		raise ValueError(f"Too many tabs found at line {line}, column {column} in {token['filepath']}")
+	
+	return new_depth > depth
+
+
 def get_depth(token):
 	return len(token["content"])
 
@@ -78,20 +91,7 @@ def is_shallower(depth, token, tokens, next_token_idx):
 	return False # Reached when the while-loop read the last character of the file and didn't return.
 
 
-def is_deeper(depth, token):
-	if token["type"] != "TABS":
-		return False
-
-	new_depth = get_depth(token)
-
-	if new_depth > depth + 1:
-		line, column = get_token_pos(token)
-		raise ValueError(f"Too many tabs found at line {line}, column {column} in {token['filepath']}")
-	
-	return new_depth > depth
-
-
-def get_token_pos(token):
+def get_token_position(token):
 	with open(token["filepath"], "r") as f:
 		text = f.read()
 
