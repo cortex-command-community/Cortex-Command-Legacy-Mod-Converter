@@ -35,7 +35,7 @@ def generate_thumbnail(iconfile_relative_path_str):
 
 	thumbnail = resize_height_to_720p(thumbnail, width, height)
 
-	thumbnail = add_transparent_sides(thumbnail)
+	# thumbnail = add_transparent_sides(thumbnail)
 
 	thumbnail_path = iconfile_path.parent / "thumbnail.png"
 	thumbnail.save(thumbnail_path)
@@ -63,7 +63,7 @@ def resize_height_to_720p(base_img, base_width, base_height):
 	new_width  = base_width * scale_factor
 	new_height = base_height * scale_factor
 
-	print(scale_factor, base_width, base_height, new_width, new_height)
+	# print(scale_factor, base_width, base_height, new_width, new_height)
 
 	new_img = base_img.resize( (new_width,new_height), Image.NEAREST)
 	return new_img
