@@ -163,6 +163,11 @@ def parser_tests():
 			]}
 		]
 	])
+	test("spaces", [
+		[
+			{ "type": "property", "content": "Foo" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Bar Baz" },
+		]
+	])
 
 
 def test(filename, expected):

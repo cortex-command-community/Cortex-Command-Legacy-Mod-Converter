@@ -77,6 +77,9 @@ def tokenizer_tests():
 		{ "type": "TABS", "content": "\t" }, { "type": "EXTRA", "content": "//foo" }, { "type": "NEWLINES", "content": "\n" },
 		{ "type": "TABS", "content": "\t\t" }, { "type": "WORD", "content": "C2" }, { "type": "EXTRA", "content": " " }, { "type": "EQUALS", "content": "=" }, { "type": "EXTRA", "content": " " }, { "type": "WORD", "content": "X" },
 	])
+	test("spaces", [
+		{ "type": "WORD", "content": "Foo" }, { "type": "EXTRA", "content": " " }, { "type": "EQUALS", "content": "=" }, { "type": "EXTRA", "content": " " }, { "type": "WORD", "content": "Bar Baz" },
+	])
 
 
 def test(filename, expected):
