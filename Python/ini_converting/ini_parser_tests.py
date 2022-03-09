@@ -168,6 +168,29 @@ def parser_tests():
 			{ "type": "property", "content": "Foo" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Bar Baz" },
 		]
 	])
+	test("whitespace_in_tabs", [
+		[
+			{ "type": "property", "content": "A1" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "A2" }, { "type": "extra", "content": "\n" },
+			{ "type": "children", "content": [
+				[
+					{ "type": "extra", "content": "\t" }, { "type": "property", "content": "B1" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "B2" }, { "type": "extra", "content": "\n" },
+					{ "type": "children", "content": [
+						[
+							{ "type": "extra", "content": "\t\t" }, { "type": "property", "content": "C1" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "C2" }, { "type": "extra", "content": "\n" },
+							{ "type": "children", "content": [
+								[
+									{ "type": "extra", "content": "\t" }, { "type": "extra", "content": "/*foo*/" }, { "type": "extra", "content": "\t\t" }, { "type": "property", "content": "D1" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "D2" }, { "type": "extra", "content": "\n" },
+								],
+								[
+									{ "type": "extra", "content": "\t\t\t" }, { "type": "property", "content": "E1" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "E2" },
+								]
+							]}
+						]
+					]}
+				]
+			]}
+		]
+	])
 
 
 def test(filename, expected):
