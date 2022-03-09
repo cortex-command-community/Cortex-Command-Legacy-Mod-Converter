@@ -42,7 +42,7 @@ def convert():
 
 	converter_walk(input_folder_path, output_folder_path)
 
-	ini_cst = ini_cst_builder.get_ini_cst(input_folder_path, input_folder_path)
+	ini_cst = ini_cst_builder.get_ini_cst(input_folder_path, output_folder_path, input_folder_path)
 	ini_rules.apply_rules_on_ini_cst(ini_cst)
 	ini_writer.write_converted_ini_cst(ini_cst, Path(output_folder_path))
 
@@ -63,19 +63,13 @@ def converter_walk(input_folder_path, output_folder_path):
 	for input_subfolder_path, input_subfolders, input_subfiles in os.walk(input_folder_path):
 		relative_subfolder = utils.get_relative_subfolder(input_folder_path, input_subfolder_path)
 
-		if is_mod_folder(relative_subfolder):
+		if utils.is_mod_folder(relative_subfolder):
 			warnings.clear_mod_warnings()
 
 		if utils.is_mod_folder_or_subfolder(relative_subfolder):
 			output_subfolder = os.path.join(output_folder_path, relative_subfolder)
 			create_folder(input_subfolder_path, output_subfolder)
 			process_files(input_subfiles, input_subfolder_path, output_subfolder, input_folder_path, output_folder_path)
-
-
-def is_mod_folder(relative_subfolder):
-	# If it isn't the input folder and if it's the rte folder.
-	mod_subfolder_parts = utils.get_mod_subfolder_parts(relative_subfolder)
-	return len(mod_subfolder_parts) == 1 and mod_subfolder_parts[0].endswith(".rte")
 
 
 def create_folder(input_subfolder_path, output_subfolder):
