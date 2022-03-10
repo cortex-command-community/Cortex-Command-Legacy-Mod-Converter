@@ -33,5 +33,6 @@
 	"Base.rte/Drop Ship Bay Up 5x2": "Base.rte/Dropship Bay Up 5x2",
 	"Ronin Shovel Smack Particle": "Smack Particle",
 	"Small Turret Stand Path Left": "Null Path",
-	"Muzzle Flash Techion Laser": "Muzzle Flash Blue"
+	"Muzzle Flash Techion Laser": "Muzzle Flash Blue",
+	"self.ModuleName = ": "-- self.ModuleName = "
 }
