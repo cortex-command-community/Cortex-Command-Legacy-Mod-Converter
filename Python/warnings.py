@@ -6,24 +6,14 @@ from Python import shared_globals as cfg
 from Python import convert
 
 
-warning_rules = {} # A global that's initialized in load_conversion_and_warning_rules()
-
-
 MANUAL_REPLACEMENT_TITLE_SEPARATOR = "=" * 50
-mods_warnings = None # A global list set in init_mods_warnings()
 
-def init_mods_warnings():
-	global mods_warnings
-	mods_warnings = [
-		"\n".join(
-			(MANUAL_REPLACEMENT_TITLE_SEPARATOR, "LINES REQUIRING MANUAL REPLACEMENT", MANUAL_REPLACEMENT_TITLE_SEPARATOR)
-		)
-	]
-
+mods_warnings = []
 
 FRESH_CONVERSION_RULES_REMINDER = "You can get a fresh Conversion Rules folder by redownloading the Legacy Mod Converter from its GitHub repository with the below button."
 
 
+warning_rules = {}
 def load_conversion_and_warning_rules():
 	try:
 		for folder_path, subfolders, subfiles in os.walk("Conversion Rules"):
@@ -51,51 +41,29 @@ def check_github_button_clicked_and_exit(clicked_github_button):
 	sys.exit()
 
 
-mod_warnings = None # A global list set in clear_mod_warnings()
-def clear_mod_warnings():
-	global mod_warnings
-	mod_warnings = []
-
-
 def append_mod_replacement_warnings(line, file_path, line_number):
 	for old_str, new_str in warning_rules.items():
 		if old_str in line:
-			append_mod_replacement_warning(file_path, line_number, old_str, new_str)
-
-
-def append_mod_replacement_warning(file_path, line_number, old_str, new_str):
-	append_mod_warning(file_path, line_number, f"Replace '{old_str}' with", f"'{new_str}'")
+			append_mod_warning(file_path, line_number, f"\"{old_str}\"", new_str)
 
 
 def append_mod_warning(file_path, line_number, error, error_subject):
-	global mod_warnings
+	global mods_warnings
 	warning = f"\nLine {line_number} at {file_path}\n\t{error}: {error_subject}"
-	mod_warnings.append(warning)
-
-
-def prepend_mod_title(mod_name):
-	title = "\n" + "\n".join(
-		(cfg.WARNINGS_MOD_NAME_SEPARATOR, f"\t{mod_name}", cfg.WARNINGS_MOD_NAME_SEPARATOR)
-	)
-	mod_warnings.insert(0, title)
-
-
-def push_mod_warnings():
-	global mod_warnings
-	mods_warnings.extend(mod_warnings)
+	mods_warnings.append(warning)
 
 
 def show_popup_if_necessary():
-	if len(mods_warnings) > 1: # mods_warnings is initialized with a first line, so mods_warnings starts with a len of 1.
+	if len(mods_warnings) > 0:
 		warnings_popup()
 
 
 def warnings_popup():
-	message = "\n".join(mods_warnings)
+	message = f"{MANUAL_REPLACEMENT_TITLE_SEPARATOR}\nLINES REQUIRING MANUAL REPLACEMENT\n{MANUAL_REPLACEMENT_TITLE_SEPARATOR}\n" + "\n".join(mods_warnings)
 
 	w = max(
 		30,
-		len(get_longest_line_length(message)) + 1 # TODO: Add a comment here on why + 1 is necessary.
+		len(get_longest_line(message)) # Can't divide by two or anything because the line wrapping will cause the height of the window to be wrong, making user have to scroll.
 	)
 	h = min(
 		50,
@@ -111,5 +79,5 @@ def warnings_popup():
 	)
 
 
-def get_longest_line_length(message):
+def get_longest_line(message):
 	return max(message.split("\n"), key=len)
