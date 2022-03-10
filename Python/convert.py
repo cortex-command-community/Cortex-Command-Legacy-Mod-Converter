@@ -125,10 +125,13 @@ def create_converted_file(input_file_path, output_file_path, input_folder_path, 
 			all_lines = apply_conversion_rules(all_lines)
 
 			# Case matching must be done after conversion, otherwise tons of errors wil be generated
-			all_lines = case_check.case_check(all_lines, input_file_path, output_file_path)
+			# all_lines = case_check.case_check(all_lines, input_file_path, output_file_path)
 
 			if not cfg.sg.user_settings_get_entry("skip_conversion"):
 				all_lines = regex_rules.regex_replace(all_lines)
+
+			# Case matching must be done after conversion, otherwise tons of errors wil be generated
+			all_lines = case_check.case_check(all_lines, input_file_path, output_file_path)
 
 			file_out.write(all_lines)
 	# except:
