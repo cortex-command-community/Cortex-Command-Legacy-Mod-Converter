@@ -105,7 +105,7 @@
 	"Coalition.rte/Actors/Blast Runner/BlastRunnerBody.bmp": "Coalition.rte/Actors/Mecha/BlastRunner/BlastRunnerBody.png",
 	"Coalition.rte/Actors/Soldier/HandFGA.bmp": "Coalition.rte/Actors/Infantry/CoalitionLight/HandFGA.png",
 	"Coalition.rte/Actors/Soldier/HandBGA.bmp": "Coalition.rte/Actors/Infantry/CoalitionLight/HandBGA.png",
-	"Coalition.rte/Devices/Sprites/SpikeBall.bmp": "Imperatus.rte/Devices/Weapons/Marauder/MarauderRound.png",
+	"Coalition.rte/Devices/Sprites/SpikeBall.bmp": "Imperatus.rte/Devices/Weapons/Marauder/MarauderShot.png",
 	"Coalition.rte/Actors/Drone/LegFGMediumA.bmp": "Coalition.rte/Actors/Mecha/GatlingDrone/LegFGA.png",
 	"Coalition.rte/Actors/Drone/MountMobile.bmp": "Coalition.rte/Actors/Mecha/GatlingDrone/MountMobile.png",
 	"Ronin.rte/Devices/Sprites/BulletGrenadeA.bmp": "Base.rte/Craft/Shared/ThrusterNozzleA.png",
