@@ -32,8 +32,6 @@ def convert():
 	input_folder_path = cfg.sg.user_settings_get_entry("input_folder")
 	cccp_folder_path = cfg.sg.user_settings_get_entry("cccp_folder")
 
-	warnings.init_mods_warnings()
-
 	zips_py.unzip(input_folder_path)
 
 	update_progress.set_max_progress(input_folder_path)
@@ -62,9 +60,6 @@ def convert():
 def converter_walk(input_folder_path, output_folder_path):
 	for input_subfolder_path, input_subfolders, input_subfiles in os.walk(input_folder_path):
 		relative_subfolder = utils.get_relative_subfolder(input_folder_path, input_subfolder_path)
-
-		if utils.is_mod_folder(relative_subfolder):
-			warnings.clear_mod_warnings()
 
 		if utils.is_mod_folder_or_subfolder(relative_subfolder):
 			output_subfolder = os.path.join(output_folder_path, relative_subfolder)
