@@ -5,7 +5,7 @@
 This project automates ***most*** of the conversion work required to convert the legacy (old) `Cortex Command` mods into `Cortex Command Community Project` compatible mods.
 
 ## Getting started
-If you have CCCP pre3 or an even newer version of it then you don't need to install anything. Just go to where you have CCCP installed, go into the `_Mod Converter` folder and put your legacy mods in the `Input` folder. Run the `Legacy Mod Converter.exe` program, hit the `Convert` button and you can now close the converter. The resulting converted mods are now placed in the CCCP folder next to the other .rte folders (like `Coalition.rte`). You can now test out your converted mod!
+If you have CCCP pre3 or an even newer version of it then you don't need to install anything. Just go to where you have CCCP installed, go into the `LegacyModConverter` folder and put your legacy mods in the `Input` folder. Run the `Legacy Mod Converter.exe` program, hit the `Convert` button and you can now close the converter. The resulting converted mods are now placed in the CCCP folder next to the other .rte folders (like `Coalition.rte`). You can now test out your converted mod!
 
 <p align="center"><img src="Media/legacy-mod-converter-screenshot.png" alt="Legacy Mod Converter screenshot"></p>
 
