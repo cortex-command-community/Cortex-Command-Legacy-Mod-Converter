@@ -35,7 +35,7 @@ def init_window():
 	warnings.load_conversion_and_warning_rules() # TODO: Why is this called in this GUI function?
 
 	window = sg.Window(
-		f"Legacy Mod Converter version {cfg.CONVERTER_VERSION} for CCCP {cfg.GAME_VERSION}",
+		f"Legacy Mod Converter {cfg.CONVERTER_VERSION} for CCCP {cfg.GAME_VERSION}",
 		gui_layout.get_layout(),
 		icon=utils.resource_path("Media/legacy-mod-converter.ico"),
 		font=("Helvetica", 16)
