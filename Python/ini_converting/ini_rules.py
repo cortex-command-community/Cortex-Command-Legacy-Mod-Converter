@@ -34,11 +34,14 @@ def apply_rules_on_sections(parsed_subset):
 				if contains_property_shallowly(children, "MaxMass"):
 					max_mass_to_max_inventory_mass(children)
 
-				iconfile_path = iconfile_path_to_thumbnail_generator(children)
+				iconfile_path_to_thumbnail_generator(children)
 
 				for line_tokens in children:
 					replace_property_and_value(line_tokens, "MinThrottleRange", "NegativeThrottleMultiplier", min_throttle_range_to_negative_throttle_multiplier)
 					replace_property_and_value(line_tokens, "MaxThrottleRange", "PositiveThrottleMultiplier", max_throttle_range_to_positive_throttle_multiplier)
+
+				shovel_flash_fix(children)
+				
 
 		# TODO: Remove contains_property_and_value_shallowly() and write out what it does in this function
 		# TODO: I don't remember whether this one works
@@ -95,6 +98,7 @@ def max_mass_to_max_inventory_mass(children):
 			if token["type"] == "property":
 				if token["content"] == "MaxMass":
 					token["content"] = "MaxInventoryMass"
+
 					for token_2 in line_tokens:
 						if token_2["type"] == "value":
 							token_2["content"] = max_inventory_mass
@@ -222,3 +226,39 @@ def iconfile_path_to_thumbnail_generator(children):
 
 def duplicate_script_path(parsed_subset):
 	pass
+
+
+def shovel_flash_fix(children):
+	"""
+	SpriteFile = ContentFile
+		FilePath = Ronin.rte/Effects/Pyro/Flashes/ShovelFlash.png
+	FrameCount = 2
+	->
+	SpriteFile = ContentFile
+		FilePath = Ronin.rte/Devices/Tools/Shovel/Effects/ShovelFlash.png
+	FrameCount = 1
+	"""
+
+	# TODO: Make this recursive somehow.
+	for line_tokens in children:
+		for token in line_tokens:
+			if token["type"] == "property":
+				if token["content"] == "SpriteFile":
+
+					for token_2 in line_tokens:
+						if token_2["type"] == "children":
+							for subline_tokens in token_2["content"]:
+								for subtoken in subline_tokens:
+									if subtoken["type"] == "property" and subtoken["content"] == "FilePath":
+										for subtoken in subline_tokens:
+											if subtoken["type"] == "value" and subtoken["content"] in ("Ronin.rte/Devices/Sprites/ShovelFlash.bmp", "Ronin.rte/Effects/Pyro/Flashes/ShovelFlash.png"):
+												subtoken["content"] = "Ronin.rte/Devices/Tools/Shovel/Effects/ShovelFlash.png"
+
+												for line_tokens2 in children:
+													for token2 in line_tokens2:
+														if token2["type"] == "property":
+															if token2["content"] == "FrameCount":
+																for token3 in line_tokens2:
+																	if token3["type"] == "value":
+																		if token3["content"] == "2":
+																			token3["content"] = "1"
