@@ -10,13 +10,13 @@ MANUAL_REPLACEMENT_TITLE_SEPARATOR = "=" * 50
 
 mods_warnings = []
 
-FRESH_CONVERSION_RULES_REMINDER = "You can get a fresh Conversion Rules folder by redownloading the Legacy Mod Converter from its GitHub repository with the below button."
+FRESH_CONVERSION_RULES_REMINDER = "You can get a fresh ConversionRules folder by redownloading the Legacy Mod Converter from its GitHub repository with the below button."
 
 
 warning_rules = {}
 def load_conversion_and_warning_rules():
 	try:
-		for folder_path, subfolders, subfiles in os.walk("Conversion Rules"):
+		for folder_path, subfolders, subfiles in os.walk("ConversionRules"):
 			for filename in subfiles:
 				p = folder_path / Path(filename)
 
@@ -29,10 +29,10 @@ def load_conversion_and_warning_rules():
 						else:
 							convert.conversion_rules.update(json_string)
 	except JSONDecodeError as e:
-		check_github_button_clicked_and_exit(cfg.sg.Popup(f"Error at path '{p}':\n{e}\n\nThis means the 'Conversion Rules' folder couldn't be read, because it contained a wrongly formatted JSON file, which is often caused by a missing comma at the end of a rule.\n\n{FRESH_CONVERSION_RULES_REMINDER}", title="Malformed Conversion Rules", custom_text="Go to the GitHub repository"))
+		check_github_button_clicked_and_exit(cfg.sg.Popup(f"Error at path '{p}':\n{e}\n\nThis means the 'ConversionRules' folder couldn't be read, because it contained a wrongly formatted JSON file, which is often caused by a missing comma at the end of a rule.\n\n{FRESH_CONVERSION_RULES_REMINDER}", title="Malformed ConversionRules", custom_text="Go to the GitHub repository"))
 
 	if len(warning_rules) == 0 and len(convert.conversion_rules) == 0:
-		check_github_button_clicked_and_exit(cfg.sg.Popup(f"The 'Conversion Rules' folder doesn't contain any JSON files.\n\n{FRESH_CONVERSION_RULES_REMINDER}", title="Missing JSON files", custom_text="Go to the GitHub repository"))
+		check_github_button_clicked_and_exit(cfg.sg.Popup(f"The 'ConversionRules' folder doesn't contain any JSON files.\n\n{FRESH_CONVERSION_RULES_REMINDER}", title="Missing JSON files", custom_text="Go to the GitHub repository"))
 
 
 def check_github_button_clicked_and_exit(clicked_github_button):
