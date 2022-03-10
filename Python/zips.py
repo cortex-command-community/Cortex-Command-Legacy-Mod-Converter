@@ -1,6 +1,8 @@
 import os, shutil, zipfile
 from pathlib import Path
 
+from Python import shared_globals as cfg
+
 
 def unzip(input_folder_path):
 	for f in os.listdir(input_folder_path):
@@ -25,5 +27,5 @@ def create_zips(input_folder_path, output_folder):
 def create_single_zip(mod_name, output_folder):
 	print("Zipping '{}'".format(mod_name))
 	mod_path = os.path.join(output_folder, mod_name)
-	shutil.make_archive(mod_path.replace(".rte", "-v1.0.rte"), "zip", root_dir=output_folder, base_dir=mod_name)
+	shutil.make_archive(mod_path.replace(".rte", f"-{cfg.GAME_VERSION.lower().replace(' ', '-')}-v1.0.rte"), "zip", root_dir=output_folder, base_dir=mod_name)
 	shutil.rmtree(mod_path)
