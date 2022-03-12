@@ -21,12 +21,11 @@ def is_bmp_rle8_compressed(img):
 
 def get_bmp_pixel_index_array_offset(img):
 	img.seek(0xA)
-	# Start of the rle8.bmp example's pixel array: 08 00 03 F8
 	return int.from_bytes(img.read(4), byteorder="little")
 
 
-def get_bmp_pixel_index_array_byte_size(img):
-	img.seek(0x22)
+def get_bmp_byte_size(img):
+	img.seek(0x2)
 	return int.from_bytes(img.read(4), byteorder="little")
 
 
@@ -150,22 +149,34 @@ def get_decoded_pixel_index_array(rle_bytes, width, height):
 
 
 def get_pixel_index_array_bytes(img):
+	"""
+	The img.read(bmp_byte_size - pixel_index_array_offset) here will often attempt to read a few bytes past the end of the pixel data,
+	which is because padding bytes at the end of the file are included in bmp_byte_size,
+	and it isn't worth the effort to calculate how many of these padding bytes there are.
+
+	We can't go to img.seek(0x22) to read the image size, because that's always just the width * height of the image,
+	which doesn't account for the fact that RLE8 compression typically causes there to be less pixel data.
+
+	Almost all RLE8 compressed BMPs are smaller than their uncompressed version would be,
+	and in those cases img.read(image_size) would attempt to read past the end of the file,
+	but .read() always stops reading at the end of any file.
+
+	*However*, in the case of particularly noisy RLE8 compressed BMPs,
+	the RLE8 compression can cause the file to become *bigger* than their uncompressed version!
+
+	In these noisy RLE8 BMPs you *have* to read more bytes than just the image width * height,
+	or the loop in get_decoded_pixel_index_array() would attempt to index past the end of the rle_bytes list, which'd crash the program.
+	"""
 	pixel_index_array_offset = get_bmp_pixel_index_array_offset(img)
-	pixel_index_array_byte_size = get_bmp_pixel_index_array_byte_size(img)
+	bmp_byte_size = get_bmp_byte_size(img)
 
 	img.seek(pixel_index_array_offset)
-	return img.read(pixel_index_array_byte_size)
+	return img.read(bmp_byte_size - pixel_index_array_offset)
 
 
 def get_pixel_array(img, width, height, palette):
 	pixel_index_array_bytes = get_pixel_index_array_bytes(img)
 	decoded_pixel_index_array = get_decoded_pixel_index_array(pixel_index_array_bytes, width, height)
-
-	# for index, row in enumerate(decoded_pixel_index_array):
-	# 	print(index, len(row))
-	# print("")
-	# print(len(decoded_pixel_index_array[71]), decoded_pixel_index_array[71])
-	# print("")
 	
 	# TODO: Raise a custom ValueError exception for:
 	#       "ValueError: setting an array element with a sequence. The requested array has an inhomogeneous shape after 1 dimensions. The detected shape was (143,) + inhomogeneous part."
