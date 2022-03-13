@@ -27,5 +27,5 @@ def create_zips(input_folder_path, output_folder):
 def create_single_zip(mod_name, output_folder):
 	print("Zipping '{}'".format(mod_name))
 	mod_path = os.path.join(output_folder, mod_name)
-	shutil.make_archive(mod_path.replace(".rte", f"-{cfg.GAME_VERSION.lower().replace(' ', '-')}-v1.0.rte"), "zip", root_dir=output_folder, base_dir=mod_name)
+	shutil.make_archive(mod_path.replace(".rte", f"-v1.0-{cfg.GAME_VERSION}" + ".rte"), "zip", root_dir=output_folder, base_dir=mod_name)
 	shutil.rmtree(mod_path)
