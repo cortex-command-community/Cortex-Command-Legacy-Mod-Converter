@@ -3,12 +3,15 @@ from Python.ini_converting import ini_tokenizer
 
 
 def tokenizer_tests():
-	# It's fine that the tokenizer doesn't notice that there's invalid tabbing in "invalid_tabbing.ini" and happily outputs this data,
-	# because checking for invalid tabbing is the parser's responsibility.
+	# It's fine that the tokenizer doesn't notice that these invalid files, because complex checking is the parser's responsibility.
 	test("invalid_tabbing", [
 		{ "type": "WORD", "content": "AddEffect" }, { "type": "EXTRA", "content": " " }, { "type": "EQUALS", "content": "=" }, { "type": "EXTRA", "content": " " }, { "type": "WORD", "content": "MOPixel" }, { "type": "NEWLINES", "content": "\n" },
 		{ "type": "TABS", "content": "\t\t" }, { "type": "WORD", "content": "Foo" }, { "type": "EXTRA", "content": " " }, { "type": "EQUALS", "content": "=" }, { "type": "EXTRA", "content": " " }, { "type": "WORD", "content": "Bar" },
 	])
+	test("invalid_immediate_tab", [
+		{ "type": "TABS", "content": "\t" }, { "type": "WORD", "content": "Foo" },
+	])
+
 	test("simple", [
 		{ "type": "WORD", "content": "AddEffect" }, { "type": "EXTRA", "content": " " }, { "type": "EQUALS", "content": "=" }, { "type": "EXTRA", "content": " " }, { "type": "WORD", "content": "MOPixel" },
 	])
@@ -107,7 +110,6 @@ def tokenizer_tests():
 	test("value_on_next_line", [
 		{ "type": "WORD", "content": "Foo" }, { "type": "EXTRA", "content": " " }, { "type": "EQUALS", "content": "=" }, { "type": "NEWLINES", "content": "\n" }, { "type": "WORD", "content": "Bar" },
 	])
-
 
 def test(filename, expected):
 	filepath = tests.get_test_path_from_filename(filename)

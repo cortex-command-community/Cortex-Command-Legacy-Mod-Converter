@@ -16,8 +16,8 @@ def get_parsed_tokens(tokens, parsed=None, token_idx=None, depth=0):
 		token = tokens[token_idx[0]]
 
 		if   state == "newline" and is_deeper(depth, token, tokens, token_idx[0] + 1):
-			children = { "type": "children", "content": [], "index": token["index"], "filepath": token["filepath"] }
-			append(children, parsed)
+			children = { "type": "children", "content": [] }
+			append(children, parsed, token)
 			get_parsed_tokens(tokens, children["content"], token_idx, depth + 1)
 			# "state" is deliberately not being changed here.
 		elif state == "newline" and is_same_depth(depth, token, tokens, token_idx[0] + 1):
@@ -30,38 +30,38 @@ def get_parsed_tokens(tokens, parsed=None, token_idx=None, depth=0):
 			state = "start"
 
 		elif state == "start" and token["type"] == "WORD":
-			append( { "type": "property", "content": token["content"] }, parsed )
+			append( { "type": "property", "content": token["content"] }, parsed, token )
 			state = "property"
 			token_idx[0] += 1
 		elif state == "property" and token["type"] == "EQUALS":
-			append( { "type": "extra", "content": token["content"] }, parsed )
+			append( { "type": "extra", "content": token["content"] }, parsed, token )
 			state = "equals"
 			token_idx[0] += 1
 		elif state == "property" and token["type"] == "NEWLINES":
-			append( { "type": "extra", "content": token["content"] }, parsed )
+			append( { "type": "extra", "content": token["content"] }, parsed, token )
 			state = "newline"
 			token_idx[0] += 1
 		elif state == "equals" and token["type"] == "WORD":
-			append( { "type": "value", "content": token["content"] }, parsed )
+			append( { "type": "value", "content": token["content"] }, parsed, token )
 			state = "value"
 			token_idx[0] += 1
 		elif state == "value" and token["type"] == "NEWLINES":
-			append( { "type": "extra", "content": token["content"] }, parsed )
+			append( { "type": "extra", "content": token["content"] }, parsed, token )
 			state = "newline"
 			token_idx[0] += 1
 
 		else:
-			append( { "type": "extra", "content": token["content"] }, parsed )
+			append( { "type": "extra", "content": token["content"] }, parsed, token )
 			token_idx[0] += 1
 
 	return parsed
 
 
-def append(token, parsed):
+def append(parsed_token, parsed, token):
 	if len(parsed) == 0:
-		token_error(token, "Incorrect tabbing at {line}, column {column} in {filepath}")
+		token_error(token, "Incorrect tabbing at line {line}, column {column} in {filepath}")
 
-	parsed[-1].append(token)
+	parsed[-1].append(parsed_token)
 
 
 def token_error(token, message):

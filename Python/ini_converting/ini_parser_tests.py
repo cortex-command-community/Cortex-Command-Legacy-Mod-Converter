@@ -4,12 +4,9 @@ from Python.ini_converting import ini_parser
 
 
 def parser_tests():
-	# test("invalid_tabbing", [ # This is expected to raise a "Too many tabs found" error.
-	# 	[
-	# 		{ "type": "property", "content": "AddEffect" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "MOPixel" }, { "type": "extra", "content": "\n" },
-	# 		{ "type": "extra", "content": "\t\t" }, { "type": "property", "content": "Foo" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Bar" },
-	# 	]
-	# ])
+	# test("invalid_tabbing", []) # This is expected to raise a "Too many tabs found" error.
+	# test("invalid_immediate_tab", []) # This is expected to raise an "Incorrect tabbing" error.
+	
 	test("simple", [
 		[
 			{ "type": "property", "content": "AddEffect" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "MOPixel" },
