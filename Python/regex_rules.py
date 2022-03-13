@@ -24,6 +24,7 @@ def regex_replace(all_lines):
 	all_lines = replace_using_match(all_lines, "ModuleName = (.*) Tech\n", "ModuleName = {}\n\tIsFaction = 1\n")
 	all_lines = replace_using_match(all_lines, "FundsOfTeam(.*) =", "Team{}Funds =")
 	all_lines = replace_using_match(all_lines, "[bB]ase\.rte(.*?)\.wav", "Base.rte{}.flac")
+	all_lines = replace_using_match(all_lines, r"MovableMan:RemoveActor\((.*?)\)", "{}.ToDelete = true")
 
 	all_lines = special_replace_using_matches(all_lines, regex_replace_particle,
 		"ParticleNumberToAdd = (.*)" \
@@ -55,7 +56,8 @@ def replace_without_using_match(all_lines, pattern, replacement):
 def replace_using_match(all_lines, pattern, replacement):
 	matches = re.findall(pattern, all_lines)
 	if len(matches) > 0:
-		return re.sub(pattern, replacement, all_lines).format(*matches)
+		escaped_all_lines = all_lines.replace("{", "{{").replace("}", "}}")
+		return re.sub(pattern, replacement, escaped_all_lines).format(*matches)
 	return all_lines
 
 
@@ -63,8 +65,9 @@ def special_replace_using_matches(all_lines, fn, pattern, replacement, dotall):
 	matches = re.findall(pattern, all_lines, flags=re.DOTALL if dotall else 0)
 	# print(matches)
 	if len(matches) > 0:
+		escaped_all_lines = all_lines.replace("{", "{{").replace("}", "}}")
 		new = fn(all_lines, pattern, replacement, matches)
-		return re.sub(pattern, replacement, all_lines, flags=re.DOTALL if dotall else 0).format(*new)
+		return re.sub(pattern, replacement, escaped_all_lines, flags=re.DOTALL if dotall else 0).format(*new)
 	return all_lines
 
 
