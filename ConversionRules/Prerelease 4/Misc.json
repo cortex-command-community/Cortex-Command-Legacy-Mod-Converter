@@ -34,5 +34,6 @@
 	"Ronin Shovel Smack Particle": "Smack Particle",
 	"Small Turret Stand Path Left": "Null Path",
 	"Muzzle Flash Techion Laser": "Muzzle Flash Blue",
-	"self.ModuleName = ": "-- self.ModuleName = "
+	"self.ModuleName = ": "-- self.ModuleName = ",
+	"TotalWoundLimit": "GibWoundLimit"
 }
