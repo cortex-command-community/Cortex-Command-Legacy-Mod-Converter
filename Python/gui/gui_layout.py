@@ -8,98 +8,60 @@ def get_layout():
 	return [
 		[
 			[
-				sg.Frame(
-					layout=[
-						[
-							sg.Text(
-								"CCCP folder:",
-								pad=(
-									(13, 12),
-									(0, 0),
-								)
-							),
-							sg.In(
-								sg.user_settings_get_entry("cccp_folder"),
-								size=(34, 1),
-								tooltip=" Location of your CCCP folder ",
-								enable_events = True,
-								key="CCCP_FOLDER",
-								background_color=sg.theme_input_background_color() if sg.user_settings_get_entry("cccp_folder") else cfg.NO_PATH_SET_COLOR,
-								pad=(
-									(0, 0),
-									(3, 0),
-								)
-							),
-							sg.FolderBrowse(
-								size=(7, 1),
-								pad=(
-									(15, 15),
-									(3, 0),
-								)
-							)
-						]
-					],
-					title=""
+				sg.FolderBrowse(
+					"CCCP folder",
+					# size=(7, 1),
+					# pad=(
+					# 	(15, 15),
+					# 	(3, 0),
+					# )
+				),
+				sg.In(
+					sg.user_settings_get_entry("cccp_folder"),
+					size=(43, 1),
+					tooltip=" Location of your CCCP folder ",
+					enable_events = True,
+					key="CCCP_FOLDER",
+					background_color=sg.theme_input_background_color() if sg.user_settings_get_entry("cccp_folder") else cfg.NO_PATH_SET_COLOR,
+					pad=(
+						(0, 0),
+						(3, 0),
+					)
 				)
 			],
 			[
-				sg.Frame(
-					layout=[
-						[
-							sg.Image(
-								utils.path("Media/github-icon.png"),
-								enable_events=True,
-								key="GITHUB",
-								tooltip=" Visit this program's GitHub page ",
-								size=(56, 47)
-							),
-							sg.Image(
-								utils.path("Media/discord-icon.png"),
-								enable_events=True,
-								key="DISCORD",
-								tooltip=" Visit the CCCP Discord server for help ",
-							)
-						]
-					],
-					title="",
+				sg.ButtonMenu('Options',  ['_', ['Edit Me', 'Exit']]),
+				sg.Button(
+					"Convert",
+					key="CONVERT",
+					size=(7, 1),
 					pad=(
-						(9, 0),
-						(12, 0)
+						(15, 0),
+						(15, 15)
 					)
 				),
-				sg.Frame(
-					layout=[
-						[
-							sg.ButtonMenu('Options',  ['_', ['Edit Me', 'Exit']])
-						]
-					],
-					title=""
+				sg.ProgressBar(
+					999,
+					size=(30, 40),
+					key="PROGRESS_BAR",
+					pad=(
+						(15, 0),
+						(0, 0)
+					)
 				),
-				sg.Frame(
-					layout=[
-						[
-							sg.ProgressBar(
-								999,
-								size=(30, 40),
-								key="PROGRESS_BAR",
-								pad=(
-									(15, 0),
-									(0, 0)
-								)
-							),
-							sg.Button(
-								"Convert",
-								key="CONVERT",
-								size=(7, 1),
-								pad=(
-									(15, 0),
-									(15, 15)
-								)
-							)
-						]
-					],
-					title=""
-				)
+				sg.Image(
+					utils.path("Media/github-icon.png"),
+					enable_events=True,
+					key="GITHUB",
+					tooltip=" Visit this program's GitHub page ",
+					size=(56, 47)
+				),
+				sg.Image(
+					utils.path("Media/discord-icon.png"),
+					enable_events=True,
+					key="DISCORD",
+					tooltip=" Visit the CCCP Discord server for help ",
+				),
 			]
 		]
 	]
