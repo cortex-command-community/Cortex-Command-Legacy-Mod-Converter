@@ -35,5 +35,11 @@
 	"Small Turret Stand Path Left": "Null Path",
 	"Muzzle Flash Techion Laser": "Muzzle Flash Blue",
 	"self.ModuleName = ": "-- self.ModuleName = ",
-	".TotalWoundLimit": ":GetGibWoundLimit(true, false, false)"
+	".TotalWoundLimit": ":GetGibWoundLimit(true, false, false)",
+	"Remote Explosive Sound Activate": "Remote Explosive Shaped Blast",
+	"\tself.Head:ClearForces()\n": "\tif self.Head then self.Head:ClearForces() end\n",
+	"\tself.FGArm:ClearForces()\n": "\tif self.FGArm then self.FGArm:ClearForces() end\n",
+	"\tself.BGArm:ClearForces()\n": "\tif self.BGArm then self.BGArm:ClearForces() end\n",
+	"\tself.FGLeg:ClearForces()\n": "\tif self.FGLeg then self.FGLeg:ClearForces() end\n",
+	"\tself.BGLeg:ClearForces()\n": "\tif self.BGLeg then self.BGLeg:ClearForces() end\n"
 }
