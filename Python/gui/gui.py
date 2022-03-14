@@ -37,7 +37,7 @@ def init_window():
 	window = sg.Window(
 		f"Legacy Mod Converter {cfg.CONVERTER_VERSION} for CCCP {cfg.GAME_VERSION}",
 		gui_layout.get_layout(),
-		icon=utils.resource_path("Media/legacy-mod-converter.ico"),
+		icon=utils.path("Media/legacy-mod-converter.ico"),
 		font=("Helvetica", 16)
 	)
 	cfg.progress_bar = window["PROGRESS_BAR"]

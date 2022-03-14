@@ -14,7 +14,7 @@ def run():
 
 
 def get_test_path_from_filename(filename):
-	return Path(utils.resource_path(f"Python/ini_converting/ini_test_files/{filename}.ini"))
+	return Path(utils.path(f"Python/ini_converting/ini_test_files/{filename}.ini"))
 
 
 def read_test(filepath):

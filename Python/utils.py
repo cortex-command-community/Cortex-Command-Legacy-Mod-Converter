@@ -3,7 +3,7 @@ import os, sys
 from pathlib import Path
 
 
-def resource_path(relative_path):
+def path(relative_path):
 	"""
 	sys._MEIPASS is a temporary folder for PyInstaller
 	See https://stackoverflow.com/a/13790741/13279557 for more information

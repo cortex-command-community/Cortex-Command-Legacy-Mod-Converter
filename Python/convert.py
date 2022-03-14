@@ -50,7 +50,7 @@ def convert():
 		zips_py.create_zips(input_folder_path, output_folder_path)
 
 	if cfg.sg.user_settings_get_entry("play_finish_sound"):
-		playsound(utils.resource_path("Media/finish.wav"), block=(platform.system() == "Linux"))
+		playsound(utils.path("Media/finish.wav"), block=(platform.system() == "Linux"))
 
 	elapsed = math.floor(time.time() - time_start)
 	print(f"Finished in {elapsed} {pluralize('second', elapsed)}.")

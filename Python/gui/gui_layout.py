@@ -130,14 +130,14 @@ def get_info_column():
 				layout=[
 					[
 						sg.Image(
-							utils.resource_path("Media/github-icon.png"),
+							utils.path("Media/github-icon.png"),
 							enable_events=True,
 							key="GITHUB",
 							tooltip=" Visit this program's GitHub page ",
 							size=(56, 47)
 						),
 						sg.Image(
-							utils.resource_path("Media/discord-icon.png"),
+							utils.path("Media/discord-icon.png"),
 							enable_events=True,
 							key="DISCORD",
 							tooltip=" Visit the CCCP Discord server for help ",
