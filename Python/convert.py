@@ -11,6 +11,7 @@ from Python import bmp_to_png
 from Python import warnings
 from Python.case_check import case_check
 from Python import utils
+from Python import stylua
 
 from Python.ini_converting import ini_cst_builder
 from Python.ini_converting import ini_rules
@@ -23,13 +24,12 @@ conversion_rules = {} # TODO: Move this.
 
 
 def convert():
-	print("") # Just prints a newline.
-
-	output_folder_path = sg.user_settings_get_entry("cccp_folder")
+	print("") # Newline.
 
 	time_start = time.time()
 
 	input_folder_path = cfg.sg.user_settings_get_entry("input_folder")
+	output_folder_path = sg.user_settings_get_entry("cccp_folder")
 	cccp_folder_path = cfg.sg.user_settings_get_entry("cccp_folder")
 
 	zips_py.unzip(input_folder_path)
@@ -40,6 +40,8 @@ def convert():
 
 	converter_walk(input_folder_path, output_folder_path)
 
+	stylua.run(input_folder_path, output_folder_path)
+
 	ini_cst = ini_cst_builder.get_ini_cst(input_folder_path, output_folder_path, input_folder_path)
 	ini_rules.apply_rules_on_ini_cst(ini_cst)
 	ini_writer.write_converted_ini_cst(ini_cst, Path(output_folder_path))
@@ -49,7 +51,6 @@ def convert():
 
 	if cfg.sg.user_settings_get_entry("play_finish_sound"):
 		playsound(utils.resource_path("Media/finish.wav"), block=(platform.system() == "Linux"))
-
 
 	elapsed = math.floor(time.time() - time_start)
 	print(f"Finished in {elapsed} {pluralize('second', elapsed)}.")

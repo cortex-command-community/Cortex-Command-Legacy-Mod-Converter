@@ -18,9 +18,7 @@ def get_relative_subfolder(input_folder_path, input_subfolder_path):
 
 
 def is_mod_folder(path):
-	path_parts = Path(path).parts
-	# If it is a folder inside of the input folder and if it is the mod folder.
-	return len(path_parts) == 1 and path_parts[0].endswith(".rte")
+	return path.suffix == ".rte"
 
 
 def is_mod_folder_or_subfolder(path):
@@ -29,6 +27,6 @@ def is_mod_folder_or_subfolder(path):
 	return len(path_parts) >= 1 and path_parts[0].endswith(".rte")
 
 
-def get_output_file_path_from_input_file_path(input_folder_path, output_folder_path, p):
+def get_output_path_from_input_path(input_folder_path, output_folder_path, p):
 	relative = p.relative_to(input_folder_path)
 	return str(output_folder_path / relative)
