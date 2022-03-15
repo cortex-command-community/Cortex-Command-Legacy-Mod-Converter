@@ -14,5 +14,6 @@
 	"Techion.rte/Devices/Weapons/GigaPulsar/Sounds/SpinSound.flac": "Techion.rte/Devices/Weapons/GigaPulsar/Sounds/Spin.flac",
 	"Imperatus.rte/Devices/Weapons/Banshee/Sounds/Fire2.flac": "Imperatus.rte/Devices/Weapons/Banshee/Sounds/Fire1.flac",
 	"Imperatus.rte/Devices/Weapons/Banshee/Sounds/Fire3.flac": "Imperatus.rte/Devices/Weapons/Banshee/Sounds/Fire1.flac",
-	"Base.rte/Sounds/Craft/HatchOpen.flac": "Base.rte/Sounds/Craft/HatchOpen1.flac"
+	"Base.rte/Sounds/Craft/HatchOpen.flac": "Base.rte/Sounds/Craft/HatchOpen1.flac",
+	"Base.rte/Actors/RobotVoice1.wav": "Base.rte/Sounds/Actors/RobotVoice1.flac"
 }
