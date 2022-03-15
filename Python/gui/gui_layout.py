@@ -30,7 +30,18 @@ def get_layout():
 				)
 			],
 			[
-				sg.ButtonMenu('Options',  ['_', ['Edit Me', 'Exit']]),
+				sg.ButtonMenu(
+					"Settings",  [
+						"",
+						[
+							f"{cfg.NO_CHECKMARK}Skip conversion",
+							f"{cfg.NO_CHECKMARK}Output zips",
+							f"{cfg.NO_CHECKMARK}Play finish sound",
+						]
+					],
+					key="SETTINGS",
+					background_color="#2a3948"
+				),
 				sg.Button(
 					"Convert",
 					key="CONVERT",

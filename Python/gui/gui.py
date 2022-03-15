@@ -6,7 +6,9 @@ from Python import utils
 from Python import shared_globals as cfg
 from Python import convert
 from Python import warnings
+
 from Python.gui import gui_layout
+from Python.gui import checkbox_button_menu
 
 
 def init_window_theme():
@@ -25,25 +27,32 @@ def init_window():
 	if not os.path.isfile(sg.user_settings_filename()):
 		sg.Popup("This is a tool that allows you to convert legacy (old) mods to the latest version of CCCP. You can get more information from the GitHub repo or the Discord server by clicking the corresponding icons.", title="Welcome screen", custom_text=" OK ")
 
-	# if not sg.user_settings_get_entry("cccp_folder"):
-	# 	sg.user_settings_set_entry("cccp_folder", "Input")
-
-	play_finish_sound_setting = sg.user_settings_get_entry("play_finish_sound")
-	sg.user_settings_set_entry("play_finish_sound", True if play_finish_sound_setting == None else play_finish_sound_setting)
+	# set_default_settings(window)
 
 	cfg.sg = sg
+
 	warnings.load_conversion_and_warning_rules() # TODO: Why is this called in this GUI function?
 
 	window = sg.Window(
 		f"Legacy Mod Converter {cfg.CONVERTER_VERSION} for CCCP {cfg.GAME_VERSION}",
 		gui_layout.get_layout(),
 		icon=utils.path("Media/legacy-mod-converter.ico"),
-		font=("Helvetica", 16)
+		font=("Helvetica", 16),
+		finalize=True
 	)
+
+	set_default_settings(window)
+
 	cfg.progress_bar = window["PROGRESS_BAR"]
-	window.finalize()
+
+	# window.finalize()
 
 	return window
+
+
+def set_default_settings(window):
+	if sg.user_settings_get_entry("play_finish_sound") == None:
+		checkbox_button_menu.handle_button_press(window, "SETTINGS", "Play finish sound", cfg.USER_SETTINGS_BUTTON_MAPPINGS)
 
 
 def run_window(window):
@@ -72,12 +81,9 @@ def run_window(window):
 				valid_cccp_path = False
 				window[event](background_color = cfg.NO_PATH_SET_COLOR)
 
-		elif event == "OUTPUT_ZIPS":
-			sg.user_settings_set_entry("output_zips", values[event])
-		elif event == "PLAY_FINISH_SOUND":
-			sg.user_settings_set_entry("play_finish_sound", values[event])
-		elif event == "SKIP_CONVERSION":
-			sg.user_settings_set_entry("skip_conversion", values[event])
+		elif event == "SETTINGS":
+			selected_button_name = values[event]
+			checkbox_button_menu.handle_button_press(window, event, selected_button_name, cfg.USER_SETTINGS_BUTTON_MAPPINGS)
 
 		elif event == "CONVERT":
 			if valid_cccp_path:
