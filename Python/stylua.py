@@ -23,7 +23,8 @@ def run(input_folder_path, output_folder_path):
 		elif os.name == "posix": # If the OS is Linux
 			stylua_path = utils.path("Lib/stylua/Linux/stylua")
 
-		result = subprocess.run([stylua_path, output_path], capture_output=True, text=True)
+		# Setting stdin to subprocess.DEVNULL is necessary for the EXE not to throw "OSError: [WinError 6] The handle is invalid"
+		result = subprocess.run([stylua_path, output_path], capture_output=True, text=True, stdin=subprocess.DEVNULL)
 		
 		if result.stderr:
 			raise WronglyFormattedLuaFile(result.stderr)

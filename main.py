@@ -1,6 +1,9 @@
 # Run manually: python main.py
-# Build EXE: pyinstaller --noconsole --onefile --icon="Media/legacy-mod-converter.ico" --add-data="Media/github-icon.png;Media" --add-data="Media/discord-icon.png;Media" --add-data="Media/finish.wav;Media" --name="Legacy Mod Converter" main.py
 
+# This is giving the error `pyinstaller: error: argument --add-binary: invalid add_data_or_binary value: 'Lib/stylua/Linux/stylua:Lib/stylua/Linux'`
+# Build EXE: pyinstaller --noconsole --onefile --icon="Media/legacy-mod-converter.ico" --add-data="Media/github-icon.png;Media" --add-data="Media/discord-icon.png;Media" --add-data="Media/finish.wav;Media" --add-binary="Lib/stylua/Linux/stylua:Lib/stylua/Linux" --add-data="Lib/stylua/Windows/stylua.exe;Lib/stylua/Windows" --name="Legacy Mod Converter" main.py
+
+# Build EXE: pyinstaller --noconsole --onefile --icon="Media/legacy-mod-converter.ico" --add-data="Media/github-icon.png;Media" --add-data="Media/discord-icon.png;Media" --add-data="Media/finish.wav;Media" --add-binary="Lib/stylua/Windows/stylua.exe;Lib/stylua/Windows" --name="Legacy Mod Converter" main.py
 
 import traceback
 import PySimpleGUI as sg
