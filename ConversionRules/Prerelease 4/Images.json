@@ -1,3 +1,4 @@
 {
-	"Imperatus.rte/Devices/Weapons/Marauder/MarauderRound.png": "Imperatus.rte/Devices/Weapons/Marauder/MarauderShot.png"
+	"Imperatus.rte/Devices/Weapons/Marauder/MarauderRound.png": "Imperatus.rte/Devices/Weapons/Marauder/MarauderShot.png",
+	"Ronin.rte/Devices/Sprites/PieIcons/IconImpact.bmp": "Base.rte/GUIs/PieIcons/Remove.png"
 }
