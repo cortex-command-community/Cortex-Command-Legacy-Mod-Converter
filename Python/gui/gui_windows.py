@@ -116,6 +116,13 @@ def get_settings_window_layout():
 				key="PLAY_FINISH_SOUND",
 				default=sg.user_settings_get_entry("play_finish_sound"),
 				enable_events=True,
+			)],
+			[sg.Checkbox(
+				"Beautify Lua",
+				tooltip=" Fixes the indentation and much more of Lua files ",
+				key="BEAUTIFY_LUA",
+				default=sg.user_settings_get_entry("beautify_lua"),
+				enable_events=True,
 			)]
 		]
 	]

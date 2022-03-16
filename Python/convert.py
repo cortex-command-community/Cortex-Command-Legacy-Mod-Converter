@@ -40,7 +40,8 @@ def convert():
 
 	converter_walk(input_folder_path, output_folder_path)
 
-	stylua.run(input_folder_path, output_folder_path)
+	if sg.user_settings_get_entry("beautify_lua"):
+		stylua.run(input_folder_path, output_folder_path)
 
 	ini_cst = ini_cst_builder.get_ini_cst(input_folder_path, output_folder_path, input_folder_path)
 	ini_rules.apply_rules_on_ini_cst(ini_cst)

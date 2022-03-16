@@ -30,12 +30,16 @@ def init_settings():
 
 	warnings.load_conversion_and_warning_rules() # TODO: Why is this called in this GUI function?
 
-	set_default_settings()
+	default_settings_to_true([
+		"play_finish_sound",
+		"beautify_lua"
+	])
 
 
-def set_default_settings():
-	play_finish_sound_setting = sg.user_settings_get_entry("play_finish_sound")
-	sg.user_settings_set_entry("play_finish_sound", True if play_finish_sound_setting == None else play_finish_sound_setting)
+def default_settings_to_true(settings_to_default_to_true):
+	for setting_to_default_to_true in settings_to_default_to_true:
+		play_finish_sound_setting = sg.user_settings_get_entry(setting_to_default_to_true)
+		sg.user_settings_set_entry(setting_to_default_to_true, True if play_finish_sound_setting == None else play_finish_sound_setting)
 
 
 def run_window():
@@ -76,7 +80,7 @@ def run_window():
 			settings_window = gui_windows.get_settings_window()
 			main_window.Disable()
 
-		elif event in ("SKIP_CONVERSION", "OUTPUT_ZIPS", "PLAY_FINISH_SOUND"):
+		elif event in ("SKIP_CONVERSION", "OUTPUT_ZIPS", "PLAY_FINISH_SOUND", "BEAUTIFY_LUA"):
 			value = values[event]
 			sg.user_settings_set_entry(event.lower(), value)
 
