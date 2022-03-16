@@ -1,4 +1,6 @@
 {
 	"Imperatus.rte/Devices/Weapons/Marauder/MarauderRound.png": "Imperatus.rte/Devices/Weapons/Marauder/MarauderShot.png",
-	"Ronin.rte/Devices/Sprites/PieIcons/IconImpact.bmp": "Base.rte/GUIs/PieIcons/Remove.png"
+	"Ronin.rte/Devices/Sprites/PieIcons/IconImpact.bmp": "Base.rte/GUIs/PieIcons/Remove.png",
+	"Dummy.rte/Devices/Weapons/Launchers/Grenade/PieIcons/IconBounce": "Base.rte/GUIs/PieIcons/Follow.png",
+	"Dummy.rte/Devices/Weapons/Launchers/Grenade/PieIcons/IconShotCone.bmp": "Base.rte/GUIs/PieIcons/Clear.png"
 }
