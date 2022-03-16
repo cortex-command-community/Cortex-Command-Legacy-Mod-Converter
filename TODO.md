@@ -1,1 +1,0 @@
-* Check if commenting out "ini_rules.apply_rules_on_ini_cst(ini_cst)" in convert.py and some other lines results in outputted mod INI files being identical.

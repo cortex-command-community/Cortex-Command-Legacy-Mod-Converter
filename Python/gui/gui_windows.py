@@ -10,60 +10,73 @@ def get_main_window_layout():
 			[
 				sg.FolderBrowse(
 					"CCCP folder",
-					# size=(7, 1),
-					# pad=(
-					# 	(15, 15),
-					# 	(3, 0),
-					# )
+					size=(12, None),
+					pad=(
+						(10, 0),
+						(15, 0)
+					),
 				),
-				sg.In(
+				sg.InputText(
 					sg.user_settings_get_entry("cccp_folder"),
-					size=(43, 1),
 					tooltip=" Location of your CCCP folder ",
 					enable_events = True,
 					key="CCCP_FOLDER",
 					background_color=sg.theme_input_background_color() if sg.user_settings_get_entry("cccp_folder") else cfg.NO_PATH_SET_COLOR,
+					font=("Helvetica", 20),
+					size=(61, None),
 					pad=(
-						(0, 0),
-						(3, 0),
-					)
+						(20, 0),
+						(15, 0)
+					),
 				)
 			],
 			[
 				sg.Button(
 					"Settings",
-					key="LAUNCH_SETTINGS_WINDOW"
+					key="LAUNCH_SETTINGS_WINDOW",
+					size=(12, None),
+					pad=(
+						(10, 0),
+						(20, 14)
+					),
 				),
 				sg.Button(
 					"Convert",
 					key="CONVERT",
-					size=(7, 1),
+					size=(12, None),
 					pad=(
-						(15, 0),
-						(15, 15)
-					)
+						(20, 0),
+						(20, 14)
+					),
 				),
 				sg.ProgressBar(
-					999,
-					size=(30, 40),
+					max_value=None, # Calculated and set later on
 					key="PROGRESS_BAR",
+					size=(47.2, 65),
 					pad=(
-						(15, 0),
-						(0, 0)
-					)
+						(10, 3),
+						(6, 0)
+					),
 				),
 				sg.Image(
 					utils.path("Media/github-icon.png"),
 					enable_events=True,
 					key="GITHUB",
 					tooltip=" Visit this program's GitHub page ",
-					size=(56, 47)
+					pad=(
+						(17, 0),
+						(7, 0)
+					),
 				),
 				sg.Image(
 					utils.path("Media/discord-icon.png"),
 					enable_events=True,
 					key="DISCORD",
 					tooltip=" Visit the CCCP Discord server for help ",
+					pad=(
+						(13, 3),
+						(1, 0)
+					),
 				),
 			]
 		]
@@ -75,10 +88,9 @@ def get_main_window():
 		title=f"Legacy Mod Converter {cfg.CONVERTER_VERSION} for CCCP {cfg.GAME_VERSION}",
 		layout=get_main_window_layout(),
 		icon=utils.path("Media/legacy-mod-converter.ico"),
-		font=("Helvetica", 16),
-		finalize=True
+		font=("Helvetica", 25),
+		finalize=True,
 	)
-	# window.finalize() # TODO: Check if this reduces the white flicker at the start of the program.
 
 
 def get_settings_window_layout():
@@ -114,7 +126,6 @@ def get_settings_window():
 		title="Settings",
 		layout=get_settings_window_layout(),
 		icon=utils.path("Media/legacy-mod-converter.ico"),
-		font=("Helvetica", 16),
-		finalize=True
+		font=("Helvetica", 25),
+		finalize=True,
 	)
-	# window.finalize() # TODO: Check if this reduces the white flicker at the start of the program.

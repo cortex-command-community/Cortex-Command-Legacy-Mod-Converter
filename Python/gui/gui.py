@@ -55,6 +55,8 @@ def run_window():
 				break
 			if window == settings_window:
 				settings_window = None
+				main_window.Enable()
+				main_window.BringToFront()
 
 		elif event == "CCCP_FOLDER":
 			cccp_folder = values[event]
@@ -72,6 +74,7 @@ def run_window():
 
 		elif event == "LAUNCH_SETTINGS_WINDOW" and settings_window == None:
 			settings_window = gui_windows.get_settings_window()
+			main_window.Disable()
 
 		elif event in ("SKIP_CONVERSION", "OUTPUT_ZIPS", "PLAY_FINISH_SOUND"):
 			value = values[event]
