@@ -6,21 +6,23 @@ from Python import shared_globals as cfg
 from Python import utils
 
 
-progress = 0
-total_progress = 0
+progress = None
+total_progress = None
 
 
 def increment_progress():
-	global progress, total_progress # TODO: See what happens when this line is removed.
+	global progress
+
 	progress += 1
-	# print(progress, total_progress)
-	if total_progress != 0:
-		cfg.progress_bar.UpdateBar(progress % total_progress, total_progress)
+	
+	cfg.progress_bar.update(current_count=progress % total_progress)
 
 
 def set_max_progress(input_folder_path):
-	global progress, total_progress  # TODO: See what happens when this line is removed.
-	progress = total_progress = 0
+	global progress, total_progress
+
+	progress = 0
+	total_progress = 0
 
 	for parent_subfolder_path, _, subfiles in os.walk(input_folder_path):
 		relative_subfolder = utils.get_relative_subfolder(input_folder_path, parent_subfolder_path)
@@ -31,3 +33,5 @@ def set_max_progress(input_folder_path):
 	# TODO: Find a way to track the progress of zipping.
 	# if cfg.sg.user_settings_get_entry("output_zips"):
 	# 	total_progress = total_progress * 2
+
+	cfg.progress_bar.update(current_count=0, max=total_progress) # current_count=0 is just because max=total_progress would be ignored otherwise
