@@ -1,6 +1,11 @@
 import pprint
 
+
+from Python.ini_converting import ini_rules_utils
+
 from Python import thumbnail_generator
+from Python.ini_converting import ini_fix_duplicate_scripts
+from Python import shared_globals as cfg
 
 
 """
@@ -15,14 +20,18 @@ from Python import thumbnail_generator
 """
 
 
-def apply_rules_on_ini_cst(parsed_subset):
-	# print(pprint.pprint(parsed_subset))
+def apply_rules_on_ini_cst(ini_cst):
+	apply_rules_on_ini_cst_recursively(ini_cst)
+	ini_fix_duplicate_scripts.run(ini_cst)
+
+
+def apply_rules_on_ini_cst_recursively(parsed_subset):
 	for key, value in parsed_subset.items():
 		if isinstance(value, dict):
-			apply_rules_on_ini_cst(value)
+			apply_rules_on_ini_cst_recursively(value)
 		else: # If it's a list of the sections of a file.
 			apply_rules_on_sections(value)
-
+	
 
 def apply_rules_on_sections(parsed_subset):
 	for section in parsed_subset:
@@ -30,8 +39,7 @@ def apply_rules_on_sections(parsed_subset):
 			if token["type"] == "children":
 				children = token["content"]
 
-				# TODO: Remove contains_property_shallowly() and write out what they do in this function
-				if contains_property_shallowly(children, "MaxMass"):
+				if ini_rules_utils.children_contain_property_shallowly(children, "MaxMass"):
 					max_mass_to_max_inventory_mass(children)
 
 				iconfile_path_to_thumbnail_generator(children)
@@ -41,34 +49,15 @@ def apply_rules_on_sections(parsed_subset):
 					replace_property_and_value(line_tokens, "MaxThrottleRange", "PositiveThrottleMultiplier", max_throttle_range_to_positive_throttle_multiplier)
 
 				shovel_flash_fix(children)
-				
 
-		# TODO: Remove contains_property_and_value_shallowly() and write out what it does in this function
-		# TODO: I don't remember whether this one works
-		if contains_property_and_value_shallowly(section, "AddActor", "Leg"):
+		if ini_rules_utils.line_contains_property_and_value(section, "AddActor", "Leg"):
 			for token in section:
 				if token["type"] == "children":
 					children = token["content"]
 
 					max_length_to_offsets(children)
 
-
-def contains_property_shallowly(children, prop):
-	""" This function deliberately doesn't check the section's contents recursively. """
-	return [True for line_tokens in children for token in line_tokens if token["type"] == "property" and token["content"] == prop] != []
-
-
-def contains_property_and_value_shallowly(section, prop, value):
-	contains_property = contains_value = False
-
-	for token in section:
-		if token["type"] == "property" and token["content"] == prop:
-			contains_property = True
-		if token["type"] == "value" and token["content"] == value:
-			contains_value = True
-
-	return contains_property and contains_value
-
+		add_grip_strength_if_missing(section)
 
 def max_mass_to_max_inventory_mass(children):
 	""" MaxInventoryMass = MaxMass - Mass """
@@ -150,6 +139,7 @@ def max_length_to_offsets(children):
 		if old_value != None:
 			# print(index, old_value)
 
+			# TODO: Can this be done with .append() instead of .insert() ?
 			children.insert(index + 1, [
 				{ "type": "extra", "content": "\t" },
 				{ "type": "property", "content": "ExtendedOffset" },
@@ -244,6 +234,7 @@ def shovel_flash_fix(children):
 		for token in line_tokens:
 			if token["type"] == "property":
 				if token["content"] == "SpriteFile":
+					# TODO: Check if the value "ContentFile" is also used, because "SpriteFile" might be able to have other values in the future!
 
 					for token_2 in line_tokens:
 						if token_2["type"] == "children":
@@ -254,11 +245,45 @@ def shovel_flash_fix(children):
 											if subtoken["type"] == "value" and subtoken["content"] in ("Ronin.rte/Devices/Sprites/ShovelFlash.bmp", "Ronin.rte/Effects/Pyro/Flashes/ShovelFlash.png"):
 												subtoken["content"] = "Ronin.rte/Devices/Tools/Shovel/Effects/ShovelFlash.png"
 
-												for line_tokens2 in children:
-													for token2 in line_tokens2:
-														if token2["type"] == "property":
-															if token2["content"] == "FrameCount":
-																for token3 in line_tokens2:
-																	if token3["type"] == "value":
-																		if token3["content"] == "2":
-																			token3["content"] = "1"
+												shovel_flash_fix_change_frame_count(children)
+
+
+def shovel_flash_fix_change_frame_count(children):
+	for line_tokens2 in children:
+		for token2 in line_tokens2:
+			if token2["type"] == "property":
+				if token2["content"] == "FrameCount":
+					for token3 in line_tokens2:
+						if token3["type"] == "value":
+							if token3["content"] == "2":
+								token3["content"] = "1"
+
+
+def add_grip_strength_if_missing(section):
+	"""
+	TODO: Check if this description is accurate to what *actually* was decided between me and Gacyr regarding the future behavior of GripStrength.
+
+	GripStrength was added in pre4 as an optional property to Arms.
+	It defaulted to JointStrength if it wasn't defined for an Arm, but this suddenly caused a lot of actors in old mods to throw their HeldDevices away.
+	In response, pre4.1 made JointStrength a non-optional property, with the idea being that this function could then fix old mods by adding GripStrength = <high_value> to them.
+	"""
+
+	# TODO: Make this recursive somehow.
+	if ini_rules_utils.line_contains_property_and_value(section, "AddActor", "Arm"):
+		for token in section:
+			if token["type"] == "children":
+				children = token["content"]
+				
+				# The second condition will make sure that GripStrength isn't added to an Arm without a GripStrength
+				# that CopyOfs an Arm that *does* have a GripStrength.
+				if (
+					not ini_rules_utils.children_contain_property_shallowly(children, "GripStrength") and
+					not ini_rules_utils.children_contain_property_shallowly(children, "CopyOf")
+					):
+					children.append([
+						{ "type": "extra", "content": "\t" },
+						{ "type": "property", "content": "GripStrength" },
+						{ "type": "extra", "content": " "}, {"type": "extra", "content": "="}, {"type": "extra", "content": " "},
+						{ "type": "value", "content": str(cfg.ARBITRARILY_HIGH_DEFAULT_GRIP_STRENGTH) },
+						{ "type": "extra", "content": "\n" },
+					])
