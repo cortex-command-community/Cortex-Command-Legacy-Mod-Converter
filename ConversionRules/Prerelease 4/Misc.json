@@ -43,5 +43,6 @@
 	"\tself.FGLeg:ClearForces()\n": "\tif self.FGLeg then self.FGLeg:ClearForces() end\n",
 	"\tself.BGLeg:ClearForces()\n": "\tif self.BGLeg then self.BGLeg:ClearForces() end\n",
 	"FilePath = FilePath = ": "FilePath = ",
-	"\tCopyOf = End\n": "\tCopyOf = Level End\n"
+	"\tCopyOf = End\n": "\tCopyOf = Level End\n",
+	"ScriptFile": "ScriptPath"
 }
