@@ -8,8 +8,6 @@
 	"AddToGroup = Melee Weapons": "AddToGroup = Weapons - Melee",
 	"AddToGroup = Grenades": "AddToGroup = Bombs - Grenades",
 	"AddToGroup = Diggers": "AddToGroup = Tools - Diggers",
-	"AddToGroup = Light Infantry": "AddToGroup = Actors - Light",
-	"AddToGroup = Heavy Infantry": "AddToGroup = Actors - Heavy",
 	"AddToGroup = Snipers": "AddToGroup = Actors - Sniper",
 	"AddToGroup = Turret": "AddToGroup = Actors - Turret",
 	"AddToGroup = Mecha": "AddToGroup = Actors - Mecha",
