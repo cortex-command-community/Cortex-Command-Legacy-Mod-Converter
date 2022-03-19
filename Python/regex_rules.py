@@ -20,11 +20,12 @@ def regex_replace(all_lines):
 	all_lines = replace_without_using_match(all_lines, "Framerate = (.*)", "SpriteAnimMode = 7")
 	all_lines = replace_without_using_match(all_lines, "\tPlayerCount = (.*)\n", "")
 	all_lines = replace_without_using_match(all_lines, "\tTeamCount = (.*)\n", "")
+	all_lines = replace_without_using_match(all_lines, "CollidesWithTerrainWhileAttached(?!.*=)", "CanCollideWithTerrain") # TODO: Should only be applied to Lua files.
 	
 	all_lines = replace_using_match(all_lines, "ModuleName = (.*) Tech\n", "ModuleName = {}\n\tIsFaction = 1\n")
 	all_lines = replace_using_match(all_lines, "FundsOfTeam(.*) =", "Team{}Funds =")
 	all_lines = replace_using_match(all_lines, "[bB]ase\.rte(.*?)\.wav", "Base.rte{}.flac")
-	all_lines = replace_using_match(all_lines, r"MovableMan:RemoveActor\((.*?)\)", "{}.ToDelete = true")
+	all_lines = replace_using_match(all_lines, "MovableMan:RemoveActor\((.*?)\)", "{}.ToDelete = true")
 
 	all_lines = special_replace_using_matches(all_lines, regex_replace_particle,
 		"ParticleNumberToAdd = (.*)" \
