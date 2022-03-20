@@ -44,5 +44,11 @@
 	"\tself.BGLeg:ClearForces()\n": "\tif self.BGLeg then self.BGLeg:ClearForces() end\n",
 	"FilePath = FilePath = ": "FilePath = ",
 	"\tCopyOf = End\n": "\tCopyOf = Level End\n",
-	"ScriptFile": "ScriptPath"
+	"Mine Laser Particle 1": "Mine Laser Beam 1",
+	"Mine Laser Particle 2": "Mine Laser Beam 1",
+	"Mine Laser Particle 3": "Mine Laser Beam 1",
+	"Mine Laser Particle 4": "Mine Laser Beam 1",
+	"Mine Laser Particle 5": "Mine Laser Beam 2",
+	"Mine Laser Particle 6": "Mine Laser Beam 3",
+	"Mine Laser Particle 7": "Mine Laser Beam 3"
 }
