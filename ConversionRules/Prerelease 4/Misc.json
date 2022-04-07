@@ -50,5 +50,8 @@
 	"Mine Laser Particle 4": "Mine Laser Beam 1",
 	"Mine Laser Particle 5": "Mine Laser Beam 2",
 	"Mine Laser Particle 6": "Mine Laser Beam 3",
-	"Mine Laser Particle 7": "Mine Laser Beam 3"
+	"Mine Laser Particle 7": "Mine Laser Beam 3",
+	"Mine Laser Particle": "Mine Laser Beam",
+	"rte.TechList": "({'Browncoats', 'Coalition', 'Dummy', 'Imperatus', 'Ronin', 'Techion'})",
+	"rte.PassengerMax": "3"
 }

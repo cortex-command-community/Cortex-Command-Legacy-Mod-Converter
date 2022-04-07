@@ -40,6 +40,7 @@ def regex_replace(all_lines):
 		dotall=False
 	)
 	all_lines = special_replace_using_matches(all_lines, regex_replace_sound_priority, "SoundContainer(((?!SoundContainer).)*)Priority", "SoundContainer{}// Priority", dotall=True)
+	all_lines = special_replace_using_matches(all_lines, regex_replace_lua_max_mass, "(\w+)\.MaxMass", "{}.MaxInventoryMass + {}.Mass", dotall=False)
 
 	# all_lines = special_replace_using_matches(all_lines, regex_replace_sound_priority, "AddSound(((?! AddSound).)*)Priority", "AddSound{}// Priority", dotall=True)
 	# all_lines = special_replace_using_matches(all_lines, regex_replace_playsound, "", "", dotall=False)
@@ -72,8 +73,6 @@ def special_replace_using_matches(all_lines, fn, pattern, replacement, dotall):
 	return all_lines
 
 
-
-
 def regex_replace_particle(all_lines, pattern, replacement, matches):
 	# matches == [(4, "foo", "bar"), (2, "baz", "bee")]
 	new = [item for tup in matches for item in tup]
@@ -96,6 +95,10 @@ def regex_replace_sound_priority(all_lines, pattern, replacement, matches):
 	new = [item for tup in matches for item in tup][::2]
 	# new == [4, 2]
 	return new
+
+
+def regex_replace_lua_max_mass(all_lines, pattern, replacement, matches):
+	return matches * 2
 
 
 # def regex_replace_playsound(all_lines, pattern, replacement, matches):
