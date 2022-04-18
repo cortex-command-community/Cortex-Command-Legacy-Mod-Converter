@@ -4,14 +4,10 @@
 ## Introduction
 This project automates ***most*** of the conversion work required to convert the legacy (old) `Cortex Command` mods into `Cortex Command Community Project` compatible mods.
 
-## Getting started
-If you have CCCP pre3 or an even newer version of it then you don't need to install anything. Just go to where you have CCCP installed, go into the `LegacyModConverter` folder and put your legacy mods in the `Input` folder. Run the `Legacy Mod Converter.exe` program, hit the `Convert` button and you can now close the converter. The resulting converted mods are now placed in the CCCP folder next to the other .rte folders (like `Coalition.rte`). You can now test out your converted mod!
-
 <p align="center"><img src="Media/legacy-mod-converter-screenshot.png" alt="Legacy Mod Converter screenshot"></p>
 
-If you don't have the exe in your CCCP directory for whatever reason you can download the latest version of `Legacy.Mod.Converter.exe` by pressing the `Releases` button on the right side of this page. Create a new folder and put your legacy mods that you want to convert in that folder. Run the `Legacy.Mod.Converter.exe`, browse to the folder you put your legacy mods in and you can then use the converter like explained under the `Getting started` header.
-
-If you get a "`Microsoft Defender SmartScreen prevented an unrecognized app from starting. Running this app might put your PC at risk.`" popup message when trying to run the program you should press `More info` and then `Run anyway`.
+## Getting started
+Follow the instructions for the latest release [here](https://github.com/cortex-command-community/Cortex-Command-Legacy-Mod-Converter/releases).
 
 ## Disclaimer
 This program will do most of the conversion work for you, but even though this converter will already automatically apply more than 500 mod changes that have been made between Cortex Command and CCCP there are always more changes out there that haven't been added to the converter yet.
