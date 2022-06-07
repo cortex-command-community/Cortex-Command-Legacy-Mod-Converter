@@ -21,7 +21,11 @@ def get_ini_cst(input_folder_path, output_folder_path, subfolder_path):
 		elif p.is_file() and p.suffix == ".ini" and p.stem != "desktop": # Skip the desktop.ini Windows metadata file.
 			output_file_path = utils.get_output_path_from_input_path(input_folder_path, output_folder_path, p)
 			tokens = ini_tokenizer.get_tokens(output_file_path)
-			parsed_portion[name] = ini_parser.get_parsed_tokens(tokens)
+
+			try:
+				parsed_portion[name] = ini_parser.get_parsed_tokens(tokens)
+			except ini_parser.TooManyTabs:
+				continue
 		elif p.is_dir():
 			parsed_portion[name] = get_ini_cst(input_folder_path, output_folder_path, str(p))
 

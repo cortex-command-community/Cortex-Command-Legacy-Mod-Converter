@@ -61,16 +61,15 @@ def append(parsed_token, parsed):
 	parsed[-1].append(parsed_token)
 
 
-def token_error(token, message):
-	line, column = get_token_position(token)
-	raise ValueError(message.format(line=line, column=column, filepath=token["filepath"]))
+class TooManyTabs(Exception):
+	pass
 
 
 def is_deeper(depth, token, tokens, next_token_idx):
 	new_depth = get_depth(token, tokens, next_token_idx)
 
 	if new_depth > depth + 1:
-		token_error(token, "Too many tabs found at line {line}, column {column} in {filepath}")
+		raise TooManyTabs()
 
 	return new_depth > depth
 
@@ -107,20 +106,3 @@ def is_same_depth(depth, token, tokens, next_token_idx):
 def is_shallower(depth, token, tokens, next_token_idx):
 	new_depth = get_depth(token, tokens, next_token_idx)
 	return new_depth != -1 and new_depth < depth
-
-
-def get_token_position(token):
-	with open(token["filepath"], "r") as f:
-		text = f.read()
-
-	line = 1
-	column = 1
-
-	for char in text[:token["index"]]:
-		if char == '\n':
-			line += 1
-			column = 0
-		else:
-			column += 1
-
-	return line, column
