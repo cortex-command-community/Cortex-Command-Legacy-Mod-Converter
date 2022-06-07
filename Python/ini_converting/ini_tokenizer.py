@@ -5,7 +5,7 @@ def get_tokens(filepath):
 	tokens = []
 
 	with open(filepath, "r") as f:
-		text = f.read()
+		text = f.read().lstrip()
 
 	text_len = len(text)
 
@@ -125,7 +125,7 @@ def tokenize_word(i, text_len, text, tokens, filepath):
 	token = token.split("//", maxsplit=1)[0]
 	token = token.split("/*", maxsplit=1)[0]
 	token = token.split("=", maxsplit=1)[0]
-	
+
 	token = token.rstrip()
 
 	i += len(token)

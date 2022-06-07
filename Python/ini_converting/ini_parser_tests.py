@@ -5,8 +5,12 @@ from Python.ini_converting import ini_parser
 
 def parser_tests():
 	# test("invalid_tabbing", []) # This is expected to raise a "Too many tabs found" error.
-	# test("invalid_immediate_tab", []) # This is expected to raise an "Incorrect tabbing" error.
-	
+
+	test("lstripped_tab", [
+		[
+			{ "type": "property", "content": "Foo" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Bar" },
+		]
+	])
 	test("simple", [
 		[
 			{ "type": "property", "content": "AddEffect" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "MOPixel" },
@@ -14,7 +18,6 @@ def parser_tests():
 	])
 	test("comments", [
 		[
-			{ "type": "extra", "content": "\n" },
 			{ "type": "extra", "content": "// foo"}, { "type": "extra", "content": "\n" },
 			{ "type": "extra", "content": "/*a\nb\nc*/" }, { "type": "extra", "content": "\n" },
 		],
@@ -49,7 +52,6 @@ def parser_tests():
 	])
 	test("complex", [
 		[
-			{ "type": "extra", "content": "\n" },
 			{ "type": "extra", "content": "// foo"}, { "type": "extra", "content": "\n" },
 			{ "type": "extra", "content": "/*a\nb\nc*/" }, { "type": "extra", "content": "\n" },
 			{ "type": "property", "content": "AddEffect" }, { "type": "extra", "content": "  " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "MOPixel" }, { "type": "extra", "content": "//bar" }, { "type": "extra", "content": "\n" },
@@ -250,5 +252,5 @@ def test(filename, expected):
 
 	tokens = ini_tokenizer.get_tokens(str(filepath))
 	ini_cst = ini_parser.get_parsed_tokens(tokens)
-	
+
 	tests.test(filename, ini_cst, expected)

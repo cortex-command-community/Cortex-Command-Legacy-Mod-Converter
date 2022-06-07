@@ -3,20 +3,19 @@ from Python.ini_converting import ini_tokenizer
 
 
 def tokenizer_tests():
-	# It's fine that the tokenizer doesn't notice that these invalid files, because complex checking is the parser's responsibility.
+	# It's fine that the tokenizer doesn't realize that this is an invalid file, because complex checking is the parser's responsibility.
 	test("invalid_tabbing", [
 		{ "type": "WORD", "content": "AddEffect" }, { "type": "EXTRA", "content": " " }, { "type": "EQUALS", "content": "=" }, { "type": "EXTRA", "content": " " }, { "type": "WORD", "content": "MOPixel" }, { "type": "NEWLINES", "content": "\n" },
 		{ "type": "TABS", "content": "\t\t" }, { "type": "WORD", "content": "Foo" }, { "type": "EXTRA", "content": " " }, { "type": "EQUALS", "content": "=" }, { "type": "EXTRA", "content": " " }, { "type": "WORD", "content": "Bar" },
 	])
-	test("invalid_immediate_tab", [
-		{ "type": "TABS", "content": "\t" }, { "type": "WORD", "content": "Foo" },
-	])
 
+	test("lstripped_tab", [
+		{ "type": "WORD", "content": "Foo" }, { "type": "EXTRA", "content": " " }, { "type": "EQUALS", "content": "=" }, { "type": "EXTRA", "content": " " }, { "type": "WORD", "content": "Bar" }
+	])
 	test("simple", [
 		{ "type": "WORD", "content": "AddEffect" }, { "type": "EXTRA", "content": " " }, { "type": "EQUALS", "content": "=" }, { "type": "EXTRA", "content": " " }, { "type": "WORD", "content": "MOPixel" },
 	])
 	test("comments", [
-		{ "type": "NEWLINES", "content": "\n" },
 		{ "type": "EXTRA", "content": "// foo" }, { "type": "NEWLINES", "content": "\n" },
 		{ "type": "EXTRA", "content": "/*a\nb\nc*/" }, { "type": "NEWLINES", "content": "\n" },
 	])
@@ -27,7 +26,6 @@ def tokenizer_tests():
 		{ "type": "TABS", "content": "\t" }, { "type": "WORD", "content": "C" }, { "type": "EXTRA", "content": " " }, { "type": "EQUALS", "content": "=" }, { "type": "EXTRA", "content": " " }, { "type": "WORD", "content": "D" }, { "type": "NEWLINES", "content": "\n" },
 	])
 	test("complex", [
-		{ "type": "NEWLINES", "content": "\n" },
 		{ "type": "EXTRA", "content": "// foo" }, { "type": "NEWLINES", "content": "\n" },
 		{ "type": "EXTRA", "content": "/*a\nb\nc*/" }, { "type": "NEWLINES", "content": "\n" },
 		{ "type": "WORD", "content": "AddEffect" }, { "type": "EXTRA", "content": "  " }, { "type": "EQUALS", "content": "=" }, { "type": "EXTRA", "content": " " }, { "type": "WORD", "content": "MOPixel" }, { "type": "EXTRA", "content": "//bar" }, { "type": "NEWLINES", "content": "\n" },

@@ -17,7 +17,7 @@ def get_parsed_tokens(tokens, parsed=None, token_idx=None, depth=0):
 
 		if   state == "newline" and is_deeper(depth, token, tokens, token_idx[0] + 1):
 			children = { "type": "children", "content": [] }
-			append(children, parsed, token)
+			append(children, parsed)
 			get_parsed_tokens(tokens, children["content"], token_idx, depth + 1)
 			# "state" is deliberately not being changed here.
 		elif state == "newline" and is_same_depth(depth, token, tokens, token_idx[0] + 1):
@@ -30,37 +30,34 @@ def get_parsed_tokens(tokens, parsed=None, token_idx=None, depth=0):
 			state = "start"
 
 		elif state == "start" and token["type"] == "WORD":
-			append( { "type": "property", "content": token["content"] }, parsed, token )
+			append( { "type": "property", "content": token["content"] }, parsed)
 			state = "property"
 			token_idx[0] += 1
 		elif state == "property" and token["type"] == "EQUALS":
-			append( { "type": "extra", "content": token["content"] }, parsed, token )
+			append( { "type": "extra", "content": token["content"] }, parsed)
 			state = "equals"
 			token_idx[0] += 1
 		elif state == "property" and token["type"] == "NEWLINES":
-			append( { "type": "extra", "content": token["content"] }, parsed, token )
+			append( { "type": "extra", "content": token["content"] }, parsed)
 			state = "newline"
 			token_idx[0] += 1
 		elif state == "equals" and token["type"] == "WORD":
-			append( { "type": "value", "content": token["content"] }, parsed, token )
+			append( { "type": "value", "content": token["content"] }, parsed)
 			state = "value"
 			token_idx[0] += 1
 		elif state == "value" and token["type"] == "NEWLINES":
-			append( { "type": "extra", "content": token["content"] }, parsed, token )
+			append( { "type": "extra", "content": token["content"] }, parsed)
 			state = "newline"
 			token_idx[0] += 1
 
 		else:
-			append( { "type": "extra", "content": token["content"] }, parsed, token )
+			append( { "type": "extra", "content": token["content"] }, parsed)
 			token_idx[0] += 1
 
 	return parsed
 
 
-def append(parsed_token, parsed, token):
-	if len(parsed) == 0:
-		token_error(token, "Incorrect tabbing at line {line}, column {column} in {filepath}")
-
+def append(parsed_token, parsed):
 	parsed[-1].append(parsed_token)
 
 
@@ -74,7 +71,7 @@ def is_deeper(depth, token, tokens, next_token_idx):
 
 	if new_depth > depth + 1:
 		token_error(token, "Too many tabs found at line {line}, column {column} in {filepath}")
-	
+
 	return new_depth > depth
 
 
@@ -99,7 +96,7 @@ def get_depth(token, tokens, next_token_idx):
 			return -1
 
 		next_token_idx += 1
-	
+
 	return -1 # Reached when the while-loop read the last character of the file and didn't return.
 
 

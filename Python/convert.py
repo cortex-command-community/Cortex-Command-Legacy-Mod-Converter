@@ -9,9 +9,10 @@ from Python import zips as zips_py
 from Python import update_progress
 from Python import bmp_to_png
 from Python import warnings
-from Python.case_check import case_check
 from Python import utils
 from Python import stylua
+
+from Python.case_check import case_check
 
 from Python.ini_converting import ini_cst_builder
 from Python.ini_converting import ini_rules
