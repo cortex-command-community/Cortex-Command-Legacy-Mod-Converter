@@ -1,6 +1,7 @@
 {
 	"KillAllActors": "KillAllEnemyActors",
 	"Attachable.DeleteWithParent": "Attachable.DeleteWhenRemovedFromParent",
+	"DeleteWithParent": "DeleteWhenRemovedFromParent",
 	"TotalWoundCount": "WoundCount",
 	"RemoveAnyRandomWounds": "RemoveWounds",
 	"MountedMO": "MountedDevice",
@@ -53,5 +54,14 @@
 	"Mine Laser Particle 7": "Mine Laser Beam 3",
 	"Mine Laser Particle": "Mine Laser Beam",
 	"rte.TechList": "({'Browncoats', 'Coalition', 'Dummy', 'Imperatus', 'Ronin', 'Techion'})",
-	"rte.PassengerMax": "3"
+	"rte.PassengerMax": "3",
+	"Ronin.rte/Ronin Soldier": "Ronin.rte/Ronin Rifleman",
+	"Coalition Gatling Turret Stand Path Left": "Null Path",
+	"Coalition Gatling Turret Stand Path Right": "Null Path",
+	"Coalition Gatling Turret Walk Path Left": "Null Path",
+	"Coalition Gatling Turret Walk Path Right": "Null Path",
+	"Coalition Gatling Turret Dislodge Path Left": "Null Path",
+	"Coalition Gatling Turret Dislodge Path Right": "Null Path",
+	"CopyOf = Ronin.rte/Magazine M16\n": "CopyOf = Ronin.rte/Magazine Ronin M16\n",
+	"CopyOf = Ronin.rte/Magazine M1 Garand\n": "CopyOf = Ronin.rte/Magazine Ronin M1 Garand\n"
 }

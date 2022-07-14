@@ -31,7 +31,7 @@ def apply_rules_on_ini_cst_recursively(parsed_subset):
 			apply_rules_on_ini_cst_recursively(value)
 		else: # If it's a list of the sections of a file.
 			apply_rules_on_sections(value)
-	
+
 
 def apply_rules_on_sections(parsed_subset):
 	for section in parsed_subset:
@@ -58,6 +58,7 @@ def apply_rules_on_sections(parsed_subset):
 					max_length_to_offsets(children)
 
 		add_grip_strength_if_missing(section)
+
 
 def max_mass_to_max_inventory_mass(children):
 	""" MaxInventoryMass = MaxMass - Mass """
@@ -273,7 +274,7 @@ def add_grip_strength_if_missing(section):
 		for token in section:
 			if token["type"] == "children":
 				children = token["content"]
-				
+
 				# The second condition will make sure that GripStrength isn't added to an Arm without a GripStrength
 				# that CopyOfs an Arm that *does* have a GripStrength.
 				if (

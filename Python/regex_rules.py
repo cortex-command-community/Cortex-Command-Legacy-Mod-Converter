@@ -21,10 +21,20 @@ def regex_replace(all_lines):
 	all_lines = replace_without_using_match(all_lines, "\tPlayerCount = (.*)\n", "")
 	all_lines = replace_without_using_match(all_lines, "\tTeamCount = (.*)\n", "")
 	all_lines = replace_without_using_match(all_lines, "CollidesWithTerrainWhileAttached(?!.*=)", "CanCollideWithTerrain") # TODO: Should only be applied to Lua files.
-	
+
 	all_lines = replace_using_match(all_lines, "ModuleName = (.*) Tech\n", "ModuleName = {}\n\tIsFaction = 1\n")
 	all_lines = replace_using_match(all_lines, "FundsOfTeam(.*) =", "Team{}Funds =")
+
 	all_lines = replace_using_match(all_lines, "[bB]ase\.rte(.*?)\.wav", "Base.rte{}.flac")
+	all_lines = replace_using_match(all_lines, "[bB]rowncoats\.rte(.*?)\.wav", "Browncoats.rte{}.flac")
+	all_lines = replace_using_match(all_lines, "[cC]oalition\.rte(.*?)\.wav", "Coalition.rte{}.flac")
+	all_lines = replace_using_match(all_lines, "[dD]ummy\.rte(.*?)\.wav", "Dummy.rte{}.flac")
+	all_lines = replace_using_match(all_lines, "[iI]mperatus\.rte(.*?)\.wav", "Imperatus.rte{}.flac")
+	all_lines = replace_using_match(all_lines, "[mM]uIlaak\.rte(.*?)\.wav", "MuIlaak.rte{}.flac")
+	all_lines = replace_using_match(all_lines, "[rR]onin\.rte(.*?)\.wav", "Ronin.rte{}.flac")
+	all_lines = replace_using_match(all_lines, "[tT]echion\.rte(.*?)\.wav", "Techion.rte{}.flac")
+	all_lines = replace_using_match(all_lines, "[uU]zira\.rte(.*?)\.wav", "Uzira.rte{}.flac")
+
 	all_lines = replace_using_match(all_lines, "MovableMan:RemoveActor\((.*?)\)", "{}.ToDelete = true")
 
 	all_lines = special_replace_using_matches(all_lines, regex_replace_particle,
@@ -40,7 +50,7 @@ def regex_replace(all_lines):
 		dotall=False
 	)
 	all_lines = special_replace_using_matches(all_lines, regex_replace_sound_priority, "SoundContainer(((?!SoundContainer).)*)Priority", "SoundContainer{}// Priority", dotall=True)
-	all_lines = special_replace_using_matches(all_lines, regex_replace_lua_max_mass, "(\w+)\.MaxMass", "{}.MaxInventoryMass + {}.Mass", dotall=False)
+	all_lines = special_replace_using_matches(all_lines, regex_replace_lua_max_mass, "(\w+)\.MaxMass[ =]", "{}.MaxInventoryMass + {}.Mass ", dotall=False)
 
 	# all_lines = special_replace_using_matches(all_lines, regex_replace_sound_priority, "AddSound(((?! AddSound).)*)Priority", "AddSound{}// Priority", dotall=True)
 	# all_lines = special_replace_using_matches(all_lines, regex_replace_playsound, "", "", dotall=False)
@@ -81,7 +91,7 @@ def regex_replace_particle(all_lines, pattern, replacement, matches):
 	# 0, 1, 2 -> 1, 2, 0
 	new[0::3], new[1::3], new[2::3] = \
 	new[1::3], new[2::3], new[0::3]
-	
+
 	# new == ["foo", "bar", 4, "baz", "bee", 2]
 	return new
 
