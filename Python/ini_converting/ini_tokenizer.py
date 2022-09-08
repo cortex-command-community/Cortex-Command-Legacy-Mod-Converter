@@ -119,14 +119,8 @@ def tokenize_word(i, text_len, text, tokens, filepath):
 	token = ""
 
 	subtext = text[i:]
-	token = re.match("(\S+([\t\f\v ]*\S+)*)", subtext).group(0)
 
-	# TODO: Become a regex wizard and do this in the above regex instead.
-	token = token.split("//", maxsplit=1)[0]
-	token = token.split("/*", maxsplit=1)[0]
-	token = token.split("=", maxsplit=1)[0]
-
-	token = token.rstrip()
+	token = re.match("(.+?)\s*[=|\/|\n]", subtext + "\n").group(1)
 
 	i += len(token)
 
