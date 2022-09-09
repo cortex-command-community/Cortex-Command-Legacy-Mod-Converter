@@ -1,28 +1,28 @@
-from Python import tests
+from Python import test
 from Python.ini_converting import ini_tokenizer
 from Python.ini_converting import ini_cst
 
 
 def cst_tests():
-	# test("invalid_tabbing", []) # This is expected to raise a "Too many tabs found" error.
+	# cst_test("invalid_tabbing", []) # This is expected to raise a "Too many tabs found" error.
 
-	test("lstripped_tab", [
+	cst_test("lstripped_tab", [
 		[
 			{ "type": "property", "content": "Foo" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Bar" },
 		]
 	])
-	test("simple", [
+	cst_test("simple", [
 		[
 			{ "type": "property", "content": "AddEffect" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "MOPixel" },
 		]
 	])
-	test("comments", [
+	cst_test("comments", [
 		[
 			{ "type": "extra", "content": "// foo"}, { "type": "extra", "content": "\n" },
 			{ "type": "extra", "content": "/*a\nb\nc*/" }, { "type": "extra", "content": "\n" },
 		],
 	])
-	test("nested", [
+	cst_test("nested", [
 		[
 			{ "type": "property", "content": "Foo" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Bar" }, { "type": "extra", "content": "\n" },
 			{ "type": "children", "content": [
@@ -32,7 +32,7 @@ def cst_tests():
 			]}
 		]
 	])
-	test("multiple", [
+	cst_test("multiple", [
 		[
 			{ "type": "property", "content": "Foo" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Bar" }, { "type": "extra", "content": "\n" },
 			{ "type": "children", "content": [
@@ -50,7 +50,7 @@ def cst_tests():
 			]}
 		]
 	])
-	test("complex", [
+	cst_test("complex", [
 		[
 			{ "type": "extra", "content": "// foo"}, { "type": "extra", "content": "\n" },
 			{ "type": "extra", "content": "/*a\nb\nc*/" }, { "type": "extra", "content": "\n" },
@@ -70,7 +70,7 @@ def cst_tests():
 			]}
 		]
 	])
-	test("deindentation_1", [
+	cst_test("deindentation_1", [
 		[
 			{ "type": "property", "content": "PresetName" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Foo" }, { "type": "extra", "content": "\n" },
 			{ "type": "children", "content": [
@@ -97,7 +97,7 @@ def cst_tests():
 			]}
 		]
 	])
-	test("deindentation_2", [
+	cst_test("deindentation_2", [
 		[
 			{ "type": "property", "content": "AddEffect" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "MOPixel" }, { "type": "extra", "content": "\n" },
 			{ "type": "children", "content": [
@@ -129,7 +129,7 @@ def cst_tests():
 			]}
 		]
 	])
-	test("deindentation_3", [
+	cst_test("deindentation_3", [
 		[
 			{ "type": "property", "content": "AddEffect" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "MOPixel" }, { "type": "extra", "content": "\n" },
 			{ "type": "children", "content": [
@@ -162,12 +162,12 @@ def cst_tests():
 			]}
 		]
 	])
-	test("spaces", [
+	cst_test("spaces", [
 		[
 			{ "type": "property", "content": "Foo" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Bar Baz" },
 		]
 	])
-	test("comment_before_tabs", [
+	cst_test("comment_before_tabs", [
 		[
 			{ "type": "property", "content": "A1" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "A2" }, { "type": "extra", "content": "\n" },
 			{ "type": "children", "content": [
@@ -190,7 +190,7 @@ def cst_tests():
 			]}
 		]
 	])
-	test("comment_in_tabs", [
+	cst_test("comment_in_tabs", [
 		[
 			{ "type": "property", "content": "A1" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "A2" }, { "type": "extra", "content": "\n" },
 			{ "type": "children", "content": [
@@ -213,7 +213,7 @@ def cst_tests():
 			]}
 		]
 	])
-	test("spaces_at_start_of_line", [
+	cst_test("spaces_at_start_of_line", [
 		[
 			{ "type": "property", "content": "Foo" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Bar" }, { "type": "extra", "content": "\n" }, { "type": "extra", "content": "    " },
 		],
@@ -221,7 +221,7 @@ def cst_tests():
 			{ "type": "property", "content": "Baz" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Bee" },
 		]
 	])
-	test("datamodule", [
+	cst_test("datamodule", [
 		[
 			{ "type": "property", "content": "DataModule" }, { "type": "extra", "content": "\n" },
 			{ "type": "children", "content": [
@@ -239,7 +239,7 @@ def cst_tests():
 			]}
 		]
 	])
-	test("value_on_next_line", [
+	cst_test("value_on_next_line", [
 		[
 			{ "type": "property", "content": "Foo" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": "\n" },
 			{ "type": "value", "content": "Bar" },
@@ -247,10 +247,10 @@ def cst_tests():
 	])
 
 
-def test(filename, expected):
-	filepath = tests.get_test_path_from_filename(filename)
+def cst_test(filename, expected):
+	filepath = test.get_test_path_from_filename(filename)
 
 	tokens = ini_tokenizer.get_tokens(str(filepath))
 	cst = ini_cst.get_cst(tokens)
 
-	tests.test(filename, cst, expected)
+	test.test(filename, cst, expected)

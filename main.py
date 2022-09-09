@@ -8,7 +8,7 @@
 import traceback
 import PySimpleGUI as sg
 
-from Python import tests
+from Python import run_tests
 from Python.gui import gui
 from Python import shared_globals as cfg
 
@@ -17,7 +17,7 @@ if __name__ == '__main__':
 	try: # TODO: The VS Code Python debugger isn't able to catch exceptions due to this.
 		gui.init_window_theme()
 		if cfg.NOT_RELEASE:
-			tests.run()
+			run_tests.run()
 		gui.init_settings()
 		gui.run_window()
 	except Exception as e:

@@ -1,25 +1,25 @@
-from Python import tests
+from Python import test
 from Python.ini_converting import ini_tokenizer
 from Python.ini_converting import ini_cst
 from Python.ini_converting import ini_ast
 
 
 def ast_tests():
-	test("lstripped_tab", [
+	ast_test("lstripped_tab", [
 		{ "property": "Foo", "value": "Bar" }
 	])
-	test("simple", [
+	ast_test("simple", [
 		{ "property": "AddEffect", "value": "MOPixel" }
 	])
-	test("comments", [
+	ast_test("comments", [
 		{}
 	])
-	test("nested", [
+	ast_test("nested", [
 		{ "property": "Foo", "value": "Bar", "children": [
 			{ "property": "Baz", "value": "Bee" }
 		]}
 	])
-	test("multiple", [
+	ast_test("multiple", [
 		{ "property": "Foo", "value": "Bar", "children": [
 			{ "property": "Baz", "value": "Bee" }
 		]},
@@ -27,7 +27,7 @@ def ast_tests():
 			{ "property": "C", "value": "D" }
 		]}
 	])
-	test("complex", [
+	ast_test("complex", [
 		{ "property": "AddEffect", "value": "MOPixel", "children": [
 			{ "property": "PresetName", "value": "red_dot_tiny", "children": [
 				{ "property": "Mass", "value": "0.0" },
@@ -35,7 +35,7 @@ def ast_tests():
 			]}
 		]}
 	])
-	test("deindentation_1", [
+	ast_test("deindentation_1", [
 		{ "property": "PresetName", "value": "Foo", "children": [
 			{ "property": "A1", "value": "X" },
 			{ "property": "A2", "value": "X" },
@@ -45,7 +45,7 @@ def ast_tests():
 			{ "property": "C2", "value": "X" }
 		]}
 	])
-	test("deindentation_2", [
+	ast_test("deindentation_2", [
 		{ "property": "AddEffect", "value": "MOPixel", "children": [
 			{ "property": "PresetName", "value": "Foo", "children": [
 				{ "property": "A1", "value": "X" },
@@ -57,7 +57,7 @@ def ast_tests():
 			]}
 		]}
 	])
-	test("deindentation_3", [
+	ast_test("deindentation_3", [
 		{ "property": "AddEffect", "value": "MOPixel", "children": [
 			{ "property": "PresetName", "value": "Foo", "children": [
 				{ "property": "A1", "value": "X" },
@@ -69,10 +69,10 @@ def ast_tests():
 			]}
 		]}
 	])
-	test("spaces", [
+	ast_test("spaces", [
 		{ "property": "Foo", "value": "Bar Baz" }
 	])
-	test("comment_before_tabs", [
+	ast_test("comment_before_tabs", [
 		{ "property": "A1", "value": "A2", "children": [
 			{ "property": "B1", "value": "B2", "children": [
 				{ "property": "C1", "value": "C2", "children": [
@@ -82,7 +82,7 @@ def ast_tests():
 			]}
 		]}
 	])
-	test("comment_in_tabs", [
+	ast_test("comment_in_tabs", [
 		{ "property": "A1", "value": "A2", "children": [
 			{ "property": "B1", "value": "B2", "children": [
 				{ "property": "C1", "value": "C2", "children": [
@@ -92,11 +92,11 @@ def ast_tests():
 			]}
 		]}
 	])
-	test("spaces_at_start_of_line", [
+	ast_test("spaces_at_start_of_line", [
 		{ "property": "Foo", "value": "Bar" },
 		{ "property": "Baz", "value": "Bee" }
 	])
-	test("datamodule", [
+	ast_test("datamodule", [
 		{ "property": "DataModule", "children": [
 			{ "property": "IconFile", "value": "ContentFile", "children": [
 				{ "property": "FilePath", "value": "Foo" }
@@ -104,16 +104,16 @@ def ast_tests():
 			{ "property": "ModuleName", "value": "Bar" }
 		]}
 	])
-	test("value_on_next_line", [
+	ast_test("value_on_next_line", [
 		{ "property": "Foo", "value": "Bar" }
 	])
 
 
-def test(filename, expected):
-	filepath = tests.get_test_path_from_filename(filename)
+def ast_test(filename, expected):
+	filepath = test.get_test_path_from_filename(filename)
 
 	tokens = ini_tokenizer.get_tokens(str(filepath))
 	cst = ini_cst.get_cst(tokens)
 	ast = ini_ast.get_ast(cst)
 
-	tests.test(filename, ast, expected)
+	test.test(filename, ast, expected)
