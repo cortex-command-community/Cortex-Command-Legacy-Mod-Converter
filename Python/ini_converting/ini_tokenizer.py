@@ -120,7 +120,7 @@ def tokenize_word(i, text_len, text, tokens, filepath):
 
 	subtext = text[i:]
 
-	token = re.match("(.+?)\s*[=|\/|\n]", subtext + "\n").group(1)
+	token = re.match("(.+?)\s*(=|\/\/|\/\*|\n)", subtext + "\n").group(1)
 
 	i += len(token)
 

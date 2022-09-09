@@ -1,7 +1,8 @@
-from Python import test
 from Python.ini_converting import ini_tokenizer
 from Python.ini_converting import ini_cst
 from Python.ini_converting import ini_ast
+
+from Python import test
 
 
 def ast_tests():

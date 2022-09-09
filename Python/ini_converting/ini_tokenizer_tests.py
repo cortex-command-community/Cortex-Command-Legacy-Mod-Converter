@@ -1,5 +1,6 @@
-from Python import test
 from Python.ini_converting import ini_tokenizer
+
+from Python import test
 
 
 def tokenizer_tests():
@@ -9,6 +10,9 @@ def tokenizer_tests():
 		{ "type": "TABS", "content": "\t\t" }, { "type": "WORD", "content": "Foo" }, { "type": "EXTRA", "content": " " }, { "type": "EQUALS", "content": "=" }, { "type": "EXTRA", "content": " " }, { "type": "WORD", "content": "Bar" },
 	])
 
+	tokenizer_test("path", [
+		{ "type": "WORD", "content": "AddEffect" }, { "type": "EXTRA", "content": " " }, { "type": "EQUALS", "content": "=" }, { "type": "EXTRA", "content": " " }, { "type": "WORD", "content": "MOSRotating" }, { "type": "NEWLINES", "content": "\n" }, { "type": "TABS", "content": "\t" }, { "type": "WORD", "content": "SpriteFile" }, { "type": "EXTRA", "content": " " }, { "type": "EQUALS", "content": "=" }, { "type": "EXTRA", "content": " " }, { "type": "WORD", "content": "ContentFile" }, { "type": "NEWLINES", "content": "\n" }, { "type": "TABS", "content": "\t\t" }, { "type": "WORD", "content": "FilePath" }, { "type": "EXTRA", "content": " " }, { "type": "EQUALS", "content": "=" }, { "type": "EXTRA", "content": " " }, { "type": "WORD", "content": "A/B" }, { "type": "NEWLINES", "content": "\n" }, { "type": "TABS", "content": "\t" }, { "type": "WORD", "content": "AirResistance" }, { "type": "EXTRA", "content": " " }, { "type": "EQUALS", "content": "=" }, { "type": "EXTRA", "content": " " }, { "type": "WORD", "content": "0.05" }, { "type": "NEWLINES", "content": "\n" }
+	])
 	tokenizer_test("lstripped_tab", [
 		{ "type": "WORD", "content": "Foo" }, { "type": "EXTRA", "content": " " }, { "type": "EQUALS", "content": "=" }, { "type": "EXTRA", "content": " " }, { "type": "WORD", "content": "Bar" }
 	])
