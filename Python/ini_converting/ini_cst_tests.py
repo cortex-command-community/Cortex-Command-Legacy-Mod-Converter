@@ -7,6 +7,14 @@ from Python import test
 def cst_tests():
 	# cst_test("invalid_tabbing", []) # This is expected to raise a "Too many tabs found" error.
 
+	cst_test("path", [
+		[
+			{ "type": "property", "content": "FilePath" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "A/B" }, { "type": "extra", "content": "\n" }
+		],
+		[
+			{ "type": "property", "content": "AirResistance" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "0.05" }, { "type": "extra", "content": "\n" }
+		]
+	])
 	cst_test("lstripped_tab", [
 		[
 			{ "type": "property", "content": "Foo" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Bar" },

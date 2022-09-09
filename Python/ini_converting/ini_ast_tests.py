@@ -6,6 +6,10 @@ from Python import test
 
 
 def ast_tests():
+	ast_test("path", [
+		{ "property": "FilePath", "value": "A/B" },
+		{ "property": "AirResistance", "value": "0.05" }
+	])
 	ast_test("lstripped_tab", [
 		{ "property": "Foo", "value": "Bar" }
 	])
