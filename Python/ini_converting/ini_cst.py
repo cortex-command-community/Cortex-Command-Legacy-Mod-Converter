@@ -1,4 +1,4 @@
-def get_parsed_tokens(tokens, parsed=None, token_idx=None, depth=0):
+def get_cst(tokens, parsed=None, token_idx=None, depth=0):
 	"""
 	newline -> start -> property -> equals -> value
 	^                                         v
@@ -8,7 +8,7 @@ def get_parsed_tokens(tokens, parsed=None, token_idx=None, depth=0):
 	if parsed == None:
 		parsed = []
 	if token_idx == None:
-		token_idx = [0]
+		token_idx = [ 0 ]
 
 	state = "newline"
 
@@ -18,7 +18,7 @@ def get_parsed_tokens(tokens, parsed=None, token_idx=None, depth=0):
 		if   state == "newline" and is_deeper(depth, token, tokens, token_idx[0] + 1):
 			children = { "type": "children", "content": [] }
 			append(children, parsed)
-			get_parsed_tokens(tokens, children["content"], token_idx, depth + 1)
+			get_cst(tokens, children["content"], token_idx, depth + 1)
 			# "state" is deliberately not being changed here.
 		elif state == "newline" and is_same_depth(depth, token, tokens, token_idx[0] + 1):
 			parsed.append([])
@@ -75,7 +75,7 @@ def is_deeper(depth, token, tokens, next_token_idx):
 
 
 def get_depth(token, tokens, next_token_idx):
-	if token["type"] == "NEWLINES":
+	if   token["type"] == "NEWLINES":
 		return -1
 	elif token["type"] == "WORD":
 		return 0
@@ -87,7 +87,7 @@ def get_depth(token, tokens, next_token_idx):
 	while next_token_idx < len(tokens):
 		next_token = tokens[next_token_idx]
 
-		if next_token["type"] == "WORD":
+		if   next_token["type"] == "WORD":
 			return tabs_seen
 		elif next_token["type"] == "TABS":
 			tabs_seen += len(next_token["content"])

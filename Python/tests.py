@@ -3,14 +3,14 @@ from pathlib import Path
 
 from Python import utils
 from Python.ini_converting import ini_tokenizer_tests
-from Python.ini_converting import ini_parser_tests
+from Python.ini_converting import ini_cst_tests
+from Python.ini_converting import ini_ast_tests
 
 
 def run():
 	ini_tokenizer_tests.tokenizer_tests()
-	ini_parser_tests.parser_tests()
-	# ini_parser_tests.single_line_tests()
-	# ini_parser_tests.multi_line_tests()
+	ini_cst_tests.cst_tests()
+	ini_ast_tests.ast_tests()
 
 
 def get_test_path_from_filename(filename):

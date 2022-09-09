@@ -1,9 +1,9 @@
 from Python import tests
 from Python.ini_converting import ini_tokenizer
-from Python.ini_converting import ini_parser
+from Python.ini_converting import ini_cst
 
 
-def parser_tests():
+def cst_tests():
 	# test("invalid_tabbing", []) # This is expected to raise a "Too many tabs found" error.
 
 	test("lstripped_tab", [
@@ -251,6 +251,6 @@ def test(filename, expected):
 	filepath = tests.get_test_path_from_filename(filename)
 
 	tokens = ini_tokenizer.get_tokens(str(filepath))
-	ini_cst = ini_parser.get_parsed_tokens(tokens)
+	cst = ini_cst.get_cst(tokens)
 
-	tests.test(filename, ini_cst, expected)
+	tests.test(filename, cst, expected)

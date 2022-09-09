@@ -3,7 +3,7 @@ from pathlib import Path
 
 from Python import utils
 from Python.ini_converting import ini_tokenizer
-from Python.ini_converting import ini_parser
+from Python.ini_converting import ini_cst
 
 
 def get_ini_cst(input_folder_path, output_folder_path, subfolder_path):
@@ -23,8 +23,8 @@ def get_ini_cst(input_folder_path, output_folder_path, subfolder_path):
 			tokens = ini_tokenizer.get_tokens(output_file_path)
 
 			try:
-				parsed_portion[name] = ini_parser.get_parsed_tokens(tokens)
-			except ini_parser.TooManyTabs:
+				parsed_portion[name] = ini_cst.get_cst(tokens)
+			except ini_cst.TooManyTabs:
 				continue
 		elif p.is_dir():
 			parsed_portion[name] = get_ini_cst(input_folder_path, output_folder_path, str(p))
