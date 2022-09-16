@@ -67,14 +67,12 @@ def cst_tests():
 			{ "type": "children", "content": [
 				[
 					{ "type": "extra", "content": "\t" }, { "type": "property", "content": "PresetName" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": "  " }, { "type": "value", "content": "red_dot_tiny" }, { "type": "extra", "content": "\n" },
-					{ "type": "children", "content": [
-						[
-							{ "type": "extra", "content": "\t\t" }, { "type": "property", "content": "Mass" }, { "type": "extra", "content": "  " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": "  " }, { "type": "value", "content": "0.0" }, { "type": "extra", "content": "\n" },
-						],
-						[
-							{ "type": "extra", "content": "\t\t" }, { "type": "property", "content": "Xd" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "42" },
-						]
-					]}
+				],
+				[
+					{ "type": "extra", "content": "\t" }, { "type": "property", "content": "Mass" }, { "type": "extra", "content": "  " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": "  " }, { "type": "value", "content": "0.0" }, { "type": "extra", "content": "\n" },
+				],
+				[
+					{ "type": "extra", "content": "\t" }, { "type": "property", "content": "Xd" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "42" }, { "type": "extra", "content": "\n" },
 				]
 			]}
 		]
@@ -171,6 +169,14 @@ def cst_tests():
 			]}
 		]
 	])
+	cst_test("include_files", [
+		[
+			{ "type": "property", "content": "IncludeFile" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "A.ini" }, { "type": "extra", "content": "\n\n" },
+		],
+		[
+			{ "type": "property", "content": "IncludeFile" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "B.ini" }, { "type": "extra", "content": "\n" },
+		]
+	])
 	cst_test("spaces", [
 		[
 			{ "type": "property", "content": "Foo" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Bar Baz" },
@@ -262,4 +268,4 @@ def cst_test(filename, expected):
 	tokens = ini_tokenizer.get_tokens(str(filepath))
 	cst = ini_cst.get_cst(tokens)
 
-	test.test(filename, cst, expected)
+	test.test("cst", filename, cst, expected)
