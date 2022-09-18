@@ -260,6 +260,19 @@ def cst_tests():
 			{ "type": "value", "content": "Bar" },
 		]
 	])
+	cst_test("object_and_property", [
+		[
+			{ "type": "property", "content": "Foo" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Bar" }, { "type": "extra", "content": "\n" },
+			{ "type": "children", "content": [
+				[
+					{ "type": "extra", "content": "\t" }, { "type": "property", "content": "Baz" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Bee" }, { "type": "extra", "content": "\n\n" },
+				]
+			]}
+		],
+		[
+			{ "type": "property", "content": "IncludeFile" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "A.ini" }, { "type": "extra", "content": "\n" },
+		]
+	])
 
 
 def cst_test(filename, expected):
