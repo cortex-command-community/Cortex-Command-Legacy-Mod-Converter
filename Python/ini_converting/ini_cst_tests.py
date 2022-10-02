@@ -5,24 +5,50 @@ from Python import test
 
 
 def cst_tests():
-	# cst_test("invalid_tabbing", []) # This is expected to raise a "Too many tabs found" error.
-
-	cst_test("path", [
+	cst_test("comment_before_tabs", [
 		[
-			{ "type": "property", "content": "FilePath" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "A/B" }, { "type": "extra", "content": "\n" }
-		],
-		[
-			{ "type": "property", "content": "AirResistance" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "0.05" }, { "type": "extra", "content": "\n" }
+			{ "type": "property", "content": "A1" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "A2" }, { "type": "extra", "content": "\n" },
+			{ "type": "children", "content": [
+				[
+					{ "type": "extra", "content": "\t" }, { "type": "property", "content": "B1" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "B2" }, { "type": "extra", "content": "\n" },
+					{ "type": "children", "content": [
+						[
+							{ "type": "extra", "content": "\t\t" }, { "type": "property", "content": "C1" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "C2" }, { "type": "extra", "content": "\n" },
+							{ "type": "children", "content": [
+								[
+									{ "type": "extra", "content": "/*foo*/" }, { "type": "extra", "content": "\t\t\t" }, { "type": "property", "content": "D1" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "D2" }, { "type": "extra", "content": "\n" },
+								],
+								[
+									{ "type": "extra", "content": "\t\t\t" }, { "type": "property", "content": "E1" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "E2" },
+								]
+							]}
+						]
+					]}
+				]
+			]}
 		]
 	])
-	cst_test("lstripped_tab", [
+	cst_test("comment_in_tabs", [
 		[
-			{ "type": "property", "content": "Foo" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Bar" },
-		]
-	])
-	cst_test("simple", [
-		[
-			{ "type": "property", "content": "AddEffect" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "MOPixel" },
+			{ "type": "property", "content": "A1" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "A2" }, { "type": "extra", "content": "\n" },
+			{ "type": "children", "content": [
+				[
+					{ "type": "extra", "content": "\t" }, { "type": "property", "content": "B1" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "B2" }, { "type": "extra", "content": "\n" },
+					{ "type": "children", "content": [
+						[
+							{ "type": "extra", "content": "\t\t" }, { "type": "property", "content": "C1" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "C2" }, { "type": "extra", "content": "\n" },
+							{ "type": "children", "content": [
+								[
+									{ "type": "extra", "content": "\t" }, { "type": "extra", "content": "/*foo*/" }, { "type": "extra", "content": "\t\t" }, { "type": "property", "content": "D1" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "D2" }, { "type": "extra", "content": "\n" },
+								],
+								[
+									{ "type": "extra", "content": "\t\t\t" }, { "type": "property", "content": "E1" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "E2" },
+								]
+							]}
+						]
+					]}
+				]
+			]}
 		]
 	])
 	cst_test("comments", [
@@ -30,34 +56,6 @@ def cst_tests():
 			{ "type": "extra", "content": "// foo"}, { "type": "extra", "content": "\n" },
 			{ "type": "extra", "content": "/*a\nb\nc*/" }, { "type": "extra", "content": "\n" },
 		],
-	])
-	cst_test("nested", [
-		[
-			{ "type": "property", "content": "Foo" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Bar" }, { "type": "extra", "content": "\n" },
-			{ "type": "children", "content": [
-				[
-					{ "type": "extra", "content": "\t" }, { "type": "property", "content": "Baz" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Bee" }, { "type": "extra", "content": "\n" },
-				]
-			]}
-		]
-	])
-	cst_test("multiple", [
-		[
-			{ "type": "property", "content": "Foo" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Bar" }, { "type": "extra", "content": "\n" },
-			{ "type": "children", "content": [
-				[
-					{ "type": "extra", "content": "\t" }, { "type": "property", "content": "Baz" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Bee" }, { "type": "extra", "content": "\n" },
-				]
-			]}
-		],
-		[
-			{ "type": "property", "content": "A" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "B" }, { "type": "extra", "content": "\n" },
-			{ "type": "children", "content": [
-				[
-					{ "type": "extra", "content": "\t" }, { "type": "property", "content": "C" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "D" }, { "type": "extra", "content": "\n" },
-				]
-			]}
-		]
 	])
 	cst_test("complex", [
 		[
@@ -73,6 +71,24 @@ def cst_tests():
 				],
 				[
 					{ "type": "extra", "content": "\t" }, { "type": "property", "content": "Xd" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "42" }, { "type": "extra", "content": "\n" },
+				]
+			]}
+		]
+	])
+	cst_test("datamodule", [
+		[
+			{ "type": "property", "content": "DataModule" }, { "type": "extra", "content": "\n" },
+			{ "type": "children", "content": [
+				[
+					{ "type": "extra", "content": "\t" }, { "type": "property", "content": "IconFile" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "ContentFile" }, { "type": "extra", "content": "\n" },
+					{ "type": "children", "content": [
+						[
+							{ "type": "extra", "content": "\t\t" }, { "type": "property", "content": "FilePath" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Foo" }, { "type": "extra", "content": "\n" },
+						]
+					]}
+				],
+				[
+					{ "type": "extra", "content": "\t" }, { "type": "property", "content": "ModuleName" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Bar" },
 				]
 			]}
 		]
@@ -177,87 +193,40 @@ def cst_tests():
 			{ "type": "property", "content": "IncludeFile" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "B.ini" }, { "type": "extra", "content": "\n" },
 		]
 	])
-	cst_test("spaces", [
+
+	# cst_test("invalid_tabbing", []) # This is expected to raise a "Too many tabs found" error.
+
+	cst_test("lstripped_tab", [
 		[
-			{ "type": "property", "content": "Foo" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Bar Baz" },
+			{ "type": "property", "content": "Foo" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Bar" },
 		]
 	])
-	cst_test("comment_before_tabs", [
+	cst_test("multiple", [
 		[
-			{ "type": "property", "content": "A1" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "A2" }, { "type": "extra", "content": "\n" },
+			{ "type": "property", "content": "Foo" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Bar" }, { "type": "extra", "content": "\n" },
 			{ "type": "children", "content": [
 				[
-					{ "type": "extra", "content": "\t" }, { "type": "property", "content": "B1" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "B2" }, { "type": "extra", "content": "\n" },
-					{ "type": "children", "content": [
-						[
-							{ "type": "extra", "content": "\t\t" }, { "type": "property", "content": "C1" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "C2" }, { "type": "extra", "content": "\n" },
-							{ "type": "children", "content": [
-								[
-									{ "type": "extra", "content": "/*foo*/" }, { "type": "extra", "content": "\t\t\t" }, { "type": "property", "content": "D1" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "D2" }, { "type": "extra", "content": "\n" },
-								],
-								[
-									{ "type": "extra", "content": "\t\t\t" }, { "type": "property", "content": "E1" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "E2" },
-								]
-							]}
-						]
-					]}
+					{ "type": "extra", "content": "\t" }, { "type": "property", "content": "Baz" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Bee" }, { "type": "extra", "content": "\n" },
 				]
 			]}
-		]
-	])
-	cst_test("comment_in_tabs", [
-		[
-			{ "type": "property", "content": "A1" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "A2" }, { "type": "extra", "content": "\n" },
-			{ "type": "children", "content": [
-				[
-					{ "type": "extra", "content": "\t" }, { "type": "property", "content": "B1" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "B2" }, { "type": "extra", "content": "\n" },
-					{ "type": "children", "content": [
-						[
-							{ "type": "extra", "content": "\t\t" }, { "type": "property", "content": "C1" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "C2" }, { "type": "extra", "content": "\n" },
-							{ "type": "children", "content": [
-								[
-									{ "type": "extra", "content": "\t" }, { "type": "extra", "content": "/*foo*/" }, { "type": "extra", "content": "\t\t" }, { "type": "property", "content": "D1" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "D2" }, { "type": "extra", "content": "\n" },
-								],
-								[
-									{ "type": "extra", "content": "\t\t\t" }, { "type": "property", "content": "E1" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "E2" },
-								]
-							]}
-						]
-					]}
-				]
-			]}
-		]
-	])
-	cst_test("spaces_at_start_of_line", [
-		[
-			{ "type": "property", "content": "Foo" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Bar" }, { "type": "extra", "content": "\n" }, { "type": "extra", "content": "    " },
 		],
 		[
-			{ "type": "property", "content": "Baz" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Bee" },
-		]
-	])
-	cst_test("datamodule", [
-		[
-			{ "type": "property", "content": "DataModule" }, { "type": "extra", "content": "\n" },
+			{ "type": "property", "content": "A" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "B" }, { "type": "extra", "content": "\n" },
 			{ "type": "children", "content": [
 				[
-					{ "type": "extra", "content": "\t" }, { "type": "property", "content": "IconFile" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "ContentFile" }, { "type": "extra", "content": "\n" },
-					{ "type": "children", "content": [
-						[
-							{ "type": "extra", "content": "\t\t" }, { "type": "property", "content": "FilePath" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Foo" }, { "type": "extra", "content": "\n" },
-						]
-					]}
-				],
-				[
-					{ "type": "extra", "content": "\t" }, { "type": "property", "content": "ModuleName" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Bar" },
+					{ "type": "extra", "content": "\t" }, { "type": "property", "content": "C" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "D" }, { "type": "extra", "content": "\n" },
 				]
 			]}
 		]
 	])
-	cst_test("value_on_next_line", [
+	cst_test("nested", [
 		[
-			{ "type": "property", "content": "Foo" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": "\n" },
-			{ "type": "value", "content": "Bar" },
+			{ "type": "property", "content": "Foo" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Bar" }, { "type": "extra", "content": "\n" },
+			{ "type": "children", "content": [
+				[
+					{ "type": "extra", "content": "\t" }, { "type": "property", "content": "Baz" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Bee" }, { "type": "extra", "content": "\n" },
+				]
+			]}
 		]
 	])
 	cst_test("object_and_property", [
@@ -273,12 +242,44 @@ def cst_tests():
 			{ "type": "property", "content": "IncludeFile" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "A.ini" }, { "type": "extra", "content": "\n" },
 		]
 	])
+	cst_test("path", [
+		[
+			{ "type": "property", "content": "FilePath" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "A/B" }, { "type": "extra", "content": "\n" }
+		],
+		[
+			{ "type": "property", "content": "AirResistance" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "0.05" }, { "type": "extra", "content": "\n" }
+		]
+	])
+	cst_test("simple", [
+		[
+			{ "type": "property", "content": "AddEffect" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "MOPixel" },
+		]
+	])
+	cst_test("spaces_at_start_of_line", [
+		[
+			{ "type": "property", "content": "Foo" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Bar" }, { "type": "extra", "content": "\n" }, { "type": "extra", "content": "    " },
+		],
+		[
+			{ "type": "property", "content": "Baz" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Bee" },
+		]
+	])
+	cst_test("spaces", [
+		[
+			{ "type": "property", "content": "Foo" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "Bar Baz" },
+		]
+	])
 	cst_test("traditional", [
 		[
 			{ "type": "property", "content": "[Foo]" }, { "type": "extra", "content": "\n" },
 		],
 		[
 			{ "type": "property", "content": "Bar" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": " " }, { "type": "value", "content": "42" }, { "type": "extra", "content": "\n" },
+		]
+	])
+	cst_test("value_on_next_line", [
+		[
+			{ "type": "property", "content": "Foo" }, { "type": "extra", "content": " " }, { "type": "extra", "content": "=" }, { "type": "extra", "content": "\n" },
+			{ "type": "value", "content": "Bar" },
 		]
 	])
 
