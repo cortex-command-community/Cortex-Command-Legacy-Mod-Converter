@@ -15,5 +15,5 @@ def write_recursively(line_tokens, lines):
 		if token["type"] != "children":
 			lines.append(token["content"])
 		elif token["type"] == "children":
-			for line_tokens in token["content"]:
-				write_recursively(line_tokens, lines)
+			for new_line_tokens in token["content"]:
+				write_recursively(new_line_tokens, lines)
