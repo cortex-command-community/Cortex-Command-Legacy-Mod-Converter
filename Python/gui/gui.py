@@ -1,8 +1,7 @@
 import os, webbrowser
 import PySimpleGUI as sg
-from pathlib import Path, PurePosixPath
+from pathlib import Path
 
-from Python import utils
 from Python import shared_globals as cfg
 from Python import convert
 from Python import warnings
@@ -24,7 +23,7 @@ def init_settings():
 	sg.user_settings_filename(filename="settings.json", path=".")
 
 	if not os.path.isfile(sg.user_settings_filename()):
-		sg.Popup("This is a tool that allows you to convert legacy (old) mods to the latest version of CCCP. You can get more information from the GitHub repo or the Discord server by clicking the corresponding icons.", title="Welcome screen", custom_text=" OK ")
+		sg.Popup("This is a tool that allows you to convert legacy (old) mods to the latest version of CCCP.\n\nYou can get more information from the GitHub repository and the Discord server by clicking their corresponding icons in the bottom-right corner after pressing OK.", title="Welcome", custom_text=" OK ")
 
 	cfg.sg = sg
 
@@ -40,6 +39,21 @@ def default_settings_to_true(settings_to_default_to_true):
 	for setting_to_default_to_true in settings_to_default_to_true:
 		play_finish_sound_setting = sg.user_settings_get_entry(setting_to_default_to_true)
 		sg.user_settings_set_entry(setting_to_default_to_true, True if play_finish_sound_setting == None else play_finish_sound_setting)
+
+
+def is_part_of_cccp_folder(cccp_folder):
+	if not cccp_folder.exists():
+		return False
+
+	while cccp_folder and cccp_folder.name != "":
+		for entry in cccp_folder.iterdir():
+			if entry.is_file() and "Cortex Command" in entry.name:
+				sg.user_settings_set_entry("cccp_folder", str(cccp_folder))
+				return True
+
+		cccp_folder = cccp_folder.parent
+
+	return False
 
 
 def run_window():
@@ -63,15 +77,12 @@ def run_window():
 				main_window.BringToFront()
 
 		elif event == "CCCP_FOLDER":
-			cccp_folder = values[event]
-			if Path(cccp_folder).exists():
+			cccp_folder = Path(values[event])
+
+			if is_part_of_cccp_folder(cccp_folder):
 				valid_cccp_path = True
 				window[event](background_color = sg.theme_input_background_color())
-				
-				sg.user_settings_set_entry("cccp_folder", cccp_folder)
-
-				input_folder = PurePosixPath(cccp_folder) / cfg.CONVERTER_FOLDER_NAME / "Input" # Can't save Windows paths in settings.json
-				sg.user_settings_set_entry("input_folder", str(input_folder))
+				window[event](value = sg.user_settings_get_entry("cccp_folder"))
 			else:
 				valid_cccp_path = False
 				window[event](background_color = cfg.NO_PATH_SET_COLOR)
