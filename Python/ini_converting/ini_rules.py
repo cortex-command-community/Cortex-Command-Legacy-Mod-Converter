@@ -1,6 +1,3 @@
-import pprint
-
-
 from Python.ini_converting import ini_rules_utils
 
 from Python import thumbnail_generator

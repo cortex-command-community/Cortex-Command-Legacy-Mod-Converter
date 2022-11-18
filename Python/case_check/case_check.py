@@ -1,9 +1,6 @@
 from pathlib import Path
 import re
 
-from Python import shared_globals as cfg
-from Python import warnings
-
 from Python.case_check.case_check_errors import error_could_not_locate, error_failed_to_find_module
 
 

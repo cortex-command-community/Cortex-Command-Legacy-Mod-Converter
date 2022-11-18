@@ -1,4 +1,4 @@
-from Python import warnings
+# from Python import warnings
 
 
 def error_could_not_locate(file_name, line_number, couldnt_be_located):

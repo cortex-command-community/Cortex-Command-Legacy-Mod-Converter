@@ -194,7 +194,8 @@ def cst_tests():
 		]
 	])
 
-	# cst_test("invalid_tabbing", []) # This is expected to raise a "Too many tabs found" error.
+	# This is expected to raise a "Too many tabs found" error.
+	# cst_test("invalid_tabbing", [])
 
 	cst_test("lstripped_tab", [
 		[

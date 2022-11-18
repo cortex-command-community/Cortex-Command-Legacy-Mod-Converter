@@ -1,4 +1,4 @@
-import os, sys, time, shutil, math, pathlib, webbrowser, platform
+import os, time, shutil, math, platform
 from pathlib import Path
 from playsound import playsound
 import PySimpleGUI as sg
@@ -29,9 +29,9 @@ def convert():
 
 	time_start = time.time()
 
-	input_folder_path = cfg.sg.user_settings_get_entry("input_folder")
-	output_folder_path = sg.user_settings_get_entry("cccp_folder")
-	cccp_folder_path = cfg.sg.user_settings_get_entry("cccp_folder")
+	input_folder_path = Path(sg.user_settings_get_entry("cccp_folder")) / cfg.CONVERTER_FOLDER_NAME / "Input"
+	cccp_folder_path = sg.user_settings_get_entry("cccp_folder")
+	output_folder_path = cccp_folder_path
 
 	zips_py.unzip(input_folder_path)
 
@@ -48,10 +48,10 @@ def convert():
 	ini_rules.apply_rules_on_ini_cst(ini_cst)
 	ini_writer.write_converted_ini_cst(ini_cst, Path(output_folder_path))
 
-	if cfg.sg.user_settings_get_entry("output_zips"):
+	if sg.user_settings_get_entry("output_zips"):
 		zips_py.create_zips(input_folder_path, output_folder_path)
 
-	if cfg.sg.user_settings_get_entry("play_finish_sound"):
+	if sg.user_settings_get_entry("play_finish_sound"):
 		playsound(utils.path("Media/finish.wav"), block=(platform.system() == "Linux"))
 
 	elapsed = math.floor(time.time() - time_start)
@@ -87,7 +87,7 @@ def process_files(input_subfiles, input_subfolder_path, output_subfolder, input_
 		output_file_path = os.path.join(output_subfolder, filename + file_extension)
 
 		if bmp_to_png.is_bmp(full_filename):
-			if not cfg.sg.user_settings_get_entry("skip_conversion"):
+			if not sg.user_settings_get_entry("skip_conversion"):
 				bmp_to_png.bmp_to_png(input_file_path, Path(output_file_path).with_suffix(".png"))
 			else:
 				shutil.copyfile(input_file_path, output_file_path)
@@ -130,7 +130,7 @@ def create_converted_file(input_file_path, output_file_path, input_folder_path, 
 			# Case matching must be done after conversion, otherwise tons of errors wil be generated
 			# all_lines = case_check.case_check(all_lines, input_file_path, output_file_path)
 
-			if not cfg.sg.user_settings_get_entry("skip_conversion"):
+			if not sg.user_settings_get_entry("skip_conversion"):
 				all_lines = regex_rules.regex_replace(all_lines)
 
 			# Case matching must be done after conversion, otherwise tons of errors wil be generated
@@ -142,7 +142,7 @@ def create_converted_file(input_file_path, output_file_path, input_folder_path, 
 
 
 def apply_conversion_rules(all_lines):
-	if not cfg.sg.user_settings_get_entry("skip_conversion"):
+	if not sg.user_settings_get_entry("skip_conversion"):
 		for old_str, new_str in conversion_rules.items():
 			old_str_parts = os.path.splitext(old_str)
 			# Because bmp -> png already happened on all_lines we'll make all old_str conversion rules png.

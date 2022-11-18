@@ -86,7 +86,7 @@ def tokenizer_tests():
 		{ "type": "WORD", "content": "IncludeFile" }, { "type": "EXTRA", "content": " " }, { "type": "EQUALS", "content": "=" }, { "type": "EXTRA", "content": " " }, { "type": "WORD", "content": "B.ini" }, { "type": "NEWLINES", "content": "\n" },
 	])
 
-	# It's fine that the tokenizer doesn't realize that this is an invalid file, because complex checking is the parser's responsibility.
+	# It's fine that the tokenizer doesn't realize that this is an invalid file, because complex checking is the CST parser's responsibility.
 	tokenizer_test("invalid_tabbing", [
 		{ "type": "WORD", "content": "AddEffect" }, { "type": "EXTRA", "content": " " }, { "type": "EQUALS", "content": "=" }, { "type": "EXTRA", "content": " " }, { "type": "WORD", "content": "MOPixel" }, { "type": "NEWLINES", "content": "\n" },
 		{ "type": "TABS", "content": "\t\t" }, { "type": "WORD", "content": "Foo" }, { "type": "EXTRA", "content": " " }, { "type": "EQUALS", "content": "=" }, { "type": "EXTRA", "content": " " }, { "type": "WORD", "content": "Bar" },

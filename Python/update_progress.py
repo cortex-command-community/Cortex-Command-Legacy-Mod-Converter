@@ -1,7 +1,5 @@
 import os
 
-from pathlib import Path
-
 from Python import shared_globals as cfg
 from Python import utils
 
@@ -14,7 +12,7 @@ def increment_progress():
 	global progress
 
 	progress += 1
-	
+
 	cfg.progress_bar.update(current_count=progress % total_progress)
 
 
@@ -26,7 +24,7 @@ def set_max_progress(input_folder_path):
 
 	for parent_subfolder_path, _, subfiles in os.walk(input_folder_path):
 		relative_subfolder = utils.get_relative_subfolder(input_folder_path, parent_subfolder_path)
-		
+
 		if utils.is_mod_folder_or_subfolder(relative_subfolder):
 			total_progress += len(subfiles)
 
