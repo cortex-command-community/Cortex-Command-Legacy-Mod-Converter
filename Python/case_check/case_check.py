@@ -15,15 +15,15 @@ _ini_file_includes = ["IncludeFile", "ScriptPath", "FilePath", "Path", "ScriptFi
 _lua_file_includes = ["require", "dofile", "loadfile", "io.open"]
 
 
-def init_glob(cccp_path, input_path):
+def init_glob(output_folder_path, input_path):
 	"""
 	Initialize the path tree for later use
 	"""
 	global _path_glob_lowercase, _path_glob, _images, _modules
 
 	_path_glob = [
-		p.relative_to(cccp_path).as_posix()[:-len(p.suffix)] + p.suffix.lower()
-		for p in sorted(Path(cccp_path).glob("*.rte/**/*.*"))
+		p.relative_to(output_folder_path).as_posix()[:-len(p.suffix)] + p.suffix.lower()
+		for p in sorted(Path(output_folder_path).glob("*.rte/**/*.*"))
 	]
 	_path_glob.extend([
 		p.relative_to(input_path).as_posix()[:-len(p.suffix)] + p.suffix.lower()
@@ -31,7 +31,7 @@ def init_glob(cccp_path, input_path):
 	])
 	# print(_path_glob)
 	_path_glob_lowercase = [p.lower() for p in _path_glob]
-	_modules = [p.relative_to(cccp_path).as_posix() for p in sorted(Path(cccp_path).glob("*.rte"))]
+	_modules = [p.relative_to(output_folder_path).as_posix() for p in sorted(Path(output_folder_path).glob("*.rte"))]
 	_modules.extend([
 		p.relative_to(input_path).as_posix()
 		for p in sorted(Path(input_path).glob("*.rte"))

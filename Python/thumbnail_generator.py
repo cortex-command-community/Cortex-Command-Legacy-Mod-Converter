@@ -6,7 +6,7 @@ from pathlib import Path
 from Python import shared_globals as cfg
 
 
-def generate_thumbnail(iconfile_relative_path_str):
+def generate_thumbnail(iconfile_relative_path_str, output_folder_path):
 	"""
 	Almost all mods have a ModuleIcon.bmp, and sometimes a Preview.bmp
 	The Preview.bmp is often bigger and prettier than the ModuleIcon.bmp,
@@ -21,10 +21,7 @@ def generate_thumbnail(iconfile_relative_path_str):
 	2. Add transparency on the sides so the width is AT LEAST (16/9) times the new height.
 	   It's fine if it's way wider, as mod.io cuts off the sides of the image if it's too wide.
 	"""
-	cccp_folder_path = cfg.sg.user_settings_get_entry("cccp_folder")
-
-	# print(iconfile_relative_path_str)
-	iconfile_path = cccp_folder_path / Path(iconfile_relative_path_str)
+	iconfile_path = output_folder_path / Path(iconfile_relative_path_str)
 	thumbnail = Image.open(iconfile_path).convert("RGBA")
 
 	pixdata = thumbnail.load()

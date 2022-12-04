@@ -24,32 +24,17 @@ from Python.ini_converting import ini_writer
 conversion_rules = {} # TODO: Move this.
 
 
-def convert():
-	print("") # Newline.
-
+def convert_all():
 	time_start = time.time()
 
-	input_folder_path = Path(sg.user_settings_get_entry("cccp_folder")) / cfg.CONVERTER_FOLDER_NAME / "Input"
-	cccp_folder_path = sg.user_settings_get_entry("cccp_folder")
-	output_folder_path = cccp_folder_path
+	print("") # Newline.
 
-	zips_py.unzip(input_folder_path)
+	input_folder_path = str(Path(sg.user_settings_get_entry("cccp_folder")) / cfg.CONVERTER_FOLDER_NAME / "Input")
+	output_folder_path = sg.user_settings_get_entry("cccp_folder")
 
 	update_progress.set_max_progress(input_folder_path)
 
-	case_check.init_glob(cccp_folder_path, input_folder_path)
-
-	converter_walk(input_folder_path, output_folder_path)
-
-	if sg.user_settings_get_entry("beautify_lua"):
-		stylua.run(input_folder_path, output_folder_path)
-
-	ini_cst = ini_cst_builder.get_full_cst(input_folder_path, output_folder_path, input_folder_path)
-	ini_rules.apply_rules_on_ini_cst(ini_cst)
-	ini_writer.write_converted_ini_cst(ini_cst, Path(output_folder_path))
-
-	if sg.user_settings_get_entry("output_zips"):
-		zips_py.create_zips(input_folder_path, output_folder_path)
+	convert(input_folder_path, output_folder_path, sg.user_settings_get_entry("beautify_lua"), sg.user_settings_get_entry("output_zips"))
 
 	if sg.user_settings_get_entry("play_finish_sound"):
 		playsound(utils.path("Media/finish.wav"), block=(platform.system() == "Linux"))
@@ -58,6 +43,24 @@ def convert():
 	print(f"Finished in {elapsed} {pluralize('second', elapsed)}.")
 
 	warnings.show_popup_if_necessary()
+
+
+def convert(input_folder_path, output_folder_path, beautify_lua, output_zips):
+	zips_py.unzip(input_folder_path)
+
+	case_check.init_glob(output_folder_path, input_folder_path)
+
+	converter_walk(input_folder_path, output_folder_path)
+
+	if beautify_lua:
+		stylua.run(input_folder_path, output_folder_path)
+
+	ini_cst = ini_cst_builder.get_full_cst(input_folder_path, output_folder_path, input_folder_path)
+	ini_rules.apply_rules_on_ini_cst(ini_cst, output_folder_path)
+	ini_writer.write_converted_ini_cst(ini_cst, output_folder_path)
+
+	if output_zips:
+		zips_py.create_zips(input_folder_path, output_folder_path)
 
 
 def converter_walk(input_folder_path, output_folder_path):

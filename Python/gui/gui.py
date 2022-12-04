@@ -97,7 +97,7 @@ def run_window():
 
 		elif event == "CONVERT":
 			if valid_cccp_path:
-				convert.convert()
+				convert.convert_all()
 
 		elif event == "GITHUB":
 			webbrowser.open("https://github.com/cortex-command-community/Cortex-Command-Legacy-Mod-Converter")

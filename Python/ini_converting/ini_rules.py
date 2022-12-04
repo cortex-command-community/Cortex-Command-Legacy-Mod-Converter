@@ -17,20 +17,20 @@ from Python import shared_globals as cfg
 """
 
 
-def apply_rules_on_ini_cst(ini_cst):
-	apply_rules_on_ini_cst_recursively(ini_cst)
+def apply_rules_on_ini_cst(ini_cst, output_folder_path):
+	apply_rules_on_ini_cst_recursively(ini_cst, output_folder_path)
 	ini_fix_duplicate_scripts.run(ini_cst)
 
 
-def apply_rules_on_ini_cst_recursively(parsed_subset):
+def apply_rules_on_ini_cst_recursively(parsed_subset, output_folder_path):
 	for key, value in parsed_subset.items():
 		if isinstance(value, dict):
-			apply_rules_on_ini_cst_recursively(value)
+			apply_rules_on_ini_cst_recursively(value, output_folder_path)
 		else: # If it's a list of the sections of a file.
-			apply_rules_on_sections(value)
+			apply_rules_on_sections(value, output_folder_path)
 
 
-def apply_rules_on_sections(parsed_subset):
+def apply_rules_on_sections(parsed_subset, output_folder_path):
 	for section in parsed_subset:
 		for token in section:
 			if token["type"] == "children":
@@ -39,7 +39,7 @@ def apply_rules_on_sections(parsed_subset):
 				if ini_rules_utils.children_contain_property_shallowly(children, "MaxMass"):
 					max_mass_to_max_inventory_mass(children)
 
-				iconfile_path_to_thumbnail_generator(children)
+				iconfile_path_to_thumbnail_generator(children, output_folder_path)
 
 				for line_tokens in children:
 					replace_property_and_value(line_tokens, "MinThrottleRange", "NegativeThrottleMultiplier", min_throttle_range_to_negative_throttle_multiplier)
@@ -194,7 +194,7 @@ def max_length_to_offsets_2(line_tokens):
 						return old_value
 
 
-def iconfile_path_to_thumbnail_generator(children):
+def iconfile_path_to_thumbnail_generator(children, output_folder_path):
 	for line_tokens in children:
 		if {"type": "property", "content": "IconFile"} in line_tokens and {"type": "value", "content": "ContentFile"} in line_tokens:
 			for token in line_tokens:
@@ -209,7 +209,7 @@ def iconfile_path_to_thumbnail_generator(children):
 								if subtoken["type"] == "value":
 									# print(subtoken)
 									iconfile_path = subtoken["content"]
-									thumbnail_generator.generate_thumbnail(iconfile_path)
+									thumbnail_generator.generate_thumbnail(iconfile_path, output_folder_path)
 
 
 def duplicate_script_path(parsed_subset):
