@@ -4,28 +4,18 @@ from pathlib import Path
 from Python import shared_globals as cfg
 
 
-def unzip(input_folder_path):
-	for f in os.listdir(input_folder_path):
-		zip_path = os.path.join(input_folder_path, f)
-		if zipfile.is_zipfile(zip_path):
-			with zipfile.ZipFile(zip_path) as item:
-				item.extractall(input_folder_path)
-			os.remove(zip_path)
+def unzip(input_mod_path, input_folder_path):
+	if zipfile.is_zipfile(input_mod_path):
+		with zipfile.ZipFile(input_mod_path) as item:
+			item.extractall(input_folder_path)
+		os.remove(input_mod_path)
 
 
-def create_zips(input_folder_path, output_folder):
-	if input_folder_path.endswith(".rte"):
-		create_single_zip(Path(input_folder_path).name, output_folder)
-	else:
-		# TODO: Move check if it's a directory out of this loop.
-		folder_names = [f for f in os.listdir(input_folder_path) if os.path.isdir(os.path.join(output_folder, f))]
-		for mod_name in folder_names:
-			if mod_name.endswith(".rte"):
-				create_single_zip(mod_name, output_folder)
+def zip(input_mod_name, output_folder_path):
+	print("Zipping '{}'".format(input_mod_name))
 
+	output_mod_zip_name = input_mod_name.replace(".rte", f"-{cfg.GAME_VERSION}-v1.0.rte")
+	shutil.make_archive(output_folder_path / output_mod_zip_name, "zip", root_dir=output_folder_path, base_dir=input_mod_name)
 
-def create_single_zip(mod_name, output_folder):
-	print("Zipping '{}'".format(mod_name))
-	mod_path = os.path.join(output_folder, mod_name)
-	shutil.make_archive(mod_path.replace(".rte", f"-{cfg.GAME_VERSION}-v1.0" + ".rte"), "zip", root_dir=output_folder, base_dir=mod_name)
-	shutil.rmtree(mod_path)
+	output_mod_path = output_folder_path / input_mod_name
+	shutil.rmtree(output_mod_path)
