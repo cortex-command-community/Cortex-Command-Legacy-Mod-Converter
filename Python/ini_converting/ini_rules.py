@@ -39,8 +39,6 @@ def apply_rules_on_sections(parsed_subset, output_folder_path):
 				if ini_rules_utils.children_contain_property_shallowly(children, "MaxMass"):
 					max_mass_to_max_inventory_mass(children)
 
-				iconfile_path_to_thumbnail_generator(children, output_folder_path)
-
 				for line_tokens in children:
 					replace_property_and_value(line_tokens, "MinThrottleRange", "NegativeThrottleMultiplier", min_throttle_range_to_negative_throttle_multiplier)
 					replace_property_and_value(line_tokens, "MaxThrottleRange", "PositiveThrottleMultiplier", max_throttle_range_to_positive_throttle_multiplier)
@@ -55,6 +53,8 @@ def apply_rules_on_sections(parsed_subset, output_folder_path):
 					max_length_to_offsets(children)
 
 		add_grip_strength_if_missing(section)
+
+		iconfile_path_to_thumbnail_generator(section, output_folder_path)
 
 
 def max_mass_to_max_inventory_mass(children):
@@ -194,22 +194,26 @@ def max_length_to_offsets_2(line_tokens):
 						return old_value
 
 
-def iconfile_path_to_thumbnail_generator(children, output_folder_path):
-	for line_tokens in children:
-		if {"type": "property", "content": "IconFile"} in line_tokens and {"type": "value", "content": "ContentFile"} in line_tokens:
-			for token in line_tokens:
-				if token["type"] == "children":
-					subchildren = token["content"]
-					# print(subchildren)
+def iconfile_path_to_thumbnail_generator(section, output_folder_path):
+	if { "type": "property", "content": "DataModule" } in section:
+		for a in section:
+			if a["type"] == "children":
+				b = a["content"]
+				for c in b:
+					if {"type": "property", "content": "IconFile"} in c and {"type": "value", "content": "ContentFile"} in c:
+						for token in c:
+							if token["type"] == "children":
+								subchildren = token["content"]
+								# print(subchildren)
 
-					for subline_tokens in subchildren:
-						if {"type": "property", "content": "FilePath"} in subline_tokens:
-							# print(subline_tokens)
-							for subtoken in subline_tokens:
-								if subtoken["type"] == "value":
-									# print(subtoken)
-									iconfile_path = subtoken["content"]
-									thumbnail_generator.generate_thumbnail(iconfile_path, output_folder_path)
+								for subline_tokens in subchildren:
+									if {"type": "property", "content": "FilePath"} in subline_tokens:
+										# print(subline_tokens)
+										for subtoken in subline_tokens:
+											if subtoken["type"] == "value":
+												# print(subtoken)
+												iconfile_path = subtoken["content"]
+												thumbnail_generator.generate_thumbnail(iconfile_path, output_folder_path)
 
 
 def duplicate_script_path(parsed_subset):

@@ -206,8 +206,8 @@ def bmp_to_png(input_filepath, output_filepath):
 			Image.open(input_filepath).save(output_filepath)
 
 
-def change_bmp_to_png_name(line):
-	if not any(skipped_filename in line for skipped_filename in ("palette.bmp", "palettemat.bmp")) and not cfg.sg.user_settings_get_entry("skip_conversion"):
+def change_bmp_to_png_name(line, skip_conversion):
+	if not any(skipped_filename in line for skipped_filename in ("palette.bmp", "palettemat.bmp")) and not skip_conversion:
 		return line.replace(".bmp", ".png")
 	else:
 		return line

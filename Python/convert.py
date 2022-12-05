@@ -32,7 +32,8 @@ def convert_all():
 			input_folder_path,
 			output_folder_path,
 			sg.user_settings_get_entry("beautify_lua"),
-			sg.user_settings_get_entry("output_zips")
+			sg.user_settings_get_entry("output_zips"),
+			sg.user_settings_get_entry("skip_conversion"),
 		)
 
 	if sg.user_settings_get_entry("play_finish_sound"):
@@ -50,39 +51,40 @@ def get_input_mod_paths(input_folder_path):
 			yield entry.resolve()
 
 
-def convert(input_mod_path, input_folder_path, output_folder_path, beautify_lua, output_zip):
+def convert(input_mod_path, input_folder_path, output_folder_path, beautify_lua, output_zip, skip_conversion):
 
 	input_mod_name = input_mod_path.name
+	output_mod_path = Path(output_folder_path) / input_mod_name
 
 	zips.unzip(input_mod_path, input_folder_path)
 
 	# TODO: Maybe give this input_mod_path instead of input_folder_path
 	case_check.init_glob(output_folder_path, input_folder_path)
 
-	converter_walk(input_mod_path, input_folder_path, output_folder_path)
+	converter_walk(input_mod_path, input_folder_path, output_folder_path, skip_conversion)
 
 	if beautify_lua:
 		stylua.stylize(input_mod_path, input_folder_path, output_folder_path)
 
-	ini_cst = ini_cst_builder.get_full_cst(input_folder_path, output_folder_path, input_folder_path)
+	ini_cst = ini_cst_builder.get_full_cst(input_folder_path, output_folder_path, input_mod_path)
 	ini_rules.apply_rules_on_ini_cst(ini_cst, output_folder_path)
-	ini_writer.write_converted_ini_cst(ini_cst, output_folder_path)
+	ini_writer.write_converted_ini_cst(ini_cst, output_mod_path)
 
 	if output_zip:
 		zips.zip(input_mod_name, Path(output_folder_path))
 
 
-def converter_walk(input_mod_path, input_folder_path, output_folder_path):
+def converter_walk(input_mod_path, input_folder_path, output_folder_path, skip_conversion):
 	for input_subfolder_path, _input_subfolders, input_subfiles in os.walk(input_mod_path):
 		relative_subfolder = utils.get_relative_subfolder(str(input_mod_path), input_subfolder_path)
 
 		if utils.is_mod_folder_or_subfolder(relative_subfolder):
 			output_subfolder = os.path.join(output_folder_path, relative_subfolder)
 			Path(output_subfolder).mkdir(exist_ok=True)
-			process_files(input_subfiles, input_subfolder_path, output_subfolder, input_folder_path)
+			process_files(input_subfiles, input_subfolder_path, output_subfolder, input_folder_path, skip_conversion)
 
 
-def process_files(input_subfiles, input_subfolder_path, output_subfolder, input_folder_path):
+def process_files(input_subfiles, input_subfolder_path, output_subfolder, input_folder_path, skip_conversion):
 	for full_filename in input_subfiles:
 		filename, file_extension = os.path.splitext(full_filename) # TODO: Use pathlib instead here
 		file_extension = file_extension.lower()
@@ -92,23 +94,24 @@ def process_files(input_subfiles, input_subfolder_path, output_subfolder, input_
 		output_file_path = os.path.join(output_subfolder, filename + file_extension)
 
 		if bmp_to_png.is_bmp(full_filename):
-			if not sg.user_settings_get_entry("skip_conversion"):
+			if not skip_conversion:
 				bmp_to_png.bmp_to_png(input_file_path, Path(output_file_path).with_suffix(".png"))
 			else:
 				shutil.copyfile(input_file_path, output_file_path)
 
-		update_progress.increment_progress()
+		if cfg.progress_bar:
+			update_progress.increment_progress()
 
 		if full_filename == "desktop.ini": # Skip this Windows metadata file.
 			continue
 
 		if file_extension in (".ini", ".lua"):
-			create_converted_file(input_file_path, output_file_path, input_folder_path)
+			create_converted_file(input_file_path, output_file_path, input_folder_path, skip_conversion)
 		elif not bmp_to_png.is_bmp(full_filename):
 			shutil.copyfile(input_file_path, output_file_path)
 
 
-def create_converted_file(input_file_path, output_file_path, input_folder_path):
+def create_converted_file(input_file_path, output_file_path, input_folder_path, skip_conversion):
 	# try: # TODO: Figure out why this try/except is necessary and why it doesn't check for an error type.
 	with open(input_file_path, "r", errors="ignore") as file_in: # TODO: Why ignore errors?
 		with open(output_file_path, "w") as file_out:
@@ -119,7 +122,7 @@ def create_converted_file(input_file_path, output_file_path, input_folder_path):
 			for line in file_in:
 				line_number += 1
 
-				line = bmp_to_png.change_bmp_to_png_name(line)
+				line = bmp_to_png.change_bmp_to_png_name(line, skip_conversion)
 
 				# line = lua_parser.convert(line)
 
@@ -130,12 +133,12 @@ def create_converted_file(input_file_path, output_file_path, input_folder_path):
 				all_lines += line
 
 			# Conversion rules can contain newlines, so they can't be applied on a per-line basis.
-			all_lines = apply_conversion_rules(all_lines)
+			all_lines = apply_conversion_rules(all_lines, skip_conversion)
 
 			# Case matching must be done after conversion, otherwise tons of errors wil be generated
 			# all_lines = case_check.case_check(all_lines, input_file_path, output_file_path)
 
-			if not sg.user_settings_get_entry("skip_conversion"):
+			if not skip_conversion:
 				all_lines = regex_rules.regex_replace(all_lines)
 
 			# Case matching must be done after conversion, otherwise tons of errors wil be generated
@@ -146,8 +149,8 @@ def create_converted_file(input_file_path, output_file_path, input_folder_path):
 	# 	shutil.copyfile(input_file_path, output_file_path)
 
 
-def apply_conversion_rules(all_lines):
-	if not sg.user_settings_get_entry("skip_conversion"):
+def apply_conversion_rules(all_lines, skip_conversion):
+	if not skip_conversion:
 		for old_str, new_str in conversion_rules.items():
 			old_str_parts = os.path.splitext(old_str)
 			# Because bmp -> png already happened on all_lines we'll make all old_str conversion rules png.
