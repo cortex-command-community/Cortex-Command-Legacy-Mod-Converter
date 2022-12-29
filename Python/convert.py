@@ -21,8 +21,8 @@ def convert_all():
 
 	print("") # Newline.
 
-	input_folder_path = cfg.INPUT_DIR
-	output_folder_path = cfg.OUTPUT_DIR
+	input_folder_path = "Input"
+	output_folder_path = "Output"
 
 	update_progress.set_max_progress(input_folder_path)
 
