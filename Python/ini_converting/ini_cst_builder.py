@@ -19,7 +19,7 @@ def get_full_cst(input_folder_path, output_folder_path, subfolder_path):
 		if not utils.is_mod_folder_or_subfolder(relative_subfolder): # TODO: Remove this once CCCP has a Mods folder that can be iterated over.
 			continue
 		elif p.is_file() and p.suffix == ".ini" and p.stem != "desktop": # Skips the desktop.ini Windows metadata file.
-			output_file_path = output_folder_path / Path(relative_subfolder)
+			output_file_path = utils.get_output_path_from_input_path(input_folder_path, output_folder_path, p)
 			tokens = ini_tokenizer.get_tokens(output_file_path)
 
 			try:
