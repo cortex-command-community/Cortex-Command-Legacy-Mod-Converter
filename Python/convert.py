@@ -21,8 +21,8 @@ def convert_all():
 
 	print("") # Newline.
 
-	input_folder_path = str(Path(sg.user_settings_get_entry("cccp_folder")) / cfg.CONVERTER_FOLDER_NAME / "Input")
-	output_folder_path = sg.user_settings_get_entry("cccp_folder")
+	input_folder_path = "Input"
+	output_folder_path = "Output"
 
 	update_progress.set_max_progress(input_folder_path)
 
