@@ -11,6 +11,7 @@
 	"AddToGroup = Snipers": "AddToGroup = Actors - Sniper",
 	"AddToGroup = Turret": "AddToGroup = Actors - Turret",
 	"AddToGroup = Mecha": "AddToGroup = Actors - Mecha",
+	"AddPieSlice = Slice": "AddPieSlice = PieSlice",
 	"Fire Puff Small B": "Fire Puff Small",
 	"Particle Napalm Bomb 1": "Particle Napalm Bomb",
 	"Particle Napalm Bomb 2": "Particle Napalm Bomb",

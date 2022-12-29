@@ -1,8 +1,9 @@
 from Python.ini_converting import ini_rules_utils
 
 from Python import thumbnail_generator
-from Python.ini_converting import ini_fix_duplicate_scripts
+from Python.ini_converting import ini_fix_duplicate_scripts, ini_cst, ini_tokenizer
 from Python import shared_globals as cfg
+
 
 
 """
@@ -53,6 +54,8 @@ def apply_rules_on_sections(parsed_subset, output_folder_path):
 					max_length_to_offsets(children)
 
 		add_grip_strength_if_missing(section)
+
+		pie_menu_fix(section)
 
 		iconfile_path_to_thumbnail_generator(section, output_folder_path)
 
@@ -218,6 +221,119 @@ def iconfile_path_to_thumbnail_generator(section, output_folder_path):
 
 def duplicate_script_path(parsed_subset):
 	pass
+
+
+def pie_menu_fix(section: list):
+	""" FOR Actors ONLY (I don't believe other entities need this change)
+	
+	Conversion:
+
+		AddActor = <Actor Type>
+			AddPieSlice = PieSlice
+				Direction = 2
+				ScriptPath = something.lua
+	-->
+		AddActor = <Actor Type>
+			PieMenu = PieMenu
+				CopyOf = <Default Pie Menu preset for actor type goes here>
+				AddPieSlice = PieSlice
+					Direction = 2
+					ScriptPath = something.lua
+
+	"""
+
+	# TODO: Account for pie slices being added non-consecutively
+
+	if (not section): return
+	if (not ini_rules_utils.has_children(section)): return
+	if (not ini_rules_utils.line_contains_property(section, "AddActor")): return
+	
+	
+	# Pie constants (pulled from source)
+	MAX_PIE_QUADRANT_SIZE = 5
+	MAX_PIE_SLICES = MAX_PIE_QUADRANT_SIZE * 4
+	DEFAULT_PIES = {
+		# Sizes: number of slices in the preset
+		# 0 = Up, 1 = Down, 2 = Left, 3 = Right, 4 = Any
+		"Actor": {
+			"sizes": [1,0,0,0],
+			"preset": "Default Actor Pie Menu",
+		},
+		"AHuman": {
+			"sizes": [2,2,2,2],
+			"preset": "Default Human Pie Menu",
+		},
+		"ACrab": {
+			"sizes": [2,2,2,2],
+			"preset": "Default Crab Pie Menu",
+		},
+		"Turret": {
+			"sizes": [2,0,0,1],
+			"preset": "Default Turret Pie Menu",
+		},
+		"ACDropShip": {
+			"sizes": [2,1,1,1],
+			"preset": "Default Craft Pie Menu",
+		},
+		"ACRocket": {
+			"sizes": [2,1,1,1],
+			"preset": "Default Craft Pie Menu",
+		},
+	}
+
+
+	# Make sure we're one of the actors that need pie menu adjustments
+	s_val = ini_rules_utils.line_contains_any_values(section, DEFAULT_PIES)
+	if (not s_val or s_val not in DEFAULT_PIES): return 
+	
+	# Get all added slices, if we have any.
+	slices = ini_rules_utils.get_children_with_property_shallow(section[-1]["content"], "AddPieSlice")
+	if (not slices): return
+
+	sliceDirCounts = DEFAULT_PIES[s_val]["sizes"]
+	sliceCount = sum(sliceDirCounts)
+	
+	# get the direction counts of the slices so we can change if need be.
+	dirs = ini_rules_utils.get_values_of_properties_of_children_shallowly([x[1] for x in slices], 'Direction')
+	
+	# TODO: Comment out pie slices when we're above the max pie slice limit.
+
+	# Keep track of and update slice directions.
+	for x in dirs:
+		dir = int(x[0])
+		line = x[1]
+		if (sliceDirCounts[dir] == MAX_PIE_QUADRANT_SIZE):
+			ini_rules_utils.set_line_value(line, 4)
+		else:
+			sliceDirCounts[dir] += 1
+		sliceCount += 1
+	
+	# get the indent of the first slice (we'll need it later)
+	indent = ini_rules_utils.get_indent(slices[0][1])
+	# Create the parent PieMenu and move everything inside it.
+	PT = ini_tokenizer.get_tokens_from_str(('\t' * indent) + "PieMenu = PieMenu\n")
+	PieMenu = ini_cst.get_cst(PT, depth=indent)[0]
+	CT = ini_tokenizer.get_tokens_from_str(('\t' * (indent+1)) + f"CopyOf = {DEFAULT_PIES[s_val]['preset']}\n")
+	CopyOf = ini_cst.get_cst(CT, depth=indent+1)[0]
+	# indent all the existing slices by one so they can be
+	# put in the pie menu appropriately
+	for i, x in slices:
+		ini_rules_utils.indent(x)
+	
+	
+	PieMenu.append({'type': 'children', 'content': [CopyOf] + [x for i,x in slices]})
+	
+	# TODO: Don't assume the lines are read in-order.
+	# Add the new PieMenu and remove the PieSlices from the section's children
+	secChildren = ini_rules_utils.get_children(section)
+	secChildren.insert(slices[0][0], PieMenu)
+
+	for x in range(len(slices)-1,-1,-1):
+		ind = slices[x][0]
+		secChildren.pop(ind + 1)
+	
+
+	# We should be done here.
 
 
 def shovel_flash_fix(children):
