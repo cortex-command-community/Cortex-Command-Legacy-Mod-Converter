@@ -1,6 +1,7 @@
 import os, time, shutil, math, platform
 from pathlib import Path
 from playsound import playsound
+from subprocess import Popen
 import PySimpleGUI as sg
 
 from Python import shared_globals as cfg
@@ -41,6 +42,10 @@ def convert_all():
 
 	elapsed = math.floor(time.time() - time_start)
 	print(f"Finished in {elapsed} {pluralize('second', elapsed)}.")
+
+	if (sg.user_settings_get_entry("launch_after_convert")):
+		p = Popen("launch_dev.bat")
+		
 
 	warnings.show_popup_if_necessary()
 

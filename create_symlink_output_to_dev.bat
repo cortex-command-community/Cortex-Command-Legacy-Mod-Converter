@@ -1,0 +1,1 @@
+mklink /D Output "C:\Users\343N\workspaces\vs-workspace\cortex-command\development\Cortex-Command-Community-Project-Data\_Mods"

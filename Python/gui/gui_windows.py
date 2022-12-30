@@ -123,6 +123,14 @@ def get_settings_window_layout():
 				key="BEAUTIFY_LUA",
 				default=sg.user_settings_get_entry("beautify_lua"),
 				enable_events=True,
+			)],
+			
+			[sg.Checkbox(
+				"Launch after converting",
+				tooltip=" Launches launch_dev.bat after converting ",
+				key="LAUNCH_AFTER_CONVERT",
+				default=sg.user_settings_get_entry("launch_after_convert"),
+				enable_events=True,
 			)]
 		]
 	]
