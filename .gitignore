@@ -7,9 +7,10 @@ settings.json
 
 .vscode/*
 !.vscode/launch.json
-
+Python/ini_converting/ini_test_files/output_tests/*_result.ini
 expected.json
 result.json
+*.lnk
 
 Input
 Output
