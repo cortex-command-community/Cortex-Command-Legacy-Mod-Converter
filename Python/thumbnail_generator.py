@@ -67,12 +67,12 @@ def resize_height_to_720p(base_img, base_width, base_height):
 
 
 # def add_transparent_sides(base_img):
-#     image = image.convert('RGBA')
-#     width, height = image.size
-#     new_width = 512
-#     new_height = new_width * height // width
-#     image = image.resize((new_width, new_height), resample=Image.ANTIALIAS)
-#     new_image = Image.new('RGBA', (512, 512), (0, 0, 0, 0))
-#     upper = (512 - image.size[1]) // 2
-#     new_image.paste(image, (0, upper))
-#     return new_image
+#	 image = image.convert('RGBA')
+#	 width, height = image.size
+#	 new_width = 512
+#	 new_height = new_width * height // width
+#	 image = image.resize((new_width, new_height), resample=Image.ANTIALIAS)
+#	 new_image = Image.new('RGBA', (512, 512), (0, 0, 0, 0))
+#	 upper = (512 - image.size[1]) // 2
+#	 new_image.paste(image, (0, upper))
+#	 return new_image

@@ -56,8 +56,11 @@ def apply_rules_on_sections(parsed_subset, output_folder_path):
 		add_grip_strength_if_missing(section)
 
 		pie_menu_fix(section)
-
-		iconfile_path_to_thumbnail_generator(section, output_folder_path)
+		
+		remove_slterrain_properties(section)
+		
+		if (output_folder_path != None):
+			iconfile_path_to_thumbnail_generator(section, output_folder_path)
 
 
 def max_mass_to_max_inventory_mass(children):
@@ -287,7 +290,7 @@ def pie_menu_fix(section: list):
 	if (not s_val or s_val not in DEFAULT_PIES): return 
 	
 	# Get all added slices, if we have any.
-	slices = ini_rules_utils.get_children_with_property_shallow(section[-1]["content"], "AddPieSlice")
+	slices = ini_rules_utils.get_children_with_property_shallow(section, "AddPieSlice")
 	if (not slices): return
 
 	sliceDirCounts = DEFAULT_PIES[s_val]["sizes"]
@@ -332,8 +335,8 @@ def pie_menu_fix(section: list):
 		ind = slices[x][0]
 		secChildren.pop(ind + 1)
 	
-
 	# We should be done here.
+	
 
 
 def shovel_flash_fix(children):
@@ -365,7 +368,6 @@ def shovel_flash_fix(children):
 
 												shovel_flash_fix_change_frame_count(children)
 
-
 def shovel_flash_fix_change_frame_count(children):
 	for line_tokens2 in children:
 		for token2 in line_tokens2:
@@ -375,7 +377,6 @@ def shovel_flash_fix_change_frame_count(children):
 						if token3["type"] == "value":
 							if token3["content"] == "2":
 								token3["content"] = "1"
-
 
 def add_grip_strength_if_missing(section):
 	"""
@@ -405,3 +406,84 @@ def add_grip_strength_if_missing(section):
 						{ "type": "value", "content": str(cfg.ARBITRARILY_HIGH_DEFAULT_GRIP_STRENGTH) },
 						{ "type": "extra", "content": "\n" },
 					])
+
+def remove_slterrain_properties(section):
+	"""
+	 Remove 'Offset' and 'ScrollRatio' property from SLTerrain objects.
+	 Fixes PlaceTerrainObject's 
+	 Remove's DrawTransparent
+	 
+	 Conversion Rule:
+		Terrain = SLTerrain
+		PresetName = Some Terrain
+		BitmapFile = ContentFile
+			FilePath = Base.rte/Scenes/Terrains/Some_Scene.png
+		Offset = Vector
+			X = 1667
+			Y = 462
+		WrapX = 0
+		WrapY = 0
+		DrawTransparent = 1
+		ScrollRatio = Vector
+			X = 1
+			Y = -1
+		
+		->
+
+		Terrain = SLTerrain
+		PresetName = Some Terrain
+		BitmapFile = ContentFile
+			FilePath = Base.rte/Scenes/Terrains/Some_Scene.png
+		WrapX = 0
+		WrapY = 0
+	"""
+
+	
+	if (not section): return
+	if (not ini_rules_utils.has_children(section)): return
+	# Scene objects can have terrain as children, and those need to be changed too.
+	if (ini_rules_utils.line_contains_value(section, "Scene")):
+		children = ini_rules_utils.get_children_with_property_and_value_shallow(section, "Terrain", "SLTerrain")
+		for i, child in children:
+			remove_slterrain_properties(child)
+	if (not ini_rules_utils.line_contains_property_and_value(section, "Terrain", "SLTerrain")): return
+	
+	ini_rules_utils.remove_properties_from_section(section, ["Offset", "ScrollRatio", "DrawTransparent", "ScaleFactor"])
+
+	# get terrainobjects of this terrain ent, if any, replace their loc with pos
+	ptoChildren = ini_rules_utils.get_children_with_property_shallow(section, "PlaceTerrainObject")
+	for i, child in ptoChildren:
+		ini_rules_utils.replace_property_names_of_children_shallowly(child, "Location", "Position")
+
+
+
+# this might belong in utils but i'm keeping it here for now
+# this can work recursively if needed in case the entity might 
+# be nested inside a section (material presets, for example)
+def rename_section_preset(section, entity, old, new, recursive=False):
+	""" Renames a preset name from old to new of specified entity.
+	Ideally, we should be able to put these in a JSON file, but for now, it'll be in here.
+
+	AddBackgroundLayer = <entity>
+		PresetName = <old>
+		AddToGroup = Near Backdrops
+	->
+	AddBackgroundLayer = <entity>
+		PresetName = <new>
+		AddToGroup = Near Backdrops
+	"""
+
+
+	if (not section): return
+	if (not ini_rules_utils.has_children(section)): return
+	
+	children = ini_rules_utils.get_children(section)
+	if (recursive):
+		for line in children:
+			rename_section_preset(line, entity, old, new, recursive)
+	
+	if (not ini_rules_utils.line_contains_value(section, entity)): return
+
+	for line in children:
+		ini_rules_utils.replace_value_of_property(line, "PresetOf", new, old)
+

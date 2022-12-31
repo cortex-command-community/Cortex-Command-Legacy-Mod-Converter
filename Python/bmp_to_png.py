@@ -167,7 +167,7 @@ def get_pixel_array(img, width, height, palette):
 	decoded_pixel_index_array = get_decoded_pixel_index_array(pixel_index_array_bytes, width, height)
 
 	# TODO: Raise a custom ValueError exception for:
-	#       "ValueError: setting an array element with a sequence. The requested array has an inhomogeneous shape after 1 dimensions. The detected shape was (143,) + inhomogeneous part."
+	#	   "ValueError: setting an array element with a sequence. The requested array has an inhomogeneous shape after 1 dimensions. The detected shape was (143,) + inhomogeneous part."
 	numpy_pixel_index_array = np.array(decoded_pixel_index_array, dtype="uint8")
 	return numpy_pixel_index_array
 

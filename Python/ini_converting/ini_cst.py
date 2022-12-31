@@ -15,7 +15,7 @@ def get_cst(tokens, parsed=None, token_idx=None, depth=0):
 	while token_idx[0] < len(tokens):
 		token = tokens[token_idx[0]]
 
-		if   state == "newline" and is_deeper(depth, token, tokens, token_idx[0] + 1):
+		if  state == "newline" and is_deeper(depth, token, tokens, token_idx[0] + 1):
 			children = { "type": "children", "content": [] }
 			append(children, parsed)
 			get_cst(tokens, children["content"], token_idx, depth + 1)
