@@ -91,7 +91,7 @@ def run_window():
 			settings_window = gui_windows.get_settings_window()
 			main_window.Disable()
 
-		elif event in ("SKIP_CONVERSION", "OUTPUT_ZIPS", "PLAY_FINISH_SOUND", "BEAUTIFY_LUA", "LAUNCH_AFTER_CONVERT"):
+		elif event in ("SKIP_CONVERSION", "OUTPUT_ZIPS", "PLAY_FINISH_SOUND", "BEAUTIFY_LUA"):
 			value = values[event]
 			sg.user_settings_set_entry(event.lower(), value)
 
