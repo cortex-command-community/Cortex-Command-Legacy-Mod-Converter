@@ -1,12 +1,15 @@
 import re
 
-
+# Gets tokens using filepath
 def get_tokens(filepath):
-	tokens = []
 
 	with open(filepath, "r") as f:
 		text = f.read().lstrip()
+	
+	return get_tokens_from_str(text, filepath)
 
+def get_tokens_from_str(text, filepath=None):
+	tokens = []
 	text_len = len(text)
 
 	i = 0
@@ -27,7 +30,6 @@ def get_tokens(filepath):
 			i = tokenize_word(i, text_len, text, tokens, filepath)
 
 	return tokens
-
 
 def get_token(type_, content, i, filepath):
 	return { "type": type_, "content": content, "index": i, "filepath": filepath }

@@ -11,6 +11,7 @@
 	"AddToGroup = Snipers": "AddToGroup = Actors - Sniper",
 	"AddToGroup = Turret": "AddToGroup = Actors - Turret",
 	"AddToGroup = Mecha": "AddToGroup = Actors - Mecha",
+	"AddPieSlice = Slice": "AddPieSlice = PieSlice",
 	"Fire Puff Small B": "Fire Puff Small",
 	"Particle Napalm Bomb 1": "Particle Napalm Bomb",
 	"Particle Napalm Bomb 2": "Particle Napalm Bomb",
@@ -40,7 +41,7 @@
 	"Ronin Soldier Helmet A": "Coalition Light Helmet",
 	"Near Raukar": "Mountains Back",
 	"Base.rte/Block B": "Base.rte/Concrete Block",
-	"Actors/AI": "AI",
+	"Base.rte/Actors/AI": "Base.rte/AI",
 	"Ronin Light": "Ronin Soldier",
 	"Drop Ship MK1": "Dropship MK1",
 	"Robot Head A Gib A": "Imperatus All Purpose Robot Head Gib A",
@@ -194,5 +195,12 @@
 	"Rocket A Leg A": "Rocket Leg A",
 	"Coalition Null Bullet": "Null Bullet",
 	"require(\"Actors/AI/NativeCrabAI\")": "require(\"AI/NativeCrabAI\")",
-	"dofile(\"Base.rte/Actors/AI/CrabAI.lua\")": "require(\"AI/CrabAI\")"
+	"dofile(\"Base.rte/Actors/AI/CrabAI.lua\")": "require(\"AI/CrabAI\")",
+	"ProvidesPieMenuContext = 0": "",
+	"ProvidesPieMenuContext = 1": "",
+	"TextureFile = ": "FGTextureFile = ",
+	"AddBackgroundLayer = SceneLayer": "AddBackgroundLayer = SLBackground",
+	"ScriptFile = ": "ScriptPath = ",
+	"OnlyOnSurface = 0": "DebrisPlacementMode = 0",
+	"OnlyOnSurface = 1": "DebrisPlacementMode = 1"
 }

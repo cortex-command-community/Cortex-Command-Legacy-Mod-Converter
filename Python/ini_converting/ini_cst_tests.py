@@ -285,6 +285,7 @@ def cst_tests():
 	])
 
 
+
 def cst_test(filename, expected):
 	filepath = test.get_test_path_from_filename(filename)
 

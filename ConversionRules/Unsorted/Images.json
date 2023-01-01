@@ -190,5 +190,13 @@
 	"Ronin.rte/Devices/Sprites/MagazineRifleA.bmp": "Base.rte/Null.png",
 	"Base.rte/Actors/Rockets/RocketLeg.bmp": "Base.rte/Craft/Shared/RocketLegA.png",
 	"Base.rte/Scenes/Terrains/Mountains_1.bmp": "Base.rte/Scenes/Terrains/YskelyMountains.png",
-	"Base.rte/Scenes/Terrains/GrassPlains_2.bmp": "Base.rte/Scenes/Terrains/VesodPlains.png"
+	"Base.rte/Scenes/Terrains/GrassPlains_2.bmp": "Base.rte/Scenes/Terrains/VesodPlains.png",
+	"Base.rte/Scenes/Textures/DirtMedium.png": "Base.rte/Scenes/Textures/DirtMediumFG.png",
+	"Base.rte/Scenes/Textures/DirtRough.png": "Base.rte/Scenes/Textures/DirtRoughFG.png",
+	"Base.rte/Scenes/Textures/Ice.png": "Base.rte/Scenes/Textures/IceFG.png",
+	"Base.rte/Scenes/Textures/RockBlack.png": "Base.rte/Scenes/Textures/RockBlackFG.png",
+	"Base.rte/Scenes/Textures/RockRed.png": "Base.rte/Scenes/Textures/RockRedFG.png",
+	"Base.rte/Scenes/Textures/Sand.png": "Base.rte/Scenes/Textures/SandFG.png",
+	"Base.rte/Scenes/Textures/Snow.png": "Base.rte/Scenes/Textures/SnowFG.png",
+	"Base.rte/Scenes/Textures/Soil.png": "Base.rte/Scenes/Textures/SoilFG.png"
 }
