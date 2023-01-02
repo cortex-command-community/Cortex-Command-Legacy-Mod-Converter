@@ -22,4 +22,4 @@ def stylize(input_mod_path, input_folder_path, output_folder_path):
 	result = subprocess.run([stylua_path, output_path], capture_output=True, text=True, stdin=subprocess.DEVNULL)
 
 	if result.stderr:
-		raise WronglyFormattedLuaFile(result.stderr.replace("\n", "\n\n"))
+		raise WronglyFormattedLuaFile(result.stderr)

@@ -8,8 +8,9 @@
 import traceback
 import PySimpleGUI as sg
 from pathlib import Path
+import unittest
 
-from Python import run_tests, convert
+# from Python import convert
 from Python.gui import gui
 from Python import shared_globals as cfg
 
@@ -26,8 +27,8 @@ if __name__ == '__main__':
 		# )
 
 		gui.init_window_theme()
-		if cfg.NOT_RELEASE:
-			run_tests.run()
+		if cfg.RUN_TESTS:
+			unittest.TextTestRunner().run(unittest.defaultTestLoader.discover("Python/tests"))
 		gui.init_settings()
 		gui.run_window()
 	except Exception as e:
