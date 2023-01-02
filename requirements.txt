@@ -3,3 +3,4 @@ playsound==1.2.2 # playsound() has an error in the current latest version, 1.3.0
 pyinstaller==4.7
 Pillow==9.3.0
 # python3 may need sudo apt-get install python3-tk # TODO: Check if this comment is still relevant
+black==22.12.0
