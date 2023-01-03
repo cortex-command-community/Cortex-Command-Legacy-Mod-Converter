@@ -536,7 +536,7 @@ def remove_slterrain_properties(section):
         children = ini_rules_utils.get_children_with_property_and_value_shallow(
             section, "Terrain", "SLTerrain"
         )
-        for i, child in children:
+        for _, child in children:
             remove_slterrain_properties(child)
     if not ini_rules_utils.line_contains_property_and_value(
         section, "Terrain", "SLTerrain"
@@ -551,7 +551,7 @@ def remove_slterrain_properties(section):
     ptoChildren = ini_rules_utils.get_children_with_property_shallow(
         section, "PlaceTerrainObject"
     )
-    for i, child in ptoChildren:
+    for _, child in ptoChildren:
         ini_rules_utils.replace_property_names_of_children_shallowly(
             child, "Location", "Position"
         )

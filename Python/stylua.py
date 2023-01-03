@@ -27,4 +27,4 @@ def stylize(input_mod_path, input_folder_path, output_folder_path):
     )
 
     if result.stderr:
-        raise WronglyFormattedLuaFile(result.stderr.replace("\n", "\n\n"))
+        raise WronglyFormattedLuaFile(result.stderr)
