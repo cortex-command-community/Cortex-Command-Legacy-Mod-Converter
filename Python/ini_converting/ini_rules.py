@@ -1,8 +1,21 @@
 from Python.ini_converting import ini_rules_utils
 
 from Python import thumbnail_generator
+from Python import update_progress
 from Python.ini_converting import ini_cst, ini_tokenizer
 from Python import shared_globals as cfg
+
+
+"""
+{
+	"foo.rte": {
+		"Foo.ini": ini_cst,
+		"FolderName": {
+			"Bar.ini": ini_cst,
+		}
+	}
+}
+"""
 
 
 def apply_rules_on_ini_cst(ini_cst, output_folder_path):
@@ -10,10 +23,14 @@ def apply_rules_on_ini_cst(ini_cst, output_folder_path):
 
 
 def apply_rules_on_ini_cst_recursively(parsed_subset, output_folder_path):
-    for key, value in parsed_subset.items():
+    items = parsed_subset.items()
+    for key, value in items:
         if isinstance(value, dict):
             apply_rules_on_ini_cst_recursively(value, output_folder_path)
         else:  # If it's a list of the sections of a file.
+            if cfg.progress_bar:
+                cfg.progress_bar.inc()
+                cfg.progress_bar.setSubtext(f"applying rules on {key}")
             apply_rules_on_sections(value, output_folder_path)
 
 
@@ -367,10 +384,10 @@ def pie_menu_fix(section: list):
     CopyOf = ini_cst.get_cst(CT, depth=indent + 1)[0]
     # indent all the existing slices by one so they can be
     # put in the pie menu appropriately
-    for _, x in slices:
+    for i, x in slices:
         ini_rules_utils.indent(x)
 
-    PieMenu.append({"type": "children", "content": [CopyOf] + [x for _, x in slices]})
+    PieMenu.append({"type": "children", "content": [CopyOf] + [x for i, x in slices]})
 
     # TODO: Don't assume the lines are read in-order.
     # Add the new PieMenu and remove the PieSlices from the section's children

@@ -35,3 +35,15 @@ def is_mod_folder_or_subfolder(path):
 def get_output_path_from_input_path(input_folder_path, output_folder_path, input_path):
     relative = input_path.relative_to(input_folder_path)
     return str(output_folder_path / relative)
+
+
+def get_ini_files_in_dir_deep(path):
+    count = 0
+    for name in os.listdir(path):
+        p = path / Path(name)
+        if p.is_file() and p.suffix == ".ini" and p.stem != "desktop":
+            count += 1
+        elif p.is_dir():
+            count += get_ini_files_in_dir_deep(p)
+
+    return count

@@ -186,7 +186,6 @@
 	"Base.rte/Actors/Doors/MotorGibC.bmp": "Base.rte/Scenes/Objects/Bunkers/BunkerSystems/Doors/Gibs/MotorGibC.png",
 	"Dummy.rte/Devices/Sprites/ShieldWall.bmp": "Base.rte/Null.png",
 	"Dummy.rte/Devices/Sprites/ShieldWallDent.bmp": "Base.rte/Null.png",
-	"Base.rte/Effects/Pyro/FirePuff0.bmp": "Base.rte/Effects/Pyro/FirePuff.png",
 	"Ronin.rte/Devices/Sprites/MagazineRifleA.bmp": "Base.rte/Null.png",
 	"Base.rte/Actors/Rockets/RocketLeg.bmp": "Base.rte/Craft/Shared/RocketLegA.png",
 	"Base.rte/Scenes/Terrains/Mountains_1.bmp": "Base.rte/Scenes/Terrains/YskelyMountains.png",
@@ -198,5 +197,25 @@
 	"Base.rte/Scenes/Textures/RockRed.png": "Base.rte/Scenes/Textures/RockRedFG.png",
 	"Base.rte/Scenes/Textures/Sand.png": "Base.rte/Scenes/Textures/SandFG.png",
 	"Base.rte/Scenes/Textures/Snow.png": "Base.rte/Scenes/Textures/SnowFG.png",
-	"Base.rte/Scenes/Textures/Soil.png": "Base.rte/Scenes/Textures/SoilFG.png"
+	"Base.rte/Scenes/Textures/Soil.png": "Base.rte/Scenes/Textures/SoilFG.png",
+	
+	"Base.rte/Scenes/Backdrops/MiddleRaukar.bmp": "Base.rte/Scenes/Backdrops/Parallax/RaukarNear.png",
+	
+	"Base.rte/Scenes/Backdrops/BackMountains.bmp": "Base.rte/Scenes/Backdrops/Parallax/MountainsFar.png",
+	"Base.rte/Scenes/Backdrops/MiddleMountains.bmp": "Base.rte/Scenes/Backdrops/Parallax/MountainsMiddle.png",
+	"Base.rte/Scenes/Backdrops/FrontMountains.bmp": "Base.rte/Scenes/Backdrops/Parallax/MountainsNear.png",
+	
+	"Base.rte/Scenes/Backdrops/MiddleNoodles.bmp": "Base.rte/Scenes/Backdrops/Parallax/NoodlesMiddle.png",
+	"Base.rte/Scenes/Backdrops/FrontNoodles.bmp": "Base.rte/Scenes/Backdrops/Parallax/NoodlesNear.png",
+	
+	"Base.rte/Scenes/Backdrops/FrontDesert.bmp": "Base.rte/Scenes/Backdrops/Parallax/DesertNear.png",
+	"Base.rte/Scenes/Backdrops/BackDesert.bmp": "Base.rte/Scenes/Backdrops/Parallax/DesertFar.png",
+	"Base.rte/Scenes/Backdrops/MiddleDesert.bmp": "Base.rte/Scenes/Backdrops/Parallax/DesertMiddle.png",
+	
+	"Base.rte/Scenes/Backdrops/FrontForest.bmp": "Base.rte/Scenes/Backdrops/Parallax/ForestANear.png",
+
+	"Base.rte/Scenes/Backdrops/Clouds.bmp": "Base.rte/Scenes/Backdrops/Parallax/CloudsA.png",
+	"Base.rte/Scenes/Backdrops/CloudSky.bmp": "Base.rte/Scenes/Backdrops/Static/CloudSkyBackdrop.png",
+	"Base.rte/Scenes/Backdrops/Grid.bmp": "Base.rte/Scenes/Backdrops/Static/Grid.png",
+	"Base.rte/Scenes/Backdrops/Back.bmp": "Base.rte/Scenes/Backdrops/Static/MountainsBackdrop.png"
 }
