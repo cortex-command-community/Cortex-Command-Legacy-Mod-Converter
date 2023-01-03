@@ -36,8 +36,12 @@ def convert_all():
 
     print("")  # Newline.
 
-    input_folder_path = cfg.INPUT_DIR
-    output_folder_path = cfg.OUTPUT_DIR
+    input_folder_path = str(
+        Path(sg.user_settings_get_entry("cccp_folder"))
+        / cfg.CONVERTER_FOLDER_NAME
+        / "Input"
+    )
+    output_folder_path = sg.user_settings_get_entry("cccp_folder")
 
     input_mod_paths = get_input_mod_paths(input_folder_path)
     mod_count = len(input_mod_paths)
@@ -65,8 +69,8 @@ def convert_all():
 
     print(time_str)
 
-    if sg.user_settings_get_entry("launch_after_convert"):
-        p = Popen("launch_dev.bat")
+    # if sg.user_settings_get_entry("launch_after_convert"):
+    #     p = Popen("launch_dev.bat")
 
     from Python.gui.gui import unlock_convert_button
     unlock_convert_button()
