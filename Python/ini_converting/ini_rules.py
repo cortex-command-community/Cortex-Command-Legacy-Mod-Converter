@@ -2,7 +2,7 @@ from Python.ini_converting import ini_rules_utils
 
 from Python import thumbnail_generator
 from Python import update_progress
-from Python.ini_converting import ini_fix_duplicate_scripts, ini_cst, ini_tokenizer
+from Python.ini_converting import ini_cst, ini_tokenizer
 from Python import shared_globals as cfg
 
 
@@ -19,9 +19,7 @@ from Python import shared_globals as cfg
 
 
 def apply_rules_on_ini_cst(ini_cst, output_folder_path):
-
     apply_rules_on_ini_cst_recursively(ini_cst, output_folder_path)
-    ini_fix_duplicate_scripts.run(ini_cst)
 
 
 def apply_rules_on_ini_cst_recursively(parsed_subset, output_folder_path):

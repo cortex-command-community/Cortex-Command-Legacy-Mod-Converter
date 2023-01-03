@@ -4,7 +4,6 @@ from playsound import playsound
 from subprocess import Popen
 import math
 import PySimpleGUI as sg
-from Python.gui.gui import unlock_convert_button
 
 from Python import shared_globals as cfg
 from Python import (
@@ -69,6 +68,7 @@ def convert_all():
     if sg.user_settings_get_entry("launch_after_convert"):
         p = Popen("launch_dev.bat")
 
+    from Python.gui.gui import unlock_convert_button
     unlock_convert_button()
 
     warnings.show_popup_if_necessary()
