@@ -26,12 +26,8 @@ def get_full_cst(input_folder_path, output_folder_path, subfolder_path):
         ):  # Skips the desktop.ini Windows metadata file.
             output_file_path = output_folder_path / Path(relative_subfolder)
             tokens = ini_tokenizer.get_tokens(output_file_path)
-
-            try:
-                parsed_portion[name] = ini_cst.get_cst(tokens)
-                cfg.progress_bar.inc()
-            except ini_cst.TooManyTabs:
-                continue
+            parsed_portion[name] = ini_cst.get_cst(tokens)
+            cfg.progress_bar.inc()
         elif p.is_dir():
             cst = get_full_cst(input_folder_path, output_folder_path, str(p))
             parsed_portion[name] = cst
