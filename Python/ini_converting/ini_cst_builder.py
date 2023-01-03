@@ -24,11 +24,7 @@ def get_full_cst(input_folder_path, output_folder_path, subfolder_path):
                 input_folder_path, output_folder_path, p
             )
             tokens = ini_tokenizer.get_tokens(output_file_path)
-
-            try:
-                parsed_portion[name] = ini_cst.get_cst(tokens)
-            except ini_cst.TooManyTabs:
-                continue
+            parsed_portion[name] = ini_cst.get_cst(tokens)
         elif p.is_dir():
             parsed_portion[name] = get_full_cst(
                 input_folder_path, output_folder_path, str(p)
