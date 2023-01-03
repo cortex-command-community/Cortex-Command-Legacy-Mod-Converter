@@ -13,7 +13,7 @@ OUTPUT_DIR = "Output"
 INPUT_DIR_USES_CC_FOLDER = False
 OUTPUT_DIR_IS_RELATIVE_TO_INPUT = False
 
-NOT_RELEASE = True # This enables tests when set to True, as the release version shouldn't run tests.
+NOT_RELEASE = True  # This enables tests when set to True, as the release version shouldn't run tests.
 
 sg = None
 progress_bar = None
