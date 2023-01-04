@@ -22,6 +22,8 @@ def generate_thumbnail(iconfile_relative_path_str, output_folder_path):
        It's fine if it's way wider, as mod.io cuts off the sides of the image if it's too wide.
     """
     iconfile_path = output_folder_path / Path(iconfile_relative_path_str)
+    if not iconfile_path.exists():
+        return
     thumbnail = Image.open(iconfile_path).convert("RGBA")
 
     pixdata = thumbnail.load()
