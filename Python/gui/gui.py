@@ -5,6 +5,7 @@ from pathlib import Path
 from Python import shared_globals as cfg
 from Python import convert
 from Python import warnings
+from Python.progress_bar import ProgressBar
 
 from Python.gui import gui_windows
 
@@ -66,7 +67,9 @@ def run_window():
     main_window = gui_windows.get_main_window()
     settings_window = None
 
-    cfg.progress_bar = main_window["PROGRESS_BAR"]
+    cfg.progress_bar = ProgressBar(
+        main_window["PROGRESS_BAR"], main_window["PROGRESS_BAR_TEXT"]
+    )
 
     valid_cccp_path = True if sg.user_settings_get_entry("cccp_folder") else False
 
@@ -102,12 +105,16 @@ def run_window():
             "OUTPUT_ZIPS",
             "PLAY_FINISH_SOUND",
             "BEAUTIFY_LUA",
+            "LAUNCH_AFTER_CONVERT",
         ):
             value = values[event]
             sg.user_settings_set_entry(event.lower(), value)
 
         elif event == "CONVERT":
             if valid_cccp_path:
+                cfg.progress_bar.setTitle("Starting...")
+                cfg.progress_bar.reset()
+                lock_convert_button()
                 convert.convert_all()
 
         elif event == "GITHUB":
@@ -116,3 +123,11 @@ def run_window():
             )
         elif event == "DISCORD":
             webbrowser.open("https://discord.gg/TSU6StNQUG")
+
+
+def unlock_convert_button():
+    gui_windows.get_main_window()["CONVERT"].update(disabled=False)
+
+
+def lock_convert_button():
+    gui_windows.get_main_window()["CONVERT"].update(disabled=True)

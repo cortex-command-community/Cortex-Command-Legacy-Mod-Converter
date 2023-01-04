@@ -4,74 +4,93 @@ from Python import utils
 from Python import shared_globals as cfg
 
 
+window = None
+
+
 def get_main_window_layout():
+    progressColumn = [
+        [
+            sg.ProgressBar(
+                max_value=None,  # Calculated and set later on
+                key="PROGRESS_BAR",
+                size=(47, 35),
+                pad=((5, 3), (6, 0)),
+            )
+        ],
+        [
+            sg.Text(
+                text="Waiting...",
+                size=(72, 1),
+                key="PROGRESS_BAR_TEXT",
+                font=("Helvetica", 9),
+            )
+        ],
+    ]
+
     return [
         [
-            [
-                sg.FolderBrowse(
-                    "CCCP folder",
-                    size=(12, None),
-                    pad=((10, 0), (15, 0)),
-                ),
-                sg.InputText(
-                    sg.user_settings_get_entry("cccp_folder"),
-                    tooltip=" Location of your CCCP folder ",
-                    enable_events=True,
-                    key="CCCP_FOLDER",
-                    background_color=sg.theme_input_background_color()
-                    if sg.user_settings_get_entry("cccp_folder")
-                    else cfg.NO_PATH_SET_COLOR,
-                    font=("Helvetica", 20),
-                    size=(61, None),
-                    pad=((20, 0), (15, 0)),
-                ),
-            ],
-            [
-                sg.Button(
-                    "Settings",
-                    key="LAUNCH_SETTINGS_WINDOW",
-                    size=(12, None),
-                    pad=((10, 0), (20, 14)),
-                ),
-                sg.Button(
-                    "Convert",
-                    key="CONVERT",
-                    size=(12, None),
-                    pad=((20, 0), (20, 14)),
-                ),
-                sg.ProgressBar(
-                    max_value=None,  # Calculated and set later on
-                    key="PROGRESS_BAR",
-                    size=(47.2, 65),
-                    pad=((10, 3), (6, 0)),
-                ),
-                sg.Image(
-                    utils.path("Media/github-icon.png"),
-                    enable_events=True,
-                    key="GITHUB",
-                    tooltip=" Visit this program's GitHub page ",
-                    pad=((17, 0), (7, 0)),
-                ),
-                sg.Image(
-                    utils.path("Media/discord-icon.png"),
-                    enable_events=True,
-                    key="DISCORD",
-                    tooltip=" Visit the CCCP Discord server for help ",
-                    pad=((13, 3), (1, 0)),
-                ),
-            ],
-        ]
+            sg.FolderBrowse(
+                "CCCP folder",
+                size=(12, None),
+                pad=((10, 0), (15, 0)),
+            ),
+            sg.InputText(
+                sg.user_settings_get_entry("cccp_folder"),
+                tooltip=" Location of your CCCP folder ",
+                enable_events=True,
+                key="CCCP_FOLDER",
+                background_color=sg.theme_input_background_color()
+                if sg.user_settings_get_entry("cccp_folder")
+                else cfg.NO_PATH_SET_COLOR,
+                font=("Helvetica", 20),
+                size=(61, None),
+                pad=((20, 0), (15, 0)),
+            ),
+        ],
+        [
+            sg.Button(
+                "Settings",
+                key="LAUNCH_SETTINGS_WINDOW",
+                size=(12, None),
+                pad=((10, 0), (20, 14)),
+            ),
+            sg.Button(
+                "Convert",
+                key="CONVERT",
+                size=(12, None),
+                pad=((20, 0), (20, 14)),
+            ),
+            sg.Column(progressColumn, element_justification="left"),
+            sg.Image(
+                utils.path("Media/github-icon.png"),
+                enable_events=True,
+                key="GITHUB",
+                tooltip=" Visit this program's GitHub page ",
+                pad=((17, 0), (7, 0)),
+            ),
+            sg.Image(
+                utils.path("Media/discord-icon.png"),
+                enable_events=True,
+                key="DISCORD",
+                tooltip=" Visit the CCCP Discord server for help ",
+                pad=((13, 3), (1, 0)),
+            ),
+        ],
     ]
 
 
 def get_main_window():
-    return sg.Window(
-        title=f"Legacy Mod Converter {cfg.CONVERTER_VERSION} for CCCP {cfg.GAME_VERSION}",
-        layout=get_main_window_layout(),
-        icon=utils.path("Media/legacy-mod-converter.ico"),
-        font=("Helvetica", 25),
-        finalize=True,
-    )
+    global window
+    if not window:
+        window = sg.Window(
+            title=f"Legacy Mod Converter {cfg.CONVERTER_VERSION} for CCCP {cfg.GAME_VERSION}",
+            layout=get_main_window_layout(),
+            icon=utils.path("Media/legacy-mod-converter.ico"),
+            font=("Helvetica", 25),
+            finalize=True,
+        )
+
+    return window
 
 
 def get_settings_window_layout():
@@ -110,6 +129,15 @@ def get_settings_window_layout():
                     tooltip=" Fixes the indentation and much more of Lua files ",
                     key="BEAUTIFY_LUA",
                     default=sg.user_settings_get_entry("beautify_lua"),
+                    enable_events=True,
+                )
+            ],
+            [
+                sg.Checkbox(
+                    "Launch after converting",
+                    tooltip=" Launches launch_dev.bat after converting ",
+                    key="LAUNCH_AFTER_CONVERT",
+                    default=sg.user_settings_get_entry("launch_after_convert"),
                     enable_events=True,
                 )
             ],

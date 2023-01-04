@@ -11,9 +11,7 @@ class WronglyFormattedLuaFile(Exception):
 
 
 def stylize(input_mod_path, input_folder_path, output_folder_path):
-    output_path = utils.get_output_path_from_input_path(
-        input_folder_path, output_folder_path, input_mod_path
-    )
+    output_path = output_folder_path
 
     if os.name == "nt":  # If the OS is Windows
         stylua_path = utils.path("Lib/stylua/Windows/stylua.exe")
