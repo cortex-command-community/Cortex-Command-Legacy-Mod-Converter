@@ -1,10 +1,12 @@
-import time, math, platform
+import math
+import platform
+import time
 from pathlib import Path
-from playsound import playsound
 
 import PySimpleGUI as sg
-
 from cortex_command_mod_converter_engine import convert
+from playsound import playsound
+
 from Python.utils import get_path
 
 

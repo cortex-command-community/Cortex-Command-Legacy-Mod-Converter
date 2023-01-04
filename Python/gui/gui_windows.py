@@ -3,7 +3,6 @@ import PySimpleGUI as sg
 import Python.cfg as cfg
 from Python.utils import get_path
 
-
 window = None
 
 

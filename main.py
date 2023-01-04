@@ -1,8 +1,8 @@
 import traceback
+
 import PySimpleGUI as sg
 
 from Python.gui import gui
-
 
 if __name__ == "__main__":
     try:

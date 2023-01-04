@@ -1,11 +1,13 @@
-import os, webbrowser
-import PySimpleGUI as sg
+import os
+import webbrowser
 from pathlib import Path
+
+import PySimpleGUI as sg
 
 import Python.cfg as cfg
 from Python.convert_all import convert_all
-from Python.progress_bar import ProgressBar
 from Python.gui import gui_windows
+from Python.progress_bar import ProgressBar
 
 
 def init_window_theme():
