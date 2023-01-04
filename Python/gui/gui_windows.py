@@ -1,7 +1,7 @@
 import PySimpleGUI as sg
 
-from Python import utils
-from Python import shared_globals as cfg
+import Python.cfg as cfg
+from Python.utils import get_path
 
 
 window = None
@@ -62,14 +62,14 @@ def get_main_window_layout():
             ),
             sg.Column(progressColumn, element_justification="left"),
             sg.Image(
-                utils.path("Media/github-icon.png"),
+                get_path("Media/github-icon.png"),
                 enable_events=True,
                 key="GITHUB",
                 tooltip=" Visit this program's GitHub page ",
                 pad=((17, 0), (7, 0)),
             ),
             sg.Image(
-                utils.path("Media/discord-icon.png"),
+                get_path("Media/discord-icon.png"),
                 enable_events=True,
                 key="DISCORD",
                 tooltip=" Visit the CCCP Discord server for help ",
@@ -85,7 +85,7 @@ def get_main_window():
         window = sg.Window(
             title=f"Legacy Mod Converter {cfg.CONVERTER_VERSION} for CCCP {cfg.GAME_VERSION}",
             layout=get_main_window_layout(),
-            icon=utils.path("Media/legacy-mod-converter.ico"),
+            icon=get_path("Media/legacy-mod-converter.ico"),
             font=("Helvetica", 25),
             finalize=True,
         )
@@ -149,7 +149,7 @@ def get_settings_window():
     return sg.Window(
         title="Settings",
         layout=get_settings_window_layout(),
-        icon=utils.path("Media/legacy-mod-converter.ico"),
+        icon=get_path("Media/legacy-mod-converter.ico"),
         font=("Helvetica", 25),
         finalize=True,
     )

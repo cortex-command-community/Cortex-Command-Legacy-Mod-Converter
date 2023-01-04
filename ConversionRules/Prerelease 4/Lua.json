@@ -1,6 +1,0 @@
-{
-	"Base.rte/Devices/Shared/Scripts/MuzzleSmokeLow.lua": "Base.rte/Devices/Shared/Scripts/MuzzleSmoke.lua",
-	"Base.rte/Devices/Shared/Scripts/MuzzleSmokeMedium.lua": "Base.rte/Devices/Shared/Scripts/MuzzleSmoke.lua",
-	"ScriptPath = Base.rte/Devices/Shared/Scripts/MuzzleSmokeHigh.lua": "//ScriptPath = Base.rte/Devices/Shared/Scripts/MuzzleSmokeHigh.lua",
-	"ScriptPath = Coalition.rte/Devices/Weapons/MuzzleSmoke.lua": "//ScriptPath = Coalition.rte/Devices/Weapons/MuzzleSmoke.lua"
-}

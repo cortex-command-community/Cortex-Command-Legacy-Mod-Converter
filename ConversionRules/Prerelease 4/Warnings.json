@@ -1,4 +1,0 @@
-{
-	"Attachable.OnlyLinearForces": "Attachable.OnlyLinearForces has been renamed to Attachable.ApplyTransferredForcesAtOffset and its effect has been reversed, so something that checked OnlyLinearForces == true would now check ApplyTransferredForcesAtOffset == false, since this makes more sense to use.",
-	"COMMENTED OUT~= 255": "~= rte.NoMOID"
-}

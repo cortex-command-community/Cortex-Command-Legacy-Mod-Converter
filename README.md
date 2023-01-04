@@ -36,3 +36,19 @@ Feel free to submit `Pull Requests` or `Issues` on this GitHub project for any a
 
 ## Getting help
 If you need help with anything you can contact the creator of this repository directly (`#MyNameIsTrez1585` on Discord), or you can ask the friendly regulars in the CCCP Discord server in `#modding-discussion` for help. It helps us if you mention where you've gotten stuck while reading this tutorial, so please do that! :)
+
+## Build instructions
+
+`pyinstaller --noconsole --onefile --icon="Media/legacy-mod-converter.ico" --add-data="Media/github-icon.png;Media" --add-data="Media/discord-icon.png;Media" --add-data="Media/finish.wav;Media" --add-binary="Lib/stylua/Windows/stylua.exe;Lib/stylua/Windows" --name="Legacy Mod Converter" main.py`
+
+### Linux
+
+I haven't been able to build this for Linux yet.
+
+This:
+
+`pyinstaller --noconsole --onefile --icon="Media/legacy-mod-converter.ico" --add-data="Media/github-icon.png;Media" --add-data="Media/discord-icon.png;Media" --add-data="Media/finish.wav;Media" --add-binary="Lib/stylua/Linux/stylua:Lib/stylua/Linux" --add-data="Lib/stylua/Windows/stylua.exe;Lib/stylua/Windows" --name="Legacy Mod Converter" main.py`
+
+gives the error:
+
+`pyinstaller: error: argument --add-binary: invalid add_data_or_binary value: 'Lib/stylua/Linux/stylua:Lib/stylua/Linux'`

@@ -2,11 +2,9 @@ import os, webbrowser
 import PySimpleGUI as sg
 from pathlib import Path
 
-from Python import shared_globals as cfg
-from Python import convert
-from Python import warnings
+import Python.cfg as cfg
+from Python.convert_all import convert_all
 from Python.progress_bar import ProgressBar
-
 from Python.gui import gui_windows
 
 
@@ -29,10 +27,6 @@ def init_settings():
             title="Welcome",
             custom_text=" OK ",
         )
-
-    cfg.sg = sg
-
-    warnings.load_conversion_and_warning_rules()  # TODO: Why is this called in this GUI function?
 
     default_settings_to_true(["play_finish_sound", "beautify_lua"])
 
@@ -67,7 +61,7 @@ def run_window():
     main_window = gui_windows.get_main_window()
     settings_window = None
 
-    cfg.progress_bar = ProgressBar(
+    progress_bar = ProgressBar(
         main_window["PROGRESS_BAR"], main_window["PROGRESS_BAR_TEXT"]
     )
 
@@ -112,10 +106,10 @@ def run_window():
 
         elif event == "CONVERT":
             if valid_cccp_path:
-                cfg.progress_bar.setTitle("Starting...")
-                cfg.progress_bar.reset()
+                progress_bar.setTitle("Starting...")
+                progress_bar.reset()
                 lock_convert_button()
-                convert.convert_all()
+                convert_all(progress_bar)
 
         elif event == "GITHUB":
             webbrowser.open(
