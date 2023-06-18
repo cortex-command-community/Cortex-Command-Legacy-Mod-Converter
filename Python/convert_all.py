@@ -15,10 +15,10 @@ def convert_all(progress_bar):
 
     input_folder_path = str(
         Path(sg.user_settings_get_entry("cccp_folder"))
-        / "LegacyModConverter-v1.2-pre4.0"
+        / "LegacyModConverter-v1.0-pre5.0"
         / "Input"
     )
-    output_folder_path = sg.user_settings_get_entry("cccp_folder")
+    output_folder_path = Path(sg.user_settings_get_entry("cccp_folder")) / "Mods"
 
     mod_count = len(list(get_input_mod_paths(input_folder_path)))
     progress_bar.segment(mod_count)
