@@ -41,7 +41,13 @@ If you need help with anything you can contact the creator of this repository di
 
 ### Windows
 
-`pyinstaller --noconsole --onefile --icon="Media/legacy-mod-converter.ico" --collect-all="cortex_command_mod_converter_engine" --add-data="Media/github-icon.png;Media" --add-data="Media/discord-icon.png;Media" --add-data="Media/finish.wav;Media" --add-data="I:/Programming/Cortex-Command-Mod-Converter-Engine/src/cortex_command_mod_converter_engine/stylua_executables/windows/stylua.exe;windows" --name="Legacy Mod Converter" main.py`
+Using a virtual environment brings the executable down from 34 MB to 29 MB.
+This is important to keep the zip under GitHub's 25 MB limit!
+
+1. `./virtual_environment/Scripts/activate.bat`
+2. `./virtual_environment/Scripts/python.exe -m pip install -r requirements.txt`
+3. `I:/programming/python/cc-legacy-mod-converter/virtual_environment/Scripts/pyinstaller --noconsole --onefile --icon="Media/legacy-mod-converter.ico" --collect-all="cortex_command_mod_converter_engine" --add-data="Media/github-icon.png;Media" --add-data="Media/discord-icon.png;Media" --add-data="Media/finish.wav;Media" --add-data="I:/Programming/Cortex-Command-Mod-Converter-Engine/src/cortex_command_mod_converter_engine/stylua_executables/windows/stylua.exe;windows" --name="Legacy Mod Converter" main.py`
+4. `./virtual_environment/Scripts/deactivate.bat`
 
 ### Linux
 
