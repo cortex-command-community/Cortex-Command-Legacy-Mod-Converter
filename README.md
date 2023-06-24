@@ -41,8 +41,7 @@ If you need help with anything you can contact the creator of this repository di
 
 ### Windows
 
-Using a virtual environment brings the executable down from 34 MB to 29 MB.
-This is important to keep the zip under GitHub's 25 MB limit!
+Using a virtual environment brings the executable down from 34 MB to 30 MB:
 
 1. `./virtual_environment/Scripts/activate.bat`
 2. `./virtual_environment/Scripts/python.exe -m pip install -r requirements.txt`
