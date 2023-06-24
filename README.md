@@ -39,7 +39,9 @@ If you need help with anything you can contact the creator of this repository di
 
 ## Build instructions
 
-`pyinstaller --noconsole --onefile --icon="Media/legacy-mod-converter.ico" --add-data="Media/github-icon.png;Media" --add-data="Media/discord-icon.png;Media" --add-data="Media/finish.wav;Media" --name="Legacy Mod Converter" main.py`
+### Windows
+
+`pyinstaller --noconsole --onefile --icon="Media/legacy-mod-converter.ico" --collect-all="cortex_command_mod_converter_engine" --add-data="Media/github-icon.png;Media" --add-data="Media/discord-icon.png;Media" --add-data="Media/finish.wav;Media" --add-data="I:/Programming/Cortex-Command-Mod-Converter-Engine/src/cortex_command_mod_converter_engine/stylua_executables/windows/stylua.exe;windows" --name="Legacy Mod Converter" main.py`
 
 ### Linux
 
