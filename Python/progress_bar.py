@@ -3,7 +3,6 @@ class InvalidSegmentCount(Exception):
 
 
 class Segment:
-
     # cur = current ind of seg, max = seg count
     # step = step size per seg, prev = progress when segs created
     def __init__(self, cur, max, step, prev):
@@ -14,7 +13,6 @@ class Segment:
 
 
 class ProgressBar:
-
     data = []
     cur_segment = None
     title = ""
@@ -26,14 +24,13 @@ class ProgressBar:
         self.text = progress_bar_text
 
     def segment(self, count):
-        if count <= 0:
-            raise InvalidSegmentCount("You must have at least one segment!")
         if len(self.data) == 0:
             self.cur_segment = Segment(0, count, 1, 0)
             self.pbar.update(max=count, current_count=0)
         else:
-            s = self.cur_segment
-            self.cur_segment = Segment(0, count, s.step / count, self.progress)
+            self.cur_segment = Segment(
+                0, count, self.cur_segment.step / count, self.progress
+            )
 
         self.updateText()
         self.data.append(self.cur_segment)

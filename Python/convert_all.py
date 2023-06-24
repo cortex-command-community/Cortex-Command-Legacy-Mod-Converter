@@ -21,7 +21,9 @@ def convert_all(progress_bar):
     output_folder_path = Path(sg.user_settings_get_entry("cccp_folder")) / "Mods"
 
     mod_count = len(list(get_input_mod_paths(input_folder_path)))
+
     progress_bar.segment(mod_count)
+
     for i, input_mod_path in enumerate(get_input_mod_paths(input_folder_path)):
         progress_bar.setTitle(
             f"Converting {input_mod_path.stem}{input_mod_path.suffix} ({i+1}/{mod_count})...\t"
