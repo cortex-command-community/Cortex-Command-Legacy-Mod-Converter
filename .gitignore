@@ -1,7 +1,9 @@
 *
+!*/
 !.vscode/launch.json
 !Media/*
 !Python/**/*.py
+virtual_environment
 !.gitignore
 !main.py
 !README.md
