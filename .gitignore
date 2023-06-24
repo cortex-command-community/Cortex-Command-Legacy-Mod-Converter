@@ -1,16 +1,8 @@
-ExampleLegacyMods
-__pycache__
-build
-dist
-Legacy Mod Converter.spec
-settings.json
-
-.vscode/*
+*
 !.vscode/launch.json
-Python/tests/ini_test_files/output_tests/*_result.ini
-
-# Stuff used by 343N
-*.lnk
-Input
-Output
-CC Data
+!Media/*
+!Python/**/*.py
+!.gitignore
+!main.py
+!README.md
+!requirements.txt
