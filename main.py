@@ -17,11 +17,11 @@ if __name__ == "__main__":
         te = TracebackException(type(error), error, stack, limit=None, compact=True)
         stack_str = "".join(te.stack.format())
 
-        sg.popup_error(
-            error.args[0] + "_" * 60 + "\n",
-            "If you can't figure out how to fix the above error, you should make a screenshot of this entire window (using Windows key + Shift + S), and either make a GitHub issue for this by clicking the GitHub icon in this program, or you can send this to MyNameIsTrez#1585 on Discord.\n"
-            + "_" * 60
-            + "\n",
+        sg.popup_no_buttons(
+            "Most errors are very easy to fix, so please take a minute to look closely at the below error.\nIf you still aren't able to figure it out on your own, make a screenshot of this entire window by pressing Windows key + Shift + S at the same time, and pressing Ctrl + V to paste this in the #project-mod-converter channel of the CCCP Discord server.\n"
+            + "_" * 60,
+            error.args[0] + "_" * 60,
+            "Extra information for MyNameIsTrez:",
             stack_str,
             title="Error",
         )
