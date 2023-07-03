@@ -23,5 +23,5 @@ if __name__ == "__main__":
             + "_" * 60
             + "\n",
             stack_str,
-            title="AN EXCEPTION OCCURRED!",
+            title="Error",
         )
