@@ -6,6 +6,10 @@ const zglfw = @import("zglfw");
 const zgpu = @import("zgpu");
 const zgui = @import("zgui");
 
+const ConverterErrors = error{
+    WeirdGameDir,
+};
+
 pub fn main() !void {
     zglfw.init() catch {
         std.log.err("Failed to initialize GLFW library.", .{});
@@ -104,6 +108,13 @@ pub fn main() !void {
                 };
 
                 std.debug.print("Done converting!\n", .{});
+            }
+            if (zgui.button("Launch", .{ .w = 200.0 })) {
+                const path = "I:/Programming/Cortex-Command-Community-Project-Data/Cortex Command.debug.release.exe";
+                try std.os.chdir(std.fs.path.dirname(path) orelse return ConverterErrors.WeirdGameDir);
+                var argv = [_][]const u8{path};
+                const result = try std.ChildProcess.exec(.{ .argv = &argv, .allocator = gpa });
+                _ = result;
             }
         }
         zgui.end();
