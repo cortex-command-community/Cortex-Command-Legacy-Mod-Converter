@@ -8,6 +8,8 @@ libs/**/zig-cache
 !src/**/*.zig
 virtual_environment
 !.gitignore
+!build.zig
+!build.zig.zon
 !main.py
 !README.md
 !requirements.txt
