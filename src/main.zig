@@ -39,5 +39,19 @@ pub fn main() !void {
 
     while (!window.shouldClose()) {
         zglfw.pollEvents();
+
+        const swapchain_texv = gctx.swapchain.getCurrentTextureView();
+        defer swapchain_texv.release();
+
+        const commands = commands: {
+            const encoder = gctx.device.createCommandEncoder(null);
+            defer encoder.release();
+
+            break :commands encoder.finish(null);
+        };
+        defer commands.release();
+
+        gctx.submit(&.{commands});
+        _ = gctx.present();
     }
 }
