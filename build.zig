@@ -47,6 +47,12 @@ pub fn build(b: *std.Build) void {
     zglfw_pkg.link(exe);
     zgpu_pkg.link(exe);
 
+    const converter = b.addModule("converter", .{
+        // TODO: Stop hardcoding
+        .source_file = .{ .path = "I:/Programming/Cortex-Command-Mod-Converter-Engine/src/convert.zig" },
+    });
+    exe.addModule("converter", converter);
+
     // This declares intent for the executable to be installed into the
     // standard location when the user invokes the "install" step (the default
     // step when running `zig build`).

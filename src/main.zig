@@ -1,5 +1,7 @@
 const std = @import("std");
 
+const converter = @import("converter");
+
 const zglfw = @import("zglfw");
 const zgpu = @import("zgpu");
 const zgui = @import("zgui");
@@ -54,6 +56,54 @@ pub fn main() !void {
         if (zgui.begin("Button list", .{})) {
             if (zgui.button("Convert", .{ .w = 200.0 })) {
                 std.debug.print("Converting...\n", .{});
+
+                var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
+                defer arena.deinit();
+                var allocator = arena.allocator();
+
+                const cwd = std.fs.cwd();
+
+                var input_mod_path_buffer: [std.fs.MAX_PATH_BYTES]u8 = undefined;
+                const input_mod_path = try cwd.realpath("I:/Programming/Cortex-Command-Mod-Converter-Engine/tests/mod/in", &input_mod_path_buffer);
+
+                var output_mod_path_buffer: [std.fs.MAX_PATH_BYTES]u8 = undefined;
+                const output_mod_path = try cwd.realpath("I:/Programming/Cortex-Command-Mod-Converter-Engine/tests/mod/out", &output_mod_path_buffer);
+
+                var diagnostics: converter.Diagnostics = .{};
+                converter.convert(
+                    input_mod_path,
+                    output_mod_path,
+                    allocator,
+                    &diagnostics,
+                ) catch |err| switch (err) {
+                    error.UnexpectedToken => {
+                        const token = diagnostics.token orelse "null";
+                        const file_path = diagnostics.file_path orelse "null";
+                        const line = diagnostics.line orelse -1;
+                        const column = diagnostics.column orelse -1;
+
+                        std.debug.print("Error: Unexpected token\nToken: '{s}'\nFile path: {s}\nLine: {}\nColumn: {} (roughly)\n", .{
+                            token,
+                            file_path,
+                            line,
+                            column,
+                        });
+                    },
+                    error.TooManyTabs => {
+                        const file_path = diagnostics.file_path orelse "null";
+                        const line = diagnostics.line orelse -1;
+                        const column = diagnostics.column orelse -1;
+
+                        std.debug.print("Error: Too many tabs\nFile path: {s}\nLine: {} (roughly)\nColumn: {} (roughly)\n", .{
+                            file_path,
+                            line,
+                            column,
+                        });
+                    },
+                    else => |e| return e,
+                };
+
+                std.debug.print("Done converting!\n", .{});
             }
         }
         zgui.end();
