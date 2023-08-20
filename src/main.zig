@@ -28,7 +28,9 @@ pub fn main() !void {
     zgui.init(gpa);
     defer zgui.deinit();
 
-    _ = zgui.io.addFontFromFile("content/Roboto-Medium.ttf", 16.0);
+    // _ = zgui.io.addFontFromFile("content/Roboto-Medium.ttf", 26.0);
+    // _ = zgui.io.addFontFromFile("content/FiraCode-Medium.ttf", 26.0);
+    _ = zgui.io.addFontFromFile("content/ProggyClean.ttf", 26.0);
 
     zgui.backend.init(
         window,
@@ -40,12 +42,35 @@ pub fn main() !void {
     while (!window.shouldClose()) {
         zglfw.pollEvents();
 
+        zgui.backend.newFrame(
+            gctx.swapchain_descriptor.width,
+            gctx.swapchain_descriptor.height,
+        );
+
+        // Set the starting window position and size to custom values
+        zgui.setNextWindowPos(.{ .x = 20.0, .y = 20.0, .cond = .first_use_ever });
+        zgui.setNextWindowSize(.{ .w = -1.0, .h = -1.0, .cond = .first_use_ever });
+
+        if (zgui.begin("Button list", .{})) {
+            if (zgui.button("Convert", .{ .w = 200.0 })) {
+                std.debug.print("Converting...\n", .{});
+            }
+        }
+        zgui.end();
+
         const swapchain_texv = gctx.swapchain.getCurrentTextureView();
         defer swapchain_texv.release();
 
         const commands = commands: {
             const encoder = gctx.device.createCommandEncoder(null);
             defer encoder.release();
+
+            // GUI pass
+            {
+                const pass = zgpu.beginRenderPassSimple(encoder, .load, swapchain_texv, null, null, null);
+                defer zgpu.endReleasePass(pass);
+                zgui.backend.draw(pass);
+            }
 
             break :commands encoder.finish(null);
         };
