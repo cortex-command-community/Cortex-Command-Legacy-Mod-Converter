@@ -1,6 +1,7 @@
 *
 !*/
 !.vscode/launch.json
+!.vscode/tasks.json
 !libs/**/*
 libs/**/zig-cache
 !Media/*

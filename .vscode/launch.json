@@ -5,12 +5,14 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"name": "main.py",
-			"type": "python",
+			"name": "zig",
+			"type": "cppvsdbg",
 			"request": "launch",
-			"program": "main.py",
+			"program": "${workspaceFolder}/zig-out/bin/cc-legacy-mod-converter",
+			"args": [],
+			"cwd": "${workspaceFolder}",
 			"console": "integratedTerminal",
-			"justMyCode": false
-		},
+			"preLaunchTask": "build zig"
+		}
 	]
 }
