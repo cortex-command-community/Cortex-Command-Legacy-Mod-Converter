@@ -1,8 +1,11 @@
 *
 !*/
 !.vscode/launch.json
+!libs/**/*
+libs/**/zig-cache
 !Media/*
 !Python/**/*.py
+!src/**/*.zig
 virtual_environment
 !.gitignore
 !main.py
