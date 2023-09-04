@@ -68,10 +68,12 @@ pub fn main() !void {
                 const cwd = std.fs.cwd();
 
                 var input_mod_path_buffer: [std.fs.MAX_PATH_BYTES]u8 = undefined;
-                const input_mod_path = try cwd.realpath("I:/Programming/Cortex-Command-Mod-Converter-Engine/tests/mod/in", &input_mod_path_buffer);
+                // const input_mod_path = try cwd.realpath("I:/Programming/Cortex-Command-Mod-Converter-Engine/tests/mod/in", &input_mod_path_buffer);
+                const input_mod_path = try cwd.realpath("I:/Programming/Cortex-Command-Community-Project-Data/LegacyModConverter-v1.0-pre5.2/Input", &input_mod_path_buffer);
 
                 var output_mod_path_buffer: [std.fs.MAX_PATH_BYTES]u8 = undefined;
-                const output_mod_path = try cwd.realpath("I:/Programming/Cortex-Command-Mod-Converter-Engine/tests/mod/out", &output_mod_path_buffer);
+                // const output_mod_path = try cwd.realpath("I:/Programming/Cortex-Command-Mod-Converter-Engine/tests/mod/out", &output_mod_path_buffer);
+                const output_mod_path = try cwd.realpath("I:/Programming/Cortex-Command-Community-Project-Data/Mods", &output_mod_path_buffer);
 
                 var diagnostics: converter.Diagnostics = .{};
                 converter.convert(
@@ -86,7 +88,7 @@ pub fn main() !void {
                         const line = diagnostics.line orelse -1;
                         const column = diagnostics.column orelse -1;
 
-                        std.debug.print("Error: Unexpected token\nToken: '{s}'\nFile path: {s}\nLine: {}\nColumn: {} (roughly)\n", .{
+                        std.debug.print("Error: Unexpected '{s}' at {s}:{}:{}\n", .{
                             token,
                             file_path,
                             line,
@@ -98,7 +100,7 @@ pub fn main() !void {
                         const line = diagnostics.line orelse -1;
                         const column = diagnostics.column orelse -1;
 
-                        std.debug.print("Error: Too many tabs\nFile path: {s}\nLine: {} (roughly)\nColumn: {} (roughly)\n", .{
+                        std.debug.print("Error: Too many tabs at {s}:{}:{}\n", .{
                             file_path,
                             line,
                             column,
@@ -115,6 +117,23 @@ pub fn main() !void {
                 var argv = [_][]const u8{path};
                 const result = try std.ChildProcess.exec(.{ .argv = &argv, .allocator = gpa });
                 _ = result;
+            }
+            if (zgui.button("Zip", .{ .w = 200.0 })) {
+                var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
+                defer arena.deinit();
+                var allocator = arena.allocator();
+
+                // TODO: Why am I using cwd.realpath()?
+
+                const cwd = std.fs.cwd();
+
+                var input_mod_path_buffer: [std.fs.MAX_PATH_BYTES]u8 = undefined;
+                const input_mod_path = try cwd.realpath("I:/Programming/Cortex-Command-Community-Project-Data/LegacyModConverter-v1.0-pre5.2/Input", &input_mod_path_buffer);
+
+                var output_mod_path_buffer: [std.fs.MAX_PATH_BYTES]u8 = undefined;
+                const output_mod_path = try cwd.realpath("I:/Programming/Cortex-Command-Community-Project-Data/Mods", &output_mod_path_buffer);
+
+                try converter.zip_mods(input_mod_path, output_mod_path, allocator);
             }
         }
         zgui.end();

@@ -48,10 +48,31 @@ pub fn build(b: *std.Build) void {
     zgpu_pkg.link(exe);
 
     const converter = b.addModule("converter", .{
-        // TODO: Stop hardcoding
-        .source_file = .{ .path = "I:/Programming/Cortex-Command-Mod-Converter-Engine/src/convert.zig" },
+        // TODO: Don't hardcode the path
+        .source_file = .{ .path = "I:/Programming/Cortex-Command-Mod-Converter-Engine/src/main.zig" },
+        // .source_file = .{ .path = "I:/Programming/Cortex-Command-Mod-Converter-Engine/build.zig" },
     });
     exe.addModule("converter", converter);
+
+    // Strip debug symbols by default
+    // Should be disabled during development/debugging
+    // Source: https://github.com/theseyan/bkg/blob/38663d8ed0257f45d37ce003a7e2cafd0f278951/build.zig#L15
+    exe.strip = false;
+
+    exe.linkLibC();
+
+    exe.addCSourceFile(.{
+        .file = .{ .path = "I:/Programming/Cortex-Command-Mod-Converter-Engine/submodules/zip/src/zip.c" },
+        .flags = &.{
+            "-O3",
+            "-fno-sanitize=undefined", // Necessary to prevent "Illegal instruction" error
+        },
+    });
+
+    exe.addIncludePath(.{ .path = "I:/Programming/Cortex-Command-Mod-Converter-Engine/submodules/zip/src" });
+
+    // exe.addLibraryPath("I:/Programming/Cortex-Command-Mod-Converter-Engine/zig-out/lib/Cortex-Command-Mod-Converter-Engine.lib");
+    // exe.linkLibrary(lib: *Compile);
 
     // This declares intent for the executable to be installed into the
     // standard location when the user invokes the "install" step (the default
