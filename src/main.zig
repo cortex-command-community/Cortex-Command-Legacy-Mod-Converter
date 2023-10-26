@@ -17,12 +17,12 @@ pub fn main() !void {
     };
     defer zglfw.terminate();
 
-    const window = zglfw.Window.create(1600, 1000, "Legacy Mod Converter 1.0 for Pre-Release 5.2", null) catch {
+    const window = zglfw.Window.create(1000, 300, "Legacy Mod Converter 1.0 for Pre-Release 5.2", null) catch {
         std.log.err("Failed to create window.", .{});
         return;
     };
     defer window.destroy();
-    window.setSizeLimits(400, 400, -1, -1);
+    // window.setSizeLimits(600, 400, -1, -1);
 
     var gpa_state = std.heap.GeneralPurposeAllocator(.{}){};
     defer _ = gpa_state.deinit();
@@ -54,10 +54,25 @@ pub fn main() !void {
         );
 
         // Set the starting window position and size to custom values
-        zgui.setNextWindowPos(.{ .x = 20.0, .y = 20.0, .cond = .first_use_ever });
-        zgui.setNextWindowSize(.{ .w = -1.0, .h = -1.0, .cond = .first_use_ever });
+        zgui.setNextWindowPos(.{ .x = 0.0, .y = 0.0, .cond = .always });
+        // zgui.setNextWindowSize(.{ .w = -1.0, .h = -1.0, .cond = .always });
 
-        if (zgui.begin("Button list", .{})) {
+        if (zgui.begin("a", .{ .flags = .{ .no_title_bar = true, .no_resize = true, .no_background = true } })) {
+            const static = struct {
+                var input_mod_path_buf: [std.fs.MAX_PATH_BYTES + 1]u8 = undefined;
+                var output_mod_path_buf: [std.fs.MAX_PATH_BYTES + 1]u8 = undefined;
+                var progress: f32 = 0.0;
+            };
+            // std.debug.print("xd: {d}\n", .{"I:/Programming/Cortex-Command-Community-Project-Source".len});
+            // zgui.pushItemWidth("I:/Programming/Cortex-Command-Community-Project-Source".len);
+            // zgui.setNextItemWidth("I:/Programming/Cortex-Command-Community-Project-Source".len);
+            if (zgui.inputTextWithHint("Input/ directory path", .{ .hint = "Copy-paste a path from File Explorer here", .buf = static.input_mod_path_buf[0..] })) {
+                std.debug.print("The user edited input_mod_path_buf\n", .{});
+            }
+            // zgui.popItemWidth();
+            if (zgui.inputTextWithHint("Mods/ directory path", .{ .hint = "Copy-paste a path from File Explorer here", .buf = static.output_mod_path_buf[0..] })) {
+                std.debug.print("The user edited output_mod_path_buf\n", .{});
+            }
             if (zgui.button("Convert", .{ .w = 200.0 })) {
                 std.debug.print("Converting...\n", .{});
 
@@ -134,7 +149,16 @@ pub fn main() !void {
                 const output_mod_path = try cwd.realpath("I:/Programming/Cortex-Command-Community-Project-Data/Mods", &output_mod_path_buffer);
 
                 try converter.zip_mods(input_mod_path, output_mod_path, allocator);
+
+                std.debug.print("Done zipping!\n", .{});
             }
+
+            zgui.pushStyleColor4f(.{ .idx = .plot_histogram, .c = .{ 0.1 + 0.5 * (1 - static.progress), 0.2 + 0.7 * static.progress, 0.3, 1.0 } });
+            zgui.progressBar(.{ .fraction = static.progress, .overlay = "" });
+            zgui.popStyleColor(.{});
+
+            static.progress += 0.03;
+            if (static.progress > 2.0) static.progress = 0.0;
         }
         zgui.end();
 
