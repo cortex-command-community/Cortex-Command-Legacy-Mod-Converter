@@ -142,6 +142,8 @@ pub fn main() !void {
                     else => |e| return e,
                 };
 
+                try converter.beautifyLua(settings.output_folder_path, allocator);
+
                 // TODO: Run .convert() in a separate thread, letting it update a passed Progress struct so we can update a progress bar here?
                 // TODO: Check if std/Progress.zig is of use: https://ziglang.org/documentation/master/std/src/std/Progress.zig.html
                 // TODO: Look at this example of multithreading in Zig: https://gist.github.com/cabarger/d3879745b8477670070f826cad2f027d
@@ -175,7 +177,7 @@ pub fn main() !void {
                 defer arena.deinit();
                 var allocator = arena.allocator();
 
-                try converter.zip_mods(settings.input_folder_path, settings.output_folder_path, allocator);
+                try converter.zipMods(settings.input_folder_path, settings.output_folder_path, allocator);
 
                 std.debug.print("Done zipping!\n", .{});
             }
