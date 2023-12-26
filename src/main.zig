@@ -87,15 +87,16 @@ pub fn main() !void {
         // zgui.setNextWindowSize(.{ .w = 420, .h = 300, .cond = .always });
 
         if (zgui.begin("invisible_title", .{ .flags = .{ .no_title_bar = true, .no_resize = true, .no_background = true } })) {
+            const padding = 15;
             const min_width = 855;
 
-            zgui.setNextItemWidth(@max(zgui.calcTextSize(settings.input_folder_path, .{})[0], min_width));
+            zgui.setNextItemWidth(@max(zgui.calcTextSize(settings.input_folder_path, .{})[0] + padding, min_width));
             if (zgui.inputTextWithHint("Input/ folder path", .{ .hint = "Copy-paste a path from File Explorer here", .buf = &input_folder_path_mut })) {
                 settings.input_folder_path = std.mem.span(@as([*:0]u8, &input_folder_path_mut));
                 try writeSettings(settings);
             }
 
-            zgui.setNextItemWidth(@max(zgui.calcTextSize(settings.output_folder_path, .{})[0], min_width));
+            zgui.setNextItemWidth(@max(zgui.calcTextSize(settings.output_folder_path, .{})[0] + padding, min_width));
             if (zgui.inputTextWithHint("Mods/ folder path", .{ .hint = "Copy-paste a path from File Explorer here", .buf = &output_folder_path_mut })) {
                 settings.output_folder_path = std.mem.span(@as([*:0]u8, &output_folder_path_mut));
                 try writeSettings(settings);
@@ -162,7 +163,7 @@ pub fn main() !void {
                 std.debug.print("Done converting!\n", .{});
             }
 
-            zgui.setNextItemWidth(@max(zgui.calcTextSize(settings.game_executable_path, .{})[0], min_width));
+            zgui.setNextItemWidth(@max(zgui.calcTextSize(settings.game_executable_path, .{})[0] + padding, min_width));
             if (zgui.inputTextWithHint("Game .exe path", .{ .hint = "Copy-paste a path from File Explorer here", .buf = &game_executable_path_mut })) {
                 settings.game_executable_path = std.mem.span(@as([*:0]u8, &game_executable_path_mut));
                 try writeSettings(settings);
