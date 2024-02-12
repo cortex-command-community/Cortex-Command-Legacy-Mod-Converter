@@ -5,14 +5,14 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"name": "zig",
+			"name": "Run",
 			"type": "cppvsdbg",
 			"request": "launch",
 			"program": "${workspaceFolder}/zig-out/bin/cc-legacy-mod-converter",
 			"args": [],
 			"cwd": "${workspaceFolder}",
 			"console": "integratedTerminal",
-			"preLaunchTask": "build zig"
+			"preLaunchTask": "Build mod converter"
 		}
 	]
 }

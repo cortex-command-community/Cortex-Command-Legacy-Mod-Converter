@@ -2,7 +2,7 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
-			"label": "build zig",
+			"label": "Build mod converter",
 			"type": "shell",
 			"command": "zig",
 			"args": [
