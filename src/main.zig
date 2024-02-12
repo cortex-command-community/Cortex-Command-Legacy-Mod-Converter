@@ -73,6 +73,9 @@ pub fn main() !void {
     @memcpy(game_executable_path_mut[0..settings.game_executable_path.len], settings.game_executable_path);
     game_executable_path_mut[settings.game_executable_path.len] = 0;
 
+    var err_msg_buf: [1337]u8 = undefined;
+    var err_msg_slice: []u8 = undefined;
+
     while (!window.shouldClose()) {
         zglfw.pollEvents();
 
@@ -110,57 +113,60 @@ pub fn main() !void {
                 var allocator = arena.allocator();
 
                 var diagnostics: converter.Diagnostics = .{};
-                converter.convert(
+                if (converter.convert(
                     settings.input_folder_path,
                     settings.output_folder_path,
                     allocator,
                     &diagnostics,
-                ) catch |err| switch (err) {
-                    error.UnexpectedToken => {
-                        const token = diagnostics.token orelse "null";
-                        const file_path = diagnostics.file_path orelse "null";
-                        const line = diagnostics.line orelse -1;
-                        const column = diagnostics.column orelse -1;
+                )) {
+                    try converter.beautifyLua(settings.output_folder_path, allocator);
 
-                        std.debug.print("Error: Unexpected '{s}' at {s}:{}:{}\n", .{
-                            token,
-                            file_path,
-                            line,
-                            column,
-                        });
+                    // TODO: Run .convert() in a separate thread, letting it update a passed Progress struct so we can update a progress bar here?
+                    // TODO: Check if std/Progress.zig is of use: https://ziglang.org/documentation/master/std/src/std/Progress.zig.html
+                    // TODO: Look at this example of multithreading in Zig: https://gist.github.com/cabarger/d3879745b8477670070f826cad2f027d
+                    // var progress: f32 = 0.0;
+                    // _ = progress;
+                    // zgui.pushStyleColor4f(.{ .idx = .plot_histogram, .c = .{ 0.1 + 0.5 * (1 - progress), 0.2 + 0.7 * progress, 0.3, 1.0 } });
+                    // zgui.progressBar(.{ .fraction = progress, .overlay = "" });
+                    // zgui.popStyleColor(.{});
+                    // progress += 0.01;
+                    // if (progress > 2.0) progress = 0.0;
 
-                        return err;
-                    },
-                    error.TooManyTabs => {
-                        const file_path = diagnostics.file_path orelse "null";
-                        const line = diagnostics.line orelse -1;
-                        const column = diagnostics.column orelse -1;
-
-                        std.debug.print("Error: Too many tabs at {s}:{}:{}\n", .{
-                            file_path,
-                            line,
-                            column,
-                        });
-
-                        return err;
-                    },
-                    else => |e| return e,
-                };
-
-                try converter.beautifyLua(settings.output_folder_path, allocator);
-
-                // TODO: Run .convert() in a separate thread, letting it update a passed Progress struct so we can update a progress bar here?
-                // TODO: Check if std/Progress.zig is of use: https://ziglang.org/documentation/master/std/src/std/Progress.zig.html
-                // TODO: Look at this example of multithreading in Zig: https://gist.github.com/cabarger/d3879745b8477670070f826cad2f027d
-                // var progress: f32 = 0.0;
-                // _ = progress;
-                // zgui.pushStyleColor4f(.{ .idx = .plot_histogram, .c = .{ 0.1 + 0.5 * (1 - progress), 0.2 + 0.7 * progress, 0.3, 1.0 } });
-                // zgui.progressBar(.{ .fraction = progress, .overlay = "" });
-                // zgui.popStyleColor(.{});
-                // progress += 0.01;
-                // if (progress > 2.0) progress = 0.0;
-
-                std.debug.print("Done converting!\n", .{});
+                    std.debug.print("Done converting!\n", .{});
+                } else |err| {
+                    switch (err) {
+                        error.UnexpectedToken => {
+                            err_msg_slice = try std.fmt.bufPrint(&err_msg_buf, "Error: Unexpected token '{s}' in file {s} on line {} and column {}\n", .{
+                                diagnostics.token orelse "null",
+                                diagnostics.file_path orelse "null",
+                                diagnostics.line orelse -1,
+                                diagnostics.column orelse -1,
+                            });
+                        },
+                        error.TooManyTabs => {
+                            err_msg_slice = try std.fmt.bufPrint(&err_msg_buf, "Error: Too many tabs in file {s} on line {} and column {}\n", .{
+                                diagnostics.file_path orelse "null",
+                                diagnostics.line orelse -1,
+                                diagnostics.column orelse -1,
+                            });
+                        },
+                        // TODO: Add more custom error messages,
+                        // by briefly commenting out this else-statement,
+                        // and looking at the printed list of unhandled errors
+                        else => |e| {
+                            err_msg_slice = try std.fmt.bufPrint(&err_msg_buf, "{} in file {s}\n", .{
+                                e,
+                                diagnostics.file_path orelse "null",
+                            });
+                        },
+                    }
+                    std.debug.print("{s}\n", .{err_msg_slice});
+                    zgui.openPopup("error_popup", .{});
+                }
+            }
+            if (zgui.beginPopup("error_popup", .{})) {
+                zgui.text("{s}\n", .{err_msg_slice});
+                zgui.endPopup();
             }
 
             zgui.setNextItemWidth(@max(zgui.calcTextSize(settings.game_executable_path, .{})[0] + padding, min_width));
@@ -172,17 +178,18 @@ pub fn main() !void {
             if (zgui.button("Launch", .{ .w = 200.0 })) {
                 // TODO: Handle settings.game_executable_path not being set yet
                 try std.os.chdir(std.fs.path.dirname(settings.game_executable_path) orelse return ConverterErrors.WeirdGameDir);
+
                 var argv = [_][]const u8{settings.game_executable_path};
                 const result = try std.ChildProcess.exec(.{ .argv = &argv, .allocator = gpa });
                 _ = result;
             }
+
             if (zgui.button("Zip", .{ .w = 200.0 })) {
                 var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
                 defer arena.deinit();
                 var allocator = arena.allocator();
 
                 try converter.zipMods(settings.input_folder_path, settings.output_folder_path, allocator);
-
                 std.debug.print("Done zipping!\n", .{});
             }
         }
