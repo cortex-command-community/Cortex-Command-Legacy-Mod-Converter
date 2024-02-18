@@ -76,6 +76,8 @@ pub fn main() !void {
     var err_msg_buf: [1337]u8 = undefined;
     var err_msg_slice: []u8 = undefined;
 
+    if (std.c.chdir("I:/Programming/Cortex-Command-Mod-Converter-Engine") == -1) return error.chdir;
+
     while (!window.shouldClose()) {
         zglfw.pollEvents();
 
