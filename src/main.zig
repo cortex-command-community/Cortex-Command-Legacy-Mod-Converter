@@ -160,8 +160,11 @@ pub fn main() !void {
                             });
                         },
                     }
+
                     std.debug.print("{s}\n", .{err_msg_slice});
                     zgui.openPopup("error_popup", .{});
+
+                    // return err;
                 }
             }
             if (zgui.beginPopup("error_popup", .{})) {
@@ -184,14 +187,14 @@ pub fn main() !void {
                 _ = result;
             }
 
-            if (zgui.button("Zip", .{ .w = 200.0 })) {
-                var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
-                defer arena.deinit();
-                var allocator = arena.allocator();
+            // if (zgui.button("Zip", .{ .w = 200.0 })) {
+            //     var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
+            //     defer arena.deinit();
+            //     var allocator = arena.allocator();
 
-                try converter.zipMods(settings.input_folder_path, settings.output_folder_path, allocator);
-                std.debug.print("Done zipping!\n", .{});
-            }
+            //     try converter.zipMods(settings.input_folder_path, settings.output_folder_path, allocator);
+            //     std.debug.print("Done zipping!\n", .{});
+            // }
         }
         zgui.end();
 
