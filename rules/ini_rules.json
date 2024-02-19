@@ -1,0 +1,170 @@
+[
+	{
+		"old_property": "ScriptPath",
+		"old_value": "Base.rte/Scripts/Shared/GibOverLifeTime.lua",
+		"new_property": "GibAtEndOfLifetime",
+		"new_value": "1"
+	},
+	{
+		"old_property": "AddSound",
+		"old_value": "Sound",
+		"new_property": "AddSoundContainer",
+		"new_value": "SoundContainer"
+	},
+	{
+		"old_property": "ScriptPath",
+		"old_value": "Base.rte/Devices/Shared/Scripts/MuzzleSmokeHigh.lua",
+		"new_property": null,
+		"new_value": null
+	},
+	{
+		"old_property": "ScriptPath",
+		"old_value": "Coalition.rte/Devices/Weapons/MuzzleSmoke.lua",
+		"new_property": null,
+		"new_value": null
+	},
+	{
+		"old_property": "AddToGroup",
+		"old_value": "Secondary Weapons",
+		"new_property": "AddToGroup",
+		"new_value": "Weapons - Secondary"
+	},
+	{
+		"old_property": "AddToGroup",
+		"old_value": "Primary Weapons",
+		"new_property": "AddToGroup",
+		"new_value": "Weapons - Primary"
+	},
+	{
+		"old_property": "AddToGroup",
+		"old_value": "Light Weapons",
+		"new_property": "AddToGroup",
+		"new_value": "Weapons - Light"
+	},
+	{
+		"old_property": "AddToGroup",
+		"old_value": "Heavy Weapons",
+		"new_property": "AddToGroup",
+		"new_value": "Weapons - Heavy"
+	},
+	{
+		"old_property": "AddToGroup",
+		"old_value": "Sniper Weapons",
+		"new_property": "AddToGroup",
+		"new_value": "Weapons - Sniper"
+	},
+	{
+		"old_property": "AddToGroup",
+		"old_value": "Explosive Weapons",
+		"new_property": "AddToGroup",
+		"new_value": "Weapons - Explosive"
+	},
+	{
+		"old_property": "AddToGroup",
+		"old_value": "Melee Weapons",
+		"new_property": "AddToGroup",
+		"new_value": "Weapons - Melee"
+	},
+	{
+		"old_property": "AddToGroup",
+		"old_value": "Grenades",
+		"new_property": "AddToGroup",
+		"new_value": "Bombs - Grenades"
+	},
+	{
+		"old_property": "AddToGroup",
+		"old_value": "Diggers",
+		"new_property": "AddToGroup",
+		"new_value": "Tools - Diggers"
+	},
+	{
+		"old_property": "AddToGroup",
+		"old_value": "Snipers",
+		"new_property": "AddToGroup",
+		"new_value": "Actors - Sniper"
+	},
+	{
+		"old_property": "AddToGroup",
+		"old_value": "Turret",
+		"new_property": "AddToGroup",
+		"new_value": "Actors - Turret"
+	},
+	{
+		"old_property": "AddToGroup",
+		"old_value": "Mecha",
+		"new_property": "AddToGroup",
+		"new_value": "Actors - Mecha"
+	},
+	{
+		"old_property": "AddPieSlice",
+		"old_value": "Slice",
+		"new_property": "AddPieSlice",
+		"new_value": "PieSlice"
+	},
+	{
+		"old_property": "ProvidesPieMenuContext",
+		"old_value": "0",
+		"new_property": null,
+		"new_value": null
+	},
+	{
+		"old_property": "ProvidesPieMenuContext",
+		"old_value": "1",
+		"new_property": null,
+		"new_value": null
+	},
+	{
+		"old_property": "AddBackgroundLayer",
+		"old_value": "SceneLayer",
+		"new_property": "AddBackgroundLayer",
+		"new_value": "SLBackground"
+	},
+	{
+		"old_property": "OnlyOnSurface",
+		"old_value": "0",
+		"new_property": "DebrisPlacementMode",
+		"new_value": "0"
+	},
+	{
+		"old_property": "OnlyOnSurface",
+		"old_value": "1",
+		"new_property": "DebrisPlacementMode",
+		"new_value": "1"
+	},
+	{
+		"old_property": "Direction",
+		"old_value": "-1",
+		"new_property": "Direction",
+		"new_value": "None"
+	},
+	{
+		"old_property": "Direction",
+		"old_value": "0",
+		"new_property": "Direction",
+		"new_value": "Up"
+	},
+	{
+		"old_property": "Direction",
+		"old_value": "1",
+		"new_property": "Direction",
+		"new_value": "Down"
+	},
+	{
+		"old_property": "Direction",
+		"old_value": "2",
+		"new_property": "Direction",
+		"new_value": "Left"
+	},
+	{
+		"old_property": "Direction",
+		"old_value": "3",
+		"new_property": "Direction",
+		"new_value": "Right"
+	},
+	{
+		"old_property": "Direction",
+		"old_value": "4",
+		"new_property": "Direction",
+		"new_value": "Any"
+	}
+]
