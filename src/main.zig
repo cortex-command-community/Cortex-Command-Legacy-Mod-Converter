@@ -69,8 +69,8 @@ pub fn main() !void {
     @memcpy(game_executable_path_mut[0..settings.game_executable_path.len], settings.game_executable_path);
     game_executable_path_mut[settings.game_executable_path.len] = 0;
 
-    var err_msg_buf: [420420]u8 = undefined;
-    var err_msg_slice: []u8 = undefined;
+    var popup_buf: [420420]u8 = undefined;
+    var popup_slice: []u8 = undefined;
 
     while (!window.shouldClose()) {
         zglfw.pollEvents();
@@ -129,19 +129,23 @@ pub fn main() !void {
                     // if (progress > 2.0) progress = 0.0;
 
                     std.debug.print("Done converting!\n", .{});
+
+                    popup_slice = try std.fmt.bufPrint(&popup_buf, "The converted mods have been put in {s}", .{settings.output_folder_path});
+
+                    zgui.openPopup("popup", .{});
                 } else |err| {
                     switch (err) {
                         error.InvalidInputPath => {
-                            err_msg_slice = try std.fmt.bufPrint(&err_msg_buf, "Error: Invalid input path", .{});
+                            popup_slice = try std.fmt.bufPrint(&popup_buf, "Error: Invalid input path", .{});
                         },
                         error.InvalidOutputPath => {
-                            err_msg_slice = try std.fmt.bufPrint(&err_msg_buf, "Error: Invalid output path", .{});
+                            popup_slice = try std.fmt.bufPrint(&popup_buf, "Error: Invalid output path", .{});
                         },
                         error.FileNotFound => {
-                            err_msg_slice = try std.fmt.bufPrint(&err_msg_buf, "Error: Please enter valid input and output paths", .{});
+                            popup_slice = try std.fmt.bufPrint(&popup_buf, "Error: Please enter valid input and output paths", .{});
                         },
                         error.UnexpectedToken => {
-                            err_msg_slice = try std.fmt.bufPrint(&err_msg_buf, "Error: Unexpected token '{s}' in file {s} on line {} and column {}", .{
+                            popup_slice = try std.fmt.bufPrint(&popup_buf, "Error: Unexpected token '{s}' in file {s} on line {} and column {}", .{
                                 diagnostics.token orelse "null",
                                 diagnostics.file_path orelse "null",
                                 diagnostics.line orelse -1,
@@ -149,34 +153,34 @@ pub fn main() !void {
                             });
                         },
                         error.UnclosedMultiComment => {
-                            err_msg_slice = try std.fmt.bufPrint(&err_msg_buf, "Error: Unclosed multi-line comment in file {s}", .{
+                            popup_slice = try std.fmt.bufPrint(&popup_buf, "Error: Unclosed multi-line comment in file {s}", .{
                                 diagnostics.file_path orelse "null",
                             });
                         },
                         error.TooManyTabs => {
-                            err_msg_slice = try std.fmt.bufPrint(&err_msg_buf, "Error: Too many tabs in file {s} on line {} and column {}", .{
+                            popup_slice = try std.fmt.bufPrint(&popup_buf, "Error: Too many tabs in file {s} on line {} and column {}", .{
                                 diagnostics.file_path orelse "null",
                                 diagnostics.line orelse -1,
                                 diagnostics.column orelse -1,
                             });
                         },
                         error.ExpectedADataModule => {
-                            err_msg_slice = try std.fmt.bufPrint(&err_msg_buf, "Error: Expected a DataModule", .{});
+                            popup_slice = try std.fmt.bufPrint(&popup_buf, "Error: Expected a DataModule", .{});
                         },
                         error.ContainsMoreThanOneDataModule => {
-                            err_msg_slice = try std.fmt.bufPrint(&err_msg_buf, "Error: The mod contains more than one DataModule", .{});
+                            popup_slice = try std.fmt.bufPrint(&popup_buf, "Error: The mod contains more than one DataModule", .{});
                         },
                         else => |_| {
-                            err_msg_slice = try std.fmt.bufPrint(&err_msg_buf, "{?}", .{@errorReturnTrace()});
+                            popup_slice = try std.fmt.bufPrint(&popup_buf, "{?}", .{@errorReturnTrace()});
                         },
                     }
 
-                    std.debug.print("{s}\n", .{err_msg_slice});
-                    zgui.openPopup("error_popup", .{});
+                    std.debug.print("{s}\n", .{popup_slice});
+                    zgui.openPopup("popup", .{});
                 }
             }
-            if (zgui.beginPopup("error_popup", .{})) {
-                zgui.text("{s}\n", .{err_msg_slice});
+            if (zgui.beginPopup("popup", .{})) {
+                zgui.text("{s}\n", .{popup_slice});
                 zgui.endPopup();
             }
 
@@ -193,19 +197,19 @@ pub fn main() !void {
                     var argv = [_][]const u8{settings.game_executable_path};
                     _ = std.ChildProcess.exec(.{ .argv = &argv, .allocator = gpa }) catch |err| switch (err) {
                         error.FileNotFound => {
-                            err_msg_slice = try std.fmt.bufPrint(&err_msg_buf, "Error: Please enter the game executable path", .{});
-                            zgui.openPopup("error_popup", .{});
+                            popup_slice = try std.fmt.bufPrint(&popup_buf, "Error: Please enter the game executable path", .{});
+                            zgui.openPopup("popup", .{});
                         },
                         else => |e| return e,
                     };
                 } else |err| switch (err) {
                     error.BadPathName => {
-                        err_msg_slice = try std.fmt.bufPrint(&err_msg_buf, "Error: Please enter the game executable path", .{});
-                        zgui.openPopup("error_popup", .{});
+                        popup_slice = try std.fmt.bufPrint(&popup_buf, "Error: Please enter the game executable path", .{});
+                        zgui.openPopup("popup", .{});
                     },
                     error.FileNotFound => {
-                        err_msg_slice = try std.fmt.bufPrint(&err_msg_buf, "Error: Please enter the game executable path", .{});
-                        zgui.openPopup("error_popup", .{});
+                        popup_slice = try std.fmt.bufPrint(&popup_buf, "Error: Please enter the game executable path", .{});
+                        zgui.openPopup("popup", .{});
                     },
                     else => |e| return e,
                 }
