@@ -6,10 +6,6 @@ const zglfw = @import("zglfw");
 const zgpu = @import("zgpu");
 const zgui = @import("zgui");
 
-const ConverterErrors = error{
-    WeirdGameDir,
-};
-
 const Settings = struct {
     input_folder_path: []const u8 = "",
     output_folder_path: []const u8 = "",
@@ -40,9 +36,9 @@ pub fn main() !void {
     zgui.init(gpa);
     defer zgui.deinit();
 
-    // _ = zgui.io.addFontFromFile("content/Roboto-Medium.ttf", 26.0);
-    // _ = zgui.io.addFontFromFile("content/FiraCode-Medium.ttf", 26.0);
-    _ = zgui.io.addFontFromFile("content/ProggyClean.ttf", 26.0);
+    // _ = zgui.io.addFontFromFile("fonts/Roboto-Medium.ttf", 26.0);
+    // _ = zgui.io.addFontFromFile("fonts/FiraCode-Medium.ttf", 26.0);
+    _ = zgui.io.addFontFromFile("fonts/ProggyClean.ttf", 26.0);
 
     zgui.backend.init(
         window,
@@ -73,7 +69,7 @@ pub fn main() !void {
     @memcpy(game_executable_path_mut[0..settings.game_executable_path.len], settings.game_executable_path);
     game_executable_path_mut[settings.game_executable_path.len] = 0;
 
-    var err_msg_buf: [1337]u8 = undefined;
+    var err_msg_buf: [420420]u8 = undefined;
     var err_msg_slice: []u8 = undefined;
 
     while (!window.shouldClose()) {
@@ -135,36 +131,48 @@ pub fn main() !void {
                     std.debug.print("Done converting!\n", .{});
                 } else |err| {
                     switch (err) {
+                        error.InvalidInputPath => {
+                            err_msg_slice = try std.fmt.bufPrint(&err_msg_buf, "Error: Invalid input path", .{});
+                        },
+                        error.InvalidOutputPath => {
+                            err_msg_slice = try std.fmt.bufPrint(&err_msg_buf, "Error: Invalid output path", .{});
+                        },
+                        error.FileNotFound => {
+                            err_msg_slice = try std.fmt.bufPrint(&err_msg_buf, "Error: Please enter valid input and output paths", .{});
+                        },
                         error.UnexpectedToken => {
-                            err_msg_slice = try std.fmt.bufPrint(&err_msg_buf, "Error: Unexpected token '{s}' in file {s} on line {} and column {}\n", .{
+                            err_msg_slice = try std.fmt.bufPrint(&err_msg_buf, "Error: Unexpected token '{s}' in file {s} on line {} and column {}", .{
                                 diagnostics.token orelse "null",
                                 diagnostics.file_path orelse "null",
                                 diagnostics.line orelse -1,
                                 diagnostics.column orelse -1,
                             });
                         },
+                        error.UnclosedMultiComment => {
+                            err_msg_slice = try std.fmt.bufPrint(&err_msg_buf, "Error: Unclosed multi-line comment in file {s}", .{
+                                diagnostics.file_path orelse "null",
+                            });
+                        },
                         error.TooManyTabs => {
-                            err_msg_slice = try std.fmt.bufPrint(&err_msg_buf, "Error: Too many tabs in file {s} on line {} and column {}\n", .{
+                            err_msg_slice = try std.fmt.bufPrint(&err_msg_buf, "Error: Too many tabs in file {s} on line {} and column {}", .{
                                 diagnostics.file_path orelse "null",
                                 diagnostics.line orelse -1,
                                 diagnostics.column orelse -1,
                             });
                         },
-                        // TODO: Add more custom error messages,
-                        // by briefly commenting out this else-statement,
-                        // and looking at the printed list of unhandled errors
-                        else => |e| {
-                            err_msg_slice = try std.fmt.bufPrint(&err_msg_buf, "{} in file {s}\n", .{
-                                e,
-                                diagnostics.file_path orelse "null",
-                            });
+                        error.ExpectedADataModule => {
+                            err_msg_slice = try std.fmt.bufPrint(&err_msg_buf, "Error: Expected a DataModule", .{});
+                        },
+                        error.ContainsMoreThanOneDataModule => {
+                            err_msg_slice = try std.fmt.bufPrint(&err_msg_buf, "Error: The mod contains more than one DataModule", .{});
+                        },
+                        else => |_| {
+                            err_msg_slice = try std.fmt.bufPrint(&err_msg_buf, "{?}", .{@errorReturnTrace()});
                         },
                     }
 
                     std.debug.print("{s}\n", .{err_msg_slice});
                     zgui.openPopup("error_popup", .{});
-
-                    // return err;
                 }
             }
             if (zgui.beginPopup("error_popup", .{})) {
@@ -173,18 +181,34 @@ pub fn main() !void {
             }
 
             zgui.setNextItemWidth(@max(zgui.calcTextSize(settings.game_executable_path, .{})[0] + padding, min_width));
-            if (zgui.inputTextWithHint("Game .exe path", .{ .hint = "Copy-paste a path from File Explorer here", .buf = &game_executable_path_mut })) {
+            if (zgui.inputTextWithHint("Game executable path", .{ .hint = "Copy-paste a path from File Explorer here", .buf = &game_executable_path_mut })) {
                 settings.game_executable_path = std.mem.span(@as([*:0]u8, &game_executable_path_mut));
                 try writeSettings(settings);
             }
 
             if (zgui.button("Launch", .{ .w = 200.0 })) {
-                // TODO: Handle settings.game_executable_path not being set yet
-                try std.os.chdir(std.fs.path.dirname(settings.game_executable_path) orelse return ConverterErrors.WeirdGameDir);
+                const dirname = std.fs.path.dirname(settings.game_executable_path) orelse ".";
 
-                var argv = [_][]const u8{settings.game_executable_path};
-                const result = try std.ChildProcess.exec(.{ .argv = &argv, .allocator = gpa });
-                _ = result;
+                if (std.os.chdir(dirname)) {
+                    var argv = [_][]const u8{settings.game_executable_path};
+                    _ = std.ChildProcess.exec(.{ .argv = &argv, .allocator = gpa }) catch |err| switch (err) {
+                        error.FileNotFound => {
+                            err_msg_slice = try std.fmt.bufPrint(&err_msg_buf, "Error: Please enter the game executable path", .{});
+                            zgui.openPopup("error_popup", .{});
+                        },
+                        else => |e| return e,
+                    };
+                } else |err| switch (err) {
+                    error.BadPathName => {
+                        err_msg_slice = try std.fmt.bufPrint(&err_msg_buf, "Error: Please enter the game executable path", .{});
+                        zgui.openPopup("error_popup", .{});
+                    },
+                    error.FileNotFound => {
+                        err_msg_slice = try std.fmt.bufPrint(&err_msg_buf, "Error: Please enter the game executable path", .{});
+                        zgui.openPopup("error_popup", .{});
+                    },
+                    else => |e| return e,
+                }
             }
 
             // if (zgui.button("Zip", .{ .w = 200.0 })) {
