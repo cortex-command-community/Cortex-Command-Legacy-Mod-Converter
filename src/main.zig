@@ -10,6 +10,7 @@ const Settings = struct {
     input_folder_path: []const u8 = "",
     output_folder_path: []const u8 = "",
     game_executable_path: []const u8 = "",
+    beautify_lua: bool = true,
 };
 
 pub fn main() !void {
@@ -19,7 +20,7 @@ pub fn main() !void {
     };
     defer zglfw.terminate();
 
-    const window = zglfw.Window.create(1600, 300, "Legacy Mod Converter v1.0 for CCCP v6.0.0", null) catch {
+    const window = zglfw.Window.create(1600, 300, "Legacy Mod Converter v1.2 for CCCP release 6", null) catch {
         std.log.err("Failed to create window.", .{});
         return;
     };
@@ -101,6 +102,10 @@ pub fn main() !void {
                 try writeSettings(settings);
             }
 
+            if (zgui.checkbox("Beautify Lua", .{ .v = &settings.beautify_lua })) {
+                try writeSettings(settings);
+            }
+
             if (zgui.button("Convert", .{ .w = 200.0 })) {
                 std.debug.print("Converting...\n", .{});
 
@@ -115,7 +120,9 @@ pub fn main() !void {
                     allocator,
                     &diagnostics,
                 )) {
-                    try converter.beautifyLua(settings.output_folder_path, allocator);
+                    if (settings.beautify_lua) {
+                        try converter.beautifyLua(settings.output_folder_path, allocator);
+                    }
 
                     // TODO: Run .convert() in a separate thread, letting it update a passed Progress struct so we can update a progress bar here?
                     // TODO: Check if std/Progress.zig is of use: https://ziglang.org/documentation/master/std/src/std/Progress.zig.html
@@ -179,10 +186,6 @@ pub fn main() !void {
                     zgui.openPopup("popup", .{});
                 }
             }
-            if (zgui.beginPopup("popup", .{})) {
-                zgui.text("{s}\n", .{popup_slice});
-                zgui.endPopup();
-            }
 
             zgui.setNextItemWidth(@max(zgui.calcTextSize(settings.game_executable_path, .{})[0] + padding, min_width));
             if (zgui.inputTextWithHint("Game executable path", .{ .hint = "Copy-paste a path from File Explorer here", .buf = &game_executable_path_mut })) {
@@ -213,6 +216,11 @@ pub fn main() !void {
             //     try converter.zipMods(settings.input_folder_path, settings.output_folder_path, allocator);
             //     std.debug.print("Done zipping!\n", .{});
             // }
+
+            if (zgui.beginPopup("popup", .{})) {
+                zgui.text("{s}\n", .{popup_slice});
+                zgui.endPopup();
+            }
         }
         zgui.end();
 
