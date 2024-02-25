@@ -195,19 +195,9 @@ pub fn main() !void {
 
                 if (std.os.chdir(dirname)) {
                     var argv = [_][]const u8{settings.game_executable_path};
-                    _ = std.ChildProcess.exec(.{ .argv = &argv, .allocator = gpa }) catch |err| switch (err) {
-                        error.FileNotFound => {
-                            popup_slice = try std.fmt.bufPrint(&popup_buf, "Error: Please enter the game executable path", .{});
-                            zgui.openPopup("popup", .{});
-                        },
-                        else => |e| return e,
-                    };
+                    _ = try std.ChildProcess.exec(.{ .argv = &argv, .allocator = gpa });
                 } else |err| switch (err) {
-                    error.BadPathName => {
-                        popup_slice = try std.fmt.bufPrint(&popup_buf, "Error: Please enter the game executable path", .{});
-                        zgui.openPopup("popup", .{});
-                    },
-                    error.FileNotFound => {
+                    error.BadPathName, error.FileNotFound => {
                         popup_slice = try std.fmt.bufPrint(&popup_buf, "Error: Please enter the game executable path", .{});
                         zgui.openPopup("popup", .{});
                     },
