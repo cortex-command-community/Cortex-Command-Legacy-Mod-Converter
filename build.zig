@@ -49,8 +49,8 @@ pub fn build(b: *std.Build) void {
 
     const converter = b.addModule("converter", .{
         // TODO: Don't hardcode the path
-        .source_file = .{ .path = "I:/Programming/Cortex-Command-Mod-Converter-Engine/src/main.zig" },
-        // .source_file = .{ .path = "I:/Programming/Cortex-Command-Mod-Converter-Engine/build.zig" },
+        .source_file = .{ .path = "../Cortex-Command-Mod-Converter-Engine/src/main.zig" },
+        // .source_file = .{ .path = "../Cortex-Command-Mod-Converter-Engine/build.zig" },
     });
     exe.addModule("converter", converter);
 
@@ -62,16 +62,16 @@ pub fn build(b: *std.Build) void {
     // exe.linkLibC();
 
     // exe.addCSourceFile(.{
-    //     .file = .{ .path = "I:/Programming/Cortex-Command-Mod-Converter-Engine/submodules/zip/src/zip.c" },
+    //     .file = .{ .path = "../Cortex-Command-Mod-Converter-Engine/submodules/zip/src/zip.c" },
     //     .flags = &.{
     //         "-O3",
     //         "-fno-sanitize=undefined", // Necessary to prevent "Illegal instruction" error
     //     },
     // });
 
-    // exe.addIncludePath(.{ .path = "I:/Programming/Cortex-Command-Mod-Converter-Engine/submodules/zip/src" });
+    // exe.addIncludePath(.{ .path = "../Cortex-Command-Mod-Converter-Engine/submodules/zip/src" });
 
-    // exe.addLibraryPath("I:/Programming/Cortex-Command-Mod-Converter-Engine/zig-out/lib/Cortex-Command-Mod-Converter-Engine.lib");
+    // exe.addLibraryPath("../Cortex-Command-Mod-Converter-Engine/zig-out/lib/Cortex-Command-Mod-Converter-Engine.lib");
     // exe.linkLibrary(lib: *Compile);
 
     // This declares intent for the executable to be installed into the
