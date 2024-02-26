@@ -19,8 +19,15 @@ This line from `rules/ini_copy_of_rules.json`:
 
 `"Round M16": "Round Ronin M16",`
 
-states that whenever `Round M16` is  encountered by the converter, it should change it to `Round Ronin M16`.
+states that whenever `Round M16` is encountered by the converter, it should change it to `Round Ronin M16`.
 
 This means you can make the converter "smarter" by adding more rules to the JSON files in the `rules/` directory.
 
 [This tutorial](https://github.com/cortex-command-community/Cortex-Command-Legacy-Mod-Converter/wiki/Fixing-CCCP-crashes-and-errors-with-Fork) goes over how you can use Fork to figure out what things were renamed to in the newer versions of the game, so you can add missing conversion rules.
+
+## Compiling the program
+
+1. Download [Zig](https://ziglang.org/) version 0.11.
+2. Clone this repository somewhere on your computer.
+3. Clone the [Cortex Command Mod Converter Engine](https://github.com/MyNameIsTrez/Cortex-Command-Mod-Converter-Engine) repository next to it.
+4. Open this repository in VS Code, and hit the `F5` key to compile and run the program.
