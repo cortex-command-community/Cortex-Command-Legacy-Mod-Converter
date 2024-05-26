@@ -4,6 +4,7 @@ const converter = @import("converter");
 
 const zglfw = @import("zglfw");
 const zgpu = @import("zgpu");
+const wgpu = zgpu.wgpu;
 const zgui = @import("zgui");
 
 const Settings = struct {
@@ -31,7 +32,17 @@ pub fn main() !void {
     defer _ = gpa_state.deinit();
     const gpa = gpa_state.allocator();
 
-    const gctx = try zgpu.GraphicsContext.create(gpa, window, .{});
+    const gctx = try zgpu.GraphicsContext.create(gpa, .{
+        .window = window,
+        .fn_getTime = @ptrCast(&zglfw.getTime),
+        .fn_getFramebufferSize = @ptrCast(&zglfw.Window.getFramebufferSize),
+        .fn_getWin32Window = @ptrCast(&zglfw.getWin32Window),
+        .fn_getX11Display = @ptrCast(&zglfw.getX11Display),
+        .fn_getX11Window = @ptrCast(&zglfw.getX11Window),
+        .fn_getWaylandDisplay = @ptrCast(&zglfw.getWaylandDisplay),
+        .fn_getWaylandSurface = @ptrCast(&zglfw.getWaylandWindow),
+        .fn_getCocoaWindow = @ptrCast(&zglfw.getCocoaWindow),
+    }, .{});
     defer gctx.destroy(gpa);
 
     zgui.init(gpa);
@@ -45,6 +56,7 @@ pub fn main() !void {
         window,
         gctx.device,
         @intFromEnum(zgpu.GraphicsContext.swapchain_format),
+        @intFromEnum(wgpu.TextureFormat.undef),
     );
     defer zgui.backend.deinit();
 
@@ -111,7 +123,7 @@ pub fn main() !void {
 
                 var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
                 defer arena.deinit();
-                var allocator = arena.allocator();
+                const allocator = arena.allocator();
 
                 var diagnostics: converter.Diagnostics = .{};
                 if (converter.convert(
@@ -128,7 +140,6 @@ pub fn main() !void {
                     // TODO: Check if std/Progress.zig is of use: https://ziglang.org/documentation/master/std/src/std/Progress.zig.html
                     // TODO: Look at this example of multithreading in Zig: https://gist.github.com/cabarger/d3879745b8477670070f826cad2f027d
                     // var progress: f32 = 0.0;
-                    // _ = progress;
                     // zgui.pushStyleColor4f(.{ .idx = .plot_histogram, .c = .{ 0.1 + 0.5 * (1 - progress), 0.2 + 0.7 * progress, 0.3, 1.0 } });
                     // zgui.progressBar(.{ .fraction = progress, .overlay = "" });
                     // zgui.popStyleColor(.{});
@@ -196,9 +207,9 @@ pub fn main() !void {
             if (zgui.button("Launch", .{ .w = 200.0 })) {
                 const dirname = std.fs.path.dirname(settings.game_executable_path) orelse ".";
 
-                if (std.os.chdir(dirname)) {
+                if (std.posix.chdir(dirname)) {
                     var argv = [_][]const u8{settings.game_executable_path};
-                    _ = try std.ChildProcess.exec(.{ .argv = &argv, .allocator = gpa });
+                    _ = try std.ChildProcess.run(.{ .argv = &argv, .allocator = gpa });
                 } else |err| switch (err) {
                     error.BadPathName, error.FileNotFound => {
                         popup_slice = try std.fmt.bufPrint(&popup_buf, "Error: Please enter the game executable path", .{});
@@ -208,12 +219,13 @@ pub fn main() !void {
                 }
             }
 
+            // TODO: Add the ability to zip the result back
             // if (zgui.button("Zip", .{ .w = 200.0 })) {
             //     var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
             //     defer arena.deinit();
             //     var allocator = arena.allocator();
 
-            //     try converter.zipMods(settings.input_folder_path, settings.output_folder_path, allocator);
+            //     try zip(settings.input_folder_path, settings.output_folder_path, allocator);
             //     std.debug.print("Done zipping!\n", .{});
             // }
 

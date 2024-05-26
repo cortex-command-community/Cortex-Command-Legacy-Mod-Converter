@@ -1,12 +1,5 @@
 const std = @import("std");
 
-const zgui = @import("libs/zgui/build.zig");
-
-// Needed for glfw/wgpu rendering backend
-const zglfw = @import("libs/zglfw/build.zig");
-const zgpu = @import("libs/zgpu/build.zig");
-const zpool = @import("libs/zpool/build.zig");
-
 // Although this function looks imperative, note that its job is to
 // declaratively construct a build graph that will be executed by an external
 // runner.
@@ -24,55 +17,44 @@ pub fn build(b: *std.Build) void {
 
     const exe = b.addExecutable(.{
         .name = "cc-legacy-mod-converter",
-        // In this case the main source file is merely a path, however, in more
-        // complicated build scripts, this could be a generated file.
         .root_source_file = .{ .path = "src/main.zig" },
         .target = target,
         .optimize = optimize,
+        .strip = false, // Whether to strip debug symbols
     });
 
-    const zgui_pkg = zgui.package(b, target, optimize, .{
-        .options = .{ .backend = .glfw_wgpu },
+    @import("system_sdk").addLibraryPathsTo(exe);
+    @import("zgpu").addLibraryPathsTo(exe);
+
+    const zglfw = b.dependency("zglfw", .{
+        .target = target,
     });
+    exe.root_module.addImport("zglfw", zglfw.module("root"));
+    exe.linkLibrary(zglfw.artifact("glfw"));
 
-    zgui_pkg.link(exe);
-
-    // Needed for glfw/wgpu rendering backend
-    const zglfw_pkg = zglfw.package(b, target, optimize, .{});
-    const zpool_pkg = zpool.package(b, target, optimize, .{});
-    const zgpu_pkg = zgpu.package(b, target, optimize, .{
-        .deps = .{ .zpool = zpool_pkg.zpool, .zglfw = zglfw_pkg.zglfw },
+    const zgpu = b.dependency("zgpu", .{
+        .target = target,
     });
+    exe.root_module.addImport("zgpu", zgpu.module("root"));
+    exe.linkLibrary(zgpu.artifact("zdawn"));
 
-    zglfw_pkg.link(exe);
-    zgpu_pkg.link(exe);
+    const zgui = b.dependency("zgui", .{
+        .target = target,
+        .backend = .glfw_wgpu,
+    });
+    exe.root_module.addImport("zgui", zgui.module("root"));
+    exe.linkLibrary(zgui.artifact("imgui"));
+
+    // TODO: Check if zpool can be removed from libs/ and these lines
+    const zpool = b.dependency("zpool", .{});
+    exe.root_module.addImport("zpool", zpool.module("root"));
 
     const converter = b.addModule("converter", .{
         // TODO: Don't hardcode the path
-        .source_file = .{ .path = "../Cortex-Command-Mod-Converter-Engine/src/main.zig" },
+        .root_source_file = .{ .path = "../Cortex-Command-Mod-Converter-Engine/src/main.zig" },
         // .source_file = .{ .path = "../Cortex-Command-Mod-Converter-Engine/build.zig" },
     });
-    exe.addModule("converter", converter);
-
-    // Strip debug symbols by default
-    // Should be disabled during development/debugging
-    // Source: https://github.com/theseyan/bkg/blob/38663d8ed0257f45d37ce003a7e2cafd0f278951/build.zig#L15
-    exe.strip = false;
-
-    // exe.linkLibC();
-
-    // exe.addCSourceFile(.{
-    //     .file = .{ .path = "../Cortex-Command-Mod-Converter-Engine/submodules/zip/src/zip.c" },
-    //     .flags = &.{
-    //         "-O3",
-    //         "-fno-sanitize=undefined", // Necessary to prevent "Illegal instruction" error
-    //     },
-    // });
-
-    // exe.addIncludePath(.{ .path = "../Cortex-Command-Mod-Converter-Engine/submodules/zip/src" });
-
-    // exe.addLibraryPath("../Cortex-Command-Mod-Converter-Engine/zig-out/lib/Cortex-Command-Mod-Converter-Engine.lib");
-    // exe.linkLibrary(lib: *Compile);
+    exe.root_module.addImport("converter", converter);
 
     // This declares intent for the executable to be installed into the
     // standard location when the user invokes the "install" step (the default

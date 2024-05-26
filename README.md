@@ -27,7 +27,7 @@ This means you can make the converter "smarter" by adding more rules to the JSON
 
 ## Compiling the program
 
-1. Download [Zig](https://ziglang.org/) version 0.11.
-2. Clone this repository somewhere on your computer.
+1. Download Zig version 0.12.0 for Windows from [here](https://ziglang.org/download/0.12.0/zig-windows-x86_64-0.12.0.zip). You'll need to add the path to its unzipped directory to your system's `Path` environment variable. Confirm it works by running `zig version` in a terminal.
+2. Clone this repository.
 3. Clone the [Cortex Command Mod Converter Engine](https://github.com/MyNameIsTrez/Cortex-Command-Mod-Converter-Engine) repository next to it.
 4. Open this repository in VS Code, and hit the `F5` key to compile and run the program.
