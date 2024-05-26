@@ -48,8 +48,6 @@ pub fn main() !void {
     zgui.init(gpa);
     defer zgui.deinit();
 
-    // _ = zgui.io.addFontFromFile("fonts/Roboto-Medium.ttf", 26.0);
-    // _ = zgui.io.addFontFromFile("fonts/FiraCode-Medium.ttf", 26.0);
     _ = zgui.io.addFontFromFile("fonts/ProggyClean.ttf", 26.0);
 
     zgui.backend.init(
