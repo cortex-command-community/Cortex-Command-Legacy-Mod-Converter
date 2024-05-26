@@ -23,7 +23,7 @@ states that whenever `CopyOf = Round M16` is encountered by the converter, it sh
 
 This means you can make the converter "smarter" by adding more rules to the JSON files in the `rules/` directory.
 
-Look at the names of the JSON files (or how they're used in `src/main.zig`) to figure out how the converter uses each JSON file.
+Look at the names of the JSON files (or check how they're used in the [Engine repository's src/main.zig](https://github.com/MyNameIsTrez/Cortex-Command-Mod-Converter-Engine/blob/master/src/main.zig)) to figure out how the converter uses each JSON file.
 
 Note that the converter will ignore any extra JSON files you put in the `rules/` directory.
 
