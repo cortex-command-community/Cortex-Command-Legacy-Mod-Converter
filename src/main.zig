@@ -158,7 +158,7 @@ pub fn main() !void {
                             popup_slice = try std.fmt.bufPrint(&popup_buf, "Error: Invalid output path", .{});
                         },
                         error.FileNotFound => {
-                            popup_slice = try std.fmt.bufPrint(&popup_buf, "Error: Please enter valid input and output paths", .{});
+                            popup_slice = try std.fmt.bufPrint(&popup_buf, "Error: Please enter valid input and output paths, and make sure you didn't delete any rule files", .{});
                         },
                         error.UnexpectedToken => {
                             popup_slice = try std.fmt.bufPrint(&popup_buf, "Error: Unexpected token '{s}' in file {s} on line {} and column {}", .{
