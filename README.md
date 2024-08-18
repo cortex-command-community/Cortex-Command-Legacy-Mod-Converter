@@ -15,13 +15,13 @@ See the [releases page](https://github.com/cortex-command-community/Cortex-Comma
 
 ## Conversion rules
 
-This line from `rules/ini_copy_of_rules.json`:
+This line from the [Cortex Command Mod Converter Engine](https://github.com/MyNameIsTrez/Cortex-Command-Mod-Converter-Engine)'s' `rules/ini_copy_of_rules.json`:
 
 `"Round M16": "Round Ronin M16",`
 
 states that whenever `CopyOf = Round M16` is encountered by the converter, it should change it to `CopyOf = Round Ronin M16`.
 
-This means you can make the converter "smarter" by adding more rules to the JSON files in the `rules/` directory.
+The releases of this GUI program contain a copy of the engine's `rules` directory, which this GUI program uses. This means you can make the converter "smarter" by adding more rules to the JSON files in the `rules/` directory.
 
 Look at the names of the JSON files (or check how they're used in the [Engine repository's src/main.zig](https://github.com/MyNameIsTrez/Cortex-Command-Mod-Converter-Engine/blob/master/src/main.zig)) to figure out how the converter uses each JSON file.
 

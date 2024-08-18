@@ -9,7 +9,7 @@
 			"type": "cppvsdbg",
 			"request": "launch",
 			"program": "${workspaceFolder}/zig-out/bin/cc-legacy-mod-converter",
-			"args": [],
+			"args": ["../Cortex-Command-Mod-Converter-Engine/rules"],
 			"cwd": "${workspaceFolder}",
 			"console": "integratedTerminal",
 			"preLaunchTask": "Build mod converter"

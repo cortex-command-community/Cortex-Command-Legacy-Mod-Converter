@@ -21,7 +21,7 @@ pub fn main() !void {
     };
     defer zglfw.terminate();
 
-    const window = zglfw.Window.create(1600, 300, "Legacy Mod Converter v1.2 for CCCP release 6", null) catch {
+    const window = zglfw.Window.create(1600, 300, "Legacy Mod Converter v1.4 for CCCP release 6", null) catch {
         std.log.err("Failed to create window.", .{});
         return;
     };
@@ -76,6 +76,13 @@ pub fn main() !void {
     @memcpy(output_folder_path_mut[0..settings.output_folder_path.len], settings.output_folder_path);
     output_folder_path_mut[settings.output_folder_path.len] = 0;
 
+    var args = try std.process.argsWithAllocator(gpa);
+    defer args.deinit();
+
+    const program_name = args.next() orelse return error.ExpectedProgramName;
+    _ = program_name;
+    const rules_folder_path = args.next() orelse "./rules";
+
     var game_executable_path_mut: [std.fs.MAX_PATH_BYTES + 1:0]u8 = undefined;
     @memcpy(game_executable_path_mut[0..settings.game_executable_path.len], settings.game_executable_path);
     game_executable_path_mut[settings.game_executable_path.len] = 0;
@@ -127,6 +134,7 @@ pub fn main() !void {
                 if (converter.convert(
                     settings.input_folder_path,
                     settings.output_folder_path,
+                    rules_folder_path,
                     allocator,
                     &diagnostics,
                 )) {
