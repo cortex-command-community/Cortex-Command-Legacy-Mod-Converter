@@ -21,7 +21,7 @@ pub fn main() !void {
     };
     defer zglfw.terminate();
 
-    const window = zglfw.Window.create(1600, 300, "Legacy Mod Converter v1.4 for CCCP release 6", null) catch {
+    const window = zglfw.Window.create(1600, 300, "Legacy Mod Converter v1.5 for CCCP release 6", null) catch {
         std.log.err("Failed to create window.", .{});
         return;
     };
