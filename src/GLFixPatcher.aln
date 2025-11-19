@@ -1,0 +1,8 @@
+# Tool-Type: GraphicsStabilizer
+{
+  "tool_name": "GLFixPatcher",
+  "function": "Auto-patch config.txt and apply driver compatibility fixes for rendering issues.",
+  "dependencies": ["/scripts/fix_graphics.bat", "/scripts/fix_graphics.sh"],
+  "firewall_security": "2w2.i&t%_vh",
+  "event_trigger": "render_fail_event"
+}

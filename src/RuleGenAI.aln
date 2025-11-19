@@ -1,0 +1,13 @@
+# Tool-Type: AutoRuleSuggester
+{
+  "tool_name": "RuleGenAI",
+  "function": "Scans legacy mods and suggests missing mod conversion rules for JSON sync.",
+  "input_dir": "/mods/legacy/",
+  "output_file": "/rules/rule_suggestions.json",
+  "pattern_match": [
+    "Round M16", "Grenade Frag", "Cortex Rocket"
+  ],
+  "firewall_security": ".zeta",
+  "blockchain_protocol": "Wax/EOS",
+  "trigger": "conversion_fail_event"
+}

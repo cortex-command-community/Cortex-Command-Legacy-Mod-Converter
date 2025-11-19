@@ -1,0 +1,9 @@
+# Tool-Type: CrashResolver
+{
+  "tool_name": "NanoDebugTracer",
+  "function": "Real-time crash log replay and basic auto-fix injector for known mod/AI errors.",
+  "input_log_file": "/debug/debug.log",
+  "output_action": "uploads anonymized error data for community ML-fixes",
+  "hardware_protocol": "sam.fisher.nets",
+  "compute_method": "Wax/EOS distributed sim"
+}
